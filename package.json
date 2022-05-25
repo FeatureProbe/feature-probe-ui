@@ -1,0 +1,94 @@
+{
+  "name": "feature-probe-ui",
+  "version": "1.0.1",
+  "description": "FeatureProbe UI/Portal",
+  "license": "Apache-2.0",
+  "keywords": [
+    "FeatureProbe",
+    "feature",
+    "toggle"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:FeatureProbe/feature-probe-ui.git"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "chart.js": "^3.7.1",
+    "classnames": "^2.3.1",
+    "codemirror": "^5.65.3",
+    "dayjs": "^1.11.0",
+    "diff": "^5.0.0",
+    "diff2html": "^3.4.17",
+    "json-bigint": "^1.0.0",
+    "jsonlint-mod": "^1.7.6",
+    "less-loader": "^10.2.0",
+    "localforage": "^1.10.0",
+    "lodash": "^4.17.21",
+    "node-sass": "^7.0.1",
+    "qs": "^6.10.3",
+    "react": "^17.0.0",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-chartjs-2": "^4.1.0",
+    "react-copy-to-clipboard": "^5.0.4",
+    "react-dom": "^17.0.0",
+    "react-hook-form": "^7.29.0",
+    "react-intl": "^5.25.1",
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "^5.0.0",
+    "sass-loader": "^12.6.0",
+    "semantic-ui-less": "^2.4.1",
+    "semantic-ui-react": "^2.1.2",
+    "typescript": "^4.4.2",
+    "unstated-next": "^1.1.0",
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "start": "semantic-ui-css-patch && craco start",
+    "build": "semantic-ui-css-patch && craco build",
+    "test": "craco test",
+    "eject": "craco eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^6.0.0",
+    "@semantic-ui-react/craco-less": "^2.0.2",
+    "@semantic-ui-react/css-patch": "^1.0.0",
+    "@types/codemirror": "^5.60.5",
+    "@types/diff": "^5.0.2",
+    "@types/diff2html": "^3.0.0",
+    "@types/dom-inputevent": "^1.0.7",
+    "@types/jest": "^27.0.1",
+    "@types/json-bigint": "^1.0.1",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^16.7.13",
+    "@types/react": "^17.0.43",
+    "@types/react-beautiful-dnd": "^13.1.2",
+    "@types/react-copy-to-clipboard": "^5.0.2",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/uuid": "^8.3.4"
+  },
+  "resolutions": {
+    "@types/react": "17.0.43"
+  }
+}

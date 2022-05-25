@@ -1,0 +1,46 @@
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #212529;
+  margin-bottom: 16px;
+}
+
+.modal-close-icon {
+  cursor: pointer;
+}
+
+.label-required {
+  color: #FF5F57;
+  font-size: 20px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.error-text {
+  color: #F46A6A;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  transform: scale(0.83);
+  transform-origin: left;
+}
+
+.tip-text {
+  color: #74788D;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  transform: scale(0.83);
+  transform-origin: left center;
+}
+
+.footer {
+  margin-top: 50px;
+  text-align: right;
+}
+
+.btn {
+  margin-right: 8px !important;
+}

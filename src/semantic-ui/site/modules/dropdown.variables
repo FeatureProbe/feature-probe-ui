@@ -1,0 +1,22 @@
+/*******************************
+    User Variable Overrides
+*******************************/
+
+@selectionBackground: rgba(33,37,41,0.04);
+@selectionBorder: 1px solid transparent;
+@selectionHoverBorderColor: transparent;
+@selectionFocusBorderColor: #74788D;
+@selectionVisibleBorderColor: #74788D;
+@selectionActiveHoverBorderColor: #74788D;
+@disabledOpacity: 1;
+@multipleSelectionChildMargin: 5px 0;
+@errorTextColor: #495057;
+@searchSelectionInputPadding: 0 12px;
+@selectionVisibleConnectingBorder: 6px;
+@selectionBorderRadius: 6px;
+@selectedBackground: #F1F3FF;
+@selectedColor: #556EE6;
+@hoveredItemBackground: #F8F9FA;
+@hoveredItemColor: #212529;
+@selectionItemDivider: 1px solid transparent;
+@upwardSelectionVisibleBorderRadius: 6px;

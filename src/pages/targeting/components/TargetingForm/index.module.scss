@@ -1,0 +1,151 @@
+.status {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 24px;
+  display: flex;
+}
+
+.toggle-status {
+  display: flex;
+  font-size: 13px;
+  color: #212529;
+  align-items: center;
+  margin-left: 12px;
+}
+
+.status-text {
+  line-height: 28px;
+  margin-left: 20px;
+  font-size: 13px;
+  color: #74788D;
+  height: 28px;
+}
+
+.name-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.name-text {
+  vertical-align: middle;
+  margin-left: 4px;
+  display: inline-block;
+  width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.variations {
+  margin-top: 12px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 12px 20px 12px 24px;
+}
+
+.toggle-status-text {
+  margin-right: 12px;
+}
+
+.rules {
+  margin-top: 12px;
+  background-color: #ffffff;
+  border-radius: 12px 12px 0 0;
+  padding: 0 24px 12px;
+  margin-bottom: 36px;
+}
+
+.content-item {
+  padding-top: 24px;
+}
+
+.footer {
+  height: 56px;
+  background: #ffffff;
+  border-top: 1px solid #EBEDEF;
+  line-height: 56px;
+  padding: 0 20px;
+  position: fixed;
+  bottom: 0;
+  right: 30px;
+  left: 220px;
+}
+
+.publish-btn {
+  margin-right: 8px !important;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #212529;
+  margin-bottom: 16px;
+  line-height: 26px;
+}
+
+.modal-close-icon {
+  cursor: pointer;
+}
+
+.modal-header-text {
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: rgba(0,0,0,0.87);
+}
+
+.modal-content {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.60);
+  margin: 0 -16px -4px;
+
+  :global {
+    .d2h-file-header {
+      display: none;
+    }
+
+    .d2h-info {
+      display: none;
+    }
+
+    .d2h-file-wrapper {
+      border-top: 1px solid rgba(206,212,218,0.60);
+      border-bottom: 1px solid rgba(206,212,218,0.60);
+      border-radius: 0;
+    }
+
+    .d2h-del {
+      background-color: #FFF5F4;
+    }
+
+    .d2h-code-line del, .d2h-code-side-line del {
+      background-color: #FFD4D0;
+    }
+
+    .d2h-ins {
+      background-color: #EFFCF2;
+    }
+
+    .d2h-code-line ins, .d2h-code-side-line ins {
+      background-color: #C2F6CE;
+    }
+
+    .d2h-file-side-diff {
+      margin-bottom: -2px;
+      overflow-x: auto;
+    }
+
+    .d2h-files-diff {
+      max-height: 341px;
+      overflow-y: auto;
+      z-index: 1;
+      position: relative;
+  }
+  }
+}

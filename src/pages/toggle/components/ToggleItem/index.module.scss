@@ -1,0 +1,144 @@
+.list-item {
+  cursor: pointer;
+  outline: 1px solid transparent;
+  border-radius: 8px;
+  height: 72px;
+}
+
+.list-item:hover {
+  outline: 1px solid #556EE6;
+  background: rgba(85, 110, 230, 0.04);
+  border-radius: 8px !important;
+  -moz-outline-radius: 8px;
+}
+
+.toggle-info {
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+}
+
+.toggle-info-name {
+  color: #556EE6;
+  font-size: 15px;
+  font-family: HelveticaNeue-Medium;
+}
+
+.toggle-info-type {
+  margin-left: 8px;
+  height: 16px;
+  line-height: 16px;
+  background: #ECECF6;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #495057;
+  padding: 0 4px;
+}
+
+.toggle-info-type-label {
+  transform: scale(0.9);
+}
+
+.toggle-info-key {
+  margin-left: 8px;
+  height: 16px;
+  line-height: 16px;
+  background: rgba(85, 110, 230, 0.1);
+  border-radius: 4px;
+  font-size: 10px;
+  color: #556EE6;
+  padding: 0 4px;
+}
+
+.toggle-info-key-label {
+  transform: scale(0.9);
+}
+
+.toggle-info-description {
+  margin-top: 10px;
+  max-width: 380px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 24px;
+  font-size: 12px;
+  color: #495057;
+}
+
+.toggle-modified {
+  display: flex;
+  font-size: 15px;
+}
+
+.toggle-modified-by {
+  color: #74788D;
+}
+
+.toggle-modified-time {
+  color: #495057;
+  font-size: 15px;
+  margin-left: 4px;
+  flex: 1;
+}
+
+.toggle-status {
+  align-items: center;
+  display: flex;
+  font-size: 15px;
+}
+
+.toggle-status-icon {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+}
+
+.toggle-status-text {
+  margin-left: 4px;
+}
+
+.toggle-status-icon-disabled {
+  background: #FF5E1A;
+}
+
+.toggle-status-text-disabled {
+  color: #FF5E1A;
+}
+
+.toggle-status-icon-enabled {
+  background: #34C38F;
+}
+
+.toggle-status-text-enabled {
+  color: #495057;
+}
+
+.toggle-evaluated {
+  font-size: 15px;
+  color: #495057;
+}
+
+.toggle-evaluated-tips {
+  font-size: 12px;
+  color: #74788D;
+}
+
+.icon-evaluate {
+  color: #34C38F;
+  vertical-align: middle;
+  margin-right: 5px;
+  font-size: 12px !important;
+}
+
+.toggle-operation {
+  display: flex;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.toggle-operation-item {
+  margin-right: 8px;
+  color: #556EE6;
+  cursor: pointer;
+}

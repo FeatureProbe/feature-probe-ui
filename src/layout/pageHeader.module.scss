@@ -1,0 +1,90 @@
+.header {
+	height: 48px;
+	line-height: 48px;
+	padding: 0 20px 0 10px;
+	display: flex;
+	background: #fff;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
+}
+
+.logo {
+	font-family: HelveticaNeue-Bold;
+	font-size: 16px;
+	color: rgba(0, 0, 0, 0.84);
+}
+
+.logo-image {
+  margin-top: 7px;
+}
+
+.navs {
+	flex: 1;
+	display: flex;
+	margin-left: 80px;
+}
+
+.navs-item {
+	text-align: center;
+	cursor: pointer;
+	font-size: 16px;
+	color: #495057;
+	margin-right: 35px;
+}
+
+.navs-item-selected {
+	border-bottom: 2px solid #556EE6;
+	color: #556EE6;
+	height: 43px;
+	font-family: PingFangSC-Medium;
+  cursor: unset;
+}
+
+.user {
+  font-size: 14px;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.popup {
+  padding: 4px 0 !important;
+  margin-top: 0 !important;
+}
+
+.menu {
+  min-width: 120px;
+  color: #212529;
+}
+
+.menu-item {
+  height: 28px;
+  line-height: 28px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 12px;
+}
+
+.menu-item:hover {
+  background-color: #F8F9FA;
+}
+
+.user-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background: #556EE6;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+.github {
+  width: 24px;
+  height: 24px;
+  margin-right: 25px;
+  vertical-align: middle;
+}

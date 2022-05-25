@@ -1,0 +1,183 @@
+.rule {
+  padding: 0 12px 0 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(206, 212, 218, 0.5);
+  border-radius: 12px;
+}
+
+.rule:hover {
+  border: 1px solid #556EE6;
+  border-radius: 8px;
+}
+
+.rule-accordion-title {
+  display: flex;
+  width: 100%;
+}
+
+.rule-title {
+  display: flex;
+  flex: 1;
+}
+
+.rule-title-input {
+  flex: 1;
+  margin: 0;
+}
+
+.rule-title-operation {
+  position: relative;
+  top: 4px;
+}
+
+.rule-input {
+  :global input {
+    background-color: transparent !important;
+  }
+  :global input:hover {
+    background-color: rgba(33, 37, 41, 0.04) !important;
+  }
+  :global input:focus {
+    background-color: rgba(33, 37, 41, 0.04) !important;
+  }
+}
+
+.rule-item {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.rule-item-prefix {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  font-size: 12px;
+  text-align: center;
+  line-height: 24px;
+  color: #ffffff;
+  position: relative;
+  top: 4px;
+  margin: 0 14px 0 10px;
+  background-color: #26A4BA;
+}
+
+.rule-item-first {
+  background-color: #556ee6;
+}
+
+.rule-item-text {
+  transform: scale(0.8);
+  display: inline-block;
+}
+
+.rule-item-left {
+  flex: 1;
+}
+
+.rule-item-subject {
+  max-width: 128px;
+}
+
+.rule-item-subject-dropdown {
+  min-width: 120px !important;
+}
+
+.rule-item-operator {
+  max-width: 188px;
+}
+
+.rule-item-operator-dropdown {
+  min-width: 180px !important;
+}
+
+.rule-add {
+  cursor: pointer;
+  margin: 12px 0 24px 52px;
+  width: 120px;
+}
+
+.rule-add-btn {
+  font-size: 12px;
+  width: 100%;
+}
+
+.icon-archive {
+  font-size: 14px !important;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  line-height: 24px;
+  text-align: center;
+  display: inline-block;
+  color: #74788D;
+}
+
+.icon-archive:hover {
+  background: rgba(33, 37, 41, 0.04);
+  color: #495057;
+}
+
+.icon-drag {
+  font-size: 14px !important;
+  margin: 0 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  line-height: 24px;
+  text-align: center;
+  display: inline-block;
+  color: #74788D;
+}
+
+.icon-drag:hover {
+  background: rgba(33, 37, 41, 0.04);
+  color: #495057;
+}
+
+.angle-down {
+  position: absolute;
+  right: 10px;
+  color: #74788D;
+  top: 8px;
+}
+
+.iconfont {
+  font-size: 12px !important;
+  margin-right: 4px;
+}
+
+.icon-minus {
+  cursor: pointer;
+  position: relative;
+  top: 4px;
+  margin-left: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  line-height: 24px;
+  text-align: center;
+  color: #74788D;
+}
+
+.icon-minus:hover {
+  background-color: rgba(33, 37, 41, 0.04);
+  color: #495057;
+}
+
+.error-text {
+  color: #F46A6A;
+  font-size: 12px;
+}
+
+.icon-accordion {
+  position: relative;
+  top: 7px;
+}
+
+.dropdown-remove-icon {
+  font-size: 12px !important;
+  margin-left: 12px;
+  color: #74788D;
+}

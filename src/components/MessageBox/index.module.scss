@@ -1,0 +1,67 @@
+.message {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1000;
+}
+
+.message-content {
+  max-width: 800px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.icon-info-circle {
+  color: #0A70F5;
+  vertical-align: middle;
+}
+
+.message-content-info {
+  background: #EFF8FF;
+  color: #005238;
+}
+
+.icon-success-circle {
+  color: #00B365;
+  vertical-align: middle;
+}
+
+.message-content-success {
+  background: #EFFCF2;
+  color: #005238;
+}
+
+.icon-warning-circle {
+  color: #FFC300;
+  vertical-align: middle;
+}
+
+.message-content-warn {
+  background: #FFFAE0;
+  color: #592D00;
+}
+
+.icon-error-circle {
+  color:  #F5483B;
+  vertical-align: middle;
+}
+
+.message-content-error {
+  background: #FFF5F4;
+  color: #660E16;
+}
+
+.message-icon {
+  margin-right: 8px;
+  font-size: 20px;
+  margin-left: 8px;
+}
+
+.message-content-text {
+  font-size: 14px;
+  margin-left: 8px;
+}
+  
