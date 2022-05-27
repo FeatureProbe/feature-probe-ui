@@ -13,7 +13,7 @@
     "url": "git@github.com:FeatureProbe/feature-probe-ui.git"
   },
   "engines": {
-    "node": ">=16"
+    "node": "16.x"
   },
   "dependencies": {
     "chart.js": "^3.7.1",
