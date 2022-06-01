@@ -2,9 +2,9 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 
 module.exports = function(app: any) {
   app.use(
-    '/api/server/events',
+    '/server',
     createProxyMiddleware({
-      target: 'http://localhost:4007/api/server/events',
+      target: window.location.protocol + '//' + window.location.hostname + ':4007/',
       changeOrigin: false,
       cookiePathRewrite: false,
     })

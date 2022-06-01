@@ -40,8 +40,8 @@ const PageHeader = () => {
   useEffect(() => {
     const user = new FPUser(Date.now().toString());
     const fp = new FeatureProbe({
-      togglesUrl: 'http://localhost:4007/api/client-sdk/toggles',
-      eventsUrl: 'http://localhost:4009/api/server/events',
+      togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
+      eventsUrl:  window.location.origin + '/server/api/server/events',
       clientSdkKey: 'client-25614c7e03e9cb49c0e96357b797b1e47e7f2dff',
       user,
       refreshInterval: 5000,
