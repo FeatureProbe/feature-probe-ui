@@ -41,7 +41,7 @@ const PageHeader = () => {
     const user = new FPUser(Date.now().toString());
     const fp = new FeatureProbe({
       togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
-      eventsUrl:  window.location.origin + '/server/api/server/events',
+      eventsUrl:  window.location.origin + '/server/api/events',
       clientSdkKey: 'client-25614c7e03e9cb49c0e96357b797b1e47e7f2dff',
       user,
       refreshInterval: 5000,
