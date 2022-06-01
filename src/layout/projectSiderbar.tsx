@@ -20,6 +20,7 @@ const ProjectSiderbar = (props: IProps) => {
   const { projectInfo, backgroundColor } = props;
   const { projectKey, environmentKey, toggleKey, navigation } = useParams<IRouterParams>();
   const [ selectedItem, setSelectedItem ] = useState<string>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ visible, setVisible ] = useState<boolean>(false);
   const [ open, setOpen ] = useState<boolean>(false);
   const [ env, setEnv ] = useState<string>('');

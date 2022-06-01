@@ -49,6 +49,7 @@ const MessageBox = (props: IProps) => {
     let msgscopy = cloneDeep(msgs);
 
     setMsgs([...msgscopy, props]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   return (
