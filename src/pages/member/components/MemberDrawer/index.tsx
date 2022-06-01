@@ -51,6 +51,7 @@ const MemberDrawer = (props: IParams) => {
     if (visible) {
       clearErrors();
       setMemberValues([]);
+      setPasswordVisible(false);
     } else {
       setValue('accounts', '');
       setValue('account', '');
@@ -214,11 +215,11 @@ const MemberDrawer = (props: IParams) => {
                     error={ errors.accounts ? true : false }
                     {
                       ...register('accounts', { 
-                        required: 'please add accounts',
+                        required: intl.formatMessage({id: 'members.add.members.placeholder'}),
                       })
                     }
                     className={`${styles['dropdown']}`}
-                    placeholder='Please add accounts'
+                    placeholder={intl.formatMessage({id: 'members.add.members.placeholder'})}
                     onChange={(e: SyntheticEvent, detail: DropdownProps) => handleChange(e, detail)}
                     renderLabel={renderLabel}
                     noResultsMessage={null}
@@ -229,7 +230,11 @@ const MemberDrawer = (props: IParams) => {
                 { errors.accounts && <div className={styles['error-text']}>{ errors.accounts.message }</div> }
 
                 <FormField>
-                  <Checkbox checked={ !passwordVisible } label='Default password' onChange={handleCheckboxChange} />
+                  <Checkbox 
+                    checked={ !passwordVisible } 
+                    label={intl.formatMessage({id: 'members.defalut.password'})}
+                    onChange={handleCheckboxChange} 
+                  />
                   <div>
                     <div className={styles.password}>
                       { DEFAULT_PASSWORD }
@@ -278,7 +283,8 @@ const MemberDrawer = (props: IParams) => {
 
                   <Form.Input
                     className={styles.input}
-                    placeholder='Please input password' 
+                    type='password'
+                    placeholder={intl.formatMessage({id: 'login.password.required'})} 
                     error={ errors.password ? true : false }
                     {
                       ...register('password', { 

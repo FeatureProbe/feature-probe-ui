@@ -19,7 +19,7 @@ import Icon from 'components/Icon';
 import { VariationColors } from 'constants/colors';
 import { createChartOptions } from './chartOption';
 import { createChartData } from './chartData';
-import { options } from './constants';
+import { getOption } from './constants';
 import { IRouterParams } from 'interfaces/project';
 import { IMetric, IValues, IMetricContent } from 'interfaces/targeting';
 import { getMetrics } from 'services/toggle';
@@ -97,7 +97,7 @@ const Metrics = () => {
             value={filterValue}
             placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})}
             className={styles['title-select']}
-            options={options}
+            options={getOption(intl)}
             onChange={handleSelectChange}
             icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
           />

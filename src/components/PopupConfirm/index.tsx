@@ -26,7 +26,7 @@ const PopupConfirm = (props: IProps) => {
       </div>
       <div className={styles['btn-group']}>
         <Button className={styles['btn-cancel']} size='mini' secondary onClick={handleCancel}>
-          <FormattedMessage id='common.confirm.text' />
+          <FormattedMessage id='common.cancel.text' />
         </Button>
         <Button size='mini' primary onClick={handleConfirm}>
           <FormattedMessage id='common.confirm.text' />

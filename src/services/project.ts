@@ -24,7 +24,7 @@ export const addProject = async (data: IProject) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -39,7 +39,7 @@ export const editProject = async(projectKey: string, data: IProject) => {
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -54,7 +54,7 @@ export const addEnvironment = async(projectKey: string, data: IEnvironment) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -70,7 +70,7 @@ export const editEnvironment = async(projectKey: string, environmentKey: string,
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });

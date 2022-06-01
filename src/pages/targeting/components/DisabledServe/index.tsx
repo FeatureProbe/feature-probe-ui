@@ -1,6 +1,6 @@
 import { SyntheticEvent, useEffect } from 'react';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import SectionTitle from 'components/SectionTitle';
 import Icon from 'components/Icon';
 import { VariationColors } from 'constants/colors';
@@ -58,7 +58,7 @@ const DisabledServe = () => {
       <div className={styles['serve-select']}>
         <span className={styles['serve-text']}>
           <span className={styles['label-required']}>*</span>
-          Serve
+          <FormattedMessage id='common.serve.text' />
         </span>
         <Dropdown
           selection

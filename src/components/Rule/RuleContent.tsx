@@ -6,7 +6,7 @@ import Serve from 'components/Serve';
 import Icon from 'components/Icon';
 import { IRule, ICondition } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
-import { attributeOptions, operatorOptions } from './constants';
+import { attributeOptions, getAttrOptions } from './constants';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -147,7 +147,7 @@ const RuleContent = (props: IProps) => {
                     floating
                     className={styles['rule-item-operator-dropdown']}
                     value={condition.predicate}
-                    options={operatorOptions}
+                    options={getAttrOptions(intl)}
                     placeholder={intl.formatMessage({id: 'targeting.rule.operator.placeholder'})}
                     openOnFocus={false}
                     icon={<Icon customClass={styles['angle-down']} type='angle-down' />}

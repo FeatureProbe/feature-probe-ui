@@ -18,7 +18,7 @@ export const createMember = async (data: IFormParams) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -30,7 +30,7 @@ export const updateMember = async (data: IFormParams) => {
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -42,7 +42,7 @@ export const deleteMember = async (data: IAccount) => {
   return request(url, {
     method: 'DELETE',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -54,7 +54,7 @@ export const modifyPassword = async (data: IPasswords) => {
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });

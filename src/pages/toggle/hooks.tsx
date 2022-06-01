@@ -67,7 +67,7 @@ export const useToggleInfo = () => {
     let value = detail.value;
 
     if (type === 'clientAvailability') {
-      toggleInfo[type] = detail.label === 'yes';
+      toggleInfo[type] = detail.name === 'yes';
     } else {
       // @ts-ignore
       toggleInfo[type] = value;

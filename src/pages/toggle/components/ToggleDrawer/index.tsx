@@ -377,13 +377,15 @@ const Drawer = (props: IParams) => {
               <FormattedMessage id='toggles.sdk.type' />
             </label>
             <div className={styles['radio-group']}>
-              <Form.Radio 
+              <Form.Radio
+                name="yes"
                 label={intl.formatMessage({id: 'toggles.sdk.yes'})}
                 className={styles['radio-group-item']}
                 checked={!!toggleInfo?.clientAvailability}
                 onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'clientAvailability')} 
               />
               <Form.Radio 
+                name="no"
                 label={intl.formatMessage({id: 'toggles.sdk.no'})}
                 className={styles['radio-group-item']}
                 checked={!toggleInfo?.clientAvailability}

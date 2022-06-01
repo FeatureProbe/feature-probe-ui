@@ -22,6 +22,7 @@
     "dayjs": "^1.11.0",
     "diff": "^5.0.0",
     "diff2html": "^3.4.17",
+    "featureprobe-client-sdk-js": "^1.0.1",
     "json-bigint": "^1.0.0",
     "jsonlint-mod": "^1.7.6",
     "less-loader": "^7.3.0",
@@ -87,6 +88,7 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.3",
     "@types/uuid": "^8.3.4",
+    "http-proxy-middleware": "^2.0.6",
     "react-scripts": "^5.0.1",
     "webpack": "^5.72.1"
   },

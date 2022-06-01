@@ -5,6 +5,45 @@
 	display: flex;
 	background: #fff;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
+
+  :global {
+    .navs-item {
+      text-align: center;
+      cursor: pointer;
+      font-size: 16px;
+      color: #495057;
+      margin-right: 35px;
+    }
+    
+    .navs-item-selected {
+      border-bottom: 2px solid #556EE6;
+      color: #556EE6;
+      height: 43px;
+      font-family: PingFangSC-Medium;
+      cursor: unset;
+    }
+
+    .user-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      background: #556EE6;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+    .user {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      color: #495057;
+      cursor: pointer;
+    }
+  }
 }
 
 .logo {
@@ -23,33 +62,17 @@
 	margin-left: 80px;
 }
 
-.navs-item {
-	text-align: center;
-	cursor: pointer;
-	font-size: 16px;
-	color: #495057;
-	margin-right: 35px;
-}
-
-.navs-item-selected {
-	border-bottom: 2px solid #556EE6;
-	color: #556EE6;
-	height: 43px;
-	font-family: PingFangSC-Medium;
-  cursor: unset;
-}
-
-.user {
-  font-size: 14px;
-  color: #495057;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
 .popup {
   padding: 4px 0 !important;
   margin-top: 0 !important;
+}
+
+.language-popup {
+  margin-right: 15px;
+}
+
+.angle-down {
+  vertical-align: middle;
 }
 
 .menu {
@@ -69,22 +92,56 @@
   background-color: #F8F9FA;
 }
 
-.user-circle {
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  background: #556EE6;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  color: #ffffff;
-  margin-right: 12px;
-  vertical-align: middle;
-}
-
 .github {
   width: 24px;
   height: 24px;
   margin-right: 25px;
   vertical-align: middle;
+}
+
+.header-main {
+	background: #556ee6;
+  color: #ffffff;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.01);
+
+  :global {
+    .navs-item {
+      color: #ffffff !important;
+      text-align: center;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 35px;
+      opacity: 0.7;
+    }
+
+    .navs-item-selected {
+      border-bottom: 2px solid #ffffff;
+      color: #ffffff;
+      height: 43px;
+      font-family: PingFangSC-Medium;
+      cursor: unset;
+      opacity: 1;
+    }
+
+    .user-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      background: #ffffff;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      color: #495057;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+    .user {
+      font-size: 14px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
 }

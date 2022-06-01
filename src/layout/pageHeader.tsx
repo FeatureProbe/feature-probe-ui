@@ -3,12 +3,15 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo, logout } from 'services/user';
 import { IUserInfo } from 'interfaces/member';
+import { I18NContainer } from 'hooks';
 import logo from 'images/logo.svg';
+import logoWhite from 'images/logo-white.svg';
 import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
@@ -26,6 +29,32 @@ const PageHeader = () => {
   const [ account, setAccount ] = useState<string>('');
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
   const [ helpMenuOpen, setHelpMenuOpen ] = useState<boolean>(false);
+  const [ i18nMenuOpen, setI18nMenuOpen ] = useState<boolean>(false);
+  const [ isMainColorHeader, setHeader ] = useState<boolean>(false);
+
+  const {
+    i18n,
+    setI18n
+  } = I18NContainer.useContainer();
+
+  useEffect(() => {
+    const user = new FPUser(Date.now().toString());
+    const fp = new FeatureProbe({
+      togglesUrl: 'http://localhost:4007/api/client-sdk/toggles',
+      eventsUrl: 'http://localhost:4009/api/server/events',
+      clientSdkKey: 'client-25614c7e03e9cb49c0e96357b797b1e47e7f2dff',
+      user,
+      refreshInterval: 5000,
+    });
+
+    fp.start();
+    fp.on('ready', () => {
+      const result = fp.boolValue('header_skin', false);
+      if (result) {
+        setHeader(true);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const handler = () => {
@@ -35,11 +64,14 @@ const PageHeader = () => {
       if (helpMenuOpen) {
         setHelpMenuOpen(false);
       }
+      if (i18nMenuOpen) {
+        setHelpMenuOpen(false);
+      }
     }
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
-  }, [menuOpen, helpMenuOpen]);
+  }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
 
   useEffect(() => {
     getUserInfo<IUserInfo>().then((res) => {
@@ -58,7 +90,6 @@ const PageHeader = () => {
   useEffect(() => {
     const reg = new RegExp('[^/]+$');
     const res = reg.exec(location.pathname);
-    
 
     if (res && res[0]) {
       if (PROJECT_ROUTE_LIST.includes(res[0])) {
@@ -77,17 +108,24 @@ const PageHeader = () => {
     history.push('/settings/members');
   }, [history]);
 
-  const projectCls = classNames(
-    styles['navs-item'],
+  const headerCls = classNames(
+    styles['header'],
     {
-      [styles['navs-item-selected']]: selectedNav === PROJECT_NAV
+      [styles['header-main']]: isMainColorHeader
+    }
+  );
+
+  const projectCls = classNames(
+    'navs-item',
+    {
+      'navs-item-selected': selectedNav === PROJECT_NAV
     }
   );
 
   const settingCls = classNames(
-    styles['navs-item'],
+    'navs-item',
     {
-      [styles['navs-item-selected']]: selectedNav === SETTING_NAV
+      'navs-item-selected': selectedNav === SETTING_NAV
     }
   );
 
@@ -103,9 +141,13 @@ const PageHeader = () => {
   }, []);
 
   return (
-    <div className={styles.header}>
+    <div className={headerCls}>
       <div className={styles.logo}>
-        <img className={styles['logo-image']} src={logo} alt='logo' />
+        {
+          isMainColorHeader 
+          ? <img className={styles['logo-image']} src={logoWhite} alt='logo' />
+          : <img className={styles['logo-image']} src={logo} alt='logo' />
+        }
       </div>
       <div className={styles.navs}>
         <div className={projectCls} onClick={handleGotoProject}>
@@ -115,34 +157,43 @@ const PageHeader = () => {
           <FormattedMessage id='common.settings.text' />
         </div>
       </div>
-      <div className={styles.user}>
-        <div onClick={handleGotoDocument}>
-          <img className={styles.github} src={require('images/github.png')} alt='github' />
-        </div>
-
-        {/* <Popup
+      <div className={'user'}>
+        <Popup
           basic
-          open={helpMenuOpen}
+          open={i18nMenuOpen}
           on='click'
           position='bottom right'
           className={styles.popup}
           trigger={
-            <div onClick={(e: SyntheticEvent) => {
-              document.body.click();
-              e.stopPropagation();
-              setHelpMenuOpen(true);
-            }}>
-              <Icon customClass={styles['icon-question']} type='question' />
+            <div 
+              onClick={(e: SyntheticEvent) => {
+                document.body.click();
+                e.stopPropagation();
+                setI18nMenuOpen(true);
+              }}
+              className={styles['language-popup']}
+            >
+              {i18n === 'en-US' ? 'English' : '中文'}
+              <Icon customClass={styles['angle-down']} type='angle-down' />
             </div>
           }
         >
-          <div className={styles['menu']} onClick={() => {setHelpMenuOpen(false)}}>
-            <div className={styles['menu-item']} onClick={handleGotoDocument}>
-              <FormattedMessage id='common.documentation.text' />
+          <div className={styles['menu']} onClick={() => {setI18nMenuOpen(false)}}>
+            <div className={styles['menu-item']} onClick={()=> {setI18n('en-US')}}>
+              English
+            </div>
+            <div className={styles['menu-item']} onClick={()=> {setI18n('zh-CN')}}>
+              中文
             </div>
           </div>
-        </Popup> */}
-
+        </Popup>
+        <div onClick={handleGotoDocument}>
+          {
+            isMainColorHeader
+            ? <img className={styles.github} src={require('images/github-light.png')} alt='github' />
+            : <img className={styles.github} src={require('images/github.png')} alt='github' />
+          }
+        </div>
         <Popup
           basic
           open={menuOpen}
@@ -155,7 +206,7 @@ const PageHeader = () => {
               e.stopPropagation();
               setMenuOpen(true);
             }}>
-              <span className={styles['user-circle']}>
+             <span className={'user-circle'}>
                 <Icon customClass={styles['icon-avatar']} type='avatar' />
               </span>
               <span className={styles.username}>{ account }</span>

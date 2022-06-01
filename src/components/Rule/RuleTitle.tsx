@@ -72,7 +72,7 @@ const RuleTitle = (props: IProps) => {
             className={styles['rule-input']}
             onClick={handleInputClick} 
             value={rule.name} 
-            placeholder={`Rule ${index + 1}`}
+            placeholder={`${intl.formatMessage({id: 'common.rule.text'})}${index + 1}`}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
               handleChange(e, detail);

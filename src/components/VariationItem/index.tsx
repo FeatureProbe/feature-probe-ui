@@ -125,7 +125,12 @@ const VariationItem = (props: IProps) => {
                   value={value}
                   customname='value'
                   index={index}
-                  label={(<span className={styles['label-text']}><span className={styles['label-required']}>*</span>value</span>)}
+                  label={(
+                    <span className={styles['label-text']}>
+                      <span className={styles['label-required']}>*</span>
+                      <FormattedMessage id='common.value.text' />
+                    </span>
+                  )}
                   placeholder={intl.formatMessage({id: 'common.value.text'})}
                   error={errors?.[`variation_${id}`] ? true : false}
                   {
@@ -174,7 +179,12 @@ const VariationItem = (props: IProps) => {
                   className={styles['status-dropdown']}
                   selectOnBlur={false}
                   options={booleanOption} 
-                  label={(<span className={styles['label-text']}><span className={styles['label-required']}>*</span>value</span>)}
+                  label={(
+                    <span className={styles['label-text']}>
+                      <span className={styles['label-required']}>*</span>
+                      <FormattedMessage id='common.value.text' />
+                    </span>
+                  )}
                   placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
                   icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
                   error={errors?.[`variation_${id}`] ? true : false}

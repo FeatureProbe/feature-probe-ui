@@ -47,7 +47,7 @@ export const saveToggle = async (projectKey: string, environmentKey: string, tog
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -62,7 +62,7 @@ export const createToggle = async (projectKey: string, data: IToggle) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -78,7 +78,7 @@ export const editToggle = async (projectKey: string, toggleKey: string, data: IT
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
@@ -102,7 +102,7 @@ export const addTag = async (projectKey: string, data: ITag) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });

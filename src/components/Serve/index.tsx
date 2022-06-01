@@ -74,7 +74,7 @@ const Serve = (props: IProps) => {
     });
 
     options.push({
-      text: 'a percentage rollout',
+      text: intl.formatMessage({id: 'targeting.serve.percentage.rollout'}),
       value: variationsInUse.length,
     });
 

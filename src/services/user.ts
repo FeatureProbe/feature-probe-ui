@@ -19,7 +19,7 @@ export const login = async (data: ILoginParams) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType
+      ...ApplicationJsonContentType()
     },
     body: JSON.stringify(data),
   });
