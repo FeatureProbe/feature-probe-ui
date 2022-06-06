@@ -264,7 +264,7 @@ const Drawer = (props: IParams) => {
                 setValue(detail.name, detail.value);
                 await trigger('name');
 
-                if (isKeyEdit) {
+                if (isKeyEdit || !isAdd) {
                   return;
                 }
 
