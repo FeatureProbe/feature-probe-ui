@@ -19,6 +19,6 @@ fi
 
 # 拷贝dockerfile及相关文件至output目录下
 cp dockerfiles/Dockerfile output/
-cp -r dockerfiles/ output/dockerfiles
-cp -r build output/web
-cp -f dockerfiles/server.conf output/
+cp -r ../dockerfiles/ output/dockerfiles
+cp -r ../build output/web
+cp -f ../dockerfiles/server.conf output/
