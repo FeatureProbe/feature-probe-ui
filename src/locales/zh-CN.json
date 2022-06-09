@@ -214,7 +214,7 @@
   "targeting.rule.condition.notmatch": "不匹配正则表达式",
 
   "variations.add.text": "添加分组",
-  "variations.dulpicated.error.text": "分组 {errorType} 已存在!",
+  "variations.dulpicated.error.text": "分组名称已存在!",
 
   "tags.add.error": "添加标签失败",
   "tags.list.error": "获取标签列表失败"

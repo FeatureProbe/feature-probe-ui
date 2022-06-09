@@ -1,14 +1,6 @@
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  font-family: PingFangSC-Medium;
-  font-size: 16px;
-  color: #212529;
-  margin-bottom: 16px;
-}
-
-.modal-close-icon {
-  cursor: pointer;
+.input {
+  // width: 500px !important;
+  font-size: 13px;
 }
 
 .label-required {
@@ -16,6 +8,8 @@
   font-size: 20px;
   vertical-align: middle;
   margin-right: 4px;
+  height: 16px;
+  display: inline-block;
 }
 
 .error-text {
@@ -27,6 +21,7 @@
   transform-origin: left;
 }
 
+
 .tip-text {
   color: #74788D;
   margin-top: -15px;
@@ -36,15 +31,12 @@
   transform-origin: left center;
 }
 
-.footer {
-  margin-top: 50px;
-  text-align: right;
+.popup {
+  opacity: 0.8;
 }
 
-.btn {
-  margin-right: 8px !important;
-}
-
-.field {
-  margin-bottom: 16px;
+.icon-question {
+  vertical-align: middle;
+  margin-left: 4px;
+  color: #74788D;
 }

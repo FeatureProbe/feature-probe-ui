@@ -18,6 +18,7 @@ import Icon from 'components/Icon';
 import { IUserInfo, IFormParams } from 'interfaces/member';
 import { createMember, updateMember, getMember } from 'services/member';
 import styles from './index.module.scss';
+import FormItemPassword from 'components/FormItem/password';
 
 interface IParams {
   isAdd: boolean;
@@ -275,44 +276,14 @@ const MemberDrawer = (props: IParams) => {
           {
             (!isAdd || passwordVisible) && (
               <>
-                <Form.Field>
-                  <label>
-                    <span className={styles['label-required']}>*</span>
-                    <FormattedMessage id='common.password.text' />
-                  </label>
-
-                  <Form.Input
-                    className={styles.input}
-                    type='password'
-                    placeholder={intl.formatMessage({id: 'login.password.required'})} 
-                    error={ errors.password ? true : false }
-                    {
-                      ...register('password', { 
-                        required: intl.formatMessage({id: 'login.password.required'}),
-                        minLength: {
-                          value: 4,
-                          message: intl.formatMessage({id: 'login.password.minlength'}),
-                        },
-                        maxLength: {
-                          value: 20,
-                          message: intl.formatMessage({id: 'login.password.maxlength'})
-                        },
-                        pattern: {
-                          value: /^[A-Z0-9._-]+$/i,
-                          message: intl.formatMessage({id: 'login.password.invalid'})
-                        }
-                      })
-                    }
-                    onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                      setValue(detail.name, detail.value);
-                      await trigger('password');
-                    }}
-                  />
-                </Form.Field>
-                { errors.password && <div className={styles['error-text']}>{ errors.password.message }</div> }
-                <div className={styles['tip-text']}>
-                  <FormattedMessage id='login.password.tips' />
-                </div>
+                <FormItemPassword 
+                  errors={errors}
+                  register={register}
+                  onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                    setValue(detail.name, detail.value);
+                    await trigger('password');
+                  }}
+                />
               </>
             )
           }

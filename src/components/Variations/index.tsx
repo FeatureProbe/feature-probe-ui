@@ -1,8 +1,9 @@
-import { useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useCallback, useState, useEffect } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import VariationItem from 'components/VariationItem';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
+import uniqBy from 'lodash/uniqBy';
 import { IVariation } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import styles from './index.module.scss';
@@ -15,6 +16,8 @@ interface IProps {
 
 const Variations = (props: IProps) => {
   const { returnType, prefix, variationContainer, hooksFormContainer } = props;
+  const [ isError, setIsError ] = useState<boolean>(false);
+  const intl = useIntl();
 
   const {
     variations,
@@ -26,12 +29,59 @@ const Variations = (props: IProps) => {
 
   const {
     unregister,
+    setError,
+    clearErrors,
   } = hooksFormContainer.useContainer();
 
   const handleDeleteVariation = useCallback((index: number, variationId: string) => {
     unregister(`variation_${variationId}`);
     handleDelete(index);
   }, [handleDelete, unregister]);
+
+  useEffect(() => {
+    if (variations?.length > 0) {
+      setIsError(false);
+      // const valueNotNullVariations = variations.filter((variation: IVariation) => {
+      //   return variation.value !== '';
+      // });
+      // const len = valueNotNullVariations.length;
+
+      // const uniqValueLen = uniqBy(valueNotNullVariations, 'value').length; 
+      // if (uniqValueLen !== len) {
+      //   setIsError(true);
+      //   setErrorType('value');
+      //   return;
+      // }
+
+      const nameNotNullVariations = variations.filter((variation: IVariation) => {
+        return variation.name !== '';
+      });
+
+      const length = nameNotNullVariations.length;
+      if (length === 0) {
+        return;
+      }
+
+      const uniqNameLen = uniqBy(nameNotNullVariations, 'name').length;
+      if (uniqNameLen !== nameNotNullVariations.length) {
+        setIsError(true);
+        return;
+      }
+    }
+  }, [variations]);
+
+  useEffect(() => {
+    if (isError) {
+      setError(
+        'variations_duplicated', { 
+          message: intl.formatMessage({
+            id: 'variations.dulpicated.error.text'
+          })
+        })
+    } else {
+      clearErrors('variations_duplicated');
+    }
+  }, [intl, isError, setError, clearErrors]);
 
 	return (
 		<div className={styles.variation}>
@@ -70,6 +120,16 @@ const Variations = (props: IProps) => {
           </>
         </Button>
       </div>
+      {
+        isError && <div className={styles['error-text']}>
+          {
+            intl.formatMessage({
+              id: 'variations.dulpicated.error.text'
+            })
+          }
+        </div>
+      }
+
 		</div>
 	)
 }

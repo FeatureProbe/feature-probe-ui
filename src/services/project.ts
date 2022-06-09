@@ -1,6 +1,7 @@
 import request from '../utils/request';
+import qs from 'qs';
 import API from '../constants/api';
-import { IEnvironment, IProject } from 'interfaces/project';
+import { IEnvironment, IProject, IExistParams } from 'interfaces/project';
 import { ApplicationJsonContentType } from 'constants/api/contentType';
 
 export const getProjectList = async<T> () => {
@@ -75,3 +76,14 @@ export const editEnvironment = async(projectKey: string, environmentKey: string,
     body: JSON.stringify(data),
   });
 };
+
+export const checkProjectExist = async<T> (params: IExistParams) => {
+  const url = `${API.projectExistURI}?${qs.stringify(params)}`;
+  
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJsonContentType()
+    },
+  });
+}

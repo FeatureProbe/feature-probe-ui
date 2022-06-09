@@ -216,7 +216,7 @@
   "targeting.serve.percentage.rollout": "a percentage rollout",
 
   "variations.add.text": "Add Variation",
-  "variations.dulpicated.error.text": "Variation {errorType}s are duplicated, please change!",
+  "variations.dulpicated.error.text": "Variation names are duplicated, please change!",
 
   "tags.add.error": "Error adding tags.",
   "tags.list.error": "Get tag list error"

@@ -6,11 +6,15 @@ import {
 } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
+import cloneDeep from 'lodash/cloneDeep';
+import debounce from 'lodash/debounce';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
-import cloneDeep from 'lodash/cloneDeep';
-import { addProject, editProject } from 'services/project';
+import FormItemName from 'components/FormItem/name';
+import FormItemKey from 'components/FormItem/key';
+import FormItemDescription from 'components/FormItem/description';
+import { addProject, checkProjectExist, editProject } from 'services/project';
 import { projectContainer, hooksFormContainer } from '../../provider';
 import { replaceSpace } from 'utils/tools';
 import { CONFLICT } from 'constants/httpCode';
@@ -69,6 +73,20 @@ const ProjectDrawer = (props: IProps) => {
     setValue('key', projectInfo.key);
   }, [projectInfo, setValue]);
 
+  const checkExist = useCallback(debounce(async (type: string, value: string) => {
+    const res = await checkProjectExist({
+      type,
+      value
+    });
+
+    if (res.code === CONFLICT) {
+      setError(type.toLocaleLowerCase(), {
+        message: res.message,
+      });
+      return;
+    }
+  }, 300), []);
+
   const onSubmit = useCallback(async () => {
     let res;
     const params = replaceSpace(cloneDeep(projectInfo));
@@ -120,7 +138,7 @@ const ProjectDrawer = (props: IProps) => {
           <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false)}}>
             <FormattedMessage id='common.cancel.text' />
           </Button>
-          <Button size='mini' primary type='submit'>
+          <Button size='mini' primary type='submit' disabled={errors.name || errors.key}>
             {
               isAdd ? intl.formatMessage({id: 'common.create.text'}) : intl.formatMessage({id: 'common.save.text'})
             }
@@ -129,87 +147,50 @@ const ProjectDrawer = (props: IProps) => {
           <Icon customClass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
         <div className={styles['project-drawer-form-content']}>
-          <Form.Field>
-            <label>
-              <span className={styles['label-required']}>*</span>
-              <FormattedMessage id='common.name.text' />
-            </label>
-            <Form.Input
-              className={styles.input}
-              value={ projectInfo?.name }
-              placeholder={intl.formatMessage({id: 'common.name.required'})}
-              error={ errors.name ? true : false }
-              {
-                ...register('name', { 
-                  required: intl.formatMessage({id: 'common.name.required'}),
-                })
+          <FormItemName
+            className={styles.formItem}
+            value={projectInfo?.name}
+            errors={errors}
+            register={register}
+            onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+              if (detail.value.length > 50 ) return;
+              if (isAdd) {
+                checkExist('NAME', detail.value);
               }
-              onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                if (detail.value.length > 50 ) return;
-                handleChange(e, detail, 'name')
-                setValue(detail.name, detail.value);
-                await trigger('name');
-              }}
-            />
-          </Form.Field>
-          { errors.name && <div className={styles['error-text']}>{ errors.name.message }</div> }
+              handleChange(e, detail, 'name')
+              setValue(detail.name, detail.value);
+              await trigger('name');
+            }}
+          />
 
-          <Form.Field>
-            <label>
-              <span className={styles['label-required']}>*</span>
-              <FormattedMessage id='common.key.text' />
-            </label>
-
-            <Form.Input
-              value={projectInfo?.key}
-              placeholder={intl.formatMessage({id: 'common.key.required'})}
-              error={ errors.key ? true : false }
-              disabled={!isAdd}
-              {
-                ...register('key', { 
-                  required: intl.formatMessage({id: 'common.key.required'}),
-                  minLength: {
-                    value: 2,
-                    message: intl.formatMessage({id: 'common.minimum.two'})
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: intl.formatMessage({id: 'common.maximum.thirty'})
-                  },
-                  pattern: {
-                    value: /^[A-Z0-9._-]+$/i,
-                    message: intl.formatMessage({id: 'common.key.invalid'})
-                  }
-                })
+          <FormItemKey
+            className={styles.formItem}
+            value={projectInfo?.key}
+            errors={errors}
+            disabled={!isAdd}
+            register={register}
+            showPopup={false}
+            onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+              if (isAdd) {
+                checkExist('KEY', detail.value);
               }
-              onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                handleChange(e, detail, 'key')
-                setValue(detail.name, detail.value);
-                await trigger('key');
-              }}
-            />
-          </Form.Field>
-          { errors.key && <div className={styles['error-text']}>{ errors.key.message }</div> }
-          <div className={styles['tip-text']}>
-            <FormattedMessage id='common.key.tips' />
-          </div>
+              handleChange(e, detail, 'key');
+              setValue(detail.name, detail.value);
+              await trigger('key');
+            }}
+          />
 
-          <Form.Field>
-            <label>
-              <FormattedMessage id='common.description.text' />
-            </label>
-            <Form.TextArea 
-              value={projectInfo?.description} 
-              placeholder={intl.formatMessage({id: 'common.description.required'})}
-              className={styles.description}
-              onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
-                if (('' + detail.value).length > 500 ) return;
-                handleChange(e, detail, 'description')
-                setValue(detail.name, detail.value);
-                await trigger('description');
-              }}
-            />
-          </Form.Field>
+          <FormItemDescription
+            className={styles.formItem}
+            value={projectInfo?.desc}
+            disabled={!isAdd}
+            onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+              if (('' + detail.value).length > 500 ) return;
+              handleChange(e, detail, 'description')
+              setValue(detail.name, detail.value);
+              await trigger('description');
+            }}
+          />
         </div>
       </Form>
     </div>
