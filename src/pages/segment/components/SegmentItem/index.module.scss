@@ -24,6 +24,21 @@
   font-family: HelveticaNeue-Medium;
 }
 
+.toggle-info-key {
+  margin-left: 8px;
+  height: 16px;
+  line-height: 16px;
+  background: rgba(85, 110, 230, 0.1);
+  border-radius: 4px;
+  font-size: 10px;
+  color: #556EE6;
+  padding: 0 4px;
+}
+
+.toggle-info-key-label {
+  transform: scale(0.9);
+}
+
 .toggle-info-description {
   margin-top: 10px;
   max-width: 380px;

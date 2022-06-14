@@ -5,10 +5,11 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Table, Button } from 'semantic-ui-react';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
-import styles from './index.module.scss';
+import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { ISegment, IToggleList } from 'interfaces/segment';
 import { deleteSegment, getSegmentUsingToggles } from 'services/segment';
 import message from 'components/MessageBox';
+import styles from './index.module.scss';
 
 interface ILocationParams {
   projectKey: string;
@@ -71,6 +72,13 @@ const ToggleItem = (props: IProps) => {
         <div className={styles['toggle-info']}>
           <div className={styles['toggle-info-name']}>
             {segment.name}
+          </div>
+          <div className={styles['toggle-info-key']}>
+            <CopyToClipboardPopup text={segment.key}>
+              <div onClick={(e) => {e.stopPropagation()}} className={styles['toggle-info-key-label']}>
+                {segment.key}
+              </div>
+            </CopyToClipboardPopup>
           </div>
         </div>
         {

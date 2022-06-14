@@ -5,6 +5,7 @@ import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/cloneDeep';
+import { v4 as uuidv4 } from 'uuid';
 import FormItemName from 'components/FormItem/name';
 import FormItemKey from 'components/FormItem/key';
 import FormItemDescription from 'components/FormItem/description';
@@ -78,7 +79,15 @@ const Info = () => {
             rules: cloneDeep(data.rules),
           });
           saveSegmentInfo(data);
-          saveRules(data.rules);
+          const targetRule = cloneDeep(data.rules);
+          targetRule.forEach((rule: IRule) => {
+            rule.conditions.forEach((condition: ICondition) => {
+              condition.id = uuidv4();
+            });
+            rule.id = uuidv4();
+          });
+
+          saveRules(targetRule);
         } else {
           message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
@@ -109,7 +118,7 @@ const Info = () => {
     setValue('name', segmentInfo?.name);
     setValue('key', segmentInfo?.key);
 
-    rules.forEach((rule: IRule, index: number) => {
+    rules.forEach((rule: IRule) => {
       rule.conditions?.forEach((condition: ICondition) => {
         setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
         setValue(`rule_${rule.id}_condition_${condition.id}_predicate`, condition.predicate);
@@ -166,9 +175,7 @@ const Info = () => {
           } else {
             confirmEditSegment();
           }
-          return;
         } else {
-          if (res.success)
           setToggleList([]);
           setPagination({
             pageIndex: 1,

@@ -96,7 +96,7 @@ const ConfirmModal = (props: IProps) => {
                       </Table.Cell>
                       <Table.Cell>
                         <div className={styles['toggle-modified']}>
-                          {toggle?.environment}
+                          {toggle?.environmentName}
                           </div>
                       </Table.Cell>
                       <Table.Cell>

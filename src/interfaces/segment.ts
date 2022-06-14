@@ -34,13 +34,14 @@ export interface ISegmentInfo {
   createdBy?: string;
   modifiedTime?: string;
   modifiedBy?: string;
-  rules: IRule;
+  rules: IRule[];
 }
 
 export interface IToggle {
   name: string,
   key: string,
-  environment: string,
+  environmentName: string,
+  environmentKey: string,
   disabled: boolean,
   description: string
 }
