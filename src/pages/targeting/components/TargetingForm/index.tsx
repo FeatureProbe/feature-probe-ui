@@ -258,7 +258,11 @@ const Targeting = (props: IProps) => {
         />
       </div>
       <div className={styles.rules}>
-        <Rules />
+        <Rules 
+          ruleContainer={ruleContainer}
+          variationContainer={variationContainer}
+          hooksFormContainer={hooksFormContainer}
+        />
         <DefaultRule />
         <DisabledServe />
       </div>

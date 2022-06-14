@@ -60,7 +60,7 @@ const EnvironmentModal = (props: IProps) => {
     setValue('key', environmentInfo.key);
   }, [environmentInfo, setValue]);
 
-  const checkExist = useCallback(debounce(async (type: string, value: string) => {
+  const checkExist = debounce(useCallback(async (type: string, value: string) => {
     const res = await checkEnvironmentExist(projectKey, {
       type,
       value
@@ -72,8 +72,7 @@ const EnvironmentModal = (props: IProps) => {
       });
       return;
     }
-  }, 300), []);
-
+  }, [projectKey, setError]), 300);
 
   const onSubmit = useCallback(async () => {
     let res; 

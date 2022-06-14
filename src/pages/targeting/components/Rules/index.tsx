@@ -5,13 +5,20 @@ import cloneDeep from 'lodash/cloneDeep';
 import SectionTitle from 'components/SectionTitle';
 import Icon from 'components/Icon';
 import Rule from 'components/Rule';
-import { variationContainer, ruleContainer, hooksFormContainer } from '../../provider';
 import { IRule } from 'interfaces/targeting';
+import { IContainer } from 'interfaces/provider';
 import styles from './index.module.scss';
 const MAX_RULES = 30;
 
-const Rules = () => {
+interface IProps {
+  ruleContainer: IContainer;
+  variationContainer?: IContainer;
+  hooksFormContainer: IContainer;
+}
+
+const Rules = (props: IProps) => {
   const intl = useIntl();
+  const { ruleContainer, variationContainer, hooksFormContainer } = props;
   const { 
     rules,
     saveRules,

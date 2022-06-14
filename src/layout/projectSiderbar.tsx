@@ -7,7 +7,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import PutAwayMemu from 'components/PutAwayMenu';
 import { IRouterParams, IProject, IEnvironment } from 'interfaces/project';
-import { TOGGLE_PATH, TARGETING_PATH } from 'router/routes';
+import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH } from 'router/routes';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
@@ -16,12 +16,11 @@ interface IProps {
   backgroundColor: string;
 }
 
+
 const ProjectSiderbar = (props: IProps) => {
   const { projectInfo, backgroundColor } = props;
   const { projectKey, environmentKey, toggleKey, navigation } = useParams<IRouterParams>();
   const [ selectedItem, setSelectedItem ] = useState<string>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [ visible, setVisible ] = useState<boolean>(false);
   const [ open, setOpen ] = useState<boolean>(false);
   const [ env, setEnv ] = useState<string>('');
   const history = useHistory();
@@ -52,10 +51,13 @@ const ProjectSiderbar = (props: IProps) => {
   );
 
   useEffect(() => {
-    if (projectKey) {
+    const { path } = match;
+    if (path === TOGGLE_PATH || path === TARGETING_PATH) {
       setSelectedItem('toggle');
+    } else if (path === SEGMENT_PATH || path === SEGMENT_ADD_PATH || path === SEGMENT_EDIT_PATH) {
+      setSelectedItem('segments');
     }
-  }, [projectKey]);
+  }, [match]);
 
   const options = projectInfo.environments.map((env: IEnvironment) => {
     return {
@@ -76,12 +78,22 @@ const ProjectSiderbar = (props: IProps) => {
     setOpen(false);
     let url = '';
     if (match.path === TOGGLE_PATH) {
-      url = `/${projectKey}/${env}/toggles`
+      url = `/${projectKey}/${env}/toggles`;
     } else if (match.path === TARGETING_PATH) {
-      url = `/${projectKey}/${env}/${toggleKey}/${navigation}`
+      url = `/${projectKey}/${env}/${toggleKey}/${navigation}`;
+    } else if (match.path === SEGMENT_PATH) {
+      url = `/${projectKey}/${env}/segments`;
     }
     history.push(url);
   }, [history, projectKey, toggleKey, navigation, env, match.path]);
+
+  const gotoToggles = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/toggles`);
+  }, [projectKey, environmentKey, history]);
+
+  const gotoSegments = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/segments`);
+  }, [projectKey, environmentKey, history]);
 
   return (
     <div className={sidebarCls}>
@@ -103,47 +115,23 @@ const ProjectSiderbar = (props: IProps) => {
       </div>
 
       <div className={styles['project-menu']}>
-        <div className={`${selectedItem ==='toggle' && styles.selected} ${menuCls}`}>
+        <div className={`${selectedItem ==='toggle' && styles.selected} ${menuCls}`} onClick={gotoToggles}>
           <PutAwayMemu
             type='toggle'
             isPutAway={isPutAway}
-            title={intl.formatMessage({id: 'common.toggle.text'})}
+            title={intl.formatMessage({id: 'common.toggles.text'})}
           />
         </div>
-        {
-          visible && (
-            <div className={menuCls}>
-              <PutAwayMemu
-                type='debugger'
-                isPutAway={isPutAway}
-                title={intl.formatMessage({id: 'common.debugger.text'})}
-              />
-            </div>
-          )
-        }
+      </div>
+
+      <div className={`${selectedItem ==='segments' && styles.selected} ${menuCls}`} onClick={gotoSegments}>
+        <PutAwayMemu
+          type='member'
+          isPutAway={isPutAway}
+          title={intl.formatMessage({id: 'common.segments.text'})}
+        />
       </div>
       
-      {
-        visible && (
-          <>
-            <div className={menuCls}>
-              <PutAwayMemu
-                type='member'
-                isPutAway={isPutAway}
-                title={intl.formatMessage({id: 'common.segments.text'})}
-              />
-            </div>
-            <div className={menuCls}>
-              <PutAwayMemu
-                type='attribute'
-                isPutAway={isPutAway}
-                title={intl.formatMessage({id: 'common.custom.attributes.text'})}
-              />
-            </div>
-          </>
-        )
-      }
-
       <Modal 
         open={open}
         width={400}

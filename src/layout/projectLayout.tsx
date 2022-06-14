@@ -1,5 +1,5 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
 import { Breadcrumb } from  'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import SideBar from './sidebar';
@@ -9,6 +9,7 @@ import Icon from 'components/Icon';
 import { getProjectInfo } from 'services/project';
 import { IProject, IRouterParams } from 'interfaces/project';
 import { EnvironmentColors } from 'constants/colors';
+import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH } from 'router/routes';
 
 import styles from './layout.module.scss';
 
@@ -31,6 +32,7 @@ const ProjectLayout = (props: IProps) => {
   });
   const [ envIndex, setEnvIndex ] = useState<number>(0);
   const history = useHistory();
+  const match = useRouteMatch();
 
   useEffect(() => {
     getProjectInfo<IProject>(projectKey).then(res => {
@@ -42,7 +44,7 @@ const ProjectLayout = (props: IProps) => {
       } else {
         message.error(res.message || 'Get project information error!');
       }
-    })
+    });
   }, [projectKey]);
 
   useEffect(() => {
@@ -63,6 +65,10 @@ const ProjectLayout = (props: IProps) => {
     history.push(`/${projectKey}/${environmentKey}/toggles`);
   }, [history, projectKey, environmentKey, toggleKey]);
 
+  const gotoSegments = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/segments`);
+  }, [history, projectKey, environmentKey]);
+
   return (
     <div className={styles.main}>
       <SideBar>
@@ -78,15 +84,9 @@ const ProjectLayout = (props: IProps) => {
           </Breadcrumb.Section>
           <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
           {
-            !!toggleKey ? (
-              <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
-            ) : (
-              <Breadcrumb.Section active>{ projectInfo?.name }</Breadcrumb.Section>
-            )
-          }
-          {
-            toggleKey && (
+            match.path === TARGETING_PATH && (
               <>
+                <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   {toggleKey}
@@ -94,8 +94,52 @@ const ProjectLayout = (props: IProps) => {
               </>
             )
           }
+          {
+            match.path === TOGGLE_PATH && (
+              <Breadcrumb.Section active>{ projectInfo?.name }</Breadcrumb.Section>
+            )
+          }
+          {
+            match.path === SEGMENT_PATH && (
+              <Breadcrumb.Section active><FormattedMessage id='common.segments.text' /></Breadcrumb.Section>
+            )
+          }
+          {
+            match.path === SEGMENT_ADD_PATH && (
+              <>
+                <Breadcrumb.Section link onClick={gotoSegments}>
+                  <FormattedMessage id='common.segments.text' />
+                </Breadcrumb.Section>
+                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Section active>
+                  <FormattedMessage id='common.new.lowercase.text' />
+                </Breadcrumb.Section>
+              </>
+            )
+          }
+          {
+            match.path === SEGMENT_EDIT_PATH && (
+              <>
+                <Breadcrumb.Section link onClick={gotoSegments}>
+                  <FormattedMessage id='common.segments.text' />
+                </Breadcrumb.Section>
+                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Section active>
+                  <FormattedMessage id='common.edit.lowercase.text' />
+                </Breadcrumb.Section>
+              </>
+            )
+          }
         </Breadcrumb>
-        <div style={{background: EnvironmentColors[envIndex]}} className={styles['environment-line']}></div>
+        {
+          (
+            match.path === SEGMENT_PATH || 
+            match.path === SEGMENT_ADD_PATH ||
+            match.path === SEGMENT_EDIT_PATH
+          ) 
+            ? null 
+            : <div style={{background: EnvironmentColors[envIndex]}} className={styles['environment-line']}></div>
+        }
         { props.children }
       </div>
     </div>

@@ -12,7 +12,7 @@ import styles from './index.module.scss';
 interface IProps {
   rule: IRule,
   index: number;
-  variationContainer: IContainer;
+  variationContainer?: IContainer;
   ruleContainer: IContainer;
   hooksFormContainer: IContainer;
 }

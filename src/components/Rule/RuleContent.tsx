@@ -12,7 +12,7 @@ import styles from './index.module.scss';
 interface IProps {
   rule: IRule;
   ruleIndex: number;
-  variationContainer: IContainer;
+  variationContainer?: IContainer;
   ruleContainer: IContainer;
   hooksFormContainer: IContainer;
 }
@@ -27,10 +27,11 @@ const RuleContent = (props: IProps) => {
   } = props;
 
   const intl = useIntl();
+  let variations;
 
-  const {
-    variations
-  } = variationContainer.useContainer();
+  if (variationContainer) {
+    variations = variationContainer.useContainer().variations;
+  }
 
   const {
     handleChangeAttr,
@@ -216,15 +217,19 @@ const RuleContent = (props: IProps) => {
         </Button>
       </div>
      
-      <Serve
-        index={ruleIndex}
-        id={rule.id}
-        serve={rule.serve}
-        variations={variations}
-        customStyle={{width: '308px'}}
-        handleChangeServe={(item) => handleChangeServe(ruleIndex, item)}
-        hooksFormContainer={hooksFormContainer}
-      />
+      {
+        variations && (
+          <Serve
+            index={ruleIndex}
+            id={rule.id}
+            serve={rule.serve}
+            variations={variations}
+            customStyle={{width: '308px'}}
+            handleChangeServe={(item) => handleChangeServe(ruleIndex, item)}
+            hooksFormContainer={hooksFormContainer}
+          />
+        )
+      }
     </div>
 	)
 }

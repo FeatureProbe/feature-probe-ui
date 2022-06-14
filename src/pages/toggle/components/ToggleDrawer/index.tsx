@@ -217,7 +217,7 @@ const Drawer = (props: IParams) => {
     }
   }, [getValues, clearErrors]);
 
-  const checkExist = useCallback(debounce(async (type: string, value: string) => {
+  const checkExist = debounce(useCallback(async (type: string, value: string) => {
     const res = await checkToggleExist(projectKey, {
       type,
       value
@@ -229,7 +229,7 @@ const Drawer = (props: IParams) => {
       });
       return;
     }
-  }, 300), []);
+  }, [projectKey, setError]), 300);
 
 	return (
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
@@ -280,8 +280,8 @@ const Drawer = (props: IParams) => {
                 return;
               }
 
-              const reg = /[^A-Z0-9._-]/gi;
-              const keyValue = detail.value.replace(reg, '');
+              const reg = /[^A-Z0-9._-]+/gi;
+              const keyValue = detail.value.replace(reg, '_');
               handleChange(e, {...detail, value: keyValue}, 'key');
               setValue('key', keyValue);
               await trigger('key');
