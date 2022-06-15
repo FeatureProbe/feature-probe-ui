@@ -11,14 +11,16 @@ import styles from './index.module.scss';
 const MAX_RULES = 30;
 
 interface IProps {
+  useSegment?: boolean;
   ruleContainer: IContainer;
   variationContainer?: IContainer;
   hooksFormContainer: IContainer;
+  segmentContainer?: IContainer;
 }
 
 const Rules = (props: IProps) => {
   const intl = useIntl();
-  const { ruleContainer, variationContainer, hooksFormContainer } = props;
+  const { useSegment, ruleContainer, variationContainer, hooksFormContainer, segmentContainer } = props;
   const { 
     rules,
     saveRules,
@@ -58,8 +60,10 @@ const Rules = (props: IProps) => {
                         key={rule.id}
                         rule={rule}
                         index={index}
-                        hooksFormContainer={hooksFormContainer}
+                        useSegment={useSegment}
                         ruleContainer={ruleContainer}
+                        segmentContainer={segmentContainer}
+                        hooksFormContainer={hooksFormContainer}
                         variationContainer={variationContainer}
                       />
                     )

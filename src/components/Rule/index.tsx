@@ -12,18 +12,22 @@ import styles from './index.module.scss';
 interface IProps {
   rule: IRule,
   index: number;
+  useSegment?: boolean;
   variationContainer?: IContainer;
   ruleContainer: IContainer;
   hooksFormContainer: IContainer;
+  segmentContainer?: IContainer;
 }
 
 const Rule = (props: IProps) => {
   const { 
     rule, 
     index,
+    useSegment,
     ruleContainer,
     variationContainer,
     hooksFormContainer,
+    segmentContainer,
   } = props;
 
   const [ isHover, setHover ] = useState<boolean>(false);
@@ -75,7 +79,9 @@ const Rule = (props: IProps) => {
                     <RuleContent
                       rule={rule}
                       ruleIndex={index}
+                      useSegment={useSegment}
                       ruleContainer={ruleContainer}
+                      segmentContainer={segmentContainer}
                       variationContainer={variationContainer}
                       hooksFormContainer={hooksFormContainer}
                     />

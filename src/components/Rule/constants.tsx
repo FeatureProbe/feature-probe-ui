@@ -3,7 +3,13 @@ import { IOption } from 'interfaces/targeting';
 
 export const attributeOptions: IOption[] = [
   { key: 'userId', text: 'userId', value: 'userId' },
-]
+];
+
+export const attributeSegmentOptions: IOption[] = [
+  { key: 'userId', text: 'userId', value: 'userId' },
+  { key: 'user is in segments', text: 'user is in segments', value: 'in' },
+  { key: 'user is not in segments', text: 'user is not in segments', value: 'not in' },
+];
 
 export const getAttrOptions = (intl: any) => {
   return [
@@ -18,4 +24,4 @@ export const getAttrOptions = (intl: any) => {
     { key: '9', text: intl.formatMessage({id: 'targeting.rule.condition.matches'}), value: 'matches regex' },
     { key: '10', text: intl.formatMessage({id: 'targeting.rule.condition.notmatch'}), value: 'does not match regex' },
   ];
-}
+};

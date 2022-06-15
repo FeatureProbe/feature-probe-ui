@@ -11,7 +11,9 @@ import Metrics from './components/Metrics';
 import Info from './components/Info';
 import { Provider } from './provider';
 import { getTargeting, getToggleInfo } from 'services/toggle';
+import { getSegmentList } from 'services/segment';
 import { IToggleInfo, ITarget, IContent, IModifyInfo } from 'interfaces/targeting';
+import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams } from 'interfaces/project';
 import { NOT_FOUND } from 'constants/httpCode';
 import styles from './index.module.scss';
@@ -21,6 +23,7 @@ const Targeting = () => {
   const [ activeItem, saveActiveItem ] = useState(navigation || 'targeting');
   const [ toggleInfo, saveToggleInfo ] = useState<IToggleInfo>();
   const [ targeting, saveTargeting ] = useState<ITarget>();
+  const [ segmentList, saveSegmentList ] = useState<ISegmentList>();
   const [ toggleDisabled, saveToggleDisable ] = useState<boolean>(false);
   const [ initialTargeting, saveInitTargeting ] = useState<IContent>();
   const [ modifyInfo, saveModifyInfo ] = useState<IModifyInfo>();
@@ -77,10 +80,23 @@ const Targeting = () => {
     });
   }, [intl, projectKey, environmentKey, toggleKey, history]);
 
+  const initSegmentList = useCallback(() => {
+    getSegmentList<ISegmentList>(projectKey, {
+      pageIndex: 0,
+      pageSize: 10,
+    }).then(async (res) => {
+      const { success, data } = res;
+      if (success) {
+        saveSegmentList(data);
+      }
+    });
+  }, [projectKey]);
+
   useEffect(() => {
     initToggleInfo();
     initTargeting();
-  }, [initToggleInfo, initTargeting]);
+    initSegmentList();
+  }, [initToggleInfo, initTargeting, initSegmentList]);
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {
     history.push(`/${projectKey}/${environmentKey}/${toggleKey}/${value.name}`);
@@ -116,6 +132,7 @@ const Targeting = () => {
                 <TargetingForm 
                   targeting={targeting}
                   toggleInfo={toggleInfo}
+                  segmentList={segmentList}
                   toggleDisabled={toggleDisabled}
                   initialTargeting={initialTargeting}
                   initTargeting={initTargeting}

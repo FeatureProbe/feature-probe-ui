@@ -26,24 +26,27 @@ import {
   defaultServeContainer,
   disabledServeContainer,
   hooksFormContainer,
+  segmentContainer
 } from '../../provider';
 import { VariationColors } from 'constants/colors';
 import { ICondition, IContent, IRule, ITarget, IToggleInfo, IVariation } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
-import styles from './index.module.scss';
+import { ISegmentList } from 'interfaces/segment';
 import 'diff2html/bundles/css/diff2html.min.css';
+import styles from './index.module.scss';
 
 interface IProps {
   targeting?: ITarget;
   toggleInfo?: IToggleInfo;
   toggleDisabled: boolean;
   initialTargeting?: IContent;
+  segmentList?: ISegmentList
   initTargeting(): void;
   saveToggleDisable(status: boolean): void;
 }
 
 const Targeting = (props: IProps) => {
-  const { toggleInfo, targeting, toggleDisabled, initialTargeting, initTargeting, saveToggleDisable } = props;
+  const { toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
   const { rules, saveRules } = ruleContainer.useContainer();
   const { variations, saveVariations } = variationContainer.useContainer();
   const { defaultServe, saveDefaultServe } = defaultServeContainer.useContainer();
@@ -64,6 +67,10 @@ const Targeting = (props: IProps) => {
     setError,
     handleSubmit,
   } = hooksFormContainer.useContainer();
+
+  const {
+    saveSegmentList,
+  } = segmentContainer.useContainer();
 
   useEffect(() => {
     if (targeting) {
@@ -86,6 +93,10 @@ const Targeting = (props: IProps) => {
       saveDisabledServe(targeting.disabledServe);
     }
   }, [targeting, saveVariations, saveRules, saveDefaultServe, saveDisabledServe]);
+
+  useEffect(() => {
+    saveSegmentList(segmentList);
+  }, [segmentList, saveSegmentList]);
 
   useEffect(() => {
     rules.forEach((rule: IRule, index: number) => {
@@ -259,9 +270,11 @@ const Targeting = (props: IProps) => {
       </div>
       <div className={styles.rules}>
         <Rules 
+          useSegment={true}
           ruleContainer={ruleContainer}
           variationContainer={variationContainer}
           hooksFormContainer={hooksFormContainer}
+          segmentContainer={segmentContainer}
         />
         <DefaultRule />
         <DisabledServe />

@@ -263,6 +263,7 @@ const Info = () => {
 
       <div className={styles.rules}>
         <Rules
+          useSegment={false}
           ruleContainer={ruleContainer}
           hooksFormContainer={hooksFormContainer}
         />
