@@ -173,7 +173,7 @@
   "toggles.evaluated.text": "访问 ",
   "toggles.evaluated.novisit": "最近未访问",
   "toggles.evaluated.novisit.tips": "确认代码接入正确",
-  "toggles.updated.text": "更新 ",
+  "toggles.updated.text": "更新于",
   "toggles.info.error.text": "开关信息读取失败",
   "toggles.targeting.error.text": "获取开关详情失败!",
 
