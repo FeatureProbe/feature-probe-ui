@@ -1,6 +1,7 @@
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useCallback } from 'react';
 import { Table, Pagination, PaginationProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
 import { IToggle } from 'interfaces/segment';
@@ -22,9 +23,19 @@ interface IProps {
   confirmEditSegment(): void;
 }
 
+interface IParams {
+  projectKey: string;
+  environmentKey: string;
+}
+
 const ConfirmModal = (props: IProps) => {
   const { open, total, toggleList, pagination, setOpen, handlePageChange, confirmEditSegment } = props;
   const intl = useIntl();
+  const { projectKey } = useParams<IParams>();
+
+  const handleGotoToggle = useCallback((envKey: string, toggleKey: string) => {
+    window.open(`/${projectKey}/${envKey}/${toggleKey}/targeting`);
+  }, [projectKey]);
 
 	return (
     <Modal 
@@ -82,7 +93,9 @@ const ConfirmModal = (props: IProps) => {
                     <Table.Row className={styles['list-item']}>
                       <Table.Cell>
                         <div className={styles['toggle-info']}>
-                          <div className={styles['toggle-info-name']}>
+                          <div className={styles['toggle-info-name']} onClick={() => {
+                            handleGotoToggle(toggle.environmentKey, toggle.key);
+                          }}>
                             {toggle?.name}
                           </div>
                         </div>

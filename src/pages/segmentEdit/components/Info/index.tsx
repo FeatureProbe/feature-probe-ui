@@ -181,9 +181,10 @@ const Info = () => {
             pageIndex: 1,
             totalPages: 1,
           });
+          setTotal(0);
           message.error(intl.formatMessage({id: 'toggles.list.error.text'}));
         }
-      })
+      });
     }
   }, [match.path, publishSegment, projectKey, segmentKey, searchParams, intl, handleGoBack, confirmEditSegment]);
 
@@ -222,7 +223,9 @@ const Info = () => {
           register={register}
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
             if (detail.value.length > 50 ) return;
-            checkExist('NAME', detail.value);
+            if (match.path === SEGMENT_ADD_PATH) {
+              checkExist('NAME', detail.value);
+            }
             handleChange(e, detail, 'name')
             setValue(detail.name, detail.value);
             await trigger('name');
