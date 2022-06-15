@@ -283,6 +283,7 @@ const Drawer = (props: IParams) => {
               const reg = /[^A-Z0-9._-]+/gi;
               const keyValue = detail.value.replace(reg, '_');
               handleChange(e, {...detail, value: keyValue}, 'key');
+              checkExist('KEY', detail.value);
               setValue('key', keyValue);
               await trigger('key');
             }}

@@ -156,7 +156,7 @@ const Info = () => {
           setPublishDisabled(true);
           handleGoBack();
         } else {
-          message.success(intl.formatMessage({id: 'segments.create.error'}));
+          message.error(intl.formatMessage({id: 'segments.create.error'}));
         }
       });
     } else {
@@ -269,7 +269,7 @@ const Info = () => {
       </div>
 
       <div id='footer' className={styles.footer}>
-        <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled}>
+        <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
           <FormattedMessage id='common.publish.text' />
         </Button>
         <Button basic type='reset' onClick={handleGoBack}>
