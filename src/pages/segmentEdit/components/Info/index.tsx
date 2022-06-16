@@ -143,7 +143,7 @@ const Info = () => {
         message.success(intl.formatMessage({id: 'segments.edit.success'}));
         setPublishDisabled(true);
       } else {
-        message.success(intl.formatMessage({id: 'segments.edit.error'}));
+        message.error(intl.formatMessage({id: 'segments.edit.error'}));
       }
     });
   }, [intl, projectKey, segmentKey, publishSegment]);
@@ -223,9 +223,7 @@ const Info = () => {
           register={register}
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
             if (detail.value.length > 50 ) return;
-            if (match.path === SEGMENT_ADD_PATH) {
-              checkExist('NAME', detail.value);
-            }
+            checkExist('NAME', detail.value);
             handleChange(e, detail, 'name')
             setValue(detail.name, detail.value);
             await trigger('name');

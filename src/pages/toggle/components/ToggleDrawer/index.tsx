@@ -269,9 +269,7 @@ const Drawer = (props: IParams) => {
             size='mini'
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
-              if (isAdd) {
-                checkExist('NAME', detail.value);
-              }
+              checkExist('NAME', detail.value);
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
               await trigger('name');
@@ -300,9 +298,7 @@ const Drawer = (props: IParams) => {
             popupText={intl.formatMessage({id: 'toggles.key.tips'})}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               saveKeyEdit(true);
-              if (isAdd) {
-                checkExist('KEY', detail.value);
-              }
+              checkExist('KEY', detail.value);
               handleChange(e, detail, 'key');
               setValue(detail.name, detail.value);
               await trigger('key');
@@ -353,14 +349,14 @@ const Drawer = (props: IParams) => {
             </label>
             <div className={styles['radio-group']}>
               <Form.Radio
-                name="yes"
+                name='yes'
                 label={intl.formatMessage({id: 'toggles.sdk.yes'})}
                 className={styles['radio-group-item']}
                 checked={!!toggleInfo?.clientAvailability}
                 onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'clientAvailability')} 
               />
               <Form.Radio 
-                name="no"
+                name='no'
                 label={intl.formatMessage({id: 'toggles.sdk.no'})}
                 className={styles['radio-group-item']}
                 checked={!toggleInfo?.clientAvailability}

@@ -154,9 +154,7 @@ const ProjectDrawer = (props: IProps) => {
             register={register}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
-              if (isAdd) {
-                checkExist('NAME', detail.value);
-              }
+              checkExist('NAME', detail.value);
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
               await trigger('name');
@@ -171,9 +169,7 @@ const ProjectDrawer = (props: IProps) => {
             register={register}
             showPopup={false}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-              if (isAdd) {
-                checkExist('KEY', detail.value);
-              }
+              checkExist('KEY', detail.value);
               handleChange(e, detail, 'key');
               setValue(detail.name, detail.value);
               await trigger('key');
