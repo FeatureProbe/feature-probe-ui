@@ -197,7 +197,6 @@
   "targeting.metrics.error.text": "Error getting toggle metrics!",
   "targeting.metrics.option.seven.days": "Last 7 days",
   "targeting.metrics.option.one.day": "Last 24 hours",
-
   "targeting.rule.delete.text": "Are you sure to delete this rule?",
   "targeting.rule.subject.placeholder": "Add subject",
   "targeting.rule.subject.required": "please add a subject",
@@ -215,10 +214,11 @@
   "targeting.rule.condition.notcontain": "does not contain",
   "targeting.rule.condition.matches": "matches regex",
   "targeting.rule.condition.notmatch": "does not match regex",
-
-  "targeting.serve.required": "please select serve",
+  "targeting.rule.subject.segment.in": "User is in segments",
+  "targeting.rule.subject.segment.notin": "User not is in segments",
   "targeting.serve.percentage.error.text": "{value}% needs to be assigned to a variation",
   "targeting.serve.percentage.rollout": "a percentage rollout",
+  "targeting.serve.required": "please select serve",
 
   "variations.add.text": "Add Variation",
   "variations.dulpicated.error.text": "Variation names are duplicated, please change!",
@@ -240,6 +240,5 @@
   "segments.edit.success": "Updated segment successfully",
   "segments.edit.error": "Error updating segment",
   "segments.delete.success": "Successfully deleted!",
-  "segments.delete.error": "rror, segment was not deleted, please retry!"
-
+  "segments.delete.error": "Error, segment was not deleted, please retry!"
 }
