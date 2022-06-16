@@ -53,8 +53,14 @@ const Info = () => {
   const intl = useIntl();
   const history = useHistory();
   const match = useRouteMatch();
-  const { segmentInfo, saveSegmentInfo, handleChange } = segmentContainer.useContainer();
   const { rules, saveRules } = ruleContainer.useContainer();
+  const { 
+    segmentInfo,
+    originSegmentInfo,
+    saveSegmentInfo, 
+    saveOriginSegmentInfo, 
+    handleChange 
+  } = segmentContainer.useContainer();
 
   const {
     formState: { errors },
@@ -78,7 +84,8 @@ const Info = () => {
             description: data.description,
             rules: cloneDeep(data.rules),
           });
-          saveSegmentInfo(data);
+          saveSegmentInfo(cloneDeep(data));
+          saveOriginSegmentInfo(cloneDeep(data));
           const targetRule = cloneDeep(data.rules);
           targetRule.forEach((rule: IRule) => {
             rule.conditions.forEach((condition: ICondition) => {
@@ -93,7 +100,7 @@ const Info = () => {
       }
       })
     }
-  }, [match.path, projectKey, segmentKey, intl, saveSegmentInfo, saveRules]);
+  }, [match.path, projectKey, segmentKey, intl, saveSegmentInfo, saveOriginSegmentInfo, saveRules]);
 
   useEffect(() => {
     const requestRules = cloneDeep(rules);
@@ -223,7 +230,9 @@ const Info = () => {
           register={register}
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
             if (detail.value.length > 50 ) return;
-            checkExist('NAME', detail.value);
+            if (detail.value !== originSegmentInfo.name) {
+              checkExist('NAME', detail.value);
+            }
             handleChange(e, detail, 'name')
             setValue(detail.name, detail.value);
             await trigger('name');

@@ -13,7 +13,6 @@ import {
 } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
-import debounce from 'lodash/debounce';
 import { FormattedMessage, useIntl } from 'react-intl';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
@@ -61,10 +60,18 @@ const Drawer = (props: IParams) => {
 
   const { projectKey } = useParams<ILocationParams>();
   const { variations, saveVariations } = variationContainer.useContainer();
-  const { toggleInfo, handleChange, saveToggleInfo } = toggleInfoContainer.useContainer();
   const [ tagsOptions, saveTagsOptions ] = useState<ITagOption[]>([]);
   const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
+
+  const { 
+    toggleInfo, 
+    originToggleInfo, 
+    handleChange, 
+    saveToggleInfo, 
+    saveOriginToggleInfo,
+  } = toggleInfoContainer.useContainer();
+
 
   const options = variations?.map((item: IVariation, index: number) => {
     const text = item.name || item.value || `variation ${index + 1}`
@@ -112,8 +119,17 @@ const Drawer = (props: IParams) => {
         returnType: 'boolean',
         disabledServe: 0
       });
+      saveOriginToggleInfo({
+        name: '',
+        key: '',
+        desc: '',
+        tags: [],
+        clientAvailability: false,
+        returnType: 'boolean',
+        disabledServe: 0
+      });
     }
-  }, [visible, clearErrors, getTagList, saveToggleInfo])
+  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo])
 
   useEffect(() => {
     setValue('name', toggleInfo.name);
@@ -217,7 +233,7 @@ const Drawer = (props: IParams) => {
     }
   }, [getValues, clearErrors]);
 
-  const checkExist = debounce(useCallback(async (type: string, value: string) => {
+  const checkExist = useCallback(async (type: string, value: string) => {
     const res = await checkToggleExist(projectKey, {
       type,
       value
@@ -229,7 +245,7 @@ const Drawer = (props: IParams) => {
       });
       return;
     }
-  }, [projectKey, setError]), 300);
+  }, [projectKey, setError]);
 
 	return (
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
@@ -269,7 +285,9 @@ const Drawer = (props: IParams) => {
             size='mini'
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
-              checkExist('NAME', detail.value);
+              if (detail.value !== originToggleInfo.name) {
+                checkExist('NAME', detail.value);
+              }
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
               await trigger('name');

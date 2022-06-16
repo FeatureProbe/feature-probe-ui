@@ -143,14 +143,12 @@ const VariationItem = (props: IProps) => {
                         isNumber: (v: string) => {
                           const reg = /^(-?\d+)(\.\d+)?$/i;
                           if (v && returnType === 'number' && !reg.test(v)) {
-                            console.log('number')
                             return intl.formatMessage({id: 'common.number.invalid'});
                           }
                           return true;
                         },
                         isJSON: (v: string) => {
                           if (v && returnType === 'json' && !isJSON(v)) {
-                            console.log('json')
                             return intl.formatMessage({id: 'common.json.invalid'});
                           }
                           return true;

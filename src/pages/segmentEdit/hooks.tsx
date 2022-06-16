@@ -91,7 +91,13 @@ export const useRule = () => {
 }
 
 export const useSegmentInfo = () => {
-  const [segmentInfo, saveSegmentInfo] = useState({
+  const [ segmentInfo, saveSegmentInfo ] = useState({
+    name: '',
+    key: '',
+    description: '',
+  });
+
+  const [ originSegmentInfo, saveOriginSegmentInfo ] = useState({
     name: '',
     key: '',
     description: '',
@@ -106,8 +112,10 @@ export const useSegmentInfo = () => {
 
   return {
     segmentInfo,
-    saveSegmentInfo,
+    originSegmentInfo,
     handleChange,
+    saveSegmentInfo,
+    saveOriginSegmentInfo,
   }
 }
 

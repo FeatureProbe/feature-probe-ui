@@ -3,7 +3,13 @@ import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 
 export const useProjectInfo = () => {
-  const [projectInfo, saveProjectInfo] = useState({
+  const [ projectInfo, saveProjectInfo ] = useState({
+    name: '',
+    key: '',
+    description: '',
+  });
+
+  const [ originProjectInfo, saveOriginProjectInfo ] = useState({
     name: '',
     key: '',
     description: '',
@@ -18,13 +24,20 @@ export const useProjectInfo = () => {
 
   return {
     projectInfo,
-    saveProjectInfo,
+    originProjectInfo,
     handleChange,
+    saveProjectInfo,
+    saveOriginProjectInfo,
   }
 }
 
 export const useEnvironmentInfo = () => {
-  const [environmentInfo, saveEnvironmentInfo] = useState({
+  const [ environmentInfo, saveEnvironmentInfo ] = useState({
+    name: '',
+    key: '',
+  });
+
+  const [ originEnvironmentInfo, saveOriginEnvironmentInfo ] = useState({
     name: '',
     key: '',
   });
@@ -38,8 +51,10 @@ export const useEnvironmentInfo = () => {
 
   return {
     environmentInfo,
-    saveEnvironmentInfo,
+    originEnvironmentInfo,
     handleChange,
+    saveEnvironmentInfo,
+    saveOriginEnvironmentInfo,
   }
 }
 

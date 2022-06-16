@@ -60,3 +60,15 @@
   border-radius: 8px !important;
   margin-top: 4px !important;
 }
+
+.ui.search.dropdown {
+  padding: 3px 12px 2px;
+  min-height: 32px;
+  background: rgba(33, 37, 41, 0.04);
+  border-radius: 6px;
+  width: 100%;
+}
+
+.ui.active.dropdown {
+  border: 1px solid #74788D;
+}

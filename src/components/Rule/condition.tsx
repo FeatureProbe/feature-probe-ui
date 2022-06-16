@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
-import { getAttrOptions, attributeOptions, getSubjectSegmentOptions } from './constants';
+import { getAttrOptions, attributeOptions, getSubjectSegmentOptions, VALUE_IN, VALUE_NOT_IN } from './constants';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import styles from './index.module.scss';
 
@@ -136,9 +136,7 @@ const RuleContent = (props: IProps) => {
             className={styles['rule-item-subject-dropdown']}
             placeholder={intl.formatMessage({id: 'targeting.rule.subject.placeholder'})}
             search
-            selection
             floating
-            fluid={false}
             allowAdditions
             options={subjectOptions}
             value={showPredicate ? condition.subject : condition.predicate}
@@ -158,7 +156,7 @@ const RuleContent = (props: IProps) => {
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
               handleChangeAttr(ruleIndex, conditionIndex, detail.value);
               handleChangeValue(ruleIndex, conditionIndex, []);
-              if (detail.value === 'in' || detail.value === 'not in') {
+              if (detail.value === VALUE_IN || detail.value === VALUE_NOT_IN) {
                 setShowPredicate(false);
                 unregister(`rule_${rule.id}_condition_${condition.id}_predicate`);
                 handleChangeOperator(ruleIndex, conditionIndex, detail.value);

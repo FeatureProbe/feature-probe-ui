@@ -1,14 +1,17 @@
 import { IntlShape } from 'react-intl';
 import { IOption } from 'interfaces/targeting';
 
+export const VALUE_IN = 'is in';
+export const VALUE_NOT_IN = 'is not in';
+
 export const attributeOptions: IOption[] = [
   { key: 'userId', text: 'userId', value: 'userId' },
 ];
 
 export const getSubjectSegmentOptions = (intl: IntlShape) => [
   { key: 'userId', text: 'userId', value: 'userId' },
-  { key: 'user is in segments', text: intl.formatMessage({id: 'targeting.rule.subject.segment.in'}), value: 'in' },
-  { key: 'user is not in segments', text: intl.formatMessage({id: 'targeting.rule.subject.segment.notin'}), value: 'not in' },
+  { key: 'user is in segments', text: intl.formatMessage({id: 'targeting.rule.subject.segment.in'}), value: VALUE_IN },
+  { key: 'user is not in segments', text: intl.formatMessage({id: 'targeting.rule.subject.segment.notin'}), value: VALUE_NOT_IN },
 ];
 
 export const getAttrOptions = (intl: IntlShape) => [

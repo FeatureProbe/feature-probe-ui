@@ -63,6 +63,16 @@ export const useToggleInfo = () => {
     disabledServe: 0,
   });
 
+  const [ originToggleInfo, saveOriginToggleInfo ] = useState<IToggleInfo>({
+    name: '',
+    key: '',
+    desc: '',
+    tags: [],
+    clientAvailability: false,
+    returnType: 'boolean',
+    disabledServe: 0,
+  });
+
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps | DropdownProps | CheckboxProps, type: string) => {
     let value = detail.value;
 
@@ -78,8 +88,10 @@ export const useToggleInfo = () => {
 
   return {
     toggleInfo,
-    saveToggleInfo,
+    originToggleInfo,
     handleChange,
+    saveToggleInfo,
+    saveOriginToggleInfo,
   }
 }
 

@@ -40,8 +40,10 @@ const EnvironmentModal = (props: IProps) => {
 
   const {
     environmentInfo,
+    originEnvironmentInfo,
     handleChange,
-    saveEnvironmentInfo
+    saveEnvironmentInfo,
+    saveOriginEnvironmentInfo
   } = environmentContainer.useContainer();
 
   useEffect(() => {
@@ -52,8 +54,12 @@ const EnvironmentModal = (props: IProps) => {
         key: '',
         name: '',
       });
+      saveOriginEnvironmentInfo({
+        key: '',
+        name: '',
+      });
     }
-  }, [open, clearErrors, saveEnvironmentInfo]);
+  }, [open, clearErrors, saveEnvironmentInfo, saveOriginEnvironmentInfo]);
 
   useEffect(() => {
     setValue('name', environmentInfo.name);
@@ -140,7 +146,9 @@ const EnvironmentModal = (props: IProps) => {
               register={register}
               onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                 if (detail.value.length > 15 ) return;
-                checkExist('NAME', detail.value);
+                if (detail.value !== originEnvironmentInfo.name) {
+                  checkExist('NAME', detail.value);
+                }
                 handleChange(e, detail, 'name');
                 setValue(detail.name, detail.value);
                 await trigger('name');

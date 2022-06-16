@@ -42,7 +42,13 @@ const ProjectDrawer = (props: IProps) => {
     clearErrors,
   } = hooksFormContainer.useContainer();
 
-  const { projectInfo, handleChange, saveProjectInfo } = projectContainer.useContainer();
+  const { 
+    projectInfo,
+    originProjectInfo,
+    handleChange,
+    saveProjectInfo,
+    saveOriginProjectInfo,
+  } = projectContainer.useContainer();
 
   const drawerCls = classNames(
     styles['project-drawer'], {
@@ -54,7 +60,7 @@ const ProjectDrawer = (props: IProps) => {
     styles['project-drawer-form'], {
       [styles['project-drawer-form-inactive']]: visible
     }
-  )
+  );
 
   useEffect(() => {
     if (visible) {
@@ -64,16 +70,21 @@ const ProjectDrawer = (props: IProps) => {
         key: '',
         name: '',
         description: ''
-      })
+      });
+      saveOriginProjectInfo({
+        key: '',
+        name: '',
+        description: ''
+      });
     }
-  }, [visible, clearErrors, saveProjectInfo])
+  }, [visible, clearErrors, saveProjectInfo, saveOriginProjectInfo]);
 
   useEffect(() => {
     setValue('name', projectInfo.name);
     setValue('key', projectInfo.key);
   }, [projectInfo, setValue]);
 
-  const checkExist = useCallback(debounce(async (type: string, value: string) => {
+  const checkExist = debounce(useCallback(async (type: string, value: string) => {
     const res = await checkProjectExist({
       type,
       value
@@ -85,7 +96,7 @@ const ProjectDrawer = (props: IProps) => {
       });
       return;
     }
-  }, 300), []);
+  }, [setError]), 300);
 
   const onSubmit = useCallback(async () => {
     let res;
@@ -154,7 +165,9 @@ const ProjectDrawer = (props: IProps) => {
             register={register}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
-              checkExist('NAME', detail.value);
+              if (detail.value !== originProjectInfo.name) {
+                checkExist('NAME', detail.value);
+              }
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
               await trigger('name');
