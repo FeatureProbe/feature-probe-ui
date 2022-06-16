@@ -109,7 +109,11 @@ const Targeting = (props: IProps) => {
       }
 
       rule.conditions?.forEach((condition: ICondition) => {
-        setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
+        if (condition.type === 'segment') {
+          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.predicate);
+        } else {
+          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
+        }
         setValue(`rule_${rule.id}_condition_${condition.id}_predicate`, condition.predicate);
         setValue(`rule_${rule.id}_condition_${condition.id}_objects`, condition.objects);
       })
@@ -137,6 +141,11 @@ const Targeting = (props: IProps) => {
       rule.conditions.forEach((condition: ICondition) => {
         // @ts-ignore
         delete condition.id;
+
+        if (condition.type === 'segment') {
+          // @ts-ignore
+          delete condition.subject;
+        }
       });
       // @ts-ignore
       delete rule.id;

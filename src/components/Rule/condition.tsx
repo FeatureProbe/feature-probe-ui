@@ -1,11 +1,10 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { Form, Select, Dropdown, DropdownProps, DropdownItemProps } from 'semantic-ui-react';
 import { useIntl } from 'react-intl';
-import cloneDeep from 'lodash/cloneDeep';
 import Icon from 'components/Icon';
 import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
-import { attributeOptions, attributeSegmentOptions, getAttrOptions } from './constants';
+import { getAttrOptions, attributeOptions, getSubjectSegmentOptions } from './constants';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import styles from './index.module.scss';
 
@@ -36,12 +35,8 @@ const RuleContent = (props: IProps) => {
   const intl = useIntl();
   const [ showPredicate, setShowPredicate ] = useState<boolean>(true);
   const [ options, setOption ] = useState<IOption[]>();
-  let segmentList: ISegmentList;
-  let subjectOptions: IOption[] = cloneDeep(attributeOptions);
-
-  // if (segmentContainer) {
-    segmentList = segmentContainer?.useContainer().segmentList;
-  // }
+  let segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
+  let subjectOptions: IOption[] = attributeOptions;
 
   const {
     handleChangeAttr,
@@ -92,6 +87,12 @@ const RuleContent = (props: IProps) => {
     }
   }, [segmentList]);
 
+  useEffect(() => {
+    if (condition.type === 'segment') {
+      setShowPredicate(false);
+    }
+  }, [condition]);
+
   const valuesOptions = condition.objects?.map((val: string) => {
     return {
       key: val,
@@ -101,8 +102,9 @@ const RuleContent = (props: IProps) => {
   });
 
   if (useSegment) {
-    subjectOptions = attributeSegmentOptions;
+    subjectOptions = getSubjectSegmentOptions(intl);
   }
+  
   const subjectIndex = subjectOptions?.findIndex((attr) => {
     return attr.value === condition.subject;
   });
@@ -139,7 +141,7 @@ const RuleContent = (props: IProps) => {
             fluid={false}
             allowAdditions
             options={subjectOptions}
-            value={condition.subject}
+            value={showPredicate ? condition.subject : condition.predicate}
             openOnFocus={false}
             selectOnBlur={false}
             closeOnChange={true}
