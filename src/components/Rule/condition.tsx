@@ -212,7 +212,11 @@ const RuleContent = (props: IProps) => {
 
         <Form.Field width={6}>
           <Dropdown
-            placeholder={intl.formatMessage({id: 'targeting.rule.values.placeholder'})}
+            placeholder={
+              showPredicate 
+              ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
+              : intl.formatMessage({id: 'common.dropdown.placeholder'})
+            }
             search
             selection
             multiple
@@ -222,7 +226,7 @@ const RuleContent = (props: IProps) => {
             value={condition.objects}
             openOnFocus={false}
             renderLabel={renderLabel}
-            icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+            icon={!showPredicate && <Icon customClass={styles['angle-down']} type='angle-down' />}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_objects`] ? true : false }
             noResultsMessage={null}
             {
@@ -239,7 +243,11 @@ const RuleContent = (props: IProps) => {
           { 
             errors[`rule_${rule.id}_condition_${condition.id}_objects`] && 
               <div className={styles['error-text']}>
-                { intl.formatMessage({id: 'targeting.rule.values.placeholder'}) }
+                { 
+                  showPredicate 
+                  ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
+                  : intl.formatMessage({id: 'common.dropdown.placeholder'})
+                }
               </div> 
           }
         </Form.Field>
