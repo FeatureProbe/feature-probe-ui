@@ -2,6 +2,7 @@ import { SyntheticEvent, useCallback } from 'react';
 import { Table, Pagination, PaginationProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import classNames from 'classnames';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
 import { IToggle } from 'interfaces/segment';
@@ -89,8 +90,15 @@ const ConfirmModal = (props: IProps) => {
             <Table.Body>
               {
                 toggleList?.map((toggle: IToggle) => {
+                  const listItem = classNames(
+                    styles['list-item'],
+                    {
+                      [styles['list-item-enabled']]: !toggle.disabled
+                    }
+                  );
+
                   return (
-                    <Table.Row className={styles['list-item']}>
+                    <Table.Row className={listItem}>
                       <Table.Cell>
                         <div className={styles['toggle-info']}>
                           <div className={styles['toggle-info-name']} onClick={() => {
