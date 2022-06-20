@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, SyntheticEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
-import { DropdownProps, InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
+import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { IRule, IServe, IVariation } from 'interfaces/targeting';
+import { ISegmentList } from 'interfaces/segment';
 
 export const useVarition = () => {
   const [variations, saveVariations] = useState<IVariation[]>([]);
@@ -99,14 +100,18 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
-  const handleChangeOperator = (ruleIndex: number, conditionIndex: number, data: DropdownProps) => {
-    const { value } = data;
+  const handleChangeOperator = (ruleIndex: number, conditionIndex: number, value: string) => {
     rules[ruleIndex].conditions[conditionIndex].predicate = '' + value;
     saveRules([...rules]);
   }
 
   const handleChangeValue = (ruleIndex: number, conditionIndex: number, value: string[]) => {
     rules[ruleIndex].conditions[conditionIndex].objects = value;
+    saveRules([...rules]);
+  }
+
+  const handleChangeType = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].type = value;
     saveRules([...rules]);
   }
 
@@ -124,6 +129,7 @@ export const useRule = () => {
     handleAddCondition,
     handleDeleteCondition,
     handleChangeAttr,
+    handleChangeType,
     handleChangeOperator,
     handleChangeValue,
     handleChangeServe,
@@ -145,6 +151,15 @@ export const useDisabledServe = () => {
   return {
     disabledServe,
     saveDisabledServe,
+  }
+}
+
+export const useSegment = () => {
+  const [segmentList, saveSegmentList] = useState<ISegmentList>();
+
+  return {
+    segmentList,
+    saveSegmentList,
   }
 }
 

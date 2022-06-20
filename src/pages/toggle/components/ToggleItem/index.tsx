@@ -29,7 +29,7 @@ const ToggleItem = (props: IProps) => {
   const { projectKey, environmentKey } = useParams<ILocationParams>();
   const [ visible, setVisible ] = useState(false);
   const { saveVariations } = variationContainer.useContainer();
-  const { saveToggleInfo } = toggleInfoContainer.useContainer();
+  const { saveToggleInfo, saveOriginToggleInfo } = toggleInfoContainer.useContainer();
 
   const handleMouseEnter = useCallback(() => {
     setVisible(true);
@@ -63,9 +63,19 @@ const ToggleItem = (props: IProps) => {
           tags,
           clientAvailability,
         });
+
+        saveOriginToggleInfo({
+          name,
+          key,
+          returnType,
+          disabledServe,
+          desc,
+          tags,
+          clientAvailability,
+        });
       }
     });
-  }, [projectKey, environmentKey, saveToggleInfo, saveVariations, setIsAdd, setDrawerVisible]);
+  }, [projectKey, environmentKey, saveToggleInfo, saveOriginToggleInfo, saveVariations, setIsAdd, setDrawerVisible]);
 
 	return (
     <Table.Row

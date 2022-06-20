@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface IProps extends  React.HTMLProps<HTMLSpanElement> {
+interface IProps extends React.HTMLProps<HTMLSpanElement> {
   type: string;
   customClass?: string;
 }

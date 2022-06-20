@@ -10,15 +10,13 @@ import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo, logout } from 'services/user';
 import { IUserInfo } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
+import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
 import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
-
-const PROJECT_ROUTE_LIST = ['projects', 'toggles', 'targeting', 'metrics'];
-const SETTING_ROUTE_LIST = ['members', 'profile'];
 
 const PageHeader = () => {
   const history = useHistory();
@@ -65,7 +63,7 @@ const PageHeader = () => {
         setHelpMenuOpen(false);
       }
       if (i18nMenuOpen) {
-        setHelpMenuOpen(false);
+        setI18nMenuOpen(false);
       }
     }
     window.addEventListener('click', handler);
@@ -96,9 +94,11 @@ const PageHeader = () => {
         setSelectedNav(PROJECT_NAV);
       } else if (SETTING_ROUTE_LIST.includes(res[0])) {
         setSelectedNav(SETTING_NAV);
+      } else {
+        setSelectedNav(PROJECT_NAV);
       }
     }
-  }, [location.pathname])
+  }, [location.pathname]);
 
   const handleGotoProject = useCallback(() => {
     history.push(PROJECT_PATH);

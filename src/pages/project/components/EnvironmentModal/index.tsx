@@ -2,12 +2,16 @@ import { useCallback, SyntheticEvent, useEffect } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
+import debounce from 'lodash/debounce';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
+import FormItemName from 'components/FormItem/name';
+import FormItemKey from 'components/FormItem/key';
 import { hooksFormContainer, environmentContainer } from '../../provider';
 import { addEnvironment, editEnvironment } from 'services/project';
+import { checkEnvironmentExist } from 'services/toggle';
 import { CONFLICT } from 'constants/httpCode';
 import { replaceSpace } from 'utils/tools';
 import styles from './index.module.scss';
@@ -36,8 +40,10 @@ const EnvironmentModal = (props: IProps) => {
 
   const {
     environmentInfo,
+    originEnvironmentInfo,
     handleChange,
-    saveEnvironmentInfo
+    saveEnvironmentInfo,
+    saveOriginEnvironmentInfo
   } = environmentContainer.useContainer();
 
   useEffect(() => {
@@ -47,14 +53,32 @@ const EnvironmentModal = (props: IProps) => {
       saveEnvironmentInfo({
         key: '',
         name: '',
-      })
+      });
+      saveOriginEnvironmentInfo({
+        key: '',
+        name: '',
+      });
     }
-  }, [open, clearErrors, saveEnvironmentInfo]);
+  }, [open, clearErrors, saveEnvironmentInfo, saveOriginEnvironmentInfo]);
 
   useEffect(() => {
     setValue('name', environmentInfo.name);
     setValue('key', environmentInfo.key);
   }, [environmentInfo, setValue]);
+
+  const checkExist = debounce(useCallback(async (type: string, value: string) => {
+    const res = await checkEnvironmentExist(projectKey, {
+      type,
+      value
+    });
+
+    if (res.code === CONFLICT) {
+      setError(type.toLocaleLowerCase(), {
+        message: res.message,
+      });
+      return;
+    }
+  }, [projectKey, setError]), 300);
 
   const onSubmit = useCallback(async () => {
     let res; 
@@ -115,85 +139,41 @@ const EnvironmentModal = (props: IProps) => {
             autoComplete='off'
             onSubmit={handleSubmit(onSubmit)} 
           >
-            <Form.Field>
-              <label>
-                <span className={styles['label-required']}>*</span>
-                <span>
-                  <FormattedMessage id='common.name.text' />
-                </span>
-              </label>
-              <Form.Input
-                value={environmentInfo?.name}
-                placeholder={intl.formatMessage({id: 'common.name.required'})}
-                error={ errors.name ? true : false }
-                {
-                  ...register('name', { 
-                    required: {
-                      value: true,
-                      message: intl.formatMessage({id: 'common.name.required'})
-                    },
-                  })
+            <FormItemName
+              className={styles.field}
+              value={environmentInfo?.name}
+              errors={errors}
+              register={register}
+              onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                if (detail.value.length > 15 ) return;
+                if (detail.value !== originEnvironmentInfo.name) {
+                  checkExist('NAME', detail.value);
                 }
-                onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                  if (detail.value.length > 15 ) return;
-                  handleChange(e, detail, 'name');
-                  setValue(detail.name, detail.value);
-                  await trigger('name');
-                }}
-              />
-            </Form.Field>
-            { errors.name && <div className={styles['error-text']}>{ errors.name.message }</div> }
+                handleChange(e, detail, 'name');
+                setValue(detail.name, detail.value);
+                await trigger('name');
+              }}
+            />
 
-            <Form.Field>
-              <label>
-                <span className={styles['label-required']}>*</span>
-                <span>
-                  <FormattedMessage id='common.key.text' />
-                </span>
-              </label>
-
-              <Form.Input
-                value={environmentInfo?.key}
-                placeholder={intl.formatMessage({id: 'common.key.required'})}
-                error={ errors.key ? true : false }
-                disabled={!isAdd}
-                {
-                  ...register('key', { 
-                    required: {
-                      value: true,
-                      message: intl.formatMessage({id: 'common.key.required'}),
-                    },
-                    minLength: {
-                      value: 2,
-                      message: intl.formatMessage({id: 'common.minimum.two'})
-                    },
-                    maxLength: {
-                      value: 30,
-                      message: intl.formatMessage({id: 'common.maximum.thirty'})
-                    },
-                    pattern: {
-                      value: /^[A-Z0-9._-]+$/i,
-                      message: intl.formatMessage({id: 'common.key.invalid'})
-                    }
-                  })
-                }
-                onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                  handleChange(e, detail, 'key');
-                  setValue(detail.name, detail.value);
-                  await trigger('key');
-                }}
-              />
-            </Form.Field>
-            { errors.key && <div className={styles['error-text']}>{ errors.key.message }</div> }
-            <div className={styles['tip-text']}>
-              <FormattedMessage id='common.key.tips' />
-            </div>
+            <FormItemKey
+              value={environmentInfo?.key}
+              errors={errors}
+              disabled={!isAdd}
+              register={register}
+              showPopup={false}
+              onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                checkExist('KEY', detail.value);
+                handleChange(e, detail, 'key');
+                setValue(detail.name, detail.value);
+                await trigger('key');
+              }}
+            />
 
             <div className={styles['footer']}>
               <Button size='mini' className={styles['btn']} type='reset' basic onClick={handleCancel}>
                 <FormattedMessage id='common.cancel.text' />
               </Button>
-              <Button size='mini' type='submit' primary>
+              <Button size='mini' type='submit' primary disabled={errors.name || errors.key}>
                 <FormattedMessage id='common.confirm.text' />
               </Button>
             </div>

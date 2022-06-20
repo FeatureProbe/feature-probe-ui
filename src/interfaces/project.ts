@@ -34,3 +34,8 @@ export interface IToggleParams {
   pageSize: number;
   environmentKey: string;
 }
+
+export interface IExistParams {
+	value: string;
+	type: string;
+}
