@@ -12,7 +12,10 @@ import classNames from 'classnames';
 const MAX_RULES = 30;
 
 interface IProps {
+<<<<<<< HEAD
   disabled?: boolean;
+=======
+>>>>>>> 959a9b3 (Release 1.1.0 (#2))
   useSegment?: boolean;
   ruleContainer: IContainer;
   variationContainer?: IContainer;
@@ -22,6 +25,7 @@ interface IProps {
 
 const Rules = (props: IProps) => {
   const intl = useIntl();
+  const { useSegment, ruleContainer, variationContainer, hooksFormContainer, segmentContainer } = props;
   const { 
     disabled, 
     useSegment, 
@@ -76,7 +80,10 @@ const Rules = (props: IProps) => {
                         key={rule.id}
                         rule={rule}
                         index={index}
+<<<<<<< HEAD
                         disabled={disabled}
+=======
+>>>>>>> 959a9b3 (Release 1.1.0 (#2))
                         useSegment={useSegment}
                         ruleContainer={ruleContainer}
                         segmentContainer={segmentContainer}

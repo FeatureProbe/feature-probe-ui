@@ -35,7 +35,10 @@ import { IRouterParams } from 'interfaces/project';
 import { ISegmentList } from 'interfaces/segment';
 import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
+<<<<<<< HEAD
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
+=======
+>>>>>>> 959a9b3 (Release 1.1.0 (#2))
 
 interface IProps {
   disabled?: boolean;
@@ -48,8 +51,13 @@ interface IProps {
   saveToggleDisable(status: boolean): void;
 }
 
+<<<<<<< HEAD
 const Targeting = forwardRef((props: IProps, ref: any) => {
   const { disabled, toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
+=======
+const Targeting = (props: IProps) => {
+  const { toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
+>>>>>>> 959a9b3 (Release 1.1.0 (#2))
   const { rules, saveRules } = ruleContainer.useContainer();
   const { variations, saveVariations } = variationContainer.useContainer();
   const { defaultServe, saveDefaultServe } = defaultServeContainer.useContainer();
@@ -121,7 +129,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       }
 
       rule.conditions?.forEach((condition: ICondition) => {
-        setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
+        if (condition.type === 'segment') {
+          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.predicate);
+        } else {
+          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
+        }
         setValue(`rule_${rule.id}_condition_${condition.id}_predicate`, condition.predicate);
 
         if (condition.type === DATETIME_TYPE) {
@@ -162,6 +174,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         // @ts-ignore
         delete condition.id;
 
+<<<<<<< HEAD
         if (condition.type === SEGMENT_TYPE) {
           // @ts-ignore
           delete condition.subject;
@@ -171,6 +184,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
           condition.objects = result;
           delete condition.datetime;
           delete condition.timezone;
+=======
+        if (condition.type === 'segment') {
+          // @ts-ignore
+          delete condition.subject;
+>>>>>>> 959a9b3 (Release 1.1.0 (#2))
         }
       });
       // @ts-ignore
@@ -316,19 +334,27 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       </div>
       <div className={styles.rules}>
         <Rules 
+<<<<<<< HEAD
           disabled={disabled}
+=======
+>>>>>>> 959a9b3 (Release 1.1.0 (#2))
           useSegment={true}
           ruleContainer={ruleContainer}
           variationContainer={variationContainer}
           hooksFormContainer={hooksFormContainer}
           segmentContainer={segmentContainer}
         />
+<<<<<<< HEAD
         <DefaultRule 
           disabled={disabled}
         />
         <DisabledServe 
           disabled={disabled}
         />
+=======
+        <DefaultRule />
+        <DisabledServe />
+>>>>>>> 959a9b3 (Release 1.1.0 (#2))
       </div>
       <div id='footer' className={styles.footer}>
         <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
