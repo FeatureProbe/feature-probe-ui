@@ -69,6 +69,16 @@
   height: 72px;
 }
 
+.list-item-enabled {
+  background-color: rgba(245, 72, 59, 0.05);
+
+  :global {
+    td {
+      border-bottom: 1px solid rgba(245, 72, 59, 0.1) !important;
+    }
+  }
+}
+
 .list-item:hover {
   outline: 1px solid #556EE6;
   background: rgba(85, 110, 230, 0.04);
