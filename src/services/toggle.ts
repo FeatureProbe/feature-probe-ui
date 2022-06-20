@@ -2,7 +2,7 @@ import qs from 'qs';
 import request from '../utils/request';
 import API from '../constants/api';
 import { IToggle } from 'interfaces/toggle';
-import { ITag, IToggleParams } from 'interfaces/project';
+import { ITag, IToggleParams, IExistParams } from 'interfaces/project';
 import { IContent, IMetricParams } from 'interfaces/targeting';
 import { ApplicationJsonContentType } from 'constants/api/contentType';
 
@@ -118,3 +118,30 @@ export const getMetrics = async<T> (projectKey: string, environmentKey: string, 
   return request<T>(url);
 };
 
+export const checkToggleExist = async<T> (projectKey: string, params: IExistParams) => {
+  const url = `${
+    API.toggleExistURI
+      .replace(':projectKey', projectKey)
+  }?${qs.stringify(params)}`;
+  
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJsonContentType()
+    },
+  });
+}
+
+export const checkEnvironmentExist = async<T> (projectKey: string, params: IExistParams) => {
+  const url = `${
+    API.environmentExistURI
+      .replace(':projectKey', projectKey)
+  }?${qs.stringify(params)}`;
+  
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJsonContentType()
+    },
+  });
+}

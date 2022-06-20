@@ -18,6 +18,9 @@ import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
 import Icon from 'components/Icon';
+import FormItemName from 'components/FormItem/name';
+import FormItemKey from 'components/FormItem/key';
+import FormItemDescription from 'components/FormItem/description';
 import { variationContainer, toggleInfoContainer, hooksFormContainer } from '../../provider';
 import { VariationColors } from 'constants/colors';
 import { CONFLICT } from 'constants/httpCode';
@@ -25,7 +28,7 @@ import { replaceSpace } from 'utils/tools';
 import { initVariations, initBooleanVariations, returnTypeOptions } from './constants';
 import { IVariation } from 'interfaces/targeting';
 import { ITag, ITagOption } from 'interfaces/project';
-import { createToggle, getTags, addTag, editToggle } from 'services/toggle';
+import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'services/toggle';
 
 import styles from './index.module.scss';
 
@@ -57,10 +60,18 @@ const Drawer = (props: IParams) => {
 
   const { projectKey } = useParams<ILocationParams>();
   const { variations, saveVariations } = variationContainer.useContainer();
-  const { toggleInfo, handleChange, saveToggleInfo } = toggleInfoContainer.useContainer();
   const [ tagsOptions, saveTagsOptions ] = useState<ITagOption[]>([]);
   const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
+
+  const { 
+    toggleInfo, 
+    originToggleInfo, 
+    handleChange, 
+    saveToggleInfo, 
+    saveOriginToggleInfo,
+  } = toggleInfoContainer.useContainer();
+
 
   const options = variations?.map((item: IVariation, index: number) => {
     const text = item.name || item.value || `variation ${index + 1}`
@@ -108,8 +119,17 @@ const Drawer = (props: IParams) => {
         returnType: 'boolean',
         disabledServe: 0
       });
+      saveOriginToggleInfo({
+        name: '',
+        key: '',
+        desc: '',
+        tags: [],
+        clientAvailability: false,
+        returnType: 'boolean',
+        disabledServe: 0
+      });
     }
-  }, [visible, clearErrors, getTagList, saveToggleInfo])
+  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo])
 
   useEffect(() => {
     setValue('name', toggleInfo.name);
@@ -213,6 +233,20 @@ const Drawer = (props: IParams) => {
     }
   }, [getValues, clearErrors]);
 
+  const checkExist = useCallback(async (type: string, value: string) => {
+    const res = await checkToggleExist(projectKey, {
+      type,
+      value
+    });
+
+    if (res.code === CONFLICT) {
+      setError(type.toLocaleLowerCase(), {
+        message: res.message,
+      });
+      return;
+    }
+  }, [projectKey, setError]);
+
 	return (
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
       <Form 
@@ -233,7 +267,7 @@ const Drawer = (props: IParams) => {
           >
             <FormattedMessage id='common.cancel.text' />
           </Button>
-          <Button size='mini' primary type='submit'>
+          <Button size='mini' primary type='submit' disabled={Object.keys(errors).length !== 0}>
             {
               isAdd ? <FormattedMessage id='common.create.text' /> : <FormattedMessage id='common.save.text' />
             }
@@ -242,110 +276,65 @@ const Drawer = (props: IParams) => {
           <Icon customClass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
         <div className={styles['toggle-drawer-form-content']}>
-          <Form.Field>
-            <label>
-              <span className={styles['label-required']}>*</span>
-              <FormattedMessage id='common.name.text' />
-            </label>
-            <Form.Input
-              size='mini'
-              className={styles.input}
-              value={ toggleInfo?.name }
-              placeholder={intl.formatMessage({id: 'common.name.required'})}
-              error={ errors.name ? true : false }
-              {
-                ...register('name', { 
-                  required: intl.formatMessage({id: 'common.name.required'}),
-                })
+
+          <FormItemName
+            className={styles.input}
+            value={toggleInfo?.name}
+            errors={errors}
+            register={register}
+            size='mini'
+            onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+              if (detail.value.length > 50 ) return;
+              if (detail.value !== originToggleInfo.name) {
+                checkExist('NAME', detail.value);
               }
-              onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                if (detail.value.length > 50 ) return;
-                handleChange(e, detail, 'name')
-                setValue(detail.name, detail.value);
-                await trigger('name');
+              handleChange(e, detail, 'name')
+              setValue(detail.name, detail.value);
+              await trigger('name');
 
-                if (isKeyEdit || !isAdd) {
-                  return;
-                }
-
-                const reg = /[^A-Z0-9._-]/gi;
-                const keyValue = detail.value.replace(reg, '');
-                handleChange(e, {...detail, value: keyValue}, 'key');
-                setValue('key', keyValue);
-                await trigger('key');
-              }}
-            />
-          </Form.Field>
-          { errors.name && <div className={styles['error-text']}>{ errors.name.message }</div> }
-
-          <Form.Field>
-            <label>
-              <span className={styles['label-required']}>*</span>
-              <FormattedMessage id='common.key.text' />
-              <Popup
-                inverted
-                className={styles.popup}
-                trigger={
-                  <Icon customClass={styles['icon-question']} type='question' />
-                }
-                content={intl.formatMessage({id: 'toggles.key.tips'})}
-                position='top center'
-              />
-            </label>
-
-            <Form.Input
-              size='mini'
-              className={styles.input}
-              value={toggleInfo?.key}
-              placeholder={intl.formatMessage({id: 'common.key.required'})}
-              error={ errors.key ? true : false }
-              disabled={!isAdd}
-              {
-                ...register('key', { 
-                  required: intl.formatMessage({id: 'common.key.required'}),
-                  minLength: {
-                    value: 2,
-                    message: intl.formatMessage({id: 'common.minimum.two'})
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: intl.formatMessage({id: 'common.maximum.thirty'})
-                  },
-                  pattern: {
-                    value: /^[A-Z0-9._-]+$/i,
-                    message: intl.formatMessage({id: 'common.key.invalid'})
-                  }
-                })
+              if (isKeyEdit || !isAdd) {
+                return;
               }
-              onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                saveKeyEdit(true);
-                handleChange(e, detail, 'key');
-                setValue(detail.name, detail.value);
-                await trigger('key');
-              }}
-            />
-          </Form.Field>
-          { errors.key && <div className={styles['error-text']}>{ errors.key.message }</div> }
-          <div className={styles['tip-text']}>
-            <FormattedMessage id='common.key.tips' />
-          </div>
 
-          <Form.Field>
-            <label>
-              <FormattedMessage id='common.description.text' />
-            </label>
-            <Form.TextArea 
-              value={toggleInfo?.desc} 
-              placeholder={intl.formatMessage({id: 'common.description.required'})}
-              className={styles.input}
-              onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
-                if (('' + detail.value).length > 500 ) return;
-                handleChange(e, detail, 'desc')
-                setValue(detail.name, detail.value);
-                await trigger('desc');
-              }}
-            />
-          </Form.Field>
+              const reg = /[^A-Z0-9._-]+/gi;
+              const keyValue = detail.value.replace(reg, '_');
+              handleChange(e, {...detail, value: keyValue}, 'key');
+              checkExist('KEY', detail.value);
+              setValue('key', keyValue);
+              await trigger('key');
+            }}
+          />
+
+          <FormItemKey
+            size='mini'
+            className={styles.input}
+            value={toggleInfo?.key}
+            errors={errors}
+            disabled={!isAdd}
+            register={register}
+            showPopup={true}
+            popupText={intl.formatMessage({id: 'toggles.key.tips'})}
+            onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+              saveKeyEdit(true);
+              checkExist('KEY', detail.value);
+              handleChange(e, detail, 'key');
+              setValue(detail.name, detail.value);
+              await trigger('key');
+            }}
+          />
+
+          <FormItemDescription
+            size='mini'
+            className={styles.input}
+            value={toggleInfo?.desc}
+            disabled={!isAdd}
+            onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+              if (('' + detail.value).length > 500 ) return;
+              handleChange(e, detail, 'desc')
+              setValue(detail.name, detail.value);
+              await trigger('desc');
+            }}
+          />
 
           <Form.Field>
             <label>
@@ -378,14 +367,14 @@ const Drawer = (props: IParams) => {
             </label>
             <div className={styles['radio-group']}>
               <Form.Radio
-                name="yes"
+                name='yes'
                 label={intl.formatMessage({id: 'toggles.sdk.yes'})}
                 className={styles['radio-group-item']}
                 checked={!!toggleInfo?.clientAvailability}
                 onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'clientAvailability')} 
               />
               <Form.Radio 
-                name="no"
+                name='no'
                 label={intl.formatMessage({id: 'toggles.sdk.no'})}
                 className={styles['radio-group-item']}
                 checked={!toggleInfo?.clientAvailability}

@@ -1,0 +1,51 @@
+
+.filter-form {
+  flex: 1;
+
+  :global .ui.dropdown > .text {
+    vertical-align: middle;
+    height: 25px;
+    line-height: 25px !important;
+    margin: 0 !important;
+  }
+}
+
+.form-item {
+  display: flex;
+}
+
+.form-item-name {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.form-item-key {
+  flex: 1;
+}
+
+.form-item-description {
+  width: 50%;
+  padding-right: 10px;
+}
+
+.rules {
+  margin-bottom: 48px;
+}
+
+.footer {
+  height: 56px;
+  background: #ffffff;
+  border-top: 1px solid #EBEDEF;
+  line-height: 56px;
+  padding: 0 20px;
+  position: fixed;
+  bottom: 0;
+  right: 30px;
+  left: 220px;
+}
+
+.publish-btn {
+  margin-right: 8px !important;
+}
+
+  

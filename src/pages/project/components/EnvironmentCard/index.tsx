@@ -22,7 +22,10 @@ const EnvironmentCard = (props: IProps) => {
   const [ isHover, setIsHover ] = useState<boolean>(false);
   const [ open, setMenuOpen ] = useState<boolean>(false);
 
-  const { saveEnvironmentInfo } = environmentContainer.useContainer();
+  const { 
+    saveEnvironmentInfo,
+    saveOriginEnvironmentInfo,
+  } = environmentContainer.useContainer();
 
   useEffect(() => {
     const handler = () => {
@@ -77,6 +80,10 @@ const EnvironmentCard = (props: IProps) => {
                 }}>
                   <div className={styles['menu-item']} onClick={() => {
                     saveEnvironmentInfo({
+                      name: item.name,
+                      key: item.key,
+                    });
+                    saveOriginEnvironmentInfo({
                       name: item.name,
                       key: item.key,
                     });

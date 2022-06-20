@@ -104,7 +104,7 @@ const Member = () => {
                     <FormattedMessage id='members.lastseen' />
                   </Table.HeaderCell>
                   <Table.HeaderCell className={styles['column-operation']}>
-                    <FormattedMessage id='members.operation' />
+                    <FormattedMessage id='common.operation.text' />
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>

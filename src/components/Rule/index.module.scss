@@ -3,6 +3,12 @@
   margin-bottom: 12px;
   border: 1px solid rgba(206, 212, 218, 0.5);
   border-radius: 12px;
+
+  :global {
+    .ui.floating.dropdown > .menu {
+      min-width: 120px !important;
+    }
+  }
 }
 
 .rule:hover {

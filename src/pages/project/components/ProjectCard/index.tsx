@@ -22,6 +22,7 @@ const ProjectCard = (props: IProps) => {
 
   const {
     saveProjectInfo,
+    saveOriginProjectInfo,
   } = projectContainer.useContainer();
 
   useEffect(() => {
@@ -81,6 +82,11 @@ const ProjectCard = (props: IProps) => {
             <div className={styles['menu']} onClick={() => {setMenuOpen(false)}}>
               <div className={styles['menu-item']} onClick={() => {
                 saveProjectInfo({
+                  name: project.name,
+                  key: project.key,
+                  description: project.description,
+                });
+                saveOriginProjectInfo({
                   name: project.name,
                   key: project.key,
                   description: project.description,
