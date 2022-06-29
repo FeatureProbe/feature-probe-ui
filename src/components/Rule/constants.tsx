@@ -41,10 +41,10 @@ export const getAttrOptions = (intl: IntlShape, type?:string) => {
     return [
       { key: '1', text: '=', value: '=' },
       { key: '2', text: '!=', value: '!=' },
-      { key: '3', text: '< any of', value: '<' },
-      { key: '4', text: '<= any of', value: '<=' },
-      { key: '5', text: '> any of', value: '>' },
-      { key: '6', text: '>= any of', value: '>=' },
+      { key: '3', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '<' }), value: '<' },
+      { key: '4', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '<=' }), value: '<=' },
+      { key: '5', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '>' }), value: '>' },
+      { key: '6', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '>=' }), value: '>=' },
     ];
   } else if (type === 'datetime') {
     return [

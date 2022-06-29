@@ -216,6 +216,7 @@
   "targeting.rule.condition.notmatch": "不匹配正则表达式",
   "targeting.rule.subject.segment.in": "用户属于用户组",
   "targeting.rule.subject.segment.notin": "用户不属于用户组",
+  "targeting.rule.condition.anyof": "{type} 任何一个",
   "targeting.rule.timezone.zero": "零时区 7.5°W～7.5°E 0°",
   "targeting.rule.timezone.east.one": "东一区 7.5°E～22.5°E 15°E",
   "targeting.rule.timezone.east.two": "东二区 22.5°E～37.5°E 30°E",
