@@ -21,6 +21,8 @@ export interface ICondition {
   subject: string;
   predicate: string;
   objects?: string[];
+  datetime?: string;
+  timezone?: string;
 }
 
 export interface IServe {

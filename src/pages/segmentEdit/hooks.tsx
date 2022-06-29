@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useForm } from "react-hook-form";
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { IRule, IServe } from 'interfaces/targeting';
+import { SEGMENT_TYPE } from 'components/Rule/constants';
 
 export const useRule = () => {
   const [rules, saveRules] = useState<IRule[]>([]);
@@ -33,11 +34,11 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
-  const handleAddCondition = (index: number) => {
+  const handleAddCondition = (index: number, type:string) => {
     rules[index].conditions.push({
       id: uuidv4(),
-      type: 'string',
-      subject: '',
+      type: type,
+      subject:  type === SEGMENT_TYPE ? 'user' : '',
       predicate: '',
     });
 
@@ -69,6 +70,16 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
+  const handleChangeDateTime = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].datetime = value;
+    saveRules([...rules]);
+  }
+
+  const handleChangeTimeZone = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].timezone = value;
+    saveRules([...rules]);
+  }
+
   const handleChangeServe = (ruleIndex: number, item: IServe) => {
     rules[ruleIndex].serve = item;
     saveRules([...rules]);
@@ -86,6 +97,8 @@ export const useRule = () => {
     handleChangeType,
     handleChangeOperator,
     handleChangeValue,
+    handleChangeDateTime,
+    handleChangeTimeZone,
     handleChangeServe,
   };
 }

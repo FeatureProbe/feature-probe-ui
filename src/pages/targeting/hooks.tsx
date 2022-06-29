@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { IRule, IServe, IVariation } from 'interfaces/targeting';
 import { ISegmentList } from 'interfaces/segment';
+import { SEGMENT_TYPE } from 'components/Rule/constants';
 
 export const useVarition = () => {
   const [variations, saveVariations] = useState<IVariation[]>([]);
@@ -79,11 +80,11 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
-  const handleAddCondition = (index: number) => {
+  const handleAddCondition = (index: number, type: string) => {
     rules[index].conditions.push({
       id: uuidv4(),
-      type: 'string',
-      subject: '',
+      type,
+      subject: type === SEGMENT_TYPE ? 'user' : '',
       predicate: '',
     });
 
@@ -110,6 +111,16 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
+  const handleChangeDateTime = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].datetime = value;
+    saveRules([...rules]);
+  }
+
+  const handleChangeTimeZone = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].timezone = value;
+    saveRules([...rules]);
+  }
+
   const handleChangeType = (ruleIndex: number, conditionIndex: number, value: string) => {
     rules[ruleIndex].conditions[conditionIndex].type = value;
     saveRules([...rules]);
@@ -132,6 +143,8 @@ export const useRule = () => {
     handleChangeType,
     handleChangeOperator,
     handleChangeValue,
+    handleChangeDateTime,
+    handleChangeTimeZone,
     handleChangeServe,
   };
 }
