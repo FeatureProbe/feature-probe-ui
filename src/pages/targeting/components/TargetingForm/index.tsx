@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo } from 'react';
-import { Form, Radio, CheckboxProps, Input, InputOnChangeData } from 'semantic-ui-react';
+import { Form, Radio, CheckboxProps, InputOnChangeData } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import JSONbig from 'json-bigint';

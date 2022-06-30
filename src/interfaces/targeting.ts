@@ -90,4 +90,5 @@ export interface IMetricContent {
 
 export interface IMetricParams {
   lastHours: string;
+  metricType: string;
 }

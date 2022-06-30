@@ -2,6 +2,7 @@ import { useEffect, useMemo, useCallback, useState, SyntheticEvent, useRef } fro
 import { Select, DropdownProps } from 'semantic-ui-react';
 import { Line } from 'react-chartjs-2';
 import { useParams } from 'react-router-dom';
+import classNames from 'classnames';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -30,6 +31,7 @@ const Metrics = () => {
   const [ metrics, setMetric ] = useState<IMetric[]>([]);
   const [ summary, setSummary ] = useState<IValues[]>([]);
   const [ filterValue, setFilterValue ] = useState<string>('24');
+  const [ fitlerType, setFilterType ] = useState<string>('name');
   const [ total, setTotal ] = useState<number>(0);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
@@ -38,6 +40,7 @@ const Metrics = () => {
   const initMetrics = useCallback(() => {
     getMetrics<IMetricContent>(projectKey, environmentKey, toggleKey, {
       lastHours: filterValue,
+      metricType: fitlerType.toUpperCase(),
     }).then(res => {
       const { data, success } = res;
       if (success && data) {
@@ -53,7 +56,7 @@ const Metrics = () => {
         message.error(res.message || intl.formatMessage({id: 'targeting.metrics.error.text'}));
       }
     });
-  }, [intl, projectKey, environmentKey, toggleKey, filterValue]);
+  }, [intl, projectKey, environmentKey, toggleKey, filterValue, fitlerType]);
 
   useEffect(() => {
     if (timer.current) {
@@ -85,13 +88,29 @@ const Metrics = () => {
     window.open('https://github.com/FeatureProbe/FeatureProbe');
   }, []);
 
+  const menuNameCls = classNames({
+    [styles['menu-item-selected']]: fitlerType === 'name',
+  });
+
+  const menuValueCls = classNames({
+    [styles['menu-item-selected']]: fitlerType === 'value',
+  });
+
 	return (
 		<div className={styles.metrics}>
       <div className={styles.title}>
         <div className={styles['title-text']}>
           <FormattedMessage id='common.evaluations.text' />
         </div>
-        <div>
+        <div className={styles.operations}>
+          <div className={styles.menus}>
+            <span className={`${styles['menu-item']} ${menuNameCls}`} onClick={() => { setFilterType('name'); }}>
+              <FormattedMessage id='common.name.text' />
+            </span>
+            <span className={`${styles['menu-item']} ${menuValueCls}`} onClick={() => { setFilterType('value'); }}>
+              <FormattedMessage id='common.value.uppercase.text' />
+            </span>
+          </div>
           <Select
             floating
             value={filterValue}

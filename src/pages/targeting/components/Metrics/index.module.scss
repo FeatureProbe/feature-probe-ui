@@ -13,6 +13,41 @@
   align-items: center;
 }
 
+.operations {
+  display: flex;
+}
+
+.menus {
+  width: 125px;
+  height: 32px;
+  margin-right: 16px;
+  background: rgba(33, 37, 41, 0.04);
+  border-radius: 8px;
+  padding: 2px;
+  text-align: center;
+}
+
+.menu-item {
+  display: inline-block;
+  width: 57px;
+  height: 28px;
+  text-align: center;
+  line-height: 28px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 auto;
+}
+
+.menu-item:first-child {
+  margin-right: 7px;
+}
+
+.menu-item-selected {
+  background: #FFFFFF;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.84);
+}
+
 .title-text {
   font-family: HelveticaNeue-Medium;
   font-size: 14px;

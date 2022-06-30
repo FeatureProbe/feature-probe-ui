@@ -180,7 +180,16 @@ const RuleContent = (props: IProps) => {
             options={getAttrOptions(intl, condition.type)}
             placeholder={intl.formatMessage({id: 'targeting.rule.operator.placeholder'})}
             openOnFocus={false}
-            icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+            icon={
+              <>
+                <div className={styles['rule-item-type']}>
+                  <div className={styles['rule-item-type-text']}>
+                    {condition.type}
+                  </div>
+                </div>
+                <Icon customClass={styles['angle-down']} type='angle-down' />
+              </>
+            }
             error={ errors[`rule_${rule.id}_condition_${condition.id}_predicate`] ? true : false }
             {
               ...register(`rule_${rule.id}_condition_${condition.id}_predicate`, { 
@@ -199,11 +208,6 @@ const RuleContent = (props: IProps) => {
                 { intl.formatMessage({id: 'targeting.rule.operator.required'}) }
               </div> 
           }
-          <div className={styles['rule-item-type']}>
-            <div className={styles['rule-item-type-text']}>
-              {condition.type}
-            </div>
-          </div>
         </Form.Field>
 
         {
