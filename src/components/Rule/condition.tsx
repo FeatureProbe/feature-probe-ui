@@ -4,6 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import Datetime from 'react-datetime';
 import moment from 'moment';
 import Icon from 'components/Icon';
+import message from 'components/MessageBox';
 import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import { getAttrOptions, attributeOptions, getSubjectSegmentOptions, timezoneOptions, DATETIME_TYPE, SEGMENT_TYPE, SEMVER_TYPE, NUMBER_TYPE } from './constants';
@@ -300,21 +301,22 @@ const RuleContent = (props: IProps) => {
                   })
                 }
                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
+                  let result = true;
                   if (condition.type === NUMBER_TYPE) {
                     // @ts-ignore
-                    const result = detail.value.every((item) => {
+                    result = detail.value.every((item) => {
                       return NUMBER_REG.test(item);
                     });
-
-                    if (!result) return;
                   } else if (condition.type === SEMVER_TYPE) {
                     // @ts-ignore
-                    const result = detail.value.every((item) => {
+                    result = detail.value.every((item) => {
                       return SEMVER_REG.test(item);
                     });
-
-                    if (!result) return;
                   }
+                  if (!result) {
+                    message.error(intl.formatMessage({id: 'targeting.invalid.value.text'}));
+                    return;
+                  };
 
                   handleChangeValue(ruleIndex, conditionIndex, detail.value);
                   setValue(detail.name, detail.value);

@@ -187,12 +187,12 @@ export const useReactHookForm = () => {
 
 export const useBeforeUnload = (enabled: boolean, message: string) => {
   const handler = useCallback((event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      if (message) {
-        event.returnValue = message;
-      }
-      return message;
-    }, [message]);
+    event.preventDefault();
+    if (message) {
+      event.returnValue = message;
+    }
+    return message;
+  }, [message]);
 
   useEffect(() => {
     if (!enabled) {

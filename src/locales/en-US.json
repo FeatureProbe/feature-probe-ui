@@ -246,6 +246,7 @@
   "targeting.serve.percentage.error.text": "{value}% needs to be assigned to a variation",
   "targeting.serve.percentage.rollout": "a percentage rollout",
   "targeting.serve.required": "Please select serve",
+  "targeting.invalid.value.text": "Invalid value",
 
   "variations.add.text": "Add Variation",
   "variations.dulpicated.error.text": "Variation names are duplicated, please change!",

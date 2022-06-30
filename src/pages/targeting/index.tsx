@@ -5,6 +5,7 @@ import { Menu, MenuItemProps } from 'semantic-ui-react';
 import localForage from 'localforage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import message from 'components/MessageBox';
+// import Button from 'components/Button';
 import ProjectLayout from 'layout/projectLayout';
 import TargetingForm from './components/TargetingForm';
 import Metrics from './components/Metrics';
@@ -16,6 +17,7 @@ import { IToggleInfo, ITarget, IContent, IModifyInfo } from 'interfaces/targetin
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams } from 'interfaces/project';
 import { NOT_FOUND } from 'constants/httpCode';
+import { I18NContainer } from 'hooks';
 import styles from './index.module.scss';
 
 const Targeting = () => {
@@ -30,6 +32,11 @@ const Targeting = () => {
   const history = useHistory();
   const intl = useIntl();
 
+  const {
+    i18n,
+    setI18n
+  } = I18NContainer.useContainer();
+
   useEffect(() => {
     if (projectKey) {
       localForage.setItem('projectKey', projectKey);
@@ -42,6 +49,10 @@ const Targeting = () => {
   useEffect(() => {
     saveActiveItem(navigation);
   }, [navigation]);
+
+  useEffect(() => {
+    console.log(i18n);
+  }, [i18n]);
 
   const initTargeting = useCallback(() => {
     getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
