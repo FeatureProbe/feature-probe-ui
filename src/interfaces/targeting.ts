@@ -61,6 +61,7 @@ export interface ITarget {
 
 export interface IContent {
   disabled: boolean;
+  comment?: string;
   content: ITarget;
   modifiedBy?: string;
   modifiedTime?: string;

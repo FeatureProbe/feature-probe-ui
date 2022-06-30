@@ -110,13 +110,29 @@ const VariationItem = (props: IProps) => {
 	return (
     <div className={styles.line}>
       <div className={styles.name}>
-        <span>
+        {/* <span>
           {intl.formatMessage({id: 'common.variation.capital.text'})}{index + 1}
-        </span>
+        </span> */}
         <span className={styles['name-color']} style={{background: VariationColors[index % 20]}}></span>
       </div>
       <div className={styles.left}>
         <Form.Group widths='equal'>
+          <Form.Field className={styles[`${ prefix ? (prefix + '-') : '' }variation-name`]}>
+            <Form.Input 
+              fluid 
+              name='name'
+              customname='name'
+              value={name}
+              index={index}
+              placeholder={intl.formatMessage({id: 'common.name.lowercase.text'})}
+              onChange={handleInput}
+              label={(
+                <span className={styles.label}>
+                  <FormattedMessage id='common.name.lowercase.text' />
+                </span>
+              )}
+            />
+          </Form.Field>
           <Form.Field className={styles[`${prefix ? (prefix + '-') : ''}variation-value`]}>
             {
               returnType !== 'boolean' ? (
@@ -208,22 +224,6 @@ const VariationItem = (props: IProps) => {
                 { errors[`variation_${id}`].message }
               </div> 
             }
-          </Form.Field>
-          <Form.Field className={styles[`${ prefix ? (prefix + '-') : '' }variation-name`]}>
-            <Form.Input 
-              fluid 
-              name='name'
-              customname='name'
-              value={name}
-              index={index}
-              placeholder={intl.formatMessage({id: 'common.name.lowercase.text'})}
-              onChange={handleInput}
-              label={(
-                <span className={styles.label}>
-                  <FormattedMessage id='common.name.lowercase.text' />
-                </span>
-              )}
-            />
           </Form.Field>
           <Form.Field width={6}>
             <Form.Input 

@@ -5,15 +5,18 @@ import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { IRule, IServe, IVariation } from 'interfaces/targeting';
 import { ISegmentList } from 'interfaces/segment';
 import { SEGMENT_TYPE } from 'components/Rule/constants';
+import { getVariationName } from 'utils/tools';
 
 export const useVarition = () => {
   const [variations, saveVariations] = useState<IVariation[]>([]);
+  const name = getVariationName(variations);
+
 
   const handleAdd = () => {
     variations.push({
       id: uuidv4(),
       value: '',
-      name: '',
+      name,
       description: '',
     });
     saveVariations([...variations]);

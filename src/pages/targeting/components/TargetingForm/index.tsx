@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo } from 'react';
-import { Form, Radio, CheckboxProps } from 'semantic-ui-react';
+import { Form, Radio, CheckboxProps, Input, InputOnChangeData } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import JSONbig from 'json-bigint';
@@ -57,6 +57,7 @@ const Targeting = (props: IProps) => {
   const [ publishDisabled, setPublishDisabled ] = useState<boolean>(true);
   const [ publishTargeting, setPublishTargeting ] = useState<IContent>();
   const [ diffContent, setDiffContent ] = useState<string>('');
+  const [ comment, setComment ] = useState<string>('');
   const history = useHistory();
   const intl = useIntl();
 
@@ -116,11 +117,7 @@ const Targeting = (props: IProps) => {
       }
 
       rule.conditions?.forEach((condition: ICondition) => {
-        if (condition.type === SEGMENT_TYPE) {
-          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.predicate);
-        } else {
-          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
-        }
+        setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
         setValue(`rule_${rule.id}_condition_${condition.id}_predicate`, condition.predicate);
 
         if (condition.type === DATETIME_TYPE) {
@@ -236,13 +233,17 @@ const Targeting = (props: IProps) => {
   const handlePublishConfirm = useCallback(async () => {
     setOpen(false);
     if (publishTargeting) {
-      const res = await saveToggle(projectKey, environmentKey, toggleKey, publishTargeting);
+      console.log(publishTargeting)
+      const res = await saveToggle(projectKey, environmentKey, toggleKey, {
+        comment: comment,
+        ...publishTargeting
+      });
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
         initTargeting();
       }
     }
-  }, [intl, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
+  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
 
   const handleGoBack = useCallback(() => {
     history.push(`/${projectKey}/${environmentKey}/toggles`);
@@ -251,10 +252,13 @@ const Targeting = (props: IProps) => {
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {
       return variations[disabledServe.select].name 
-      || variations[disabledServe.select].value 
-      || `${intl.formatMessage({id: 'common.variation.text'})} ${Number(disabledServe.select) + 1}`
+      || variations[disabledServe.select].value
     }
-  }, [intl, disabledServe.select, variations]);
+  }, [disabledServe.select, variations]);
+
+  const handleInputComment = useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
+    setComment(data.value);
+  }, []);
 
 	return (
     <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off'>
@@ -331,6 +335,18 @@ const Targeting = (props: IProps) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
+            <div className={styles['comment']}>
+              <div className={styles['comment-title']}>
+                <FormattedMessage id='targeting.publish.modal.comment' />
+              </div>
+              <div className={styles['comment-content']}>
+                <Form.Input 
+                  className={styles['comment-input']} 
+                  placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
+                  onChange={handleInputComment}
+                />
+              </div>
+            </div>
             <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
           </div>
         </div>

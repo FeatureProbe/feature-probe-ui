@@ -149,3 +149,32 @@
   }
   }
 }
+
+.comment {
+  background-color: #F8F9FA;
+  height: 48px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+}
+
+.comment-title {
+  margin-right: 5px;
+}
+
+.comment-content {
+  flex: 1;
+  margin-left: 5px;
+}
+
+.comment-input {
+  :global {
+    .ui.input {
+      width: 100%;
+    }
+
+    .ui.input > input {
+      height: 32px;
+    }
+  }
+}

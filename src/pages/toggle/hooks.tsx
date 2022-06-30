@@ -4,15 +4,18 @@ import { InputOnChangeData, TextAreaProps, DropdownProps, CheckboxProps } from '
 import { useForm } from 'react-hook-form';
 import { IVariation } from 'interfaces/targeting';
 import { IToggleInfo } from 'interfaces/toggle';
+import { getVariationName } from 'utils/tools';
 
 export const useVarition = () => {
   const [variations, saveVariations] = useState<IVariation[]>([]);
 
   const handleAdd = () => {
+    const name = getVariationName(variations);
+
     variations.push({
       id: uuidv4(),
       value: '',
-      name: '',
+      name,
       description: '',
     });
     saveVariations([...variations]);
