@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, SyntheticEvent, useMemo } from 'react
 import { Form, Radio, CheckboxProps, InputOnChangeData } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
+import moment from 'moment';
 import JSONbig from 'json-bigint';
 import { createPatch } from 'diff';
 import { html } from 'diff2html/lib/diff2html';
@@ -124,6 +125,9 @@ const Targeting = (props: IProps) => {
           if (condition.objects) {
             setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, condition.objects[0].slice(0, 19));
             setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, condition.objects[0].slice(19));
+          } else {
+            setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, moment().format().slice(0, 19));
+            setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, moment().format().slice(19));
           }
         } else {
           setValue(`rule_${rule.id}_condition_${condition.id}_objects`, condition.objects);

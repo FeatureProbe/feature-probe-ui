@@ -5,6 +5,7 @@ import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/cloneDeep';
+import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import FormItemName from 'components/FormItem/name';
 import FormItemKey from 'components/FormItem/key';
@@ -146,6 +147,9 @@ const Info = () => {
           if (condition.objects) {
             setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, condition.objects[0].slice(0, 19));
             setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, condition.objects[0].slice(19));
+          } else {
+            setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, moment().format().slice(0, 19));
+            setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, moment().format().slice(19));
           }
         } else {
           setValue(`rule_${rule.id}_condition_${condition.id}_objects`, condition.objects);
