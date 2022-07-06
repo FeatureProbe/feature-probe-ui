@@ -41,10 +41,10 @@ export const getAttrOptions = (intl: IntlShape, type?:string) => {
     return [
       { key: '1', text: '=', value: '=' },
       { key: '2', text: '!=', value: '!=' },
-      { key: '3', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '<' }), value: '<' },
-      { key: '4', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '<=' }), value: '<=' },
-      { key: '5', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '>' }), value: '>' },
-      { key: '6', text: intl.formatMessage({id: 'targeting.rule.condition.anyof'}, { type: '>=' }), value: '>=' },
+      { key: '3', text: '<', value: '<' },
+      { key: '4', text: '<=', value: '<=' },
+      { key: '5', text: '>', value: '>' },
+      { key: '6', text: '>=', value: '>=' },
     ];
   } else if (type === 'datetime') {
     return [
@@ -69,7 +69,7 @@ export const timezoneOptions = (intl: IntlShape) => {
     {key: 11, text: intl.formatMessage({id: 'targeting.rule.timezone.east.ten'}), value: '+10:00'},
     {key: 12, text: intl.formatMessage({id: 'targeting.rule.timezone.east.eleven'}), value: '+11:00'},
     {key: 13, text: intl.formatMessage({id: 'targeting.rule.timezone.east.twelve'}), value: '+12:00'},
-    {key: 14, text: intl.formatMessage({id: 'targeting.rule.timezone.east.twelve'}), value: '-12:00'},
+    {key: 14, text: intl.formatMessage({id: 'targeting.rule.timezone.west.twelve'}), value: '-12:00'},
     {key: 15, text: intl.formatMessage({id: 'targeting.rule.timezone.west.eleven'}), value: '-11:00'},
     {key: 16, text: intl.formatMessage({id: 'targeting.rule.timezone.west.ten'}), value: '-10:00'},
     {key: 17, text: intl.formatMessage({id: 'targeting.rule.timezone.west.nine'}), value: '-09:00'},

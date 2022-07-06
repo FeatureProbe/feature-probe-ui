@@ -75,6 +75,7 @@ export interface IModifyInfo {
 export interface IValues {
   count: number;
   value: string;
+  deleted: boolean;
 }
 
 

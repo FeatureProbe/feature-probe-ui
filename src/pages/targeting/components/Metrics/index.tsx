@@ -128,7 +128,16 @@ const Metrics = () => {
             <div className={styles.variations}>
               <div className={styles['table-header']}>
                 <div>
-                  <FormattedMessage id='targeting.variations.evaluations.text' />
+                  {
+                    intl.formatMessage(
+                      {id: 'targeting.variations.evaluations.text'}, 
+                      {
+                        type: fitlerType === 'name' 
+                          ? intl.formatMessage({id: 'common.name.text'}) 
+                          : intl.formatMessage({id: 'common.value.uppercase.text'}) 
+                      }
+                    )
+                  }
                 </div>
                 { 
                   total !== 0 && <div className={styles.total}>
@@ -142,10 +151,10 @@ const Metrics = () => {
                     return (
                       <div className={styles['variation-name']}>
                         <span style={{ background: VariationColors[index % 24] }} className={styles['variation-name-color']}></span>
-                        <span className={styles['variation-name-text']}>
+                        <span className={`${styles['variation-name-text']} ${item.deleted && styles['variation-deleted']}`}>
                           { item.value }
                         </span>
-                        <span className={styles.count}>
+                        <span className={`${styles['count']} ${item.deleted && styles['variation-deleted']}`}>
                           { item.count }
                         </span>
                       </div>

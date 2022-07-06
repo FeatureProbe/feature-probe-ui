@@ -135,6 +135,7 @@ const Targeting = (props: IProps) => {
   useEffect(()=> {
     if (targeting) {
       variations.forEach((variation: IVariation) => {
+        setValue(`variation_${variation.id}_name`, variation.name);
         setValue(`variation_${variation.id}`, variation.value);
       });
 

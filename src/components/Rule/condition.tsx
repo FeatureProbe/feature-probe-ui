@@ -26,6 +26,7 @@ interface IProps {
 
 const NUMBER_REG = /^(-?\d+)(\.\d+)?$/i;
 const SEMVER_REG = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/i;
+const SPECIAL_PREDICATE = ['<', '<=', '>', '>='];
 
 const RuleContent = (props: IProps) => {
   const { 
@@ -198,6 +199,11 @@ const RuleContent = (props: IProps) => {
               })
             }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
+              // @ts-ignore
+              if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value)) {
+                handleChangeValue(ruleIndex, conditionIndex, []);
+              } 
+
               handleChangeOperator(ruleIndex, conditionIndex, detail.value);
               setValue(detail.name, detail.value);
               await trigger(`rule_${rule.id}_condition_${condition.id}_predicate`);
@@ -227,7 +233,7 @@ const RuleContent = (props: IProps) => {
                 <Datetime
                   timeFormat='HH:mm:ss'
                   inputProps={inputProps}
-                  value={condition.datetime ? moment(condition.datetime) : ''}
+                  value={condition.datetime ? moment(condition.datetime) : moment()}
                   onChange={async (e: any) => {
                     handleChangeDateTime(ruleIndex, conditionIndex, e.format().slice(0, 19));
                     setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, e.format().slice(0, 19));
@@ -250,7 +256,7 @@ const RuleContent = (props: IProps) => {
                   floating
                   allowAdditions={false}
                   options={timezoneOptions(intl)}
-                  value={condition.timezone}
+                  value={condition.timezone || moment().format().slice(-6)}
                   openOnFocus={false}
                   renderLabel={renderLabel}
                   icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
@@ -307,11 +313,20 @@ const RuleContent = (props: IProps) => {
                     result = detail.value.every((item) => {
                       return NUMBER_REG.test(item);
                     });
+                    // @ts-ignore
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                      return;
+                    } 
                   } else if (condition.type === SEMVER_TYPE) {
                     // @ts-ignore
                     result = detail.value.every((item) => {
                       return SEMVER_REG.test(item);
                     });
+
+                    // @ts-ignore
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                      return;
+                    } 
                   }
                   if (!result) {
                     message.error(intl.formatMessage({id: 'targeting.invalid.value.text'}));

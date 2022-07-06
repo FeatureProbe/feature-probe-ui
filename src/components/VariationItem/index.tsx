@@ -110,9 +110,6 @@ const VariationItem = (props: IProps) => {
 	return (
     <div className={styles.line}>
       <div className={styles.name}>
-        {/* <span>
-          {intl.formatMessage({id: 'common.variation.capital.text'})}{index + 1}
-        </span> */}
         <span className={styles['name-color']} style={{background: VariationColors[index % 20]}}></span>
       </div>
       <div className={styles.left}>
@@ -120,18 +117,36 @@ const VariationItem = (props: IProps) => {
           <Form.Field className={styles[`${ prefix ? (prefix + '-') : '' }variation-name`]}>
             <Form.Input 
               fluid 
-              name='name'
               customname='name'
               value={name}
               index={index}
               placeholder={intl.formatMessage({id: 'common.name.lowercase.text'})}
-              onChange={handleInput}
               label={(
-                <span className={styles.label}>
+                <span className={styles['label-text']}>
+                  <span className={styles['label-required']}>*</span>
                   <FormattedMessage id='common.name.lowercase.text' />
                 </span>
               )}
+              error={errors?.[`variation_${id}_name`] ? true : false}
+              {
+                ...register(`variation_${id}_name`, {
+                  required: {
+                    value: true,
+                    message: intl.formatMessage({id: 'common.input.placeholder'})
+                  }
+                })
+              }
+              onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                handleInput(e, detail);
+                setValue(detail.name, detail.value);
+                await trigger(`variation_${id}_name`);
+              }}
             />
+            { 
+              errors[`variation_${id}_name`] && <div className={styles[`${prefix ? (prefix + '-') : ''}error-text`]}>
+                { errors[`variation_${id}_name`].message }
+              </div> 
+            }
           </Form.Field>
           <Form.Field className={styles[`${prefix ? (prefix + '-') : ''}variation-value`]}>
             {

@@ -147,6 +147,7 @@ const Drawer = (props: IParams) => {
     }
 
     variations.forEach((variation: IVariation) => {
+      setValue(`variation_${variation.id}_name`, variation.name);
       setValue(`variation_${variation.id}`, variation.value);
     });
 

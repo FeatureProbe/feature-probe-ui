@@ -43,7 +43,7 @@ const Router = () => {
                     path={route.path}
                     exact={route.exact}
                     render={props => (
-                        <Route key={route.path} exact path={route.path} component={route.component} />
+                      <Route key={route.path} exact path={route.path} component={route.component} />
                     )}
                   />
                 )
