@@ -143,7 +143,7 @@ const Targeting = () => {
                   <FormattedMessage id='common.metrics.text' />
                 </Menu.Item>
               </Menu>
-              <div className={styles.history}>
+              {/* <div className={styles.history}>
                 <Popup
                   basic
                   open={historyOpen}
@@ -167,7 +167,7 @@ const Targeting = () => {
                 >
                   <History />
                 </Popup>
-              </div>
+              </div> */}
             </div>
             {
               activeItem === 'targeting' && (
