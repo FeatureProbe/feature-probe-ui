@@ -1,3 +1,5 @@
+import { IPageable, ISort } from "./toggle";
+
 export interface IVariation {
   id: string;
   name?: string;
@@ -92,4 +94,28 @@ export interface IMetricContent {
 export interface IMetricParams {
   lastHours: string;
   metricType: string;
+}
+
+export interface IVersion {
+  projectKey: string,
+  environmentKey: string,
+  comment: string,
+  content: IContent;
+  version: number,
+  createdTime: string;
+  createdBy: string;
+}
+
+export interface ITargetingVersions {
+  totalElements: number;
+  totalPages: number;
+  sort: ISort;
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  pageable: IPageable;
+  size: number;
+  content: IVersion[];
+  number: number;
+  empty: boolean;
 }

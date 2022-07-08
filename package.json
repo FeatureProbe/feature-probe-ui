@@ -37,6 +37,7 @@
     "react-datetime": "^3.1.1",
     "react-dom": "^17.0.0",
     "react-hook-form": "^7.29.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-intl": "^5.25.1",
     "react-router-dom": "^5.3.0",
     "sass-loader": "^13.0.0",

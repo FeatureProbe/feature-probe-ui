@@ -5,16 +5,16 @@ import { Menu, MenuItemProps, Popup } from 'semantic-ui-react';
 import localForage from 'localforage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import message from 'components/MessageBox';
-// import Button from 'components/Button';
+import Button from 'components/Button';
 import ProjectLayout from 'layout/projectLayout';
 import TargetingForm from './components/TargetingForm';
 import Metrics from './components/Metrics';
 import Info from './components/Info';
-// import History from './components/History';
+import History from './components/History';
 import { Provider } from './provider';
-import { getTargeting, getToggleInfo } from 'services/toggle';
+import { getTargeting, getToggleInfo, getTargetingVersion } from 'services/toggle';
 import { getSegmentList } from 'services/segment';
-import { IToggleInfo, ITarget, IContent, IModifyInfo } from 'interfaces/targeting';
+import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion } from 'interfaces/targeting';
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams } from 'interfaces/project';
 import { NOT_FOUND } from 'constants/httpCode';
@@ -30,6 +30,9 @@ const Targeting = () => {
   const [ initialTargeting, saveInitTargeting ] = useState<IContent>();
   const [ historyOpen, setHistoryOpen ] = useState<boolean>(false);
   const [ modifyInfo, saveModifyInfo ] = useState<IModifyInfo>();
+  const [ versions, saveVersions ] = useState<IVersion[]>([]);
+  const [ historyPageIndex, saveHistoryPageIndex ] = useState<number>(0);
+  const [ historyTotal, saveHistoryTotal ] = useState<number>(0);
 
   const history = useHistory();
   const intl = useIntl();
@@ -57,6 +60,28 @@ const Targeting = () => {
   useEffect(() => {
     saveActiveItem(navigation);
   }, [navigation]);
+
+  useEffect(() => {
+    if (historyOpen) {
+      getTargetingVersion<ITargetingVersions>(projectKey, environmentKey, toggleKey, {
+        pageIndex: historyPageIndex,
+        pageSize: 10,
+      }).then(res => {
+        const { data, success } = res;
+        if (success && data) {
+          const { content, totalElements } = data;
+          saveVersions(versions.concat(content));
+          saveHistoryTotal(totalElements);
+        } else {
+          message.error(res.message || intl.formatMessage({id: '获取历史版本失败'}));
+        }
+      })
+    } else {
+      saveVersions([]);
+      saveHistoryPageIndex(0);
+      saveHistoryTotal(0);
+    }
+  }, [historyPageIndex, historyOpen, projectKey, environmentKey, toggleKey, intl])
 
   const initTargeting = useCallback(() => {
     getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
@@ -143,7 +168,7 @@ const Targeting = () => {
                   <FormattedMessage id='common.metrics.text' />
                 </Menu.Item>
               </Menu>
-              {/* <div className={styles.history}>
+              <div className={styles.history}>
                 <Popup
                   basic
                   open={historyOpen}
@@ -165,9 +190,15 @@ const Targeting = () => {
                     </Button>
                   }
                 >
-                  <History />
+                  <History 
+                    versions={versions}
+                    total={historyTotal}
+                    loadMore={() => {
+                      saveHistoryPageIndex(historyPageIndex + 1);
+                    }}
+                  />
                 </Popup>
-              </div> */}
+              </div>
             </div>
             {
               activeItem === 'targeting' && (
