@@ -6,13 +6,13 @@ export const initVariations = [
   {
     id: fisrt_id,
     value: '', 
-    name: '', 
+    name: 'variation1', 
     description: '',
   },
   {
     id: second_id,
     value: '', 
-    name: '', 
+    name: 'variation2', 
     description: '',
   }
 ];
@@ -21,13 +21,13 @@ export const initBooleanVariations = [
   {
     id: fisrt_id,
     value: 'false', 
-    name: '', 
+    name: 'variation1', 
     description: '',
   },
   {
     id: second_id,
     value: 'true', 
-    name: '', 
+    name: 'variation2', 
     description: '',
   }
 ];

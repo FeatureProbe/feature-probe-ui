@@ -61,12 +61,12 @@ const Serve = (props: IProps) => {
     const options: IDropItemProps[] = variationsInUse.map((item: IDropItemProps, index: number) => {
       return {
         value: index,
-        text: item.name || item.value || `${intl.formatMessage({id: 'common.variation.text'})} ${index + 1}`,
+        text: item.name || item.value,
         content: (
           <div className={styles['dropdown-variation']}>
             <span style={{background: VariationColors[index % 20]}} className={styles['dropdown-variation-color']}></span>
             <span className={styles['dropdown-variation-text']}>
-              {item.name || item.value || intl.formatMessage({id: 'common.variation.text'}) + (index + 1)}
+              { item.name || item.value }
             </span>
           </div>
         ),
@@ -278,7 +278,7 @@ const Serve = (props: IProps) => {
                       <div className={styles['variation-name']}>
                         <span style={{ background: VariationColors[index % 24] }} className={styles['variation-name-color']}></span>
                         <span className={styles['variation-name-text']}>
-                          { item.name || item.value || intl.formatMessage({id: 'common.variation.text'}) + (index + 1) }
+                          { item.name || item.value }
                         </span>
                       </div>
                     </div>

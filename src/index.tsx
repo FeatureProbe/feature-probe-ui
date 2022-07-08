@@ -8,6 +8,7 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import Intl from './locales/intl';
 import 'iconfont/iconfont.css';
 import 'semantic-ui-less/semantic.less';
+import "react-datetime/css/react-datetime.css";
 import 'dayjs/locale/zh-cn';
 
 import './index.scss';

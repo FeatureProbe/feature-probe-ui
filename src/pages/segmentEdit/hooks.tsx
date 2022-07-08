@@ -1,8 +1,10 @@
 import { useState, SyntheticEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 import { useForm } from "react-hook-form";
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
-import { IRule, IServe } from 'interfaces/targeting';
+import { ICondition, IRule, IServe } from 'interfaces/targeting';
+import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 
 export const useRule = () => {
   const [rules, saveRules] = useState<IRule[]>([]);
@@ -33,14 +35,18 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
-  const handleAddCondition = (index: number) => {
-    rules[index].conditions.push({
+  const handleAddCondition = (index: number, type: string) => {
+    const condition: ICondition = {
       id: uuidv4(),
-      type: 'string',
-      subject: '',
+      type: type,
+      subject:  type === SEGMENT_TYPE ? 'user' : '',
       predicate: '',
-    });
-
+    };
+    if (type === DATETIME_TYPE) {
+      condition.datetime = moment().format().slice(0, 19);
+      condition.timezone = moment().format().slice(-6);
+    }
+    rules[index].conditions.push(condition);
     saveRules([...rules]);
   }
 
@@ -69,6 +75,16 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
+  const handleChangeDateTime = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].datetime = value;
+    saveRules([...rules]);
+  }
+
+  const handleChangeTimeZone = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].timezone = value;
+    saveRules([...rules]);
+  }
+
   const handleChangeServe = (ruleIndex: number, item: IServe) => {
     rules[ruleIndex].serve = item;
     saveRules([...rules]);
@@ -86,6 +102,8 @@ export const useRule = () => {
     handleChangeType,
     handleChangeOperator,
     handleChangeValue,
+    handleChangeDateTime,
+    handleChangeTimeZone,
     handleChangeServe,
   };
 }

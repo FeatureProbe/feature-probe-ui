@@ -1,11 +1,15 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { Form, Select, Dropdown, DropdownProps, DropdownItemProps } from 'semantic-ui-react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import Datetime from 'react-datetime';
+import moment from 'moment';
 import Icon from 'components/Icon';
+import message from 'components/MessageBox';
 import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
-import { getAttrOptions, attributeOptions, getSubjectSegmentOptions, VALUE_IN, VALUE_NOT_IN } from './constants';
+import { getAttrOptions, attributeOptions, getSubjectSegmentOptions, timezoneOptions, DATETIME_TYPE, SEGMENT_TYPE, SEMVER_TYPE, NUMBER_TYPE } from './constants';
 import { ISegment, ISegmentList } from 'interfaces/segment';
+import canlendar from 'images/calendar.svg';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -20,6 +24,10 @@ interface IProps {
   hooksFormContainer: IContainer;
 }
 
+const NUMBER_REG = /^(-?\d+)(\.\d+)?$/i;
+const SEMVER_REG = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/i;
+const SPECIAL_PREDICATE = ['<', '<=', '>', '>='];
+
 const RuleContent = (props: IProps) => {
   const { 
     rule,
@@ -33,15 +41,15 @@ const RuleContent = (props: IProps) => {
   } = props;
 
   const intl = useIntl();
-  const [ showPredicate, setShowPredicate ] = useState<boolean>(true);
   const [ options, setOption ] = useState<IOption[]>();
   let segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
   let subjectOptions: IOption[] = attributeOptions;
 
   const {
     handleChangeAttr,
-    handleChangeType,
     handleChangeOperator,
+    handleChangeDateTime,
+    handleChangeTimeZone,
     handleChangeValue,
     handleDeleteCondition,
   } = ruleContainer.useContainer()
@@ -87,12 +95,6 @@ const RuleContent = (props: IProps) => {
     }
   }, [segmentList]);
 
-  useEffect(() => {
-    if (condition.type === 'segment') {
-      setShowPredicate(false);
-    }
-  }, [condition]);
-
   const valuesOptions = condition.objects?.map((val: string) => {
     return {
       key: val,
@@ -117,6 +119,10 @@ const RuleContent = (props: IProps) => {
     });
   }
 
+  const inputProps = {
+    placeholder: intl.formatMessage({id: 'common.dropdown.placeholder'}),
+  };
+
   return (
     <div className={styles['rule-item']} key={condition.id}>
       {
@@ -139,10 +145,11 @@ const RuleContent = (props: IProps) => {
             floating
             allowAdditions
             options={subjectOptions}
-            value={showPredicate ? condition.subject : condition.predicate}
+            value={condition.subject}
             openOnFocus={false}
             selectOnBlur={false}
             closeOnChange={true}
+            disabled={condition.type === SEGMENT_TYPE}
             icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false }
             {
@@ -155,16 +162,6 @@ const RuleContent = (props: IProps) => {
             }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
               handleChangeAttr(ruleIndex, conditionIndex, detail.value);
-              handleChangeValue(ruleIndex, conditionIndex, []);
-              if (detail.value === VALUE_IN || detail.value === VALUE_NOT_IN) {
-                setShowPredicate(false);
-                unregister(`rule_${rule.id}_condition_${condition.id}_predicate`);
-                handleChangeOperator(ruleIndex, conditionIndex, detail.value);
-                handleChangeType(ruleIndex, conditionIndex, 'segment');
-              } else {
-                setShowPredicate(true);
-                handleChangeType(ruleIndex, conditionIndex, 'string');
-              }
               setValue(detail.name, detail.value);
               await trigger(`rule_${rule.id}_condition_${condition.id}_subject`);
             }}
@@ -177,80 +174,183 @@ const RuleContent = (props: IProps) => {
           }
         </Form.Field>
 
+        <Form.Field className={styles['rule-item-operator']}>
+          <Select 
+            floating
+            className={styles['rule-item-operator-dropdown']}
+            value={condition.predicate}
+            options={getAttrOptions(intl, condition.type)}
+            placeholder={intl.formatMessage({id: 'targeting.rule.operator.placeholder'})}
+            openOnFocus={false}
+            icon={
+              <>
+                <div className={styles['rule-item-type']}>
+                  <div className={styles['rule-item-type-text']}>
+                    {condition.type}
+                  </div>
+                </div>
+                <Icon customClass={styles['angle-down']} type='angle-down' />
+              </>
+            }
+            error={ errors[`rule_${rule.id}_condition_${condition.id}_predicate`] ? true : false }
+            {
+              ...register(`rule_${rule.id}_condition_${condition.id}_predicate`, { 
+                required: true, 
+              })
+            }
+            onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
+              // @ts-ignore
+              if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value)) {
+                handleChangeValue(ruleIndex, conditionIndex, []);
+              } 
+
+              handleChangeOperator(ruleIndex, conditionIndex, detail.value);
+              setValue(detail.name, detail.value);
+              await trigger(`rule_${rule.id}_condition_${condition.id}_predicate`);
+            }}
+          />
+          { 
+            errors[`rule_${rule.id}_condition_${condition.id}_predicate`] && 
+              <div className={styles['error-text']}>
+                { intl.formatMessage({id: 'targeting.rule.operator.required'}) }
+              </div> 
+          }
+        </Form.Field>
+
         {
-          showPredicate && (
-            <Form.Field className={styles['rule-item-operator']}>
-              <Select 
-                floating
-                className={styles['rule-item-operator-dropdown']}
-                value={condition.predicate}
-                options={getAttrOptions(intl)}
-                placeholder={intl.formatMessage({id: 'targeting.rule.operator.placeholder'})}
-                openOnFocus={false}
-                icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
-                error={ errors[`rule_${rule.id}_condition_${condition.id}_predicate`] ? true : false }
+          condition.type === DATETIME_TYPE ? (
+            <>
+              <Form.Field 
+                width={6}
+                className={styles['rule-item-datetime']}
+                error={ errors[`rule_${rule.id}_condition_${condition.id}_datetime`] ? true : false  }
                 {
-                  ...register(`rule_${rule.id}_condition_${condition.id}_predicate`, { 
+                  ...register(`rule_${rule.id}_condition_${condition.id}_datetime`, { 
+                    required: true, 
+                  })
+                }
+              >
+                <Datetime
+                  timeFormat='HH:mm:ss'
+                  inputProps={inputProps}
+                  value={condition.datetime ? moment(condition.datetime) : moment()}
+                  onChange={async (e: any) => {
+                    handleChangeDateTime(ruleIndex, conditionIndex, e.format().slice(0, 19));
+                    setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, e.format().slice(0, 19));
+                    await trigger(`rule_${rule.id}_condition_${condition.id}_datetime`);
+                  }}
+                />
+                { 
+                  errors[`rule_${rule.id}_condition_${condition.id}_datetime`] && 
+                    <div className={styles['error-text']}>
+                      { intl.formatMessage({id: 'common.dropdown.placeholder'}) }
+                    </div> 
+                }
+                <img src={canlendar} alt='canlendar' className={styles['rule-item-datetime-canlendar']} />
+              </Form.Field>
+              <Form.Field width={6}>
+                <Dropdown
+                  placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})}
+                  search
+                  selection
+                  floating
+                  allowAdditions={false}
+                  options={timezoneOptions(intl)}
+                  value={condition.timezone || moment().format().slice(-6)}
+                  openOnFocus={false}
+                  renderLabel={renderLabel}
+                  icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                  error={ errors[`rule_${rule.id}_condition_${condition.id}_timezone`] ? true : false }
+                  noResultsMessage={null}
+                  {
+                    ...register(`rule_${rule.id}_condition_${condition.id}_timezone`, { 
+                      required: true, 
+                    })
+                  }
+                  onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
+                    handleChangeTimeZone(ruleIndex, conditionIndex, detail.value);
+                    setValue(detail.name, detail.value);
+                    await trigger(`rule_${rule.id}_condition_${condition.id}_timezone`);
+                  }}
+                />
+                { 
+                  errors[`rule_${rule.id}_condition_${condition.id}_timezone`] && 
+                    <div className={styles['error-text']}>
+                      <FormattedMessage id='common.dropdown.placeholder' />
+                    </div> 
+                }
+              </Form.Field>
+            </>
+          ) : (
+            <Form.Field width={6}>
+              <Dropdown
+                placeholder={
+                  condition.type !== SEGMENT_TYPE 
+                  ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
+                  : intl.formatMessage({id: 'common.dropdown.placeholder'})
+                }
+                search
+                selection
+                multiple
+                floating
+                allowAdditions={condition.type !== SEGMENT_TYPE }
+                options={condition.type !== SEGMENT_TYPE ? valuesOptions : options}
+                value={condition.objects}
+                openOnFocus={false}
+                renderLabel={renderLabel}
+                icon={condition.type === SEGMENT_TYPE  && <Icon customClass={styles['angle-down']} type='angle-down' />}
+                error={ errors[`rule_${rule.id}_condition_${condition.id}_objects`] ? true : false }
+                noResultsMessage={null}
+                {
+                  ...register(`rule_${rule.id}_condition_${condition.id}_objects`, { 
                     required: true, 
                   })
                 }
                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
-                  handleChangeOperator(ruleIndex, conditionIndex, detail.value);
+                  let result = true;
+                  if (condition.type === NUMBER_TYPE) {
+                    // @ts-ignore
+                    result = detail.value.every((item) => {
+                      return NUMBER_REG.test(item);
+                    });
+                    // @ts-ignore
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                      return;
+                    } 
+                  } else if (condition.type === SEMVER_TYPE) {
+                    // @ts-ignore
+                    result = detail.value.every((item) => {
+                      return SEMVER_REG.test(item);
+                    });
+
+                    // @ts-ignore
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                      return;
+                    } 
+                  }
+                  if (!result) {
+                    message.error(intl.formatMessage({id: 'targeting.invalid.value.text'}));
+                    return;
+                  };
+
+                  handleChangeValue(ruleIndex, conditionIndex, detail.value);
                   setValue(detail.name, detail.value);
-                  await trigger(`rule_${rule.id}_condition_${condition.id}_predicate`);
+                  await trigger(`rule_${rule.id}_condition_${condition.id}_objects`);
                 }}
               />
               { 
-                errors[`rule_${rule.id}_condition_${condition.id}_predicate`] && 
+                errors[`rule_${rule.id}_condition_${condition.id}_objects`] && 
                   <div className={styles['error-text']}>
-                    { intl.formatMessage({id: 'targeting.rule.operator.required'}) }
+                    { 
+                      condition.type !== SEGMENT_TYPE
+                      ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
+                      : intl.formatMessage({id: 'common.dropdown.placeholder'})
+                    }
                   </div> 
               }
             </Form.Field>
           )
         }
-
-        <Form.Field width={6}>
-          <Dropdown
-            placeholder={
-              showPredicate 
-              ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
-              : intl.formatMessage({id: 'common.dropdown.placeholder'})
-            }
-            search
-            selection
-            multiple
-            floating
-            allowAdditions={showPredicate}
-            options={showPredicate ? valuesOptions : options}
-            value={condition.objects}
-            openOnFocus={false}
-            renderLabel={renderLabel}
-            icon={!showPredicate && <Icon customClass={styles['angle-down']} type='angle-down' />}
-            error={ errors[`rule_${rule.id}_condition_${condition.id}_objects`] ? true : false }
-            noResultsMessage={null}
-            {
-              ...register(`rule_${rule.id}_condition_${condition.id}_objects`, { 
-                required: true, 
-              })
-            }
-            onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
-              handleChangeValue(ruleIndex, conditionIndex, detail.value);
-              setValue(detail.name, detail.value);
-              await trigger(`rule_${rule.id}_condition_${condition.id}_objects`);
-            }}
-          />
-          { 
-            errors[`rule_${rule.id}_condition_${condition.id}_objects`] && 
-              <div className={styles['error-text']}>
-                { 
-                  showPredicate 
-                  ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
-                  : intl.formatMessage({id: 'common.dropdown.placeholder'})
-                }
-              </div> 
-          }
-        </Form.Field>
       </Form.Group>
       <Icon 
         style={{visibility: `${rule.conditions.length > 1 ? 'visible' : 'hidden'}`}} 
