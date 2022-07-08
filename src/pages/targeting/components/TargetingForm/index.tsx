@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo } from 'react';
-import { Form, Radio, CheckboxProps } from 'semantic-ui-react';
+import { Form, Radio, CheckboxProps, InputOnChangeData } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
+import moment from 'moment';
 import JSONbig from 'json-bigint';
 import { createPatch } from 'diff';
 import { html } from 'diff2html/lib/diff2html';
@@ -34,6 +35,7 @@ import { IRouterParams } from 'interfaces/project';
 import { ISegmentList } from 'interfaces/segment';
 import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
+import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 
 interface IProps {
   targeting?: ITarget;
@@ -56,6 +58,7 @@ const Targeting = (props: IProps) => {
   const [ publishDisabled, setPublishDisabled ] = useState<boolean>(true);
   const [ publishTargeting, setPublishTargeting ] = useState<IContent>();
   const [ diffContent, setDiffContent ] = useState<string>('');
+  const [ comment, setComment ] = useState<string>('');
   const history = useHistory();
   const intl = useIntl();
 
@@ -82,10 +85,16 @@ const Targeting = (props: IProps) => {
 
       const targetRule = cloneDeep(targeting.rules);
       targetRule.forEach((rule: IRule) => {
+        rule.id = uuidv4();
         rule.conditions.forEach((condition: ICondition) => {
           condition.id = uuidv4();
+          if (condition.type === SEGMENT_TYPE) {
+            condition.subject = 'user';
+          } else if (condition.type === DATETIME_TYPE && condition.objects) {
+            condition.datetime = condition.objects[0].slice(0, 19);
+            condition.timezone = condition.objects[0].slice(19);
+          }
         });
-        rule.id = uuidv4();
       });
       saveRules(targetRule);
 
@@ -109,20 +118,28 @@ const Targeting = (props: IProps) => {
       }
 
       rule.conditions?.forEach((condition: ICondition) => {
-        if (condition.type === 'segment') {
-          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.predicate);
-        } else {
-          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
-        }
+        setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
         setValue(`rule_${rule.id}_condition_${condition.id}_predicate`, condition.predicate);
-        setValue(`rule_${rule.id}_condition_${condition.id}_objects`, condition.objects);
-      })
-    })
+
+        if (condition.type === DATETIME_TYPE) {
+          if (condition.objects) {
+            setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, condition.objects[0].slice(0, 19));
+            setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, condition.objects[0].slice(19));
+          } else {
+            setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, moment().format().slice(0, 19));
+            setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, moment().format().slice(19));
+          }
+        } else {
+          setValue(`rule_${rule.id}_condition_${condition.id}_objects`, condition.objects);
+        }
+      });
+    });
   }, [rules, variations, setValue]);
 
   useEffect(()=> {
     if (targeting) {
       variations.forEach((variation: IVariation) => {
+        setValue(`variation_${variation.id}_name`, variation.name);
         setValue(`variation_${variation.id}`, variation.value);
       });
 
@@ -142,9 +159,15 @@ const Targeting = (props: IProps) => {
         // @ts-ignore
         delete condition.id;
 
-        if (condition.type === 'segment') {
+        if (condition.type === SEGMENT_TYPE) {
           // @ts-ignore
           delete condition.subject;
+        } else if (condition.type === DATETIME_TYPE) {
+          let result = [];
+          result.push('' + condition.datetime + condition.timezone);
+          condition.objects = result;
+          delete condition.datetime;
+          delete condition.timezone;
         }
       });
       // @ts-ignore
@@ -215,13 +238,17 @@ const Targeting = (props: IProps) => {
   const handlePublishConfirm = useCallback(async () => {
     setOpen(false);
     if (publishTargeting) {
-      const res = await saveToggle(projectKey, environmentKey, toggleKey, publishTargeting);
+      console.log(publishTargeting)
+      const res = await saveToggle(projectKey, environmentKey, toggleKey, {
+        comment: comment,
+        ...publishTargeting
+      });
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
         initTargeting();
       }
     }
-  }, [intl, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
+  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
 
   const handleGoBack = useCallback(() => {
     history.push(`/${projectKey}/${environmentKey}/toggles`);
@@ -230,10 +257,13 @@ const Targeting = (props: IProps) => {
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {
       return variations[disabledServe.select].name 
-      || variations[disabledServe.select].value 
-      || `${intl.formatMessage({id: 'common.variation.text'})} ${Number(disabledServe.select) + 1}`
+      || variations[disabledServe.select].value
     }
-  }, [intl, disabledServe.select, variations]);
+  }, [disabledServe.select, variations]);
+
+  const handleInputComment = useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
+    setComment(data.value);
+  }, []);
 
 	return (
     <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off'>
@@ -310,6 +340,18 @@ const Targeting = (props: IProps) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
+            <div className={styles['comment']}>
+              <div className={styles['comment-title']}>
+                <FormattedMessage id='targeting.publish.modal.comment' />
+              </div>
+              <div className={styles['comment-content']}>
+                <Form.Input 
+                  className={styles['comment-input']} 
+                  placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
+                  onChange={handleInputComment}
+                />
+              </div>
+            </div>
             <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
           </div>
         </div>

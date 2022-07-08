@@ -3,6 +3,12 @@
   min-width: 1120px;
 }
 
+.menus {
+  display: flex;
+  align-items: center;
+}
+
 .menu {
   margin: 12px 0 !important;
+  flex: 1;
 }

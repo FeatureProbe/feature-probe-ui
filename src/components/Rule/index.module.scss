@@ -91,6 +91,50 @@
 
 .rule-item-operator {
   max-width: 188px;
+  position: relative;
+
+  :global {
+    .ui.selection.dropdown {
+      padding-left: 68px !important;
+    }
+  }
+}
+
+.rule-item-datetime {
+  max-width: 248px;
+  position: relative;
+}
+
+.rule-item-datetime-canlendar {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+}
+
+.rule-item-type {
+  width: 50px;
+  height: 20px;
+  background: rgba(33, 37, 41, 0.08);
+  border-radius: 4px;
+  color: #495057;
+  line-height: 20px;
+  position: absolute;
+  top: 6px;
+  left: 12px;
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+.rule-item-type-text {
+  width: 120%;
+  transform: scale(0.83, 0.83);
+  font-size: 12px;
+  display: block;
+  transform-origin: left center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 20px;
 }
 
 .rule-item-operator-dropdown {
@@ -186,4 +230,26 @@
   font-size: 12px !important;
   margin-left: 12px;
   color: #74788D;
+}
+
+.popup {
+  padding: 4px 0 !important;
+  margin-top: 0 !important;
+}
+
+.menu {
+  min-width: 120px;
+  color: #212529;
+}
+
+.menu-item {
+  height: 28px;
+  line-height: 28px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 12px;
+}
+
+.menu-item:hover {
+  background-color: #F8F9FA;
 }

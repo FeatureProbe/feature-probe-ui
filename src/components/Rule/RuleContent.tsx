@@ -1,10 +1,12 @@
 import { FormattedMessage } from 'react-intl';
+import { Popup } from 'semantic-ui-react';
 import Button from 'components/Button';
 import Serve from 'components/Serve';
 import Icon from 'components/Icon';
 import Condition from './condition';
 import { IRule, ICondition } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
+import { STRING_TYPE, NUMBER_TYPE, SEMVER_TYPE, DATETIME_TYPE, SEGMENT_TYPE } from './constants';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -60,10 +62,36 @@ const RuleContent = (props: IProps) => {
       }
 
       <div className={styles['rule-add']}>
-        <Button type='button' secondary className={styles['rule-add-btn']} onClick={() => handleAddCondition(ruleIndex)}>
-          <Icon type='add' customClass={styles.iconfont} />
-          <FormattedMessage id='common.add.text' />
-        </Button>
+        <Popup
+          basic
+          hoverable
+          position='bottom right'
+          className={styles.popup}
+          trigger={
+            <Button type='button' secondary className={styles['rule-add-btn']}>
+              <Icon type='add' customClass={styles.iconfont} />
+              <FormattedMessage id='common.add.text' />
+            </Button>
+          }
+        >
+          <div className={styles['menu']}>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, STRING_TYPE)}}>
+              {STRING_TYPE}
+            </div>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, NUMBER_TYPE)}}>
+              {NUMBER_TYPE}
+            </div>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, DATETIME_TYPE)}}>
+              {DATETIME_TYPE}
+            </div>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEMVER_TYPE)}}>
+              {SEMVER_TYPE}
+            </div>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEGMENT_TYPE)}}>
+              {SEGMENT_TYPE}
+            </div>
+          </div>
+        </Popup>
       </div>
      
       {

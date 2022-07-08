@@ -21,6 +21,8 @@ export interface ICondition {
   subject: string;
   predicate: string;
   objects?: string[];
+  datetime?: string;
+  timezone?: string;
 }
 
 export interface IServe {
@@ -59,6 +61,7 @@ export interface ITarget {
 
 export interface IContent {
   disabled: boolean;
+  comment?: string;
   content: ITarget;
   modifiedBy?: string;
   modifiedTime?: string;
@@ -72,6 +75,7 @@ export interface IModifyInfo {
 export interface IValues {
   count: number;
   value: string;
+  deleted: boolean;
 }
 
 
@@ -87,4 +91,5 @@ export interface IMetricContent {
 
 export interface IMetricParams {
   lastHours: string;
+  metricType: string;
 }

@@ -35,7 +35,7 @@ const DisabledServe = () => {
   }, [intl, disabledServe, variations, setError, setValue])
 
   const options = variations.map((item: IVariation, index: number) => {
-    const text = item.name || item.value || `${intl.formatMessage({id: 'common.variation.text'})} ${index + 1}`
+    const text = item.name || item.value;
     return {
       text,
       value: index,

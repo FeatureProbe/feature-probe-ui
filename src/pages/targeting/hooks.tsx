@@ -1,18 +1,23 @@
 import { useState, useEffect, useCallback, SyntheticEvent } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 import { useForm } from "react-hook-form";
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
-import { IRule, IServe, IVariation } from 'interfaces/targeting';
+import { ICondition, IRule, IServe, IVariation } from 'interfaces/targeting';
 import { ISegmentList } from 'interfaces/segment';
+import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
+import { getVariationName } from 'utils/tools';
 
 export const useVarition = () => {
   const [variations, saveVariations] = useState<IVariation[]>([]);
+  const name = getVariationName(variations);
+
 
   const handleAdd = () => {
     variations.push({
       id: uuidv4(),
       value: '',
-      name: '',
+      name,
       description: '',
     });
     saveVariations([...variations]);
@@ -79,13 +84,19 @@ export const useRule = () => {
     saveRules([...rules]);
   }
 
-  const handleAddCondition = (index: number) => {
-    rules[index].conditions.push({
+  const handleAddCondition = (index: number, type: string) => {
+    const condition: ICondition = {
       id: uuidv4(),
-      type: 'string',
-      subject: '',
+      type: type,
+      subject:  type === SEGMENT_TYPE ? 'user' : '',
       predicate: '',
-    });
+    };
+
+    if (type === DATETIME_TYPE) {
+      condition.datetime = moment().format().slice(0, 19);
+      condition.timezone = moment().format().slice(-6);
+    }
+    rules[index].conditions.push(condition);
 
     saveRules([...rules]);
   }
@@ -107,6 +118,16 @@ export const useRule = () => {
 
   const handleChangeValue = (ruleIndex: number, conditionIndex: number, value: string[]) => {
     rules[ruleIndex].conditions[conditionIndex].objects = value;
+    saveRules([...rules]);
+  }
+
+  const handleChangeDateTime = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].datetime = value;
+    saveRules([...rules]);
+  }
+
+  const handleChangeTimeZone = (ruleIndex: number, conditionIndex: number, value: string) => {
+    rules[ruleIndex].conditions[conditionIndex].timezone = value;
     saveRules([...rules]);
   }
 
@@ -132,6 +153,8 @@ export const useRule = () => {
     handleChangeType,
     handleChangeOperator,
     handleChangeValue,
+    handleChangeDateTime,
+    handleChangeTimeZone,
     handleChangeServe,
   };
 }
@@ -171,12 +194,12 @@ export const useReactHookForm = () => {
 
 export const useBeforeUnload = (enabled: boolean, message: string) => {
   const handler = useCallback((event: BeforeUnloadEvent) => {
-      event.preventDefault();
-      if (message) {
-        event.returnValue = message;
-      }
-      return message;
-    }, [message]);
+    event.preventDefault();
+    if (message) {
+      event.returnValue = message;
+    }
+    return message;
+  }, [message]);
 
   useEffect(() => {
     if (!enabled) {

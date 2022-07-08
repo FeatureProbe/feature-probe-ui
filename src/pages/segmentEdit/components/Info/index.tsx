@@ -5,6 +5,7 @@ import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import cloneDeep from 'lodash/cloneDeep';
+import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import FormItemName from 'components/FormItem/name';
 import FormItemKey from 'components/FormItem/key';
@@ -19,6 +20,7 @@ import { checkSegmentExist, getSegmentDetail, addSegment, editSegment, getSegmen
 import { ISegmentInfo, IToggleList, IToggle } from 'interfaces/segment';
 import { SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH } from 'router/routes';
 import { IRule, ICondition } from 'interfaces/targeting';
+import { DATETIME_TYPE } from 'components/Rule/constants';
 
 import styles from './index.module.scss';
 
@@ -88,10 +90,14 @@ const Info = () => {
           saveOriginSegmentInfo(cloneDeep(data));
           const targetRule = cloneDeep(data.rules);
           targetRule.forEach((rule: IRule) => {
+            rule.id = uuidv4();
             rule.conditions.forEach((condition: ICondition) => {
               condition.id = uuidv4();
+              if (condition.type === DATETIME_TYPE && condition.objects) {
+                condition.datetime = condition.objects[0].slice(0, 19);
+                condition.timezone = condition.objects[0].slice(19);
+              }
             });
-            rule.id = uuidv4();
           });
 
           saveRules(targetRule);
@@ -108,6 +114,14 @@ const Info = () => {
       rule?.conditions?.forEach((condition: ICondition) => {
         // @ts-ignore
         delete condition.id;
+
+        if (condition.type === DATETIME_TYPE) {
+          let result = [];
+          result.push('' + condition.datetime + condition.timezone);
+          condition.objects = result;
+          delete condition.datetime;
+          delete condition.timezone;
+        }
       });
       // @ts-ignore
       delete rule.id;
@@ -129,7 +143,17 @@ const Info = () => {
       rule.conditions?.forEach((condition: ICondition) => {
         setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
         setValue(`rule_${rule.id}_condition_${condition.id}_predicate`, condition.predicate);
-        setValue(`rule_${rule.id}_condition_${condition.id}_objects`, condition.objects);
+        if (condition.type === DATETIME_TYPE) {
+          if (condition.objects) {
+            setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, condition.objects[0].slice(0, 19));
+            setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, condition.objects[0].slice(19));
+          } else {
+            setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, moment().format().slice(0, 19));
+            setValue(`rule_${rule.id}_condition_${condition.id}_timezone`, moment().format().slice(19));
+          }
+        } else {
+          setValue(`rule_${rule.id}_condition_${condition.id}_objects`, condition.objects);
+        }
       });
     });
 

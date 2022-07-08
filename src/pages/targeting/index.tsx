@@ -26,9 +26,22 @@ const Targeting = () => {
   const [ segmentList, saveSegmentList ] = useState<ISegmentList>();
   const [ toggleDisabled, saveToggleDisable ] = useState<boolean>(false);
   const [ initialTargeting, saveInitTargeting ] = useState<IContent>();
+  const [ historyOpen, setHistoryOpen ] = useState<boolean>(false);
   const [ modifyInfo, saveModifyInfo ] = useState<IModifyInfo>();
+
   const history = useHistory();
   const intl = useIntl();
+
+  useEffect(() => {
+    const handler = () => {
+      if (historyOpen) {
+        setHistoryOpen(false);
+      }
+    }
+    window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [historyOpen]);
 
   useEffect(() => {
     if (projectKey) {
@@ -111,22 +124,24 @@ const Targeting = () => {
               toggleInfo={toggleInfo}
               modifyInfo={modifyInfo}
             />
-            <Menu pointing secondary className={styles.menu}>
-              <Menu.Item
-                name='targeting'
-                active={activeItem === 'targeting'}
-                onClick={handleItemClick}
-              >
-                <FormattedMessage id='common.targeting.text' />
-              </Menu.Item>
-              <Menu.Item
-                name='metrics'
-                active={activeItem === 'metrics'}
-                onClick={handleItemClick}
-              >
-                <FormattedMessage id='common.metrics.text' />
-              </Menu.Item>
-            </Menu>
+            <div className={styles.menus}>
+              <Menu pointing secondary className={styles.menu}>
+                <Menu.Item
+                  name='targeting'
+                  active={activeItem === 'targeting'}
+                  onClick={handleItemClick}
+                >
+                  <FormattedMessage id='common.targeting.text' />
+                </Menu.Item>
+                <Menu.Item
+                  name='metrics'
+                  active={activeItem === 'metrics'}
+                  onClick={handleItemClick}
+                >
+                  <FormattedMessage id='common.metrics.text' />
+                </Menu.Item>
+              </Menu>
+            </div>
             {
               activeItem === 'targeting' && (
                 <TargetingForm 

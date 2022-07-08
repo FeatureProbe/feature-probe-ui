@@ -34,6 +34,7 @@ const Variations = (props: IProps) => {
   } = hooksFormContainer.useContainer();
 
   const handleDeleteVariation = useCallback((index: number, variationId: string) => {
+    unregister(`variation_${variationId}_name`);
     unregister(`variation_${variationId}`);
     handleDelete(index);
   }, [handleDelete, unregister]);

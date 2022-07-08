@@ -4,7 +4,7 @@
 
 .ui.disabled.dropdown,
 .ui.dropdown .menu > .disabled.item {
-  background: #EFF2F7;
+  background: #EFF2F7 !important;
   border: 1px solid #CED4DA;
   opacity: 1;
   pointer-events: inherit;
