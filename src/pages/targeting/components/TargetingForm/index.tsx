@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Form, Radio, TextArea, CheckboxProps, TextAreaProps } from 'semantic-ui-react';
+import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
@@ -35,10 +35,7 @@ import { IRouterParams } from 'interfaces/project';
 import { ISegmentList } from 'interfaces/segment';
 import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
-<<<<<<< HEAD
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
-=======
->>>>>>> 959a9b3 (Release 1.1.0 (#2))
 
 interface IProps {
   disabled?: boolean;
@@ -51,13 +48,8 @@ interface IProps {
   saveToggleDisable(status: boolean): void;
 }
 
-<<<<<<< HEAD
 const Targeting = forwardRef((props: IProps, ref: any) => {
   const { disabled, toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
-=======
-const Targeting = (props: IProps) => {
-  const { toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
->>>>>>> 959a9b3 (Release 1.1.0 (#2))
   const { rules, saveRules } = ruleContainer.useContainer();
   const { variations, saveVariations } = variationContainer.useContainer();
   const { defaultServe, saveDefaultServe } = defaultServeContainer.useContainer();
@@ -173,8 +165,6 @@ const Targeting = (props: IProps) => {
       rule.conditions.forEach((condition: ICondition) => {
         // @ts-ignore
         delete condition.id;
-
-<<<<<<< HEAD
         if (condition.type === SEGMENT_TYPE) {
           // @ts-ignore
           delete condition.subject;
@@ -184,11 +174,6 @@ const Targeting = (props: IProps) => {
           condition.objects = result;
           delete condition.datetime;
           delete condition.timezone;
-=======
-        if (condition.type === 'segment') {
-          // @ts-ignore
-          delete condition.subject;
->>>>>>> 959a9b3 (Release 1.1.0 (#2))
         }
       });
       // @ts-ignore
@@ -283,7 +268,7 @@ const Targeting = (props: IProps) => {
     }
   }, [disabledServe.select, variations]);
 
-  const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps) => {
+  const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps | InputOnChangeData) => {
     // @ts-ignore
     setComment(data.value);
   }, []);
@@ -334,27 +319,19 @@ const Targeting = (props: IProps) => {
       </div>
       <div className={styles.rules}>
         <Rules 
-<<<<<<< HEAD
           disabled={disabled}
-=======
->>>>>>> 959a9b3 (Release 1.1.0 (#2))
           useSegment={true}
           ruleContainer={ruleContainer}
           variationContainer={variationContainer}
           hooksFormContainer={hooksFormContainer}
           segmentContainer={segmentContainer}
         />
-<<<<<<< HEAD
         <DefaultRule 
           disabled={disabled}
         />
         <DisabledServe 
           disabled={disabled}
         />
-=======
-        <DefaultRule />
-        <DisabledServe />
->>>>>>> 959a9b3 (Release 1.1.0 (#2))
       </div>
       <div id='footer' className={styles.footer}>
         <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
@@ -378,6 +355,18 @@ const Targeting = (props: IProps) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
+            <div className={styles['comment']}>
+              <div className={styles['comment-title']}>
+                <FormattedMessage id='targeting.publish.modal.comment' />
+              </div>
+              <div className={styles['comment-content']}>
+                <Form.Input 
+                  className={styles['comment-input']} 
+                  placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
+                  onChange={handleInputComment}
+                />
+              </div>
+            </div>
             <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
             <div className={styles['comment']}>
               <div className={styles['comment-title']}>
