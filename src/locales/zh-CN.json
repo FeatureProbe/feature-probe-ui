@@ -192,7 +192,7 @@
   "targeting.publish.success.text": "发布成功!",
   "targeting.status.text": "状态",
   "targeting.status.disabled.text": "未生效, 返回 ",
-  "targeting.variations.evaluations.text": "访问到的{type}",
+  "targeting.variations.evaluations.text": "访问到分组的{type}",
   "targeting.metrics.no.data.text": "无数据",
   "targeting.metrics.link.sdk.text": "请确保SDK接入正确 ",
   "targeting.metrics.no.data.tips": "并且开关是生效的",
