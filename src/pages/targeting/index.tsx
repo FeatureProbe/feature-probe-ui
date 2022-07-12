@@ -246,7 +246,7 @@ const Targeting = () => {
                   <i className={`${styles['icon-warning-circle']} icon-warning-circle iconfont`}></i>
                   <span className={styles['message-content-text']}>
                     <FormattedMessage id='targeting.view.versions' />
-                    <FormattedMessage id='common.version.text' />: &nbsp;
+                    <FormattedMessage id='common.version.text' />:
                     { selectedVersion }
                   </span>
                 </div>
@@ -279,13 +279,11 @@ const Targeting = () => {
                 <div className={styles.history}>
                   <Popup
                     basic
-                    pinned
                     open={historyOpen}
-                    eventsEnabled={false}
                     on='click'
                     position='bottom right'
-                    positionFixed
                     className={styles.popup}
+                    style={{zIndex: 1000}}
                     trigger={
                       <Button 
                         primary

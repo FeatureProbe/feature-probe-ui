@@ -2,11 +2,11 @@
 import { SyntheticEvent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import classNames from 'classnames';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
-import styles from './index.module.scss';
 import { IVersion } from 'interfaces/targeting';
-import classNames from 'classnames';
+import styles from './index.module.scss';
 
 interface IProps {
   versions: IVersion[];
@@ -42,13 +42,14 @@ const History = (props: IProps) => {
           }
         >
           {
-            versions.length > 0 && versions.map((item, index) => {
+            versions.length > 0 && versions.map((item: IVersion) => {
               const clsRight = classNames(
                 styles['version-right'],
                 {
                   [styles['version-right-selected']]: item?.version === Number(selectedVersion)
                 }
               );
+
               const clsCircle = classNames(
                 styles.circle,
                 {
@@ -58,7 +59,7 @@ const History = (props: IProps) => {
 
               return (
                 <div 
-                  key={index} 
+                  key={item.version} 
                   className={styles.version} 
                   onClick={(e: SyntheticEvent) => {
                     e.stopPropagation();
@@ -70,20 +71,20 @@ const History = (props: IProps) => {
                   </div>
                   <div className={clsRight}>
                     <div className={styles.title}>
-                      <FormattedMessage id='common.versions.text' />:&nbsp;
+                      <FormattedMessage id='common.versions.text' />:
                       { item.version }
                     </div>
                     <div className={styles.modifyBy}>
-                      <FormattedMessage id='common.modified.by.text' />:&nbsp;
+                      <FormattedMessage id='common.modified.by.text' />:
                       { item.createdBy }
                     </div>
                     <div className={styles.modifyTime}>
-                      <FormattedMessage id='common.modified.time.text' />:&nbsp;
+                      <FormattedMessage id='common.modified.time.text' />:
                       { dayjs(item?.createdTime).fromNow() }  
                     </div>
                     {
                       item.comment && <div className={styles.modifyTime}>
-                        <FormattedMessage id='targeting.publish.modal.comment' />&nbsp;
+                        <FormattedMessage id='targeting.publish.modal.comment' />
                         { item.comment }
                       </div>
                     }
