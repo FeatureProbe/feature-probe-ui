@@ -156,3 +156,15 @@ export const getTargetingVersion = async<T> (projectKey: string, environmentKey:
   
   return request<T>(url);
 };
+
+export const getTargetingVersionsByVersion = async<T> (projectKey: string, environmentKey: string, toggleKey: string, version: number) => {
+  const url = `${
+    API.targetingVersionsByVersionURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+      .replace(':toggleKey', toggleKey)
+      .replace(':version', '' + version)
+  }`;
+  
+  return request<T>(url);
+};

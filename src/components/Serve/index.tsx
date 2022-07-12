@@ -14,6 +14,7 @@ interface IAttr {
 interface IProps {
   index?: number;
   id?: string;
+  disabled?: boolean;
   variations: IVariation[];
   serve?: IServe;
   handleChangeServe: (item: IServe) => void;
@@ -31,6 +32,7 @@ const Serve = (props: IProps) => {
     id,
     index,
     serve,
+    disabled,
     variations,
     customStyle,
     hooksFormContainer,
@@ -175,19 +177,19 @@ const Serve = (props: IProps) => {
 
   const handleMinus = useCallback((index: number) => {
     const value = Number(variationsInUse[index].inputValue);
-    if (value <= MIN) {
+    if (value <= MIN || disabled) {
       return;
     }
     changePercentage(index, value - 1);
-  }, [variationsInUse, changePercentage]);
+  }, [disabled, variationsInUse, changePercentage]);
 
   const handleAdd = useCallback((index: number) => {
     const value = Number(variationsInUse[index].inputValue);
-    if (value >= TOTAL) {
+    if (value >= TOTAL || disabled) {
       return;
     }
     changePercentage(index, value + 1);
-  }, [variationsInUse, changePercentage]);
+  }, [disabled, variationsInUse, changePercentage]);
 
 	return (
     <div className={styles.serve}>
@@ -205,6 +207,7 @@ const Serve = (props: IProps) => {
             floating
             value={value}
             openOnFocus={false}
+            disabled={disabled}
             options={variationsOptions}
             error={ errors[id ? `rule_${id}_serve`: 'defaultServe'] ? true : false }
             {
@@ -263,6 +266,7 @@ const Serve = (props: IProps) => {
                         size='mini'
                         className={styles['variation-item-input']}
                         value={item.inputValue}
+                        disabled={disabled}
                         onChange={(e: ChangeEvent) => handleInputChange(e, index)}
                         icon={
                           <div>

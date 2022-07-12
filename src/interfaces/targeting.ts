@@ -62,9 +62,10 @@ export interface ITarget {
 }
 
 export interface IContent {
-  disabled: boolean;
+  version?: number;
+  disabled?: boolean;
   comment?: string;
-  content: ITarget;
+  content?: ITarget;
   modifiedBy?: string;
   modifiedTime?: string;
 }
@@ -80,10 +81,10 @@ export interface IValues {
   deleted: boolean;
 }
 
-
 export interface IMetric {
   name: string;
   values: IValues[];
+  lastChangeVersion?: number;
 }
 
 export interface IMetricContent {
@@ -100,10 +101,11 @@ export interface IVersion {
   projectKey: string,
   environmentKey: string,
   comment: string,
-  content: IContent;
+  content: ITarget;
   version: number,
   createdTime: string;
   createdBy: string;
+  disabled: boolean;
 }
 
 export interface ITargetingVersions {
@@ -118,4 +120,9 @@ export interface ITargetingVersions {
   content: IVersion[];
   number: number;
   empty: boolean;
+}
+
+export interface ITargetingVersionsByVersion {
+  total: number;
+  versions: IVersion[]
 }

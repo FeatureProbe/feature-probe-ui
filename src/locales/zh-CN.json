@@ -71,6 +71,9 @@
   "common.new.lowercase.text": "创建",
   "common.environment.text": "环境",
   "common.history.text": "历史",
+  "common.versions.text": "版本",
+  "common.version.text": "版本",
+  "common.loading.text": "加载中...",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -248,6 +251,8 @@
   "targeting.serve.percentage.error.text": "{value}% 的流量需要指定分组",
   "targeting.serve.percentage.rollout": "按百分比放量",
   "targeting.invalid.value.text": "格式错误",
+  "targeting.get.versions.error": "获取历史版本失败!",
+  "targeting.view.versions": "正在查看",
 
   "variations.add.text": "添加分组",
   "variations.dulpicated.error.text": "分组名称已存在!",

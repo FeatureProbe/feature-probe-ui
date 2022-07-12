@@ -1,8 +1,10 @@
 import { ChartOptions } from 'chart.js';
 import { externalTooltipHandler } from "./chartTooltip";
+import { IMetric } from 'interfaces/targeting';
 
-export const createChartOptions = (): ChartOptions<'line'> => {
-  return {
+// export const createChartOptions = (metric: IMetric[]): ChartOptions<'line'> => {
+export const createChartOptions = (metric: IMetric[], projectKey: string, environmentKey: string, toggleKey: string): any => {
+  const config = {
     responsive: true,
     interaction: {
       mode: 'index' as const,
@@ -16,6 +18,9 @@ export const createChartOptions = (): ChartOptions<'line'> => {
         enabled: false,
         external: externalTooltipHandler,
       },
+      annotation: {
+        annotations: {}
+      }
     },
     scales: {
       x: {
@@ -35,5 +40,37 @@ export const createChartOptions = (): ChartOptions<'line'> => {
       },
     },
   };
+
+  metric.forEach((item: IMetric, index: number) => {
+    if (item.lastChangeVersion !== undefined) {
+      const key = 'line' + index;
+      // @ts-ignore
+      config.plugins.annotation.annotations[key] = {
+        type: 'line',
+        xMin: index,
+        xMax: index,
+        borderColor: '#F5483B',
+        borderWidth: 2,
+        click: () => {
+          window.open(`/${projectKey}/${environmentKey}/${toggleKey}/targeting?currentVersion=${item.lastChangeVersion}`)
+        },
+        label: {
+          enabled: true,
+          backgroundColor: '#F5483B',
+          content: () => '版本变更',
+          position: 'start',
+          xAdjust: 29,
+          yAdjust: -8,
+          borderRadius: {
+            topLeft: 0,
+            topRight: 4,
+            bottomLeft: 0,
+            bottomRight: 4,
+          }
+        }
+      }
+    }
+  })
+  return config;
 };
   

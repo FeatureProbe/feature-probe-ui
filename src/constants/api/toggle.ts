@@ -10,7 +10,8 @@ const ToggleURI = {
   merticsURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/metrics`,
   toggleExistURI: `${origin}/projects/:projectKey/toggles/exists`,
   environmentExistURI: `${origin}/projects/:projectKey/environments/exists`,
-  targetingVersionsURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/versions`
+  targetingVersionsURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/versions`,
+  targetingVersionsByVersionURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/versions/:version`
 }
 
 export default ToggleURI;

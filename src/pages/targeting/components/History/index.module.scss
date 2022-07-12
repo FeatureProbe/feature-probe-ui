@@ -2,8 +2,6 @@
   width: 260px;
   max-height: 470px;
   border-radius: 8px;
-  // padding: 0 20px;
-  // box-shadow: 0 10px 20px 0 rgba(18, 38, 63, 0.03);
 }
 
 .history-title {
@@ -29,7 +27,7 @@
 
   :global {
     .CodeMirror-scroll {
-      background: rgba(85, 110, 230, 0.04);
+      background-color: rgba(85, 110, 230, 0.04);
       font-size: 12px;
       color: rgb(120, 139, 227);
       margin-bottom: 0;
@@ -45,8 +43,16 @@
 .lists {
   overflow-y: auto;
   max-height: 410px;
+  min-height: 85px;
   margin-top: 8px;
   padding-left: 20px;
+  padding-bottom: 24px;
+}
+
+.loading {
+  text-align: center;
+  padding-right: 20px;
+  line-height: 30px;
 }
 
 .version {
@@ -73,11 +79,18 @@
   left: 2px;
 }
 
+.circle-selected {
+  border: 2px solid #0A70F5;
+}
+
 .version-right {
-  // background: rgba(128, 188, 248, 0.1);
   border-radius: 8px;
   padding: 8px;
   width: 183px;
+}
+
+.version-right-selected {
+  background-color: rgba(128, 188, 248, 0.1);
 }
 
 .title {
@@ -99,4 +112,7 @@
   color: rgba(0, 0, 0, 0.38);
   margin-bottom: 4px;
   line-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

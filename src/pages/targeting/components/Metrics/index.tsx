@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useCallback, useState, SyntheticEvent, useRef } from 'react';
 import { Select, DropdownProps } from 'semantic-ui-react';
 import { Line } from 'react-chartjs-2';
+import annotationPlugin from 'chartjs-plugin-annotation';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import {
@@ -71,8 +72,8 @@ const Metrics = () => {
   }, [initMetrics, filterValue]);
 
   const chartOptions = useMemo(() => {
-    return createChartOptions();
-  }, []);
+    return createChartOptions(metrics, projectKey, environmentKey, toggleKey);
+  }, [metrics, projectKey, environmentKey, toggleKey]);
 
   const chartData = useMemo(() => {
     return createChartData(metrics, summary);
@@ -202,6 +203,7 @@ ChartJS.register(
   TimeScale,
   Legend,
   Tooltip,
+  annotationPlugin,
   {
     id: Date.now().toString(),
     afterDraw: (chart: Chart) => {

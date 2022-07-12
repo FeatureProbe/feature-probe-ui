@@ -12,6 +12,7 @@ import styles from './index.module.scss';
 interface IProps {
   rule: IRule,
   index: number;
+  disabled?: boolean;
   useSegment?: boolean;
   variationContainer?: IContainer;
   ruleContainer: IContainer;
@@ -23,6 +24,7 @@ const Rule = (props: IProps) => {
   const { 
     rule, 
     index,
+    disabled,
     useSegment,
     ruleContainer,
     variationContainer,
@@ -46,7 +48,7 @@ const Rule = (props: IProps) => {
   }, []);
 
 	return (
-    <Draggable draggableId={`rule_${rule.id}`} index={index}>
+    <Draggable draggableId={`rule_${rule.id}`} index={index} isDragDisabled={disabled}>
       {provided => (
         <div
           ref={provided.innerRef}
@@ -69,6 +71,7 @@ const Rule = (props: IProps) => {
                       rule={rule}
                       index={index}
                       isHover={isHover}
+                      disabled={disabled}
                       ruleContainer={ruleContainer}
                       hooksFormContainer={hooksFormContainer}
                     />
@@ -79,6 +82,7 @@ const Rule = (props: IProps) => {
                     <RuleContent
                       rule={rule}
                       ruleIndex={index}
+                      disabled={disabled}
                       useSegment={useSegment}
                       ruleContainer={ruleContainer}
                       segmentContainer={segmentContainer}

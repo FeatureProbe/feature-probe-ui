@@ -57,7 +57,6 @@ export const externalTooltipHandler = (context: { chart: Chart; tooltip: Tooltip
       const descText = document.createTextNode('total');
       descDiv.appendChild(descText);
 
-
       th.style.width = '100%';
       th.style.fontWeight = 'normal';
       th.style.color = '#212529';

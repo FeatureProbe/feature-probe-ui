@@ -43,5 +43,5 @@ export interface IExistParams {
 export interface IVersionParams {
   pageIndex: number;
   pageSize: number;
-  version?: number
+  version?: number;
 }
