@@ -43,6 +43,7 @@ const Targeting = () => {
   const [ historyHasMore, saveHistoryHasMore ] = useState<boolean>(false);
   const [ targetingDisabled, saveTargetingDisabled ] = useState<boolean>(false);
   const [ selectedVersion, saveSelectedVersion ] = useState<number>(0);
+  const [ latestVersion, saveLatestVersion ] = useState<number>(0);
   const [ open, setOpen ] = useState<boolean>(false);
   const [ currentVersion, saveCurrentVersion ] = useState<number>(Number(new URLSearchParams(search).get('currentVersion')));
   const [ count, saveCount ] = useState<number>(0);
@@ -76,6 +77,7 @@ const Targeting = () => {
           modifiedBy,
           modifiedTime,
         });
+        saveLatestVersion(version || 0);
         if (!currentVersion) {
           saveSelectedVersion(version || 0);
         }
@@ -190,8 +192,20 @@ const Targeting = () => {
     });
   }, [versions, currentVersion, projectKey, environmentKey, toggleKey, intl, historyPageIndex]);
 
+  const quiteViewHistory = useCallback(() => {
+    initTargeting();
+    saveTargetingDisabled(false);
+    saveSelectedVersion(0)
+    setHistoryOpen(false);
+    saveCurrentVersion(0);
+    saveCount(0);
+    saveHistoryPageIndex(0);
+    saveVersions([]);
+  }, [initTargeting]);
+
   const viewHistory = useCallback((version: IVersion) => {
     saveActiveVersion(version);
+
     if (count === 0 && !formRef.current) {
       setOpen(true);
       return;
@@ -205,20 +219,14 @@ const Targeting = () => {
       content: version.content,
     }));
     saveToggleDisable(version.disabled);
-    saveTargetingDisabled(true);
-  }, [count]);
-
-  const quiteViewHistory = useCallback(() => {
-    initTargeting();
-    saveTargetingDisabled(false);
-    saveSelectedVersion(0)
-    setHistoryOpen(false);
-    saveCurrentVersion(0);
-    saveCount(0);
-    saveHistoryPageIndex(0);
-    saveVersions([]);
-  }, [initTargeting]);
-
+    if (version.version === latestVersion) {
+      saveTargetingDisabled(false);
+      saveCount(0);
+    } else {
+      saveTargetingDisabled(true);
+    }
+  }, [count, latestVersion]);
+  
   const confirmViewHistory = useCallback(() => {
     saveSelectedVersion(activeVersion?.version || 0);
     saveTargeting(cloneDeep(activeVersion?.content));
