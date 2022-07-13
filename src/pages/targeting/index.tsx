@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState, useCallback, useRef, version } from 'react';
+import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { Menu, MenuItemProps, Popup } from 'semantic-ui-react';
 import localForage from 'localforage';

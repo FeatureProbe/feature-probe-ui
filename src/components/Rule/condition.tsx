@@ -226,6 +226,7 @@ const RuleContent = (props: IProps) => {
             <>
               <Form.Field 
                 width={6}
+                disabled={disabled}
                 className={styles['rule-item-datetime']}
                 error={ errors[`rule_${rule.id}_condition_${condition.id}_datetime`] ? true : false  }
                 {
