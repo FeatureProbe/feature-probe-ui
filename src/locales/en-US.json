@@ -275,5 +275,37 @@
   "segments.edit.success": "Updated segment successfully",
   "segments.edit.error": "Error updating segment",
   "segments.delete.success": "Successfully deleted!",
-  "segments.delete.error": "Error, segment was not deleted, please retry!"
+  "segments.delete.error": "Error, segment was not deleted, please retry!",
+
+  "help.document": "Document",
+  "help.getstarted": "Get Started",
+  "toggle.getstarted": "Please connect SDK or check the toggle status",
+  "toggle.targeting.getstarted": "The toggle has not accessed data, please connect SDK or check the toggle status",
+  "toggle.connect": "Connect SDK",
+  "toggle.connected": "SDK Connected",
+  "connect.title": "Get Started",
+  "connect.description": "Connect your application to FeatureProbe!",
+
+  "connect.one.title": "Select a project、an environment and a toggle",
+  "connect.one.project": "Select your project:",
+  "connect.one.environment": "Select your environment:",
+  "connect.one.toggle": "Select your toggle:",
+  "connect.one.button": "Save and continue",
+  "connect.one.environment.icon": "Each environment has its own API key. In your codebase, you'll want to extract the API key into a configuration file or environment variable.",
+  "connect.one.toggle.icon": "A toggle lets you control who can see a particular feature in your app. You can turn it on for specific users or roll it out to a percentage of your traffic. You can also turn it off if you encounter bugs or performance problems.",
+  "connect.one.toggle.view": "You are using toggle {name} with key {key}.",
+
+  "connect.two.title": "Select SDK",
+  "connect.two.sdk": "Select your SDK:",
+  "connect.two.button": "Save and continue",
+
+  "connect.three.title": "Set up your application",
+  "connect.three.button": "Continue",
+
+  "connect.four.title": "Test your application",
+  "connect.four.running": "Listening for events for {toggle name} in the {environment name} environment.",
+  "connect.four.failed": "You have no applications connected using this SDK Key. ",
+  "connect.four.succeed": "Successfully connected！",
+  "connect.again": "Retry Connection"
+
 }
