@@ -89,6 +89,19 @@
   border: 2px solid #0A70F5;
 }
 
+.version-selected {
+  color: #495057;
+}
+
+.version-text {
+  font-size: 12px;
+}
+
+.version-text-selected {
+  color: #212529;
+  font-size: 12px;
+}
+
 .current {
   font-size: 12px;
   color: #0A70F5;
@@ -127,4 +140,9 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.tooltip {
+  max-width: 100px;
+  word-break: break-all;
 }
