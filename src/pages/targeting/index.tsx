@@ -233,7 +233,8 @@ const Targeting = () => {
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {
     history.push(`/${projectKey}/${environmentKey}/${toggleKey}/${value.name}`);
-  }, [history, projectKey, environmentKey, toggleKey]);
+    quiteViewHistory();
+  }, [history, projectKey, environmentKey, toggleKey, quiteViewHistory]);
 
 	return (
     <ProjectLayout>
