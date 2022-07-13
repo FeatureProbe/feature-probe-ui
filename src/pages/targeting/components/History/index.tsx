@@ -11,6 +11,7 @@ import styles from './index.module.scss';
 interface IProps {
   versions: IVersion[];
   hasMore: boolean;
+  latestVersion: number;
   selectedVersion: number;
   loadMore(): void;
   viewHistory(version: IVersion): void;
@@ -18,7 +19,7 @@ interface IProps {
 }
 
 const History = (props: IProps) => {
-  const { versions, hasMore, selectedVersion, loadMore, viewHistory, quiteViewHistory } = props;
+  const { versions, hasMore, selectedVersion, latestVersion, loadMore, viewHistory, quiteViewHistory } = props;
   const height = Math.min(85 * versions.length, 410);
 
   return (
@@ -73,6 +74,13 @@ const History = (props: IProps) => {
                     <div className={styles.title}>
                       <FormattedMessage id='common.versions.text' />:
                       { item.version }
+                      {
+                        item.version === latestVersion && (
+                          <span className={styles.current}>
+                            (<FormattedMessage id='common.current.version.text' />)
+                          </span>
+                        )
+                      }
                     </div>
                     <div className={styles.modifyBy}>
                       <FormattedMessage id='common.modified.by.text' />:

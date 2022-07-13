@@ -1,6 +1,6 @@
 import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
-import { Menu, MenuItemProps, Popup } from 'semantic-ui-react';
+import { Menu, MenuItemProps } from 'semantic-ui-react';
 import localForage from 'localforage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
@@ -286,40 +286,32 @@ const Targeting = () => {
             {
               activeItem === 'targeting' && (
                 <div className={styles.history}>
-                  <Popup
-                    basic
-                    open={historyOpen}
-                    on='click'
-                    position='bottom right'
-                    className={styles.popup}
-                    style={{zIndex: 1000}}
-                    trigger={
-                      <Button 
-                        primary
-                        type='button'
-                        onClick={(e: SyntheticEvent) => {
-                          document.body.click();
-                          e.stopPropagation();
-                          setHistoryOpen(true);
+                  <Button 
+                    primary
+                    type='button'
+                    onClick={(e: SyntheticEvent) => {
+                      setHistoryOpen(true);
+                      getVersionsList();
+                    }}
+                    className={styles['variation-add-btn']} 
+                  >
+                    <FormattedMessage id='common.history.text' />
+                  </Button>
+                  {
+                    historyOpen && (
+                      <History 
+                        versions={versions}
+                        hasMore={historyHasMore}
+                        latestVersion={latestVersion}
+                        selectedVersion={selectedVersion}
+                        loadMore={() => {
                           getVersionsList();
                         }}
-                        className={styles['variation-add-btn']} 
-                      >
-                        <FormattedMessage id='common.history.text' />
-                      </Button>
-                    }
-                  >
-                    <History 
-                      versions={versions}
-                      hasMore={historyHasMore}
-                      selectedVersion={selectedVersion}
-                      loadMore={() => {
-                        getVersionsList();
-                      }}
-                      viewHistory={viewHistory}
-                      quiteViewHistory={quiteViewHistory}
-                    />
-                  </Popup>
+                        viewHistory={viewHistory}
+                        quiteViewHistory={quiteViewHistory}
+                      />
+                    )
+                  }
                 </div>
               )
             }
