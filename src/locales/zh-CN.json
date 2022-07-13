@@ -276,5 +276,37 @@
   "segments.edit.success": "用户组更新成功",
   "segments.edit.error": "用户组更新失败",
   "segments.delete.success": "用户组删除成功",
-  "segments.delete.error": "用户组删除失败，请重试"
+  "segments.delete.error": "用户组删除失败，请重试",
+  
+  "help.document": "文档",
+  "help.getstarted": "开始接入",
+  "toggle.getstarted": "请连接SDK或检查开关状态",
+  "toggle.targeting.getstarted": "开关还没有访问数据，请连接SDK或检查开关状态",
+  "toggle.connect": "连接SDK",
+  "toggle.connected": "已接入SDK",
+  "connect.title": "开始接入",
+  "connect.description": "将应用程序连接到FeatureProbe！",
+
+  "connect.one.title": "选择项目、环境和开关",
+  "connect.one.project": "选择目标项目:",
+  "connect.one.environment": "选择目标环境:",
+  "connect.one.toggle": "选择目标开关:",
+  "connect.one.button": "保存并继续",
+  "connect.one.environment.icon": "每个环境都有自己的API密钥。在代码库中，您需要将API密钥提取到配置文件或环境变量中。",
+  "connect.one.toggle.icon": "开关可以控制人群看到应用中的特定功能。您可以为特定人群打开它，或按流量百分比进行推广。如果遇到bug或性能问题，也可以将其关闭。",
+  "connect.one.toggle.view": "您正在使用开关{name}标识为{key}。",
+
+  "connect.two.title": "选择SDK",
+  "connect.two.sdk": "选择目标SDK:",
+  "connect.two.button": "保存并继续",
+
+  "connect.three.title": "设置应用程序",
+  "connect.three.button": "继续",
+
+  "connect.four.title": "测试应用程序",
+  "connect.four.running": "正在{环境名称}环境中监听{开关名称}的事件。",
+  "connect.four.failed": "您没有此SDK密钥连接成功的应用程序。 ",
+  "connect.four.succeed": "连接成功！",
+  "connect.four.failed.button": "重试连接"
+
 }
