@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Breadcrumb } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
+import Steps from './components/Steps';
 import Icon from 'components/Icon';
 import styles from './index.module.scss';
 
@@ -23,7 +24,7 @@ const GetStarted = () => {
           <FormattedMessage id='common.get.started.text' />
         </Breadcrumb.Section>
       </Breadcrumb>
-      <div>1111</div>
+      <Steps />
     </div>
   )
 }

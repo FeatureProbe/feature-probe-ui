@@ -149,7 +149,7 @@ const Toggle = () => {
   }, [intl]);
 
   const statusOptions = useMemo(() => {
-    return[
+    return [
       { 
         key: 'enabled', 
         value: false, 

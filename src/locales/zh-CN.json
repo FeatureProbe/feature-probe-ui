@@ -75,6 +75,7 @@
   "common.version.text": "版本",
   "common.loading.text": "加载中...",
   "common.get.started.text": "接入引导",
+  "common.current.version.text": "当前版本",
 
   "header.getuser.error.text": "无法获取用户信息!",
 

@@ -75,6 +75,7 @@
   "common.version.text": "version",
   "common.loading.text": "Loading...",
   "common.get.started.text": "Get started",
+  "common.current.version.text": "Current version",
 
   "header.getuser.error.text": "Get user info error!",
 

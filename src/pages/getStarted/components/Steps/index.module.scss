@@ -1,0 +1,93 @@
+.page {
+  padding: 0 20px;
+}
+
+.intro {
+  height: 100px;
+  background: #FFFFFF;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.01), 0 3px 6px 3px rgba(0,0,0,0.01), 0 2px 6px 0 rgba(0,0,0,0.03);
+  border-radius: 12px;
+  padding: 12px 24px 0;
+}
+
+.intro-title {
+  font-family: HelveticaNeue-Medium;
+  font-size: 20px;
+  color: #212529;
+  line-height: 30px;
+}
+
+.intro-desc {
+  font-family: HelveticaNeue-Medium;
+  font-size: 14px;
+  color: #212529;
+  line-height: 30px;
+  margin-top: 12px;
+}
+
+.steps {
+  background: #FFFFFF;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.01), 0 3px 6px 3px rgba(0,0,0,0.01), 0 2px 6px 0 rgba(0,0,0,0.03);
+  border-radius: 12px;
+  margin-top: 16px;
+  padding: 24px;
+}
+
+.step {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.step-right {
+  margin-left: 12px;
+  width: 536px;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  background-color: #556EE6;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  position: relative;
+  top: 4px;
+}
+
+.line {
+  height: 100%;
+  width: 1px;
+  background-color: #74788D;
+  position: relative;
+  left: 10px;
+  top: 6px;
+}
+
+.step-title {
+  font-family: HelveticaNeue-Medium;
+  font-size: 14px;
+  color: #212529;
+  line-height: 28px;
+}
+
+.step-detail {
+  margin-top: 12px;
+}
+
+.label-required {
+  color: #FF5F57;
+  font-size: 20px;
+  vertical-align: middle;
+  margin-right: 4px;
+  height: 16px;
+  display: inline-block;
+}
+
+.angle-down {
+  position: absolute;
+  right: 10px;
+  color: #74788D;
+  top: 9px;
+}
