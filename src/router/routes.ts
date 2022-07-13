@@ -7,6 +7,7 @@ import NotFound from '../pages/notFound';
 import Login from '../pages/login';
 import Segment from '../pages/segment';
 import SegmentEdit from '../pages/segmentEdit';
+import GetStarted from '../pages/getStarted';
 
 export const PROJECT_PATH = '/projects';
 export const TOGGLE_PATH = '/:projectKey/:environmentKey/toggles';
@@ -57,6 +58,11 @@ export const headerRoutes = [
     path: PROFILE_PATH,
     exact: true,
     component: Profile
+  },
+  {
+    path: '/get-started',
+    exact: true,
+    component: GetStarted
   }
 ];
 
@@ -70,5 +76,5 @@ export const blankRoutes = [
     path: '/login',
     exact: true,
     component: Login
-  },
+  }
 ];

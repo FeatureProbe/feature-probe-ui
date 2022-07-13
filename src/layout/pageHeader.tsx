@@ -140,6 +140,10 @@ const PageHeader = () => {
     window.open('https://github.com/FeatureProbe/FeatureProbe');
   }, []);
 
+  const handleGotoGetStarted = useCallback(async () => {
+    history.push('/get-started');
+  }, [history]);
+
   return (
     <div className={headerCls}>
       <div className={styles.logo}>
@@ -215,8 +219,13 @@ const PageHeader = () => {
             >
               <FormattedMessage id='common.documentation.text' />
             </div>
-            <div className={styles['menu-item']} onClick={()=> {}}>
-              <FormattedMessage id='common.loading.get.started' />
+            <div 
+              className={styles['menu-item']} 
+              onClick={()=> {
+                handleGotoGetStarted()
+              }}
+            >
+              <FormattedMessage id='common.get.started.text' />
             </div>
           </div>
         </Popup>
