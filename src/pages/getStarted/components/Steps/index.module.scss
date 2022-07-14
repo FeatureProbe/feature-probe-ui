@@ -91,3 +91,35 @@
   color: #74788D;
   top: 9px;
 }
+
+.icon-question {
+  color: #74788D;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+.popup {
+  opacity: 0.8;
+}
+
+.success-circle {
+  color: #00B365;
+  font-size: 20px !important;
+  margin-right: 5px;
+  vertical-align: bottom;
+}
+
+.error-circle {
+  color: #F5483B;
+  font-size: 20px !important;
+  margin-right: 5px;
+  vertical-align: bottom;
+}
+
+.retry-connection {
+  margin-top: 14px;
+}
+
+.retry-connection-btn {
+  width: 175px !important;
+}

@@ -35,7 +35,7 @@ const Steps = () => {
           <FormattedMessage id='common.get.started.text' />
         </div>
         <div className={styles['intro-desc']}>
-          Connect your application to FeatureProbe!!
+          <FormattedMessage id='connect.description' />
         </div>
       </div>
       <div className={styles.steps}>

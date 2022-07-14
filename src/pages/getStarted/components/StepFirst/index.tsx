@@ -1,6 +1,6 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Form, Dropdown, DropdownProps } from 'semantic-ui-react';
-import { useIntl } from 'react-intl';
+import { Form, Dropdown, DropdownProps, Popup } from 'semantic-ui-react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Button from 'components/Button';
 import findIndex from 'lodash/findIndex';
 import Icon from 'components/Icon';
@@ -116,13 +116,15 @@ const StepFirst = (props: IProps) => {
         <div className={styles.line}></div>
       </div>
       <div className={styles['step-right']}>
-        <div className={styles['step-title']}>Select a project、an environment and a toggle</div>
+        <div className={styles['step-title']}>
+          <FormattedMessage id='connect.first.title' />
+        </div>
         <div className={styles['step-detail']}>
           <Form>
             <Form.Field>
               <label>
                 <span className={styles['label-required']}>*</span>
-                Select your project
+                <FormattedMessage id='connect.first.project' />
               </label>
               <Dropdown
                 fluid 
@@ -144,7 +146,16 @@ const StepFirst = (props: IProps) => {
             <Form.Field>
               <label>
                 <span className={styles['label-required']}>*</span>
-                Select your environment
+                <FormattedMessage id='connect.first.environment' />
+                <Popup
+                  inverted
+                  trigger={
+                    <Icon customClass={styles['icon-question']} type='question' />
+                  }
+                  content={intl.formatMessage({id: 'connect.first.environment.tip'})}
+                  position='top center'
+                  className={styles.popup}
+                />
               </label>
               <Dropdown
                 fluid 
@@ -167,7 +178,16 @@ const StepFirst = (props: IProps) => {
             <Form.Field>
               <label>
                 <span className={styles['label-required']}>*</span>
-                Select your toggle
+                <FormattedMessage id='connect.first.toggle' />
+                <Popup
+                  inverted
+                  trigger={
+                    <Icon customClass={styles['icon-question']} type='question' />
+                  }
+                  content={intl.formatMessage({id: 'connect.first.toggle.tip'})}
+                  position='top center'
+                  className={styles.popup}
+                />
               </label>
               <Dropdown
                 fluid 
@@ -185,7 +205,9 @@ const StepFirst = (props: IProps) => {
                 onChange={handleSelectToggle}
               />
             </Form.Field>
-            <Button primary type='submit'>Save and continue</Button>
+            <Button primary type='submit'>
+              <FormattedMessage id='connect.save.continue.button' />
+            </Button>
           </Form>
         </div>
       </div>
