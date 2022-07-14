@@ -1,9 +1,8 @@
-import { ChartOptions } from 'chart.js';
+import { IntlShape } from 'react-intl';
 import { externalTooltipHandler } from "./chartTooltip";
 import { IMetric } from 'interfaces/targeting';
 
-// export const createChartOptions = (metric: IMetric[]): ChartOptions<'line'> => {
-export const createChartOptions = (metric: IMetric[], projectKey: string, environmentKey: string, toggleKey: string): any => {
+export const createChartOptions = (metric: IMetric[], projectKey: string, environmentKey: string, toggleKey: string, intl: IntlShape): any => {
   const config = {
     responsive: true,
     interaction: {
@@ -49,15 +48,16 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
         type: 'line',
         xMin: index,
         xMax: index,
-        borderColor: '#F5483B',
-        borderWidth: 2,
+        borderColor: '#FFEBE9',
+        borderWidth: 1,
         click: () => {
           window.open(`/${projectKey}/${environmentKey}/${toggleKey}/targeting?currentVersion=${item.lastChangeVersion}`)
         },
         label: {
           enabled: true,
-          backgroundColor: '#F5483B',
-          content: () => '版本变更',
+          backgroundColor: '#FEF3F2',
+          color: '#F55043',
+          content: () => intl.formatMessage({id: 'common.version.change.text'}),
           position: 'start',
           xAdjust: 29,
           yAdjust: -8,
