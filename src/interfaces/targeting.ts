@@ -88,6 +88,7 @@ export interface IMetric {
 }
 
 export interface IMetricContent {
+  isAccess: boolean;
   metrics: IMetric[],
   summary: IValues[]
 }

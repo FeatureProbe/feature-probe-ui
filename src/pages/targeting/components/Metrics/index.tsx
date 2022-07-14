@@ -34,6 +34,7 @@ const Metrics = () => {
   const [ filterValue, setFilterValue ] = useState<string>('24');
   const [ fitlerType, setFilterType ] = useState<string>('name');
   const [ total, setTotal ] = useState<number>(0);
+  const [ isAccess, saveIsAccess ] = useState<boolean>(false);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
   const timer: { current: NodeJS.Timeout | null } = useRef(null);
@@ -47,6 +48,7 @@ const Metrics = () => {
       if (success && data) {
         setMetric(data.metrics || []);
         setSummary(data.summary || []);
+        saveIsAccess(data.isAccess);
 
         let count = 0;
         data.summary?.forEach((item: IValues) => {
@@ -72,8 +74,8 @@ const Metrics = () => {
   }, [initMetrics, filterValue]);
 
   const chartOptions = useMemo(() => {
-    return createChartOptions(metrics, projectKey, environmentKey, toggleKey);
-  }, [metrics, projectKey, environmentKey, toggleKey]);
+    return createChartOptions(metrics, projectKey, environmentKey, toggleKey, intl);
+  }, [metrics, projectKey, environmentKey, toggleKey, intl]);
 
   const chartData = useMemo(() => {
     return createChartData(metrics, summary);
@@ -124,7 +126,7 @@ const Metrics = () => {
         </div>
       </div>
       {
-         summary.length > 0 ? (
+         isAccess ? (
           <div className={styles.content}>
             <div className={styles.variations}>
               <div className={styles['table-header']}>
