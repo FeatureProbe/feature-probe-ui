@@ -72,6 +72,7 @@
   "common.environment.text": "Environment",
   "common.history.text": "History",
   "common.versions.text": "Versions",
+  "common.version.uppercase.text": "Version",
   "common.version.text": "version",
   "common.loading.text": "Loading...",
   "common.get.started.text": "Get started",

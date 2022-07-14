@@ -1,5 +1,6 @@
 
 import { SyntheticEvent } from 'react';
+import { Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import classNames from 'classnames';
@@ -58,12 +59,28 @@ const History = (props: IProps) => {
                 }
               );
 
+              const clsVersion = classNames(
+                {
+                  [styles['version-selected']]: item?.version === Number(selectedVersion)
+                }
+              );
+
+              const clsVersionText = classNames(
+                styles['version-text'],
+                {
+                  [styles['version-text-selected']]: item?.version === Number(selectedVersion)
+                }
+              );
+
               return (
                 <div 
                   key={item.version} 
                   className={styles.version} 
                   onClick={(e: SyntheticEvent) => {
                     e.stopPropagation();
+                    if (item?.version === Number(selectedVersion)) {
+                      return;
+                    }
                     viewHistory(item);
                   }}
                 >
@@ -72,8 +89,13 @@ const History = (props: IProps) => {
                   </div>
                   <div className={clsRight}>
                     <div className={styles.title}>
-                      <FormattedMessage id='common.versions.text' />:
-                      { item.version }
+                      <span className={clsVersion}>
+                        <FormattedMessage id='common.version.uppercase.text' />
+                      </span>
+                      :
+                      <span className={clsVersionText}>
+                        { item.version }
+                      </span>
                       {
                         item.version === latestVersion && (
                           <span className={styles.current}>
@@ -93,7 +115,20 @@ const History = (props: IProps) => {
                     {
                       item.comment && <div className={styles.modifyTime}>
                         <FormattedMessage id='targeting.publish.modal.comment' />
-                        { item.comment }
+                        <Popup
+                          inverted
+                          style={{opacity: '0.8'}}
+                          className={styles.popup}
+                          trigger={
+                            <span>{ item.comment }</span>
+                          }
+                          content={
+                            <div className={styles.tooltip}>
+                              {item.comment}
+                            </div>
+                          }
+                          position='top left'
+                        />
                       </div>
                     }
                   </div>

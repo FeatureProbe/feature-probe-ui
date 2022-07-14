@@ -72,6 +72,7 @@
   "common.environment.text": "环境",
   "common.history.text": "历史",
   "common.versions.text": "版本",
+  "common.version.uppercase.text": "版本",
   "common.version.text": "版本",
   "common.loading.text": "加载中...",
   "common.get.started.text": "接入引导",
