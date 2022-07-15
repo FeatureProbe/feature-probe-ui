@@ -40,10 +40,33 @@
 
 .step-right {
   margin-left: 12px;
-  width: 536px;
+  flex: 1;
+}
+
+.checked {
+  color: #556EE6;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #556EE6;
+  border-radius: 100%;
+  text-align: center;
 }
 
 .circle {
+  width: 20px;
+  height: 20px;
+  color: #74788D;
+  background-color: #ffffff;
+  border: 1px solid #74788D;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  position: relative;
+  top: 4px;
+}
+
+.circleCurrent {
   width: 20px;
   height: 20px;
   color: #fff;
@@ -60,6 +83,15 @@
   height: 100%;
   width: 1px;
   background-color: #74788D;
+  position: relative;
+  left: 10px;
+  top: 6px;
+}
+
+.lineSelected {
+  height: 100%;
+  width: 1px;
+  background-color: #556EE6;
   position: relative;
   left: 10px;
   top: 6px;
@@ -122,4 +154,54 @@
 
 .retry-connection-btn {
   width: 175px !important;
+}
+
+.connect-retrying {
+  display: flex;
+  align-items: center;
+}
+
+.connect-retrying-text {
+  flex: 1;
+  margin-left: 5px;
+}
+
+.card {
+  background: #FAFAFA;
+  border-radius: 12px;
+  display: flex;
+  padding: 12px;
+  align-items: center;
+}
+
+.card-left {
+  flex: 1;
+  display: flex;
+}
+
+.card-item {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 13px;
+  color: #74788D;
+}
+
+.card-value {
+  font-family: HelveticaNeue-Medium;
+  font-size: 13px;
+  color: #495057;
+  margin-top: 6px;
+}
+
+.dropdown {
+  height: 25px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dropdown-logo {
+  width: 20px;
+  margin-right: 5px;
 }

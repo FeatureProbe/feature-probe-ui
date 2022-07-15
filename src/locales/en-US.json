@@ -180,7 +180,8 @@
   "toggles.edit.error": "Error editting toggle.",
   "toggles.evaluated.text": "evaluated ",
   "toggles.evaluated.novisit": "no recent visit",
-  "toggles.evaluated.novisit.tips": "make sure your code is correct",
+  "toggle.evaluated.link.sdk": "Please connect SDK",
+  "toggle.evaluated.check.status": " or check the toggle status",
   "toggles.updated.text": "updated ",
   "toggles.info.error.text": "Error getting toggle infomation!",
   "toggles.targeting.error.text": "Error getting toggle targeting!",
@@ -280,7 +281,6 @@
   "segments.delete.success": "Successfully deleted!",
   "segments.delete.error": "Error, segment was not deleted, please retry!",
 
-  "toggle.getstarted": "Please connect SDK or check the toggle status",
   "toggle.targeting.getstarted": "The toggle has not accessed data, please connect SDK or check the toggle status",
   "toggle.connect": "Connect SDK",
   "toggle.connected": "SDK Connected",

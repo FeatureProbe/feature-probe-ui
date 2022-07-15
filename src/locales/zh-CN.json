@@ -180,7 +180,8 @@
   "toggles.edit.error": "开关编辑失败",
   "toggles.evaluated.text": "访问 ",
   "toggles.evaluated.novisit": "最近未访问",
-  "toggles.evaluated.novisit.tips": "确认代码接入正确",
+  "toggle.evaluated.link.sdk": "请连接SDK",
+  "toggle.evaluated.check.status": "或检查开关状态",
   "toggles.updated.text": "更新于",
   "toggles.info.error.text": "开关信息读取失败",
   "toggles.targeting.error.text": "获取开关详情失败!",
@@ -280,7 +281,6 @@
   "segments.delete.success": "用户组删除成功",
   "segments.delete.error": "用户组删除失败，请重试",
   
-  "toggle.getstarted": "请连接SDK或检查开关状态",
   "toggle.targeting.getstarted": "开关还没有访问数据，请连接SDK或检查开关状态",
   "toggle.connect": "连接SDK",
   "toggle.connected": "已接入SDK",

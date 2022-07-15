@@ -168,3 +168,14 @@ export const getTargetingVersionsByVersion = async<T> (projectKey: string, envir
   
   return request<T>(url);
 };
+
+export const getToggleAccess = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
+  const url = `${
+    API.toggleAccessURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+      .replace(':toggleKey', toggleKey)
+  }`;
+  
+  return request<T>(url);
+}

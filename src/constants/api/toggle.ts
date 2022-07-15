@@ -8,6 +8,7 @@ const ToggleURI = {
   editToggleURI: `${origin}/projects/:projectKey/toggles/:toggleKey`,
   tagsURI: `${origin}/projects/:projectKey/tags`,
   merticsURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/metrics`,
+  toggleAccessURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/access`,
   toggleExistURI: `${origin}/projects/:projectKey/toggles/exists`,
   environmentExistURI: `${origin}/projects/:projectKey/environments/exists`,
   targetingVersionsURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/versions`,
