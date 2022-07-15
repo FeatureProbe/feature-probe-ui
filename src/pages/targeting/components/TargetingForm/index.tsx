@@ -236,18 +236,20 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   const handlePublishCancel = useCallback(() => {
     setOpen(false);
+    setComment('');
   }, []);
 
   const handlePublishConfirm = useCallback(async () => {
     setOpen(false);
     if (publishTargeting) {
       const res = await saveToggle(projectKey, environmentKey, toggleKey, {
-        comment: comment,
+        comment,
         ...publishTargeting
       });
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
         initTargeting();
+        setComment('');
       }
     }
   }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
