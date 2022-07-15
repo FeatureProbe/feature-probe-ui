@@ -4,7 +4,12 @@ import SectionTitle from 'components/SectionTitle';
 import { variationContainer, defaultServeContainer, hooksFormContainer } from '../../provider';
 import styles from './index.module.scss';
 
-const DefaultRule = () => {
+interface IProps {
+  disabled?: boolean;
+}
+
+const DefaultRule = (props: IProps) => {
+  const { disabled } = props;
   const { variations } = variationContainer.useContainer();
   const intl = useIntl();
 
@@ -22,6 +27,7 @@ const DefaultRule = () => {
       />
       <div className={styles['serve-select']}>
         <Serve 
+          disabled={disabled}
           serve={defaultServe}
           variations={variations}
           customStyle={{width: '328px'}}

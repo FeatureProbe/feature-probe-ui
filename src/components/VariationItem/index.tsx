@@ -19,6 +19,7 @@ interface IItem {
 }
 
 interface IProps {
+  disabled?: boolean;
   total: number;
   returnType: string;
   item: IItem;
@@ -36,6 +37,7 @@ const VariationItem = (props: IProps) => {
   const intl = useIntl();
 
   const {
+    disabled,
     total,
     returnType,
     item: {
@@ -121,6 +123,7 @@ const VariationItem = (props: IProps) => {
               value={name}
               index={index}
               placeholder={intl.formatMessage({id: 'common.name.lowercase.text'})}
+              disabled={disabled}
               label={(
                 <span className={styles['label-text']}>
                   <span className={styles['label-required']}>*</span>
@@ -164,6 +167,7 @@ const VariationItem = (props: IProps) => {
                   )}
                   placeholder={intl.formatMessage({id: 'common.value.text'})}
                   error={errors?.[`variation_${id}`] ? true : false}
+                  disabled={disabled}
                   {
                     ...register(`variation_${id}`, {
                       required: {
@@ -214,6 +218,7 @@ const VariationItem = (props: IProps) => {
                       <FormattedMessage id='common.value.text' />
                     </span>
                   )}
+                  disabled={disabled}
                   placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
                   icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
                   error={errors?.[`variation_${id}`] ? true : false}
@@ -249,6 +254,7 @@ const VariationItem = (props: IProps) => {
               customname='description'
               placeholder={intl.formatMessage({id: 'common.description.lowercase.text'})}
               onChange={handleInput}
+              disabled={disabled}
               label={(
                 <span className={styles.label}>
                   <FormattedMessage id='common.description.lowercase.text' />
@@ -259,7 +265,7 @@ const VariationItem = (props: IProps) => {
         </Form.Group>
       </div>
       {
-        index !== 0 && total !== 2 ? (
+        index !== 0 && total !== 2 && !disabled ? (
           <div className={styles.operation}>
             <Icon customClass={styles.iconfont} type='minus' onClick={() => handleDelete(index)} />
           </div>

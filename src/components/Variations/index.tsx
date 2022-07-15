@@ -8,6 +8,7 @@ import { IVariation } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import styles from './index.module.scss';
 interface IProps {
+  disabled?: boolean;
   returnType: string;
   prefix?: string;
   variationContainer: IContainer;
@@ -15,7 +16,7 @@ interface IProps {
 }
 
 const Variations = (props: IProps) => {
-  const { returnType, prefix, variationContainer, hooksFormContainer } = props;
+  const { disabled, returnType, prefix, variationContainer, hooksFormContainer } = props;
   const [ isError, setIsError ] = useState<boolean>(false);
   const intl = useIntl();
 
@@ -89,6 +90,7 @@ const Variations = (props: IProps) => {
       {
          variations?.map((variation: IVariation, index: number) => (
           <VariationItem
+            disabled={disabled}
             key={variation.id}
             returnType={returnType}
             total={variations.length}
@@ -110,7 +112,7 @@ const Variations = (props: IProps) => {
           primary
           type='button'
           onClick={handleAdd}
-          disabled={variations.length >= 20} 
+          disabled={variations.length >= 20 || disabled} 
           className={styles['variation-add-btn']} 
         >
           <>

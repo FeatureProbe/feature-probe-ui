@@ -71,6 +71,12 @@
   "common.new.lowercase.text": "创建",
   "common.environment.text": "环境",
   "common.history.text": "历史",
+  "common.versions.text": "版本",
+  "common.version.uppercase.text": "版本",
+  "common.version.text": "版本",
+  "common.loading.text": "加载中...",
+  "common.current.version.text": "当前版本",
+  "common.version.change.text": "版本变更",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -192,7 +198,7 @@
   "targeting.publish.success.text": "发布成功!",
   "targeting.status.text": "状态",
   "targeting.status.disabled.text": "未生效, 返回 ",
-  "targeting.variations.evaluations.text": "访问到的{type}",
+  "targeting.variations.evaluations.text": "访问到分组的{type}",
   "targeting.metrics.no.data.text": "无数据",
   "targeting.metrics.link.sdk.text": "请确保SDK接入正确 ",
   "targeting.metrics.no.data.tips": "并且开关是生效的",
@@ -248,6 +254,8 @@
   "targeting.serve.percentage.error.text": "{value}% 的流量需要指定分组",
   "targeting.serve.percentage.rollout": "按百分比放量",
   "targeting.invalid.value.text": "格式错误",
+  "targeting.get.versions.error": "获取历史版本失败!",
+  "targeting.view.versions": "正在查看",
 
   "variations.add.text": "添加分组",
   "variations.dulpicated.error.text": "分组名称已存在!",
