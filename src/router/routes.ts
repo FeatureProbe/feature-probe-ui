@@ -8,7 +8,6 @@ import Login from '../pages/login';
 import Segment from '../pages/segment';
 import SegmentEdit from '../pages/segmentEdit';
 import GetStarted from '../pages/getStarted';
-import ToggleGetStarted from 'pages/toggleGetStarted';
 
 export const PROJECT_PATH = '/projects';
 export const TOGGLE_PATH = '/:projectKey/:environmentKey/toggles';
@@ -49,7 +48,7 @@ export const headerRoutes = [
   {
     path: GET_STARTED_PATH,
     exact: true,
-    component: ToggleGetStarted
+    component: GetStarted
   },
   {
     path: TARGETING_PATH,
@@ -66,11 +65,6 @@ export const headerRoutes = [
     exact: true,
     component: Profile
   },
-  {
-    path: '/get-started',
-    exact: true,
-    component: GetStarted
-  }
 ];
 
 export const blankRoutes = [

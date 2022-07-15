@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
 import { getProjectList } from 'services/project';
 import message from 'components/MessageBox';
@@ -11,6 +12,7 @@ import StepThird from '../StepThird';
 import { IProject } from 'interfaces/project';
 import { saveDictionary } from 'services/dictionary';
 import { getToggleAccess } from 'services/toggle';
+import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
 interface IStepDetail {
@@ -51,27 +53,10 @@ const PREFIX = 'get_started_';
 
 const Steps = () => {
   const intl = useIntl();
-  const [ projectList, saveProjectList ] = useState<IProject[]>([]);
-  const [ currentStep, saveCurrentStep ] = useState<number>(1);
-  const [ projectKey, saveProjectKey ] = useState<string>('');
-  const [ environmentKey, saveEnvironmentKey ] = useState<string>('');
-  const [ toggleKey, saveToggleKey ] = useState<string>('');
+  const [ currentStep, saveCurrentStep ] = useState<number>(2);
   const [ step, saveStep ] = useState<IStep>(cloneDeep(STEP));
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
-
-  const init = useCallback(async () => {
-    const res = await getProjectList<IProject[]>();
-    const { data } = res;
-    if (res.success && data) {
-      saveProjectList(data);
-    } else {
-      message.error(res.message || intl.formatMessage({id: 'projects.list.error.text'}));
-    }
-  }, [intl]);
-
-  useEffect(() => {
-    init();
-  }, [init]);
+  const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
 
   const checkToggleStatus = useCallback(() => {
     getToggleAccess<IAccess>(projectKey, environmentKey, toggleKey).then(res => {
@@ -87,21 +72,6 @@ const Steps = () => {
       checkToggleStatus();
     }
   }, [currentStep, checkToggleStatus]);
-
-  const saveFirstStep = useCallback((projectKey: string, environmentKey: string, toggleKey: string) => {
-    step.step1.done = true;
-    step.step1.projectKey = projectKey;
-    step.step1.environmentKey = environmentKey;
-    step.step1.toggleKey = toggleKey;
-    saveProjectKey(projectKey);
-    saveEnvironmentKey(environmentKey);
-    saveToggleKey(toggleKey);
-    saveDictionary(PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey, step).then((res) => {
-      if (res.success) {
-        saveCurrentStep(currentStep + 1);
-      }
-    });
-  }, [currentStep, step]);
 
   const saveSecondStep = useCallback((sdk: string) => {
     step.step2.done = true;
@@ -121,7 +91,6 @@ const Steps = () => {
       }
     });
   }, [projectKey, environmentKey, toggleKey, step, currentStep]);
-
 
   const goBackToStep = useCallback((currentStep: number) => {
     saveCurrentStep(currentStep);
@@ -145,10 +114,7 @@ const Steps = () => {
       </div>
       <div className={styles.steps}>
         <StepFirst 
-          projectList={projectList}
           currentStep={currentStep}
-          saveStep={saveFirstStep}
-          goBackToStep={goBackToStep}
         />
         <StepSecond 
           currentStep={currentStep}
