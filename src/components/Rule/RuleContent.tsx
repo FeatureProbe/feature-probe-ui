@@ -12,6 +12,7 @@ import styles from './index.module.scss';
 interface IProps {
   rule: IRule;
   ruleIndex: number;
+  disabled?: boolean;
   useSegment?: boolean;
   ruleContainer: IContainer;
   variationContainer?: IContainer;
@@ -22,6 +23,7 @@ interface IProps {
 const RuleContent = (props: IProps) => {
   const { 
     rule,
+    disabled,
     ruleIndex,
     useSegment,
     ruleContainer, 
@@ -48,6 +50,7 @@ const RuleContent = (props: IProps) => {
           return (
             <Condition 
               rule={rule}
+              disabled={disabled}
               ruleIndex={ruleIndex}
               useSegment={useSegment}
               conditionIndex={index}
@@ -65,10 +68,11 @@ const RuleContent = (props: IProps) => {
         <Popup
           basic
           hoverable
+          disabled={disabled}
           position='bottom right'
           className={styles.popup}
           trigger={
-            <Button type='button' secondary className={styles['rule-add-btn']}>
+            <Button type='button' secondary className={styles['rule-add-btn']} disabled={disabled}>
               <Icon type='add' customClass={styles.iconfont} />
               <FormattedMessage id='common.add.text' />
             </Button>
@@ -99,6 +103,7 @@ const RuleContent = (props: IProps) => {
           <Serve
             index={ruleIndex}
             id={rule.id}
+            disabled={disabled}
             serve={rule.serve}
             variations={variations}
             customStyle={{width: '308px'}}

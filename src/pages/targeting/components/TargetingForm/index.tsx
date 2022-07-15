@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, SyntheticEvent, useMemo } from 'react';
+import { useCallback, useEffect, useState, SyntheticEvent, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Form, Radio, CheckboxProps, InputOnChangeData } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
@@ -38,6 +38,7 @@ import styles from './index.module.scss';
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 
 interface IProps {
+  disabled?: boolean;
   targeting?: ITarget;
   toggleInfo?: IToggleInfo;
   toggleDisabled: boolean;
@@ -47,8 +48,8 @@ interface IProps {
   saveToggleDisable(status: boolean): void;
 }
 
-const Targeting = (props: IProps) => {
-  const { toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
+const Targeting = forwardRef((props: IProps, ref: any) => {
+  const { disabled, toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
   const { rules, saveRules } = ruleContainer.useContainer();
   const { variations, saveVariations } = variationContainer.useContainer();
   const { defaultServe, saveDefaultServe } = defaultServeContainer.useContainer();
@@ -61,8 +62,10 @@ const Targeting = (props: IProps) => {
   const [ comment, setComment ] = useState<string>('');
   const history = useHistory();
   const intl = useIntl();
+  const formRef = useRef();
 
   useBeforeUnload(!publishDisabled, intl.formatMessage({id: 'targeting.page.leave.text'}));
+  useImperativeHandle(ref, () => publishDisabled, [publishDisabled]);
 
   const {
     formState: {errors},
@@ -237,19 +240,20 @@ const Targeting = (props: IProps) => {
 
   const handlePublishCancel = useCallback(() => {
     setOpen(false);
+    setComment('');
   }, []);
 
   const handlePublishConfirm = useCallback(async () => {
     setOpen(false);
     if (publishTargeting) {
-      console.log(publishTargeting)
       const res = await saveToggle(projectKey, environmentKey, toggleKey, {
-        comment: comment,
+        comment,
         ...publishTargeting
       });
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
         initTargeting();
+        setComment('');
       }
     }
   }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
@@ -270,7 +274,7 @@ const Targeting = (props: IProps) => {
   }, []);
 
 	return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off'>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off' ref={formRef}>
       <div className={styles.status}>
         <SectionTitle title={intl.formatMessage({id: 'targeting.status.text'})} />
         <div className={styles['toggle-status']}>
@@ -278,8 +282,9 @@ const Targeting = (props: IProps) => {
             size='mini'
             toggle 
             checked={!toggleDisabled} 
-            onClick={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(!data.checked || false)} 
+            onChange={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(!data.checked || false)} 
             className={styles['info-toggle-status']} 
+            disabled={disabled}
           />
         </div>
         {
@@ -306,6 +311,7 @@ const Targeting = (props: IProps) => {
           tooltipText={intl.formatMessage({id: 'toggles.variations.tips'})}
         />
         <Variations
+          disabled={disabled}
           returnType={toggleInfo?.returnType || ''}
           hooksFormContainer={hooksFormContainer}
           variationContainer={variationContainer}
@@ -313,17 +319,22 @@ const Targeting = (props: IProps) => {
       </div>
       <div className={styles.rules}>
         <Rules 
+          disabled={disabled}
           useSegment={true}
           ruleContainer={ruleContainer}
           variationContainer={variationContainer}
           hooksFormContainer={hooksFormContainer}
           segmentContainer={segmentContainer}
         />
-        <DefaultRule />
-        <DisabledServe />
+        <DefaultRule 
+          disabled={disabled}
+        />
+        <DisabledServe 
+          disabled={disabled}
+        />
       </div>
       <div id='footer' className={styles.footer}>
-        <Button className={styles['publish-btn']} disabled={publishDisabled} primary type="submit">
+        <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
           <FormattedMessage id='common.publish.text' />
         </Button>
         <Button basic type='reset' onClick={handleGoBack}>
@@ -366,6 +377,6 @@ const Targeting = (props: IProps) => {
       />
     </Form>
 	)
-}
+})
 
 export default Targeting;

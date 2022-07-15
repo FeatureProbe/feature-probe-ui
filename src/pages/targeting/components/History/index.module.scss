@@ -1,0 +1,148 @@
+.history {
+  width: 260px;
+  max-height: 470px;
+  border-radius: 8px;
+  position: fixed;
+  top: 310px;
+  right: 30px;
+  z-index: 1000;
+  background: #ffffff;
+  box-shadow: 0 10px 20px 0 rgba(18, 38, 63, 0.03);
+}
+
+.history-title {
+  display: flex;
+  justify-content: space-between;
+  font-family: PingFangSC-Medium;
+  font-size: 18px;
+  color: #212529;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 16px 0 20px;
+}
+
+.history-title-icon {
+  font-size: 16px !important;
+  cursor: pointer;
+  color: #495057;
+}
+
+.modal-content {
+  margin-top: 16px;
+
+  :global {
+    .CodeMirror-scroll {
+      background-color: rgba(85, 110, 230, 0.04);
+      font-size: 12px;
+      color: rgb(120, 139, 227);
+      margin-bottom: 0;
+      margin-right: 0;
+      padding-bottom: 0;
+      overflow: auto !important;
+      border-radius: 8px;
+      height: 298px;
+    }
+  }
+}
+
+.lists {
+  overflow-y: auto;
+  max-height: 410px;
+  min-height: 85px;
+  margin-top: 8px;
+  padding-left: 20px;
+  padding-bottom: 24px;
+}
+
+.loading {
+  text-align: center;
+  padding-right: 20px;
+  line-height: 30px;
+}
+
+.version {
+  display: flex;
+  cursor: pointer;
+  position: relative;
+}
+
+.version-left {
+  width: 2px;
+  background: rgba(0, 0, 0, 0.07);
+  margin: 15px 12px 0px 6px;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  background: #FFFFFF;
+  border: 2px solid rgba(0,0,0,0.24);
+  display: inline-block;
+  border-radius: 100%;
+  position: absolute;
+  top: 12px;
+  left: 2px;
+}
+
+.circle-selected {
+  border: 2px solid #0A70F5;
+}
+
+.version-selected {
+  color: #495057;
+}
+
+.version-text {
+  font-size: 12px;
+}
+
+.version-text-selected {
+  color: #212529;
+  font-size: 12px;
+}
+
+.current {
+  font-size: 12px;
+  color: #0A70F5;
+  margin-left: 5px;
+}
+
+.version-right {
+  border-radius: 8px;
+  padding: 8px;
+  width: 203px;
+}
+
+.version-right-selected {
+  background-color: rgba(128, 188, 248, 0.1);
+}
+
+.title {
+  font-family: PingFangSC-Medium;
+  font-size: 15px;
+  color: #74788D;
+  margin-bottom: 4px;
+}
+
+.modifyBy {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.38);
+  margin-bottom: 4px;
+  line-height: 20px;
+}
+
+.modifyTime {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.38);
+  margin-bottom: 4px;
+  line-height: 20px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tooltip {
+  max-width: 100px;
+  word-break: break-all;
+}

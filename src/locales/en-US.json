@@ -71,6 +71,12 @@
   "common.new.lowercase.text": "new",
   "common.environment.text": "Environment",
   "common.history.text": "History",
+  "common.versions.text": "Versions",
+  "common.version.uppercase.text": "Version",
+  "common.version.text": "version",
+  "common.loading.text": "Loading...",
+  "common.current.version.text": "Current version",
+  "common.version.change.text": "Version ",
 
   "header.getuser.error.text": "Get user info error!",
 
@@ -192,7 +198,7 @@
   "targeting.publish.success.text": "Successfully published!",
   "targeting.status.text": "Status",
   "targeting.status.disabled.text": "disabled, serving ",
-  "targeting.variations.evaluations.text": "{type} Evaluations",
+  "targeting.variations.evaluations.text": "variation {type} Evaluations",
   "targeting.metrics.no.data.text": "No data available",
   "targeting.metrics.link.sdk.text": "Please import/invoke SDK ",
   "targeting.metrics.no.data.tips": "and make sure toggle is enabled",
@@ -248,6 +254,8 @@
   "targeting.serve.percentage.rollout": "a percentage rollout",
   "targeting.serve.required": "Please select serve",
   "targeting.invalid.value.text": "Invalid value",
+  "targeting.get.versions.error": "Error getting toggle versions!!",
+  "targeting.view.versions": "Reviewing ",
 
   "variations.add.text": "Add Variation",
   "variations.dulpicated.error.text": "Variation names are duplicated, please change!",

@@ -8,9 +8,11 @@ import Rule from 'components/Rule';
 import { IRule } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import styles from './index.module.scss';
+import classNames from 'classnames';
 const MAX_RULES = 30;
 
 interface IProps {
+  disabled?: boolean;
   useSegment?: boolean;
   ruleContainer: IContainer;
   variationContainer?: IContainer;
@@ -20,7 +22,14 @@ interface IProps {
 
 const Rules = (props: IProps) => {
   const intl = useIntl();
-  const { useSegment, ruleContainer, variationContainer, hooksFormContainer, segmentContainer } = props;
+  const { 
+    disabled, 
+    useSegment, 
+    ruleContainer, 
+    variationContainer, 
+    hooksFormContainer, 
+    segmentContainer 
+  } = props;
   const { 
     rules,
     saveRules,
@@ -37,6 +46,13 @@ const Rules = (props: IProps) => {
     copyRules.splice(result.destination.index, 0, removed);
     saveRules([...copyRules]);
   }, [rules, saveRules]);
+
+  const cls = classNames(
+    styles.add,
+    {
+      [styles['add-disabled']]: rules.length >= MAX_RULES || disabled
+    }
+  );
 
 	return (
 		<div className={styles.rules}>
@@ -60,6 +76,7 @@ const Rules = (props: IProps) => {
                         key={rule.id}
                         rule={rule}
                         index={index}
+                        disabled={disabled}
                         useSegment={useSegment}
                         ruleContainer={ruleContainer}
                         segmentContainer={segmentContainer}
@@ -77,9 +94,9 @@ const Rules = (props: IProps) => {
       </DragDropContext>
       
       <div 
-        className={`${rules.length >= MAX_RULES && styles['add-disabled']} ${styles.add}`} 
+        className={cls} 
         onClick={() => {
-          if (rules.length >= MAX_RULES) {
+          if (rules.length >= MAX_RULES || disabled) {
             return;
           }
           handleAddRule();

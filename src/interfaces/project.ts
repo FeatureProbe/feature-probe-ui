@@ -1,26 +1,26 @@
 export interface IRouterParams {
-	projectKey: string;
-	environmentKey: string;
-	toggleKey: string;
+  projectKey: string;
+  environmentKey: string;
+  toggleKey: string;
   navigation: string;
 }
 
 export interface IEnvironment {
-	name: string;
-	key: string;
-	clientSdkKey: string;
-	serverSdkKey: string;
+  name: string;
+  key: string;
+  clientSdkKey: string;
+  serverSdkKey: string;
 }
 
 export interface IProject {
-	name: string;
-	key: string;
-	description: string;
-	environments: IEnvironment[];
+  name: string;
+  key: string;
+  description: string;
+  environments: IEnvironment[];
 }
 
 export interface ITag {
-	name: string;
+  name: string;
 }
 
 export interface ITagOption {
@@ -36,6 +36,12 @@ export interface IToggleParams {
 }
 
 export interface IExistParams {
-	value: string;
-	type: string;
+    value: string;
+    type: string;
+}
+
+export interface IVersionParams {
+  pageIndex: number;
+  pageSize: number;
+  version?: number;
 }

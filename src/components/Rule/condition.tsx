@@ -14,6 +14,7 @@ import styles from './index.module.scss';
 
 interface IProps {
   rule: IRule;
+  disabled?: boolean;
   ruleIndex: number;
   useSegment?: boolean;
   conditionIndex: number;
@@ -31,6 +32,7 @@ const SPECIAL_PREDICATE = ['<', '<=', '>', '>='];
 const RuleContent = (props: IProps) => {
   const { 
     rule,
+    disabled,
     ruleIndex,
     useSegment,
     conditionIndex,
@@ -121,6 +123,7 @@ const RuleContent = (props: IProps) => {
 
   const inputProps = {
     placeholder: intl.formatMessage({id: 'common.dropdown.placeholder'}),
+    disabled: disabled,
   };
 
   return (
@@ -149,7 +152,7 @@ const RuleContent = (props: IProps) => {
             openOnFocus={false}
             selectOnBlur={false}
             closeOnChange={true}
-            disabled={condition.type === SEGMENT_TYPE}
+            disabled={condition.type === SEGMENT_TYPE || disabled}
             icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false }
             {
@@ -182,6 +185,7 @@ const RuleContent = (props: IProps) => {
             options={getAttrOptions(intl, condition.type)}
             placeholder={intl.formatMessage({id: 'targeting.rule.operator.placeholder'})}
             openOnFocus={false}
+            disabled={disabled}
             icon={
               <>
                 <div className={styles['rule-item-type']}>
@@ -222,6 +226,7 @@ const RuleContent = (props: IProps) => {
             <>
               <Form.Field 
                 width={6}
+                disabled={disabled}
                 className={styles['rule-item-datetime']}
                 error={ errors[`rule_${rule.id}_condition_${condition.id}_datetime`] ? true : false  }
                 {
@@ -255,6 +260,7 @@ const RuleContent = (props: IProps) => {
                   selection
                   floating
                   allowAdditions={false}
+                  disabled={disabled}
                   options={timezoneOptions(intl)}
                   value={condition.timezone || moment().format().slice(-6)}
                   openOnFocus={false}
@@ -293,6 +299,7 @@ const RuleContent = (props: IProps) => {
                 selection
                 multiple
                 floating
+                disabled={disabled}
                 allowAdditions={condition.type !== SEGMENT_TYPE }
                 options={condition.type !== SEGMENT_TYPE ? valuesOptions : options}
                 value={condition.objects}
@@ -352,11 +359,13 @@ const RuleContent = (props: IProps) => {
           )
         }
       </Form.Group>
-      <Icon 
-        style={{visibility: `${rule.conditions.length > 1 ? 'visible' : 'hidden'}`}} 
-        customClass={styles['icon-minus']} type='minus'
-        onClick={() => handleDelete(ruleIndex, conditionIndex, rule.id)}
-      />
+      {
+        !disabled && <Icon 
+          style={{visibility: `${rule.conditions.length > 1 ? 'visible' : 'hidden'}`}} 
+          customClass={styles['icon-minus']} type='minus'
+          onClick={() => handleDelete(ruleIndex, conditionIndex, rule.id)}
+        />
+      }
     </div>
   )
 }

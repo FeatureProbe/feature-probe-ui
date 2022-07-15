@@ -2,7 +2,7 @@ import qs from 'qs';
 import request from '../utils/request';
 import API from '../constants/api';
 import { IToggle } from 'interfaces/toggle';
-import { ITag, IToggleParams, IExistParams } from 'interfaces/project';
+import { ITag, IToggleParams, IExistParams, IVersionParams } from 'interfaces/project';
 import { IContent, IMetricParams } from 'interfaces/targeting';
 import { ApplicationJsonContentType } from 'constants/api/contentType';
 
@@ -145,3 +145,26 @@ export const checkEnvironmentExist = async<T> (projectKey: string, params: IExis
     },
   });
 }
+
+export const getTargetingVersion = async<T> (projectKey: string, environmentKey: string, toggleKey: string, params: IVersionParams) => {
+  const url = `${
+    API.targetingVersionsURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+      .replace(':toggleKey', toggleKey)
+  }?${qs.stringify(params)}`;
+  
+  return request<T>(url);
+};
+
+export const getTargetingVersionsByVersion = async<T> (projectKey: string, environmentKey: string, toggleKey: string, version: number) => {
+  const url = `${
+    API.targetingVersionsByVersionURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+      .replace(':toggleKey', toggleKey)
+      .replace(':version', '' + version)
+  }`;
+  
+  return request<T>(url);
+};

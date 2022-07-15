@@ -10,6 +10,7 @@ import styles from './index.module.scss';
 interface IProps {
   rule: IRule;
   index: number;
+  disabled?: boolean;
   isHover: boolean;
   ruleContainer: IContainer;
   hooksFormContainer: IContainer;
@@ -19,6 +20,7 @@ const RuleTitle = (props: IProps) => {
   const { 
     rule, 
     index,
+    disabled,
     isHover,
     ruleContainer,
     hooksFormContainer,
@@ -72,6 +74,7 @@ const RuleTitle = (props: IProps) => {
             className={styles['rule-input']}
             onClick={handleInputClick} 
             value={rule.name} 
+            disabled={disabled}
             placeholder={`${intl.formatMessage({id: 'common.rule.text'})}${index + 1}`}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
@@ -81,7 +84,7 @@ const RuleTitle = (props: IProps) => {
         </Form.Field>
       </Form.Group>
       {
-        isHover && (
+        isHover && !disabled && (
           <span className={styles['rule-title-operation']}>
             <Icon customClass={styles['icon-drag']} type='drag' />
             <PopConfirm

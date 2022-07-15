@@ -9,8 +9,13 @@ import { variationContainer, disabledServeContainer, hooksFormContainer } from '
 
 import styles from './index.module.scss';
 
-const DisabledServe = () => {
+interface IProps {
+  disabled?: boolean;
+}
+
+const DisabledServe = (props: IProps) => {
   const intl = useIntl();
+  const { disabled } = props;
   const { 
     disabledServe,
     saveDisabledServe,
@@ -63,6 +68,7 @@ const DisabledServe = () => {
         <Dropdown
           selection
           floating
+          disabled={disabled}
           value={disabledServe?.select}
           className={styles['serve-dropdown']}
           options={options} 
