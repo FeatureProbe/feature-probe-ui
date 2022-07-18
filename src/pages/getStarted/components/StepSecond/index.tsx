@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Dropdown } from 'semantic-ui-react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import java from 'images/java.svg';
@@ -11,6 +11,17 @@ import javascript from 'images/javascript.svg';
 import android from 'images/android.svg';
 import swift from 'images/swift.svg';
 import styles from '../Steps/index.module.scss';
+
+const SDK_LOGOS = {
+  'Java': java,
+  'Rust': rust,
+  'Go': go,
+  'Python': python,
+  'JavaScript': javascript,
+  'Android': android,
+  'Swift': swift,
+  'Objective-C': ''
+};
 
 const SERVER_SIDE_SDKS = [
   {
@@ -57,6 +68,7 @@ interface IOption {
 
 interface IProps {
   currentStep: number;
+  currentSDK: string;
   saveStep(sdk: string): void;
   goBackToStep(step: number): void;
 }
@@ -64,9 +76,22 @@ interface IProps {
 const CURRENT = 2;
 
 const StepSecond = (props: IProps) => {
-  const { currentStep, saveStep, goBackToStep } = props;
+  const { currentStep, currentSDK, saveStep, goBackToStep } = props;
   const [ selectedSDK, saveSelectedSDK ] = useState<string>('');
   const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
+
+  useEffect(() => {
+    if (currentSDK) {
+      saveSelectedSDK(currentSDK);
+    }
+  }, [currentSDK]);
+
+  useEffect(() => {
+    if (selectedSDK) {
+      // @ts-ignore
+      saveSelectedSDKLogo(SDK_LOGOS[selectedSDK]);
+    }
+  }, [selectedSDK]);
 
   return (
     <div className={styles.step}>
@@ -144,7 +169,7 @@ const StepSecond = (props: IProps) => {
                           return (
                             <Dropdown.Item onClick={() => {
                               saveSelectedSDK(sdk.name);
-                              saveSelectedSDKLogo(sdk.logo);
+                              // saveSelectedSDKLogo(sdk.logo);
                             }}>
                               <img src={sdk.logo} alt='logo' />
                               { sdk.name }
@@ -159,7 +184,7 @@ const StepSecond = (props: IProps) => {
                           return (
                             <Dropdown.Item onClick={() => {
                               saveSelectedSDK(sdk.name);
-                              saveSelectedSDKLogo(sdk.logo);
+                              // saveSelectedSDKLogo(sdk.logo);
                             }}>
                               {
                                 sdk.logo && <img src={sdk.logo} alt='logo' />

@@ -1,17 +1,15 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
-import { getProjectList } from 'services/project';
-import message from 'components/MessageBox';
 import StepFirst from '../StepFirst';
 import StepFourth from '../StepFourth';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
-import { IProject } from 'interfaces/project';
-import { saveDictionary } from 'services/dictionary';
+import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { getToggleAccess } from 'services/toggle';
+import { IDictionary } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
@@ -36,7 +34,7 @@ interface IAccess {
 
 const STEP: IStep = {
   step1: {
-    done: false,
+    done: true,
   },
   step2: {
     done: false,
@@ -52,11 +50,39 @@ const STEP: IStep = {
 const PREFIX = 'get_started_';
 
 const Steps = () => {
-  const intl = useIntl();
   const [ currentStep, saveCurrentStep ] = useState<number>(2);
+  const [ currentSDK, saveCurrentSDK ] = useState<string>('');
   const [ step, saveStep ] = useState<IStep>(cloneDeep(STEP));
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
+
+  const init = useCallback(() => {
+    const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
+    getFromDictionary<IDictionary>(key).then(res => {
+      const { success, data } = res;
+      if (success && data) {
+        const savedData = JSON.parse(data.value);
+        if (savedData.step3.done) {
+          saveCurrentStep(4);
+          saveCurrentSDK(savedData.step2.sdk);
+          return;
+        } 
+        if (savedData.step2.done) {
+          saveCurrentStep(3);
+          saveCurrentSDK(savedData.step2.sdk);
+          return;
+        }
+        if (savedData.step1.done) {
+          saveCurrentStep(2);
+          return;
+        }
+      }
+    })
+  }, [projectKey, environmentKey, toggleKey]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   const checkToggleStatus = useCallback(() => {
     getToggleAccess<IAccess>(projectKey, environmentKey, toggleKey).then(res => {
@@ -118,6 +144,7 @@ const Steps = () => {
         />
         <StepSecond 
           currentStep={currentStep}
+          currentSDK={currentSDK}
           saveStep={saveSecondStep}
           goBackToStep={goBackToStep}
         />

@@ -127,3 +127,10 @@ export interface ITargetingVersionsByVersion {
   total: number;
   versions: IVersion[]
 }
+
+export interface IDictionary {
+  key: string;
+  createdTime: string;
+  value: string;
+  updatedTime: string;
+}
