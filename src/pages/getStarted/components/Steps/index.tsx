@@ -146,10 +146,12 @@ const Steps = () => {
           currentStep={currentStep}
           currentSDK={currentSDK}
           saveStep={saveSecondStep}
+          saveCurrentSDK={saveCurrentSDK}
           goBackToStep={goBackToStep}
         />
         <StepThird 
           currentStep={currentStep}
+          currentSDK={currentSDK}
           saveStep={saveThirdStep}
           goBackToStep={goBackToStep}
         />

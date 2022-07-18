@@ -205,3 +205,26 @@
   width: 20px;
   margin-right: 5px;
 }
+
+.code {
+  position: relative;
+}
+
+.copy {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.copyBtn {
+  width: 48px;
+  height: 24px;
+  background: #FFFFFF;
+  border: 1px solid #556EE6;
+  border-radius: 6px;
+  color: #556EE6;
+  text-align: center;
+  line-height: 24px;
+  font-size: 12px;
+  display: inline-block;
+}

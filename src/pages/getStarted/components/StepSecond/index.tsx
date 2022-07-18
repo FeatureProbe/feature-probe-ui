@@ -71,27 +71,21 @@ interface IProps {
   currentSDK: string;
   saveStep(sdk: string): void;
   goBackToStep(step: number): void;
+  saveCurrentSDK(sdk: string): void;
 }
 
 const CURRENT = 2;
 
 const StepSecond = (props: IProps) => {
-  const { currentStep, currentSDK, saveStep, goBackToStep } = props;
-  const [ selectedSDK, saveSelectedSDK ] = useState<string>('');
+  const { currentStep, currentSDK, saveStep, goBackToStep, saveCurrentSDK } = props;
   const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
 
   useEffect(() => {
     if (currentSDK) {
-      saveSelectedSDK(currentSDK);
+      // @ts-ignore
+      saveSelectedSDKLogo(SDK_LOGOS[currentSDK]);
     }
   }, [currentSDK]);
-
-  useEffect(() => {
-    if (selectedSDK) {
-      // @ts-ignore
-      saveSelectedSDKLogo(SDK_LOGOS[selectedSDK]);
-    }
-  }, [selectedSDK]);
 
   return (
     <div className={styles.step}>
@@ -145,13 +139,13 @@ const StepSecond = (props: IProps) => {
                     trigger={
                       <div className={styles.dropdown}>
                         {
-                          selectedSDK ? (
+                          currentSDK ? (
                             <>
                               {
                                 selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' />
                               }
                               <span className={styles['dropdown-text']}>
-                                { selectedSDK }
+                                { currentSDK }
                               </span>
                             </>
                           ) : (
@@ -168,8 +162,7 @@ const StepSecond = (props: IProps) => {
                         SERVER_SIDE_SDKS.map((sdk: IOption) => {
                           return (
                             <Dropdown.Item onClick={() => {
-                              saveSelectedSDK(sdk.name);
-                              // saveSelectedSDKLogo(sdk.logo);
+                              saveCurrentSDK(sdk.name);
                             }}>
                               <img src={sdk.logo} alt='logo' />
                               { sdk.name }
@@ -183,8 +176,7 @@ const StepSecond = (props: IProps) => {
                         CLIENT_SIDE_SDKS.map((sdk: IOption) => {
                           return (
                             <Dropdown.Item onClick={() => {
-                              saveSelectedSDK(sdk.name);
-                              // saveSelectedSDKLogo(sdk.logo);
+                              saveCurrentSDK(sdk.name);
                             }}>
                               {
                                 sdk.logo && <img src={sdk.logo} alt='logo' />
@@ -200,9 +192,9 @@ const StepSecond = (props: IProps) => {
                 <Button 
                   primary 
                   type='submit'
-                  disabled={!selectedSDK}
+                  disabled={!currentSDK}
                   onClick={() => {
-                    saveStep(selectedSDK);
+                    saveStep(currentSDK);
                   }}
                 >
                   <FormattedMessage id='connect.save.continue.button' />
@@ -218,7 +210,7 @@ const StepSecond = (props: IProps) => {
                     selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' />
                   }
                   <span className={styles['dropdown-text']}>
-                    { selectedSDK }
+                    { currentSDK }
                   </span>
                 </div>
                 <div className={styles['card-right']}>
