@@ -361,7 +361,7 @@ const RuleContent = (props: IProps) => {
       </Form.Group>
       {
         !disabled && <Icon 
-          style={{visibility: `${rule.conditions.length > 1 ? 'visible' : 'hidden'}`}} 
+          // style={{visibility: `${rule.conditions.length > 1 ? 'visible' : 'hidden'}`}} 
           customClass={styles['icon-minus']} type='minus'
           onClick={() => handleDelete(ruleIndex, conditionIndex, rule.id)}
         />

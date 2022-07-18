@@ -256,6 +256,7 @@
   "targeting.invalid.value.text": "格式错误",
   "targeting.get.versions.error": "获取历史版本失败!",
   "targeting.view.versions": "正在查看",
+  "targeting.view.more": "查看更多",
 
   "variations.add.text": "添加分组",
   "variations.dulpicated.error.text": "分组名称已存在!",

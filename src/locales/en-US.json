@@ -256,6 +256,7 @@
   "targeting.invalid.value.text": "Invalid value",
   "targeting.get.versions.error": "Error getting toggle versions!!",
   "targeting.view.versions": "Reviewing ",
+  "targeting.view.more": "Load more",
 
   "variations.add.text": "Add Variation",
   "variations.dulpicated.error.text": "Variation names are duplicated, please change!",

@@ -145,6 +145,11 @@ const Toggle = () => {
         value: false, 
         text: intl.formatMessage({id: 'toggles.filter.evaluated.not.last.seven.days'}) 
       },
+      { 
+        key: 'none', 
+        value: '1', 
+        text: intl.formatMessage({id: 'none'}) 
+      },
     ];
   }, [intl]);
 
