@@ -2,6 +2,7 @@ import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react'
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { Menu, MenuItemProps } from 'semantic-ui-react';
 import localForage from 'localforage';
+import useResizeObserver from 'use-resize-observer';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import findIndex from 'lodash/findIndex';
@@ -48,6 +49,7 @@ const Targeting = () => {
   const [ currentVersion, saveCurrentVersion ] = useState<number>(Number(new URLSearchParams(search).get('currentVersion')));
   const [ count, saveCount ] = useState<number>(0);
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
+  const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
 
   useEffect(() => {
     if (projectKey) {
@@ -248,20 +250,6 @@ const Targeting = () => {
     <ProjectLayout>
       <Provider>
         <div className={styles.targeting}>
-          {
-            targetingDisabled && (
-              <div className={styles.message}>
-                <div className={`${styles['message-content-warn']} ${styles['message-content']}`}>
-                  <i className={`${styles['icon-warning-circle']} icon-warning-circle iconfont`}></i>
-                  <span className={styles['message-content-text']}>
-                    <FormattedMessage id='targeting.view.versions' />
-                    <FormattedMessage id='common.version.text' />:
-                    { selectedVersion }
-                  </span>
-                </div>
-              </div>
-            )
-          }
           <Info
             toggleInfo={toggleInfo}
             modifyInfo={modifyInfo}
@@ -293,49 +281,74 @@ const Targeting = () => {
                       setHistoryOpen(true);
                       getVersionsList();
                     }}
-                    className={styles['variation-add-btn']} 
                   >
+                    {
+                      targetingDisabled && <Icon type='put-away' customClass={styles['put-away']} />
+                    }
                     <FormattedMessage id='common.history.text' />
                   </Button>
-                  {
-                    historyOpen && (
-                      <History 
-                        versions={versions}
-                        hasMore={historyHasMore}
-                        latestVersion={latestVersion}
-                        selectedVersion={selectedVersion}
-                        loadMore={() => {
-                          getVersionsList();
-                        }}
-                        viewHistory={viewHistory}
-                        quiteViewHistory={quiteViewHistory}
-                      />
-                    )
-                  }
                 </div>
               )
             }
           </div>
-          {
-            activeItem === 'targeting' && (
-              <TargetingForm
-                disabled={targetingDisabled}
-                targeting={targeting}
-                toggleInfo={toggleInfo}
-                segmentList={segmentList}
-                toggleDisabled={toggleDisabled}
-                initialTargeting={initialTargeting}
-                initTargeting={initTargeting}
-                saveToggleDisable={saveToggleDisable}
-                ref={formRef}
-              />
-            )
-          }
-          {
-            activeItem === 'metrics' && (
-              <Metrics />
-            )
-          }
+          <div className={styles.content}>
+            <div className={styles['content-left']}>
+              {
+                activeItem === 'targeting' && (
+                  <div id='targetingForm' ref={ref}>
+                    {
+                      targetingDisabled && (
+                        <div className={styles.message}>
+                          <div className={`${styles['message-content-warn']} ${styles['message-content']}`}>
+                            <i className={`${styles['icon-warning-circle']} icon-warning-circle iconfont`}></i>
+                            <span className={styles['message-content-text']}>
+                              <FormattedMessage id='targeting.view.versions' />
+                              <FormattedMessage id='common.version.text' />:
+                              { selectedVersion }
+                            </span>
+                            <Icon type='close' customClass={styles['close-icon']} onClick={quiteViewHistory} />
+                          </div>
+                        </div>
+                      )
+                    }
+                    <TargetingForm
+                      disabled={targetingDisabled}
+                      targeting={targeting}
+                      toggleInfo={toggleInfo}
+                      segmentList={segmentList}
+                      toggleDisabled={toggleDisabled}
+                      initialTargeting={initialTargeting}
+                      initTargeting={initTargeting}
+                      saveToggleDisable={saveToggleDisable}
+                      ref={formRef}
+                    />
+                  </div>
+                )
+              }
+              {
+                activeItem === 'metrics' && (
+                  <Metrics />
+                )
+              }
+            </div>
+            {
+              historyOpen && (
+                <div className={styles['content-right']} style={{ height }}>
+                  <History 
+                    versions={versions}
+                    hasMore={historyHasMore}
+                    latestVersion={latestVersion}
+                    selectedVersion={selectedVersion}
+                    loadMore={() => {
+                      getVersionsList();
+                    }}
+                    viewHistory={viewHistory}
+                    setHistoryOpen={setHistoryOpen}
+                  />
+                </div>
+              )
+            }
+          </div>
           <Modal 
             open={open}
             width={400}
