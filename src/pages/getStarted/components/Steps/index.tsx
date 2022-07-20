@@ -8,8 +8,8 @@ import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
-import { getToggleAccess } from 'services/toggle';
-import { IDictionary } from 'interfaces/targeting';
+import { getToggleAccess, getToggleInfo } from 'services/toggle';
+import { IDictionary, IToggleInfo } from 'interfaces/targeting';
 import { getEnvironment } from 'services/project';
 import { IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
@@ -45,15 +45,20 @@ const STEP: IStep = {
 };
 
 const PREFIX = 'get_started_';
+const JAVA_SDK_VERSION = 'java_sdk_version';
+const RUST_SDK_VERSION = 'rust_sdk_version';
+const ANDROID_SDK_VERSION = 'android_sdk_version';
 
 const Steps = () => {
   const [ currentStep, saveCurrentStep ] = useState<number>(2);
   const [ currentSDK, saveCurrentSDK ] = useState<string>('');
   const [ serverSdkKey, saveServerSDKKey ] = useState<string>('');
   const [ clientSdkKey, saveClientSdkKey ] = useState<string>('');
-  const [ step, saveStep ] = useState<IStep>(cloneDeep(STEP));
+  const [ sdkVersion, saveSDKVersion ] = useState<string>('');
+  const [ returnType, saveReturnType ] = useState<string>('');
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
+  const step = cloneDeep(STEP);
 
   const init = useCallback(() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
@@ -71,6 +76,8 @@ const Steps = () => {
           saveCurrentSDK(savedData.step1.sdk);
           return;
         }
+      } else {
+        saveCurrentStep(1);
       }
     });
 
@@ -81,12 +88,43 @@ const Steps = () => {
         saveClientSdkKey(data.clientSdkKey);
       }
     });
+
+    getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        saveReturnType(data.returnType);
+      } 
+    })
     
   }, [projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
     init();
   }, [init]);
+
+  useEffect(() => {
+    if (currentSDK) {
+      let key = '';
+      if (currentSDK === 'Java') {
+        key = JAVA_SDK_VERSION;
+      } 
+      else if (currentSDK === 'Rust') {
+        key = RUST_SDK_VERSION;
+      } 
+      else if (currentSDK === 'Android') {
+        key = ANDROID_SDK_VERSION;
+      }
+
+      if (key) {
+        getFromDictionary<IDictionary>(key).then(res => {
+          const { success, data } = res;
+          if (success && data) {
+            saveSDKVersion(data.value);
+          }
+        });
+      }
+    }
+  }, [currentSDK]);
 
   const checkToggleStatus = useCallback(() => {
     getToggleAccess<IAccess>(projectKey, environmentKey, toggleKey).then(res => {
@@ -124,12 +162,9 @@ const Steps = () => {
 
   const goBackToStep = useCallback((currentStep: number) => {
     saveCurrentStep(currentStep);
-    // if (currentStep === 1) {
-    //   step.step2.done = false;
-    //   delete step.step2.sdk;
-    // } else if (currentStep >= 2) {
-    //   step.step3.done = false;
-    // }
+    if (currentStep === 1) {
+      step.step2.done = false;
+    }
   }, [step]);
 
   return (
@@ -180,8 +215,10 @@ const Steps = () => {
         <StepSecond 
           currentStep={currentStep}
           currentSDK={currentSDK}
+          returnType={returnType}
           serverSdkKey={serverSdkKey}
           clientSdkKey={clientSdkKey}
+          sdkVersion={sdkVersion}
           saveStep={saveSecondStep}
           goBackToStep={goBackToStep}
         />

@@ -54,6 +54,19 @@
   color: #0A70F5;
 }
 
+.no-data {
+  text-align: center;
+  padding-right: 20px;
+  line-height: 30px;
+  font-family: PingFangSC-Medium;
+  font-size: 18px;
+  color: #ADB5BC;
+}
+
+.no-data-image {
+  width: 230px;
+}
+
 .version {
   display: flex;
   cursor: pointer;

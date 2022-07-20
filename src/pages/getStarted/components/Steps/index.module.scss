@@ -205,6 +205,10 @@
   margin-top: 6px;
 }
 
+.form {
+  width: 536px;
+}
+
 .dropdown {
   height: 25px;
   display: inline-flex;
@@ -216,13 +220,22 @@
   margin-right: 5px;
 }
 
+.dropdown-text {
+  line-height: 20px;
+}
+
 .code {
   position: relative;
 }
 
+.code-step {
+  font-size: 13px;
+  color: #74788D;
+}
+
 .copy {
   position: absolute;
-  top: 12px;
+  top: 6px;
   right: 12px;
 }
 

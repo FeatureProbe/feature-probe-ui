@@ -13,6 +13,8 @@ import styles from '../Steps/index.module.scss';
 interface IProps {
   currentStep: number;
   currentSDK: string;
+  returnType: string;
+  sdkVersion: string;
   serverSdkKey: string;
   clientSdkKey: string;
   saveStep(): void;
@@ -28,37 +30,45 @@ interface ICodeOption {
 const CURRENT = 2;
 
 const StepSecond = (props: IProps) => {
-  const { currentStep, currentSDK, serverSdkKey, clientSdkKey, saveStep } = props;
+  const { currentStep, currentSDK, serverSdkKey, clientSdkKey, returnType, sdkVersion, saveStep, goBackToStep } = props;
   const [ options, saveOptions ] = useState<ICodeOption[]>([]);
+  const [ language, saveLanguage ] = useState<string>('java');
   const { toggleKey } = useParams<IRouterParams>();
 
   useEffect(() => {
     if (currentSDK) {
       switch (currentSDK) {
         case 'Java': 
-          saveOptions(getJavaCode('1', serverSdkKey, toggleKey));
+          saveLanguage('java');
+          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType));
           break;
         case 'Rust': 
-          saveOptions(getRustCode('1', serverSdkKey, toggleKey));
+          saveLanguage('rust');
+          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType));
           break;
         case 'Go': 
-          saveOptions(getGoCode(serverSdkKey, toggleKey));
+          saveLanguage('go');
+          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType));
           break;
         case 'Android': 
-          saveOptions(getAndroidCode('1', clientSdkKey, toggleKey));
+          saveLanguage('java');
+          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType));
           break;
         case 'Swift': 
-          saveOptions(getSwiftCode('1', clientSdkKey, toggleKey));
+          saveLanguage('swift');
+          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType));
           break;
         case 'Objective-C': 
-          saveOptions(getObjCCode('1', clientSdkKey, toggleKey));
+          saveLanguage('objectivec');
+          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType));
           break;
         case 'JavaScript': 
-          saveOptions(getJSCode('1', clientSdkKey, toggleKey));
+          saveLanguage('javascript');
+          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType));
           break;
       }
     }
-  }, [currentSDK, clientSdkKey, serverSdkKey, toggleKey]);
+  }, [sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType]);
 
   return (
     <div className={styles.step}>
@@ -103,14 +113,24 @@ const StepSecond = (props: IProps) => {
                     options.map((item: ICodeOption) => {
                       return (
                         <div>
-                          <div>{item.name}</div>
+                          {
+                            item.title && <h3 className={styles['code-step-title']}>{item.title}</h3>
+                          }
+                          <div className={styles['code-step']}>{item.name}</div>
                           <div className={styles.code}>
                             <span className={styles.copy}>
                               <CopyToClipboardPopup text={item.code}>
-                                <span className={styles.copyBtn}>Copy</span>
+                                <span className={styles.copyBtn}>
+                                  <FormattedMessage id='common.copy.uppercase.text' />
+                                </span>
                               </CopyToClipboardPopup>
                             </span>
-                            <SyntaxHighlighter language='java' style={docco}>
+                            <SyntaxHighlighter 
+                              language={language} 
+                              style={docco} 
+                              wrapLongLines={true} 
+                              customStyle={{backgroundColor: 'rgba(33,37,41,0.04);', fontSize: '13px', borderRadius: '6px', minHeight: '36px'}}
+                            >
                               {item.code}
                             </SyntaxHighlighter>
                           </div>
@@ -136,7 +156,17 @@ const StepSecond = (props: IProps) => {
           {
             currentStep > CURRENT && (
               <div className={styles.card}>
-                <FormattedMessage id='connect.third.title' />
+                <div className={styles['card-left']}>
+                  <FormattedMessage id='connect.third.title' />
+                </div>
+                <div className={styles['card-right']}>
+                  <Icon 
+                    type='edit' 
+                    onClick={() => {
+                      goBackToStep(CURRENT);
+                    }} 
+                  />
+                </div>
               </div>
             )
           }

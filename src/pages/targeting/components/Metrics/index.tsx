@@ -2,7 +2,7 @@ import { useEffect, useMemo, useCallback, useState, SyntheticEvent, useRef } fro
 import { Select, DropdownProps } from 'semantic-ui-react';
 import { Line } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import {
   CategoryScale,
@@ -37,6 +37,7 @@ const Metrics = () => {
   const [ isAccess, saveIsAccess ] = useState<boolean>(false);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
+  const history = useHistory();
   const timer: { current: NodeJS.Timeout | null } = useRef(null);
 
   const initMetrics = useCallback(() => {
@@ -87,9 +88,8 @@ const Metrics = () => {
   }, []);
 
   const handleGotoSDK = useCallback(() => {
-    // TODO:
-    window.open('https://github.com/FeatureProbe/FeatureProbe');
-  }, []);
+    history.push(`/${projectKey}/${environmentKey}/${toggleKey}/get-started`);
+  }, [history, projectKey, environmentKey, toggleKey]);
 
   const menuNameCls = classNames({
     [styles['menu-item-selected']]: fitlerType === 'name',

@@ -125,7 +125,7 @@ const StepFirst = (props: IProps) => {
         <div className={styles['step-detail']}>
           {
             currentStep === CURRENT && (
-              <Form>
+              <Form className={styles.form}>
                 <Form.Field>
                   <label>
                     <span className={styles['label-required']}>*</span>
@@ -210,9 +210,9 @@ const StepFirst = (props: IProps) => {
                   {
                     selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' />
                   }
-                  <span className={styles['dropdown-text']}>
+                  <div className={styles['dropdown-text']}>
                     { currentSDK }
-                  </span>
+                  </div>
                 </div>
                 <div className={styles['card-right']}>
                   <Icon type='edit' onClick={() => {

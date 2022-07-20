@@ -9,7 +9,14 @@ import Icon from 'components/Icon';
 import { getProjectInfo } from 'services/project';
 import { IProject, IRouterParams } from 'interfaces/project';
 import { EnvironmentColors } from 'constants/colors';
-import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH } from 'router/routes';
+import { 
+  TOGGLE_PATH, 
+  TARGETING_PATH, 
+  SEGMENT_PATH, 
+  SEGMENT_ADD_PATH, 
+  GET_STARTED_PATH,
+  SEGMENT_EDIT_PATH,
+} from 'router/routes';
 
 import styles from './layout.module.scss';
 
@@ -90,6 +97,17 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   {toggleKey}
+                </Breadcrumb.Section>
+              </>
+            )
+          }
+          {
+            match.path === GET_STARTED_PATH && (
+              <>
+                <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
+                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Section active>
+                  <FormattedMessage id='common.get.started.text' />
                 </Breadcrumb.Section>
               </>
             )

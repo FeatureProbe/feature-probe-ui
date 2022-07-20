@@ -320,11 +320,13 @@ const RuleContent = (props: IProps) => {
                     result = detail.value.every((item) => {
                       return NUMBER_REG.test(item);
                     });
+
                     // @ts-ignore
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
                       return;
                     } 
-                  } else if (condition.type === SEMVER_TYPE) {
+                  } 
+                  else if (condition.type === SEMVER_TYPE) {
                     // @ts-ignore
                     result = detail.value.every((item) => {
                       return SEMVER_REG.test(item);
@@ -337,11 +339,12 @@ const RuleContent = (props: IProps) => {
                   }
                   if (!result) {
                     message.error(intl.formatMessage({id: 'targeting.invalid.value.text'}));
+                    handleChangeValue(ruleIndex, conditionIndex, []);
                     return;
                   };
 
-                  handleChangeValue(ruleIndex, conditionIndex, detail.value);
                   setValue(detail.name, detail.value);
+                  handleChangeValue(ruleIndex, conditionIndex, detail.value);
                   await trigger(`rule_${rule.id}_condition_${condition.id}_objects`);
                 }}
               />
@@ -361,7 +364,6 @@ const RuleContent = (props: IProps) => {
       </Form.Group>
       {
         !disabled && <Icon 
-          // style={{visibility: `${rule.conditions.length > 1 ? 'visible' : 'hidden'}`}} 
           customClass={styles['icon-minus']} type='minus'
           onClick={() => handleDelete(ruleIndex, conditionIndex, rule.id)}
         />

@@ -24,7 +24,6 @@
 
 .content-left {
   flex: 1;
-  margin-right: 12px;
 }
 
 .content-right {
@@ -33,6 +32,7 @@
   background: #ffffff;
   border-radius: 8px 8px 0 0;
   width: 260px;
+  margin-left: 12px;
 }
 
 .popup {
