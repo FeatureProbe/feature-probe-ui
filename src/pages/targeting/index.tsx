@@ -80,14 +80,12 @@ const Targeting = () => {
           modifiedTime,
         });
         saveLatestVersion(version || 0);
-        if (!currentVersion) {
-          saveSelectedVersion(version || 0);
-        }
+        saveSelectedVersion(version || 0);
       } else {
         message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
     });
-  }, [currentVersion, intl, projectKey, environmentKey, toggleKey]);
+  }, [intl, projectKey, environmentKey, toggleKey]);
 
   const initToggleInfo = useCallback(() => {
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(async(res) => {
@@ -194,15 +192,17 @@ const Targeting = () => {
     });
   }, [versions, currentVersion, projectKey, environmentKey, toggleKey, intl, historyPageIndex]);
 
-  const quiteViewHistory = useCallback(() => {
+  const quiteViewHistory = useCallback((isLeave: boolean) => {
     initTargeting();
     saveTargetingDisabled(false);
-    saveSelectedVersion(0)
-    setHistoryOpen(false);
-    saveCurrentVersion(0);
+    saveSelectedVersion(0);
     saveCount(0);
     saveHistoryPageIndex(0);
-    saveVersions([]);
+    if (isLeave) {
+      setHistoryOpen(false);
+      saveVersions([]);
+      saveCurrentVersion(0);
+    }
   }, [initTargeting]);
 
   const viewHistory = useCallback((version: IVersion) => {
@@ -243,7 +243,7 @@ const Targeting = () => {
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {
     history.push(`/${projectKey}/${environmentKey}/${toggleKey}/${value.name}`);
-    quiteViewHistory();
+    quiteViewHistory(true);
   }, [history, projectKey, environmentKey, toggleKey, quiteViewHistory]);
 
 	return (
@@ -278,12 +278,16 @@ const Targeting = () => {
                     primary
                     type='button'
                     onClick={(e: SyntheticEvent) => {
-                      setHistoryOpen(true);
-                      getVersionsList();
+                      setHistoryOpen(!historyOpen);
+                      if (!versions.length) {
+                        getVersionsList();
+                      }
                     }}
                   >
                     {
-                      targetingDisabled && <Icon type='put-away' customClass={styles['put-away']} />
+                      historyOpen 
+                        ? <Icon type='put-up' customClass={styles['put-away']} /> 
+                        : <Icon type='put-away' customClass={styles['put-away']} /> 
                     }
                     <FormattedMessage id='common.history.text' />
                   </Button>
@@ -306,7 +310,7 @@ const Targeting = () => {
                               <FormattedMessage id='common.version.text' />:
                               { selectedVersion }
                             </span>
-                            <Icon type='close' customClass={styles['close-icon']} onClick={quiteViewHistory} />
+                            <Icon type='close' customClass={styles['close-icon']} onClick={() => quiteViewHistory(false)} />
                           </div>
                         </div>
                       )

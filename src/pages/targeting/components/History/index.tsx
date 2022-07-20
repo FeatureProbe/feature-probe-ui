@@ -5,7 +5,6 @@ import { FormattedMessage } from 'react-intl';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import Icon from 'components/Icon';
 import { IVersion } from 'interfaces/targeting';
 import styles from './index.module.scss';
 
@@ -20,7 +19,7 @@ interface IProps {
 }
 
 const History = (props: IProps) => {
-  const { versions, hasMore, selectedVersion, latestVersion, loadMore, viewHistory, setHistoryOpen } = props;
+  const { versions, hasMore, selectedVersion, latestVersion, loadMore, viewHistory } = props;
 
   return (
     <div className={styles.history}>
@@ -28,9 +27,6 @@ const History = (props: IProps) => {
         <span>
           <FormattedMessage id='common.history.text' />
         </span>
-        <Icon customClass={styles['history-title-icon']} type='close' onClick={() => {
-          setHistoryOpen(false);
-        }} />
       </div>
       <div className={styles.lists} id='scrollableDiv'>
         <InfiniteScroll
@@ -146,7 +142,8 @@ const History = (props: IProps) => {
           }
           {
             versions.length === 0 && (
-              <div className={styles.loading}>
+              <div className={styles['no-data']}>
+                <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
                 <FormattedMessage id='common.nodata.text' />
               </div>
             )

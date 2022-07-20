@@ -150,8 +150,9 @@
   "projects.environment.name.required": "输入环境名称",
 
   "toggles.filter.evaluated": "访问",
-  "toggles.filter.evaluated.last.seven.days": "最近七日",
-  "toggles.filter.evaluated.not.last.seven.days": "七日之前",
+  "toggles.filter.evaluated.last.seven.days": "7日内有访问",
+  "toggles.filter.evaluated.not.last.seven.days": "7日前有访问",
+  "toggles.filter.evaluated.never": "无访问",
   "toggles.filter.status": "状态",
   "toggles.filter.search.placeholder": "搜索名称、标识或描述",
   "toggles.table.brief": "简介",

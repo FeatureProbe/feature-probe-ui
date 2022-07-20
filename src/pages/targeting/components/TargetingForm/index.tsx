@@ -231,8 +231,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   const onError = useCallback(() => {
     console.log(errors);
-    message.error(intl.formatMessage({id: 'targeting.publish.error.text'}));
-  }, [intl, errors]);
+    // message.error(intl.formatMessage({id: 'targeting.publish.error.text'}));
+  }, [errors]);
 
   const handlePublishCancel = useCallback(() => {
     setOpen(false);
