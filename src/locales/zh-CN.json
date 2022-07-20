@@ -202,8 +202,7 @@
   "targeting.status.disabled.text": "未生效, 返回 ",
   "targeting.variations.evaluations.text": "访问到分组的{type}",
   "targeting.metrics.no.data.text": "无数据",
-  "targeting.metrics.link.sdk.text": "请确保SDK接入正确 ",
-  "targeting.metrics.no.data.tips": "并且开关是生效的",
+  "targeting.metrics.link.sdk.text": "请连接SDK",
   "targeting.metrics.error.text": "获取开关监控信息失败!",
   "targeting.metrics.option.seven.days": "最近7天",
   "targeting.metrics.option.one.day": "最近24小时",
@@ -258,6 +257,7 @@
   "targeting.invalid.value.text": "格式错误",
   "targeting.get.versions.error": "获取历史版本失败!",
   "targeting.view.versions": "正在查看",
+  "targeting.view.more": "查看更多",
 
   "variations.add.text": "添加分组",
   "variations.dulpicated.error.text": "分组名称已存在!",

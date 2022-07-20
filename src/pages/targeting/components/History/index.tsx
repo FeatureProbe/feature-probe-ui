@@ -16,12 +16,11 @@ interface IProps {
   selectedVersion: number;
   loadMore(): void;
   viewHistory(version: IVersion): void;
-  quiteViewHistory(): void;
+  setHistoryOpen(open: boolean): void;
 }
 
 const History = (props: IProps) => {
-  const { versions, hasMore, selectedVersion, latestVersion, loadMore, viewHistory, quiteViewHistory } = props;
-  const height = Math.min(85 * versions.length, 410);
+  const { versions, hasMore, selectedVersion, latestVersion, loadMore, viewHistory, setHistoryOpen } = props;
 
   return (
     <div className={styles.history}>
@@ -29,14 +28,16 @@ const History = (props: IProps) => {
         <span>
           <FormattedMessage id='common.history.text' />
         </span>
-        <Icon customClass={styles['history-title-icon']} type='close' onClick={quiteViewHistory} />
+        <Icon customClass={styles['history-title-icon']} type='close' onClick={() => {
+          setHistoryOpen(false);
+        }} />
       </div>
-      <div className={styles.lists} id="scrollableDiv" style={{height: height}}>
+      <div className={styles.lists} id='scrollableDiv'>
         <InfiniteScroll
           dataLength={versions.length}
           next={loadMore}
           hasMore={hasMore}
-          scrollableTarget="scrollableDiv"
+          scrollableTarget='scrollableDiv'
           loader={
             <div className={styles.loading}>
               <FormattedMessage id='common.loading.text' />
@@ -135,6 +136,13 @@ const History = (props: IProps) => {
                 </div>
               )
             })
+          }
+          {
+            hasMore && versions.length !== 0 && (
+              <div className={styles.hasMore} onClick={loadMore}>
+                <FormattedMessage id='targeting.view.more' />
+              </div>
+            )
           }
           {
             versions.length === 0 && (

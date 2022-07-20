@@ -1,6 +1,7 @@
 import { IntlShape } from 'react-intl';
 import { externalTooltipHandler } from "./chartTooltip";
 import { IMetric } from 'interfaces/targeting';
+const lang = localStorage.getItem('i18n')?.replaceAll('"', '') || 'en-US';
 
 export const createChartOptions = (metric: IMetric[], projectKey: string, environmentKey: string, toggleKey: string, intl: IntlShape): any => {
   const config = {
@@ -59,7 +60,7 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
           color: '#F55043',
           content: () => intl.formatMessage({id: 'common.version.change.text'}),
           position: 'start',
-          xAdjust: 29,
+          xAdjust: lang === 'en-US' ? 33 : 29,
           yAdjust: -8,
           borderRadius: {
             topLeft: 0,

@@ -1,5 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import { Popup } from 'semantic-ui-react';
+import classNames from 'classnames';
 import Button from 'components/Button';
 import Serve from 'components/Serve';
 import Icon from 'components/Icon';
@@ -43,6 +44,15 @@ const RuleContent = (props: IProps) => {
     handleChangeServe,
   } = ruleContainer.useContainer();
 
+  const ruleAddCls = classNames(
+    {
+      [styles['rule-add']]: rule.conditions.length > 0
+    },
+    {
+      [styles['rule-add-one']]: rule.conditions.length === 0
+    }
+  );
+
 	return (
     <div className={styles['rule-content']}>
       {
@@ -64,7 +74,7 @@ const RuleContent = (props: IProps) => {
         })
       }
 
-      <div className={styles['rule-add']}>
+      <div className={ruleAddCls}>
         <Popup
           basic
           hoverable

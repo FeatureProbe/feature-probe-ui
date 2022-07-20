@@ -154,7 +154,7 @@ const Metrics = () => {
                     return (
                       <div className={styles['variation-name']}>
                         <span style={{ background: VariationColors[index % 24] }} className={styles['variation-name-color']}></span>
-                        <span className={`${styles['variation-name-text']} ${item.deleted && styles['variation-deleted']}`}>
+                        <span className={`${styles['variation-name-text']} ${item.deleted && styles['variation-name-deleted']}`}>
                           { item.value }
                         </span>
                         <span className={`${styles['count']} ${item.deleted && styles['variation-deleted']}`}>
@@ -186,7 +186,6 @@ const Metrics = () => {
               <span className={styles['no-data-link']} onClick={handleGotoSDK}>
                 <FormattedMessage id='targeting.metrics.link.sdk.text' />
               </span>
-              <FormattedMessage id='targeting.metrics.no.data.tips' />
             </div>
           </div>
         )

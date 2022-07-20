@@ -77,7 +77,7 @@
   "common.loading.text": "Loading...",
   "common.get.started.text": "Get started",
   "common.current.version.text": "Current version",
-  "common.version.change.text": "Version ",
+  "common.version.change.text": "Changed ",
 
   "header.getuser.error.text": "Get user info error!",
 
@@ -151,8 +151,9 @@
   "projects.environment.name.required": "Please input environment name",
 
   "toggles.filter.evaluated": "Evaluated",
-  "toggles.filter.evaluated.last.seven.days": "in last 7 days",
-  "toggles.filter.evaluated.not.last.seven.days": "not in last 7 days",
+  "toggles.filter.evaluated.last.seven.days": "In the last 7 days",
+  "toggles.filter.evaluated.not.last.seven.days": "Before the last 7 days",
+  "toggles.filter.evaluated.never": "Never",
   "toggles.filter.status": "Status",
   "toggles.filter.search.placeholder": "Search for name, key or description",
   "toggles.table.brief": "Brief",
@@ -202,8 +203,7 @@
   "targeting.status.disabled.text": "disabled, serving ",
   "targeting.variations.evaluations.text": "variation {type} Evaluations",
   "targeting.metrics.no.data.text": "No data available",
-  "targeting.metrics.link.sdk.text": "Please import/invoke SDK ",
-  "targeting.metrics.no.data.tips": "and make sure toggle is enabled",
+  "targeting.metrics.link.sdk.text": "Please connect SDK ",
   "targeting.metrics.error.text": "Error getting toggle metrics!",
   "targeting.metrics.option.seven.days": "Last 7 days",
   "targeting.metrics.option.one.day": "Last 24 hours",
@@ -258,6 +258,7 @@
   "targeting.invalid.value.text": "Invalid value",
   "targeting.get.versions.error": "Error getting toggle versions!!",
   "targeting.view.versions": "Reviewing ",
+  "targeting.view.more": "Load more",
 
   "variations.add.text": "Add Variation",
   "variations.dulpicated.error.text": "Variation names are duplicated, please change!",

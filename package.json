@@ -47,6 +47,7 @@
     "semantic-ui-react": "^2.1.2",
     "typescript": "^4.4.2",
     "unstated-next": "^1.1.0",
+    "use-resize-observer": "^9.0.2",
     "uuid": "^8.3.2"
   },
   "scripts": {
