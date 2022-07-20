@@ -3,7 +3,6 @@
 }
 
 .intro {
-  height: 100px;
   background: #FFFFFF;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.01), 0 3px 6px 3px rgba(0,0,0,0.01), 0 2px 6px 0 rgba(0,0,0,0.03);
   border-radius: 0 0 12px 12px;
@@ -18,11 +17,22 @@
 }
 
 .intro-desc {
-  font-family: HelveticaNeue-Medium;
-  font-size: 14px;
-  color: #212529;
-  line-height: 30px;
+  margin-left: 18px;
+  font-size: 12px;
+  color: #495057;
   margin-top: 12px;
+  vertical-align: middle;
+}
+
+.intro-info {
+  display: flex;
+  padding: 12px 0 16px;
+}
+
+.intro-icon {
+  color: #556EE6;
+  vertical-align: middle;
+  margin-right: 4px;
 }
 
 .steps {

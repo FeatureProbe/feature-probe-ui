@@ -64,7 +64,7 @@ if show_feature {
   }
 ];
 
-export const getGoCode = (sdkVersion: string, sdkKey: string, toggleKey: string) => [
+export const getGoCode = (sdkKey: string, toggleKey: string) => [
   {
     title: 'Step 1. Install the Golang SDK',
     name: 'Fisrt import the FeatureProbe SDK in your application code:',
@@ -80,7 +80,7 @@ export const getGoCode = (sdkVersion: string, sdkKey: string, toggleKey: string)
     code: `
 config := featureprobe.FPConfig{
     RemoteUrl:       "https://127.0.0.1:4007",
-    ServerSdkKey:    "serverSdkKey",
+    ServerSdkKey:    "${sdkKey}",
     RefreshInterval: 1000,
 }
   
@@ -90,7 +90,7 @@ config := featureprobe.FPConfig{
     title: 'Step 3. Use the feature toggle',
     name: 'You can use sdk to check which variation a particular user will receive for a given feature flag.',
     code: `user := featureprobe.NewUser("user")
-val := fp.BoolValue("bool_toggle", user, true)`
+val := fp.BoolValue("${toggleKey}", user, true)`
   }
 ];
 

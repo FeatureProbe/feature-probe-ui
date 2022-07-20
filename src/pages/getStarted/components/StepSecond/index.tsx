@@ -1,91 +1,64 @@
 import { useEffect, useState } from 'react';
-import { Form, Dropdown } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { useParams } from 'react-router-dom';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
-import java from 'images/java.svg';
-import rust from 'images/rust.svg';
-import go from 'images/go.svg';
-import python from 'images/python.svg';
-import javascript from 'images/javascript.svg';
-import android from 'images/android.svg';
-import swift from 'images/swift.svg';
+import CopyToClipboardPopup from 'components/CopyToClipboard';
+import { IRouterParams } from 'interfaces/project';
+import { getAndroidCode, getGoCode, getJavaCode, getJSCode, getObjCCode, getRustCode, getSwiftCode } from '../constants';
 import styles from '../Steps/index.module.scss';
-
-const SDK_LOGOS = {
-  'Java': java,
-  'Rust': rust,
-  'Go': go,
-  'Python': python,
-  'JavaScript': javascript,
-  'Android': android,
-  'Swift': swift,
-  'Objective-C': ''
-};
-
-const SERVER_SIDE_SDKS = [
-  {
-    name: 'Java',
-    logo: java,
-  },
-  {
-    name: 'Rust',
-    logo: rust,
-  },
-  {
-    name: 'Go',
-    logo: go,
-  },
-  {
-    name: 'Python',
-    logo: python,
-  }
-];
-
-const CLIENT_SIDE_SDKS = [
-  {
-    name: 'JavaScript',
-    logo: javascript,
-  },
-  {
-    name: 'Android',
-    logo: android,
-  },
-  {
-    name: 'Swift',
-    logo: swift,
-  },
-  {
-    name: 'Objective-C',
-    logo: '',
-  }
-];
-
-interface IOption {
-  name: string;
-  logo: string
-}
 
 interface IProps {
   currentStep: number;
   currentSDK: string;
-  saveStep(sdk: string): void;
+  serverSdkKey: string;
+  clientSdkKey: string;
+  saveStep(): void;
   goBackToStep(step: number): void;
-  saveCurrentSDK(sdk: string): void;
+}
+
+interface ICodeOption {
+  title?: string;
+  name: string;
+  code: string;
 }
 
 const CURRENT = 2;
 
 const StepSecond = (props: IProps) => {
-  const { currentStep, currentSDK, saveStep, goBackToStep, saveCurrentSDK } = props;
-  const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
+  const { currentStep, currentSDK, serverSdkKey, clientSdkKey, saveStep } = props;
+  const [ options, saveOptions ] = useState<ICodeOption[]>([]);
+  const { toggleKey } = useParams<IRouterParams>();
 
   useEffect(() => {
     if (currentSDK) {
-      // @ts-ignore
-      saveSelectedSDKLogo(SDK_LOGOS[currentSDK]);
+      switch (currentSDK) {
+        case 'Java': 
+          saveOptions(getJavaCode('1', serverSdkKey, toggleKey));
+          break;
+        case 'Rust': 
+          saveOptions(getRustCode('1', serverSdkKey, toggleKey));
+          break;
+        case 'Go': 
+          saveOptions(getGoCode(serverSdkKey, toggleKey));
+          break;
+        case 'Android': 
+          saveOptions(getAndroidCode('1', clientSdkKey, toggleKey));
+          break;
+        case 'Swift': 
+          saveOptions(getSwiftCode('1', clientSdkKey, toggleKey));
+          break;
+        case 'Objective-C': 
+          saveOptions(getObjCCode('1', clientSdkKey, toggleKey));
+          break;
+        case 'JavaScript': 
+          saveOptions(getJSCode('1', clientSdkKey, toggleKey));
+          break;
+      }
     }
-  }, [currentSDK]);
+  }, [currentSDK, clientSdkKey, serverSdkKey, toggleKey]);
 
   return (
     <div className={styles.step}>
@@ -119,105 +92,51 @@ const StepSecond = (props: IProps) => {
       </div>
       <div className={styles['step-right']}>
         <div className={styles['step-title']}>
-          <FormattedMessage id='connect.second.title' />
+          <FormattedMessage id='connect.third.title' />
         </div>
         <div className={styles['step-detail']}>
           {
             currentStep === CURRENT && (
-              <Form>
-                <Form.Field>
-                  <label>
-                    <span className={styles['label-required']}>*</span>
-                    <FormattedMessage id='connect.second.sdk' />
-                  </label>
-                  <Dropdown
-                    fluid 
-                    selection
-                    floating
-                    className={styles['dropdown']}
-                    icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
-                    trigger={
-                      <div className={styles.dropdown}>
-                        {
-                          currentSDK ? (
-                            <>
-                              {
-                                selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' />
-                              }
-                              <span className={styles['dropdown-text']}>
-                                { currentSDK }
-                              </span>
-                            </>
-                          ) : (
-                            <FormattedMessage id='common.dropdown.placeholder' />
-                          )
-                        }
-                      </div>
-                    }
+              <>
+                <div>
+                  {
+                    options.map((item: ICodeOption) => {
+                      return (
+                        <div>
+                          <div>{item.name}</div>
+                          <div className={styles.code}>
+                            <span className={styles.copy}>
+                              <CopyToClipboardPopup text={item.code}>
+                                <span className={styles.copyBtn}>Copy</span>
+                              </CopyToClipboardPopup>
+                            </span>
+                            <SyntaxHighlighter language='java' style={docco}>
+                              {item.code}
+                            </SyntaxHighlighter>
+                          </div>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+                <div>
+                  <Button 
+                    primary 
+                    type='submit'
+                    onClick={() => {
+                      saveStep();
+                    }}
                   >
-                    <Dropdown.Menu>
-                      <Dropdown.Header content='Server-side SDKs' />
-                      <Dropdown.Divider />
-                      {
-                        SERVER_SIDE_SDKS.map((sdk: IOption) => {
-                          return (
-                            <Dropdown.Item onClick={() => {
-                              saveCurrentSDK(sdk.name);
-                            }}>
-                              <img src={sdk.logo} alt='logo' />
-                              { sdk.name }
-                            </Dropdown.Item>
-                          )
-                        })
-                      }
-                      <Dropdown.Header content='Client-side SDKs' />
-                      <Dropdown.Divider />
-                      {
-                        CLIENT_SIDE_SDKS.map((sdk: IOption) => {
-                          return (
-                            <Dropdown.Item onClick={() => {
-                              saveCurrentSDK(sdk.name);
-                            }}>
-                              {
-                                sdk.logo && <img src={sdk.logo} alt='logo' />
-                              }
-                              { sdk.name }
-                            </Dropdown.Item>
-                          )
-                        })
-                      }
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Form.Field>
-                <Button 
-                  primary 
-                  type='submit'
-                  disabled={!currentSDK}
-                  onClick={() => {
-                    saveStep(currentSDK);
-                  }}
-                >
-                  <FormattedMessage id='connect.save.continue.button' />
-                </Button>
-              </Form>
+                    <FormattedMessage id='connect.continue.button' />
+                  </Button>
+                </div>
+              </>
             )
           }
           {
             currentStep > CURRENT && (
               <div className={styles.card}>
-                <div className={styles['card-left']}>
-                  {
-                    selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' />
-                  }
-                  <span className={styles['dropdown-text']}>
-                    { currentSDK }
-                  </span>
-                </div>
-                <div className={styles['card-right']}>
-                  <Icon type='edit' onClick={() => {
-                    goBackToStep(CURRENT);
-                  }} />
-                </div>
+                <FormattedMessage id='connect.third.title' />
               </div>
             )
           }

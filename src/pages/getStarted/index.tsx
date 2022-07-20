@@ -7,8 +7,8 @@ const GetStarted = () => {
   return (
     <ProjectLayout>
       <div className={styles['get-started']}>
-      <Steps />
-    </div>
+        <Steps />
+      </div>
     </ProjectLayout>
   )
 }
