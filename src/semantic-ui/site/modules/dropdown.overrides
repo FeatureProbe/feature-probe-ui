@@ -67,6 +67,7 @@
   background: rgba(33, 37, 41, 0.04);
   border-radius: 6px;
   width: 100%;
+  border: 1px solid transparent;
 }
 
 .ui.active.dropdown {
