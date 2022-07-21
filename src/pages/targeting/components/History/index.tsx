@@ -14,12 +14,12 @@ interface IProps {
   latestVersion: number;
   selectedVersion: number;
   loadMore(): void;
-  viewHistory(version: IVersion): void;
+  reviewHistory(version: IVersion): void;
   setHistoryOpen(open: boolean): void;
 }
 
 const History = (props: IProps) => {
-  const { versions, hasMore, selectedVersion, latestVersion, loadMore, viewHistory } = props;
+  const { versions, hasMore, selectedVersion, latestVersion, loadMore, reviewHistory } = props;
 
   return (
     <div className={styles.history}>
@@ -78,7 +78,7 @@ const History = (props: IProps) => {
                     if (item?.version === Number(selectedVersion)) {
                       return;
                     }
-                    viewHistory(item);
+                    reviewHistory(item);
                   }}
                 >
                   <div className={styles['version-left']}>
