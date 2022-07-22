@@ -1,10 +1,11 @@
+import { IntlShape } from 'react-intl';
 
-export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string) => [
+export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    name: 'step 1. Create a new project（optional）:',
+    name: intl.formatMessage({id: 'getstarted.java.first.step'}),
     code: 'mvn archetype:generate -DgroupId=com.featureprobe.demo -DartifactId=featureprobe-java-demo'
   }, {
-    name: 'step 2. Add the sdk to your project: ',
+    name: intl.formatMessage({id: 'getstarted.java.second.step'}),
     code: 
 `<dependency>
   <groupId>com.featureprobe</groupId>
@@ -13,7 +14,7 @@ export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: strin
 </dependency>
 `
   }, {
-    name: 'step 3: Add the following code to your Application',
+    name: intl.formatMessage({id: 'getstarted.java.third.step'}),
     code: 
 `public class Demo {
     private static final FPConfig config = FPConfig.builder()
@@ -35,12 +36,12 @@ export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: strin
   }
 ];
 
-export const getRustCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string) => [
+export const getRustCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    name: 'step 1: add following in Cargo.toml dependency section',
-    code: `feature-probe-server-sdk = "${sdkVersion}"`
+    name: intl.formatMessage({id: 'getstarted.rust.first.step'}),
+    code: `feature-probe-server-sdk = ${sdkVersion}`
   }, {
-    name: 'step 2: init sdk instance',
+    name: intl.formatMessage({id: 'getstarted.rust.second.step'}),
     code: 
 `use feature_probe_server_sdk::{FPConfig, FPUser, FeatureProbe};
 let config = FPConfig {
@@ -53,7 +54,7 @@ let config = FPConfig {
 let fp = match FeatureProbe::new(config).unwrap(); //should check result in production
 `
   }, {
-    name: 'step 3: ',
+    name: intl.formatMessage({id: 'getstarted.rust.third.step'}),
     code: 
 `let user = FPUser::new("user@company.com").with("name", "bob");
 ${returnType === 'boolean' ? `let value = fp.bool_value("${toggleKey}", &user, false);` : ''}${returnType === 'number' ? `let value = fp.number_value("${toggleKey}", &user, 20.0), 12.5);` : ''}${returnType === 'string' ? `let value = fp.string_value("${toggleKey}", &user, "val".to_owned()), "value");` : ''}${returnType === 'json' ? `let value = fp.json_value("${toggleKey}", &user, json!("v"));` : ''}
@@ -61,19 +62,19 @@ ${returnType === 'boolean' ? `let value = fp.bool_value("${toggleKey}", &user, f
   }
 ];
 
-export const getGoCode = (sdkKey: string, toggleKey: string, returnType: string) => [
+export const getGoCode = (sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    title: 'Step 1. Install the Golang SDK',
-    name: 'Fisrt import the FeatureProbe SDK in your application code:',
+    title: intl.formatMessage({id: 'getstarted.go.first.step.title'}),
+    name: intl.formatMessage({id: 'getstarted.go.first.step.name.one'}),
     code: 'import "github.com/featureprobe/server-sdk-go"'
   }, 
   {
-    name: 'Fetch the FeatureProbe SDK as a dependency in go.mod.',
+    name: intl.formatMessage({id: 'getstarted.go.first.step.name.two'}),
     code: 'go get github.com/featureprobe/server-sdk-go'
   }, 
   {
-    title: 'Step 2. Create a FeatureProbe instance',
-    name: 'After you install and import the SDK, create a single, shared instance of the FeatureProbe sdk.',
+    title: intl.formatMessage({id: 'getstarted.go.second.step.title'}),
+    name: intl.formatMessage({id: 'getstarted.go.second.step.name.one'}),
     code: 
 `config := featureprobe.FPConfig{
     RemoteUrl:       "https://127.0.0.1:4007",
@@ -85,8 +86,8 @@ fp, err := featureprobe.NewFeatureProbe(config)
 `
   },
   {
-    title: 'Step 3. Use the feature toggle',
-    name: 'You can use sdk to check which variation a particular user will receive for a given feature flag.',
+    title: intl.formatMessage({id: 'getstarted.go.third.step.title'}),
+    name: intl.formatMessage({id: 'getstarted.go.third.step.name.one'}),
     code: 
 `user := featureprobe.NewUser("user")
 ${returnType === 'boolean' ? `val := fp.BoolValue("${toggleKey}", user, true)` : ''}${returnType === 'string' ? `val := fp.StrValue("${toggleKey}", user, "1")` : ''}${returnType === 'number' ? `val := fp.NumberValue("${toggleKey}", user, 1.0)` : ''}${returnType === 'json' ? `val := fp.JsonValue("${toggleKey}", user, nil)` : ''}
@@ -94,18 +95,18 @@ ${returnType === 'boolean' ? `val := fp.BoolValue("${toggleKey}", user, true)` :
   }
 ];
 
-export const getPythonCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string) => [];
+export const getPythonCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [];
 
-export const getAndroidCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string) => [
+export const getAndroidCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    name: 'Step 1',
+    name: intl.formatMessage({id: 'getstarted.android.first.step'}),
     code: 
 `implementation 'com.featureprobe.mobile:android_sdk:${sdkVersion}@aar'
 implementation "net.java.dev.jna:jna:5.7.0@aar"
 `
   }, 
   {
-    name: 'Step 2',
+    name: intl.formatMessage({id: 'getstarted.android.second.step'}),
     code: 
 `import com.featureprobe.mobile.*;
 val url = FpUrlBuilder("remote_url/").build();
@@ -115,16 +116,16 @@ val config = FpConfig(url!!, "${sdkKey}", 10u, true)
 val fp = FeatureProbe(config, user)
 `
   }, {
-    name: 'Step 3',
+    name: intl.formatMessage({id: 'getstarted.android.third.step'}),
     code: 
 `${returnType === 'boolean' ? `val value = fp.boolValue("${toggleKey}", false)` : ''}${returnType === 'number' ? `val value = fp.numberValue("${toggleKey}", 1.0)` : ''}${returnType === 'string' ? `val value = fp.stringValue("${toggleKey}", "s")` : ''}${returnType === 'json' ? `val value = fp.jsonValue("${toggleKey}", "{}")` : ''}
 `
   }
 ];
 
-export const getSwiftCode = (sdkKey: string, toggleKey: string, returnType: string) => [
+export const getSwiftCode = (sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    title: 'Step 1. Install SDK',
+    title: intl.formatMessage({id: 'getstarted.swift.first.step'}),
     name: 'Swift Package Manager:',
     code: 
 `1. XCode -> File -> Add Packages -> input \`https://github.com/FeatureProbe/client-sdk-ios.git\`
@@ -139,7 +140,7 @@ export const getSwiftCode = (sdkKey: string, toggleKey: string, returnType: stri
 `
   }, 
   {
-    title: 'Step 2. Create a FeatureProbe instance:',
+    title: intl.formatMessage({id: 'getstarted.swift.second.step'}),
     name: '',
     code: 
 `import featureprobe
@@ -155,24 +156,23 @@ let config = FpConfig(
 let fp = FeatureProbe(config: config, user: user)
 `
   }, {
-    title: 'Step 3. Use the feature toggle',
+    title: intl.formatMessage({id: 'getstarted.swift.third.step'}),
     name: '',
     code: `${returnType === 'boolean' ? `let value = fp.boolValue("${toggleKey}", false)` : ''}${returnType === 'number' ? `let value = fp.numberValue("${toggleKey}", 1.0)` : ''}${returnType === 'string' ? `let value = fp.stringValue("${toggleKey}", "s")` : ''}${returnType === 'json' ? `let value = fp.jsonValue("${toggleKey}", "{}")` : ''}`
   }
 ];
 
-export const getObjCCode = (sdkKey: string, toggleKey: string, returnType: string) => [
+export const getObjCCode = (sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    title: 'Step 1. Install SDK',
+    title: intl.formatMessage({id: 'getstarted.objc.first.step'}),
     name: 'Cocoapods:',
     code: 
-`
-1. add \`pod 'FeatureProbe', :git => 'git@github.com:FeatureProbe/client-sdk-ios.git'\` to Podfile
+`1. add \`pod 'FeatureProbe', :git => 'git@github.com:FeatureProbe/client-sdk-ios.git'\` to Podfile
 2. \`pod install\` or \`pod update\`
 `
   }, 
   {
-    title: 'Step 2. Create a FeatureProbe instance:',
+    title: intl.formatMessage({id: 'getstarted.objc.second.step'}),
     name: '',
     code: 
 `#import "FeatureProbe-Swift.h"
@@ -183,29 +183,29 @@ FpUser *user = [[FpUser alloc] initWithKey:@"user_key"];
 [user setAttrWithKey:@"name" value:@"bob"];
 FpConfig *config = [[FpConfig alloc] initWithRemoteUrl: url
                                           clientSdkKey:@"${sdkKey}"
-                                        refreshInterval: 10
-                                          waitFirstResp: true];
+                                       refreshInterval: 10
+                                         waitFirstResp: true];
 FeatureProbe *fp = [[FeatureProbe alloc] initWithConfig:config user:user];`
   }, {
-    title: 'Step 3. Use the feature toggle',
+    title: intl.formatMessage({id: 'getstarted.objc.third.step'}),
     name: '',
     code: `${returnType === 'boolean' ? `bool value = [fp boolValueWithKey: @"${toggleKey}" defaultValue: false];` : ''}${returnType === 'number' ? `double value = [fp numberValueWithKey: @"${toggleKey}" defaultValue: 1.0];` : ''}${returnType === 'string' ? `NSString* value = [fp stringValueWithKey: @"${toggleKey}" defaultValue: @"s"];` : ''}${returnType === 'json' ? `NSString* value = [fp jsonValueWithKey: @"${toggleKey}" defaultValue: @"{}"];` : ''}`
   }
 ];
 
-export const getJSCode = (sdkKey: string, toggleKey: string, returnType: string) => [
+export const getJSCode = (sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    title: 'Step 1. Install the JavaScript SDK',
-    name: 'First, install the FeatureProbe SDK as a dependency in your application.',
+    title: intl.formatMessage({id: 'getstarted.js.first.step.title'}),
+    name: 'npm',
     code: 'npm install featureprobe-client-sdk-js --save'
   }, 
   {
-    name: 'Or via CDN:',
+    name: 'CDN',
     code: '<script type="text/javascript" src="https://unpkg.com/featureprobe-client-sdk-js@latest/dist/featureprobe-client-sdk-js.min.js"></script>'
   },
   {
-    title: 'Step 2. Create a FeatureProbe instance',
-    name: 'After you install and import the SDK, create a single, shared instance of the FeatureProbe sdk.',
+    title: intl.formatMessage({id: 'getstarted.js.second.step.title'}),
+    name: intl.formatMessage({id: 'getstarted.js.second.step.name.one'}),
     code: 
 `const user = new featureProbe.FPUser("user");
 user.with("key", "value");
@@ -220,12 +220,12 @@ fp.start();
 `
   }, 
   {
-    title: 'Step 3. Use the instance to get your setting value',
-    name: 'You can use sdk to check which value this user will receive for a given feature flag.',
+    title: intl.formatMessage({id: 'getstarted.js.third.step.title'}),
+    name: intl.formatMessage({id: 'getstarted.js.third.step.name.one'}),
     code: 
 `fp.on('ready', function() {
     ${returnType === 'boolean' ? `const value = fp.boolValue('${toggleKey}', false);` : ''}${returnType === 'number' ? `const value = fp.numberValue('${toggleKey}', 1.0);` : ''}${returnType === 'string' ? `const value = fp.stringValue('${toggleKey}', "s");` : ''}${returnType === 'json' ? `const value = fp.jsonValue('${toggleKey}', {});` : ''}
-})
+});
 `
   }
 ];

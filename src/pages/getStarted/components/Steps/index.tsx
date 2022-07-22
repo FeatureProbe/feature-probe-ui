@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import cloneDeep from 'lodash/cloneDeep';
 import Icon from 'components/Icon';
 import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
@@ -32,7 +31,7 @@ interface IAccess {
   isAccess: boolean;
 }
 
-const STEP: IStep = {
+const step: IStep = {
   step1: {
     done: true,
   },
@@ -58,7 +57,6 @@ const Steps = () => {
   const [ returnType, saveReturnType ] = useState<string>('');
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
-  const step = cloneDeep(STEP);
 
   const init = useCallback(() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
@@ -94,7 +92,7 @@ const Steps = () => {
       if (success && data) {
         saveReturnType(data.returnType);
       } 
-    })
+    });
     
   }, [projectKey, environmentKey, toggleKey]);
 
@@ -149,7 +147,7 @@ const Steps = () => {
         saveCurrentStep(currentStep + 1);
       }
     });
-  }, [projectKey, environmentKey, toggleKey, step, currentStep]);
+  }, [projectKey, environmentKey, toggleKey, currentStep]);
 
   const saveSecondStep = useCallback(() => {
     step.step2.done = true;
@@ -158,14 +156,14 @@ const Steps = () => {
         saveCurrentStep(currentStep + 1);
       }
     });
-  }, [projectKey, environmentKey, toggleKey, step, currentStep]);
+  }, [projectKey, environmentKey, toggleKey, currentStep]);
 
   const goBackToStep = useCallback((currentStep: number) => {
     saveCurrentStep(currentStep);
     if (currentStep === 1) {
       step.step2.done = false;
     }
-  }, [step]);
+  }, []);
 
   return (
     <div className={styles.page}>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useParams } from 'react-router-dom';
@@ -34,41 +34,42 @@ const StepSecond = (props: IProps) => {
   const [ options, saveOptions ] = useState<ICodeOption[]>([]);
   const [ language, saveLanguage ] = useState<string>('java');
   const { toggleKey } = useParams<IRouterParams>();
+  const intl = useIntl();
 
   useEffect(() => {
     if (currentSDK) {
       switch (currentSDK) {
         case 'Java': 
           saveLanguage('java');
-          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType));
+          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
           break;
         case 'Rust': 
           saveLanguage('rust');
-          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType));
+          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
           break;
         case 'Go': 
           saveLanguage('go');
-          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType));
+          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl));
           break;
         case 'Android': 
           saveLanguage('java');
-          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType));
+          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl));
           break;
         case 'Swift': 
           saveLanguage('swift');
-          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType));
+          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl));
           break;
         case 'Objective-C': 
           saveLanguage('objectivec');
-          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType));
+          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl));
           break;
         case 'JavaScript': 
           saveLanguage('javascript');
-          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType));
+          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl));
           break;
       }
     }
-  }, [sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType]);
+  }, [sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl]);
 
   return (
     <div className={styles.step}>
