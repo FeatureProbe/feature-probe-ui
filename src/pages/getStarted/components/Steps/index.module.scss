@@ -255,3 +255,23 @@
   font-size: 12px;
   display: inline-block;
 }
+
+.sdk-item {
+  display: flex;
+  align-items: center;
+}
+
+.sdk-logo {
+  width: 20px;
+  margin-right: 5px;
+}
+
+.toggle-key {
+  margin-left: 4px;
+  display: inline-block;
+  background: rgba(33, 37, 41, 0.08);
+  border-radius: 4px;
+  color: #495057;
+  padding: 0 5px;
+  height: 20px;
+}

@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import Icon from 'components/Icon';
 import StepFirst from '../StepFirst';
@@ -8,9 +8,10 @@ import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { getToggleAccess, getToggleInfo } from 'services/toggle';
+import { getProjectInfo } from 'services/project';
 import { IDictionary, IToggleInfo } from 'interfaces/targeting';
 import { getEnvironment } from 'services/project';
-import { IEnvironment, IRouterParams } from 'interfaces/project';
+import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
 interface IStepDetail {
@@ -56,8 +57,12 @@ const Steps = () => {
   const [ sdkVersion, saveSDKVersion ] = useState<string>('');
   const [ returnType, saveReturnType ] = useState<string>('');
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
+  const [ projectName, saveProjectName ] = useState<string>('');
+  const [ environmentName, saveEnvironmentName ] = useState<string>('');
+  const [ toggleName, saveToggleName ] = useState<string>('');
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
+  const intl = useIntl();
 
   const init = useCallback(() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
@@ -80,18 +85,28 @@ const Steps = () => {
       }
     });
 
+    getProjectInfo<IProject>(projectKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        saveProjectName(data.name);
+      }
+    });
+
     getEnvironment<IEnvironment>(projectKey, environmentKey).then( res=> {
       const { success, data} = res;
       if (success &&  data) {
         saveServerSDKKey(data.serverSdkKey);
         saveClientSdkKey(data.clientSdkKey);
+        saveEnvironmentName(data.name);
       }
     });
 
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
       const { data, success } = res;
+
       if (success && data) {
         saveReturnType(data.returnType);
+        saveToggleName(data.name);
       } 
     });
     
@@ -183,7 +198,7 @@ const Steps = () => {
               <FormattedMessage id='common.project.text' /> :
             </div>
             <div className={styles['card-value']}>
-              { projectKey }
+              { projectName }
             </div>
           </div>
           <div className={styles['card-item']}>
@@ -191,7 +206,7 @@ const Steps = () => {
               <FormattedMessage id='common.environment.text' /> :
             </div>
             <div className={styles['card-value']}>
-              { environmentKey }
+              { environmentName }
             </div>
           </div>
           <div className={styles['card-item']}>
@@ -199,7 +214,11 @@ const Steps = () => {
               <FormattedMessage id='common.toggle.text' /> :
             </div>
             <div className={styles['card-value']}>
-              { toggleKey }
+              {
+                intl.formatMessage({id: 'connect.first.toggle.view'},
+                {name: toggleName})
+              }
+              <span className={styles['toggle-key']}>{ toggleKey }</span>
             </div>
           </div>
         </div>

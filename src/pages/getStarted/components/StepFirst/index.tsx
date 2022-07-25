@@ -10,6 +10,7 @@ import python from 'images/python.svg';
 import javascript from 'images/javascript.svg';
 import android from 'images/android.svg';
 import swift from 'images/swift.svg';
+import apple from 'images/apple.svg';
 import styles from '../Steps/index.module.scss';
 
 const SDK_LOGOS = {
@@ -29,10 +30,6 @@ const SERVER_SIDE_SDKS = [
     logo: java,
   },
   {
-    name: 'Rust',
-    logo: rust,
-  },
-  {
     name: 'Go',
     logo: go,
   },
@@ -40,6 +37,10 @@ const SERVER_SIDE_SDKS = [
   //   name: 'Python',
   //   logo: python,
   // }
+  {
+    name: 'Rust',
+    logo: rust,
+  },
 ];
 
 const CLIENT_SIDE_SDKS = [
@@ -57,7 +58,7 @@ const CLIENT_SIDE_SDKS = [
   },
   {
     name: 'Objective-C',
-    logo: '',
+    logo: apple,
   }
 ];
 
@@ -142,9 +143,7 @@ const StepFirst = (props: IProps) => {
                         {
                           currentSDK ? (
                             <>
-                              {
-                                selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' />
-                              }
+                              { selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' /> }
                               <span className={styles['dropdown-text']}>
                                 { currentSDK }
                               </span>
@@ -162,11 +161,15 @@ const StepFirst = (props: IProps) => {
                       {
                         SERVER_SIDE_SDKS.map((sdk: IOption) => {
                           return (
-                            <Dropdown.Item onClick={() => {
-                              saveCurrentSDK(sdk.name);
-                            }}>
-                              <img src={sdk.logo} alt='logo' />
-                              { sdk.name }
+                            <Dropdown.Item 
+                              onClick={() => {
+                                saveCurrentSDK(sdk.name);
+                              }}
+                            >
+                              <div className={styles['sdk-item']}>
+                                <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' />
+                                { sdk.name }
+                              </div>
                             </Dropdown.Item>
                           )
                         })
@@ -179,10 +182,10 @@ const StepFirst = (props: IProps) => {
                             <Dropdown.Item onClick={() => {
                               saveCurrentSDK(sdk.name);
                             }}>
-                              {
-                                sdk.logo && <img src={sdk.logo} alt='logo' />
-                              }
-                              { sdk.name }
+                              <div className={styles['sdk-item']}>
+                                { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }
+                                { sdk.name }
+                              </div>
                             </Dropdown.Item>
                           )
                         })

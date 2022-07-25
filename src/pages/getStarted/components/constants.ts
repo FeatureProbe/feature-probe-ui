@@ -26,9 +26,7 @@ export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: strin
     private static final FeatureProbe fpClient = new FeatureProbe("${sdkKey}", config);
 
     public void test() {
-        FPUser user = new FPUser("user_unique_id");
-        user.with("userId", "9876");
-        user.with("tel", "12345678998");
+        FPUser user = new FPUser("user_unique_id").with("userId", "9876").with("tel", "12345678998");
         ${returnType === 'boolean' ? `boolean boolValue = featureProbe.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = featureProbe.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = featureProbe.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = featureProbe.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
     }
 }
@@ -144,7 +142,7 @@ export const getSwiftCode = (sdkKey: string, toggleKey: string, returnType: stri
     name: '',
     code: 
 `import featureprobe
-let url = FpUrlBuilder(remoteUrl: "remote_url/").build();
+let url = FpUrlBuilder(remoteUrl: "remote_url/").build()
 let user = FpUser(key: "user@company.com")
 user.setAttr(key: "name", value: "bob")
 let config = FpConfig(
