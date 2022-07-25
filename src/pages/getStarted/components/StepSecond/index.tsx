@@ -78,7 +78,7 @@ const StepSecond = (props: IProps) => {
           currentStep === CURRENT && (
             <>
               <div className={styles.circleCurrent}>{ CURRENT }</div>
-              <div className={styles.lineSelected}></div>
+              <div className={styles.line}></div>
             </>
           )
         }
@@ -94,7 +94,7 @@ const StepSecond = (props: IProps) => {
           currentStep > CURRENT && (
             <>
               <div className={styles.checked}>
-                <Icon type='check' />
+                <Icon type='check-circle' customClass={styles['checked-circle']} />
               </div>
               <div className={styles.lineSelected}></div>
             </>
@@ -121,7 +121,7 @@ const StepSecond = (props: IProps) => {
                           <div className={styles.code}>
                             <span className={styles.copy}>
                               <CopyToClipboardPopup text={item.code}>
-                                <span className={styles.copyBtn}>
+                                <span className={styles['copy-btn']}>
                                   <FormattedMessage id='common.copy.uppercase.text' />
                                 </span>
                               </CopyToClipboardPopup>
@@ -130,7 +130,7 @@ const StepSecond = (props: IProps) => {
                               language={language} 
                               style={docco} 
                               wrapLongLines={true} 
-                              customStyle={{backgroundColor: 'rgba(33,37,41,0.04);', fontSize: '13px', borderRadius: '6px', minHeight: '36px'}}
+                              customStyle={{backgroundColor: 'rgba(33,37,41,0.04)', fontSize: '13px', borderRadius: '6px', minHeight: '36px'}}
                             >
                               {item.code}
                             </SyntaxHighlighter>
@@ -144,6 +144,7 @@ const StepSecond = (props: IProps) => {
                   <Button 
                     primary 
                     type='submit'
+                    className={styles.save}
                     onClick={() => {
                       saveStep();
                     }}

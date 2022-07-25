@@ -21,7 +21,7 @@ const SDK_LOGOS = {
   'JavaScript': javascript,
   'Android': android,
   'Swift': swift,
-  'Objective-C': ''
+  'Objective-C': apple,
 };
 
 const SERVER_SIDE_SDKS = [
@@ -96,7 +96,7 @@ const StepFirst = (props: IProps) => {
           currentStep === CURRENT && (
             <>
               <div className={styles.circleCurrent}>{ CURRENT }</div>
-              <div className={styles.lineSelected}></div>
+              <div className={styles.line}></div>
             </>
           )
         }
@@ -112,7 +112,7 @@ const StepFirst = (props: IProps) => {
           currentStep > CURRENT && (
             <>
               <div className={styles.checked}>
-                <Icon type='check' />
+                <Icon type='check-circle' customClass={styles['checked-circle']} />
               </div>
               <div className={styles.lineSelected}></div>
             </>
@@ -196,6 +196,7 @@ const StepFirst = (props: IProps) => {
                 <Button 
                   primary 
                   type='submit'
+                  className={styles.save}
                   disabled={!currentSDK}
                   onClick={() => {
                     saveStep(currentSDK);
@@ -218,9 +219,12 @@ const StepFirst = (props: IProps) => {
                   </div>
                 </div>
                 <div className={styles['card-right']}>
-                  <Icon type='edit' onClick={() => {
-                    goBackToStep(CURRENT);
-                  }} />
+                  <Icon 
+                    type='edit' 
+                    onClick={() => {
+                      goBackToStep(CURRENT);
+                    }} 
+                  />
                 </div>
               </div>
             )

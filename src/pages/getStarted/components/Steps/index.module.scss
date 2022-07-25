@@ -9,6 +9,11 @@
   padding: 12px 24px 0;
 }
 
+.intro-header {
+  display: inline-flex;
+  align-items: center;
+}
+
 .intro-title {
   font-family: HelveticaNeue-Medium;
   font-size: 20px;
@@ -16,23 +21,22 @@
   line-height: 30px;
 }
 
-.intro-desc {
+.intro-icon {
+  color: #556EE6;
+  margin-right: 4px;
+  line-height: 30px;
   margin-left: 18px;
+}
+
+.intro-desc {
   font-size: 12px;
   color: #495057;
-  margin-top: 12px;
-  vertical-align: middle;
+  line-height: 30px;
 }
 
 .intro-info {
   display: flex;
   padding: 12px 0 16px;
-}
-
-.intro-icon {
-  color: #556EE6;
-  vertical-align: middle;
-  margin-right: 4px;
 }
 
 .steps {
@@ -41,6 +45,7 @@
   border-radius: 12px;
   margin-top: 16px;
   padding: 24px;
+  min-height: calc(100vh - 226px);
 }
 
 .step {
@@ -54,11 +59,12 @@
 }
 
 .checked {
+  line-height: 28px;
+}
+
+.checked-circle {
   color: #556EE6;
-  width: 20px;
-  height: 20px;
-  border: 1px solid #556EE6;
-  border-radius: 100%;
+  font-size: 20px !important;
   text-align: center;
 }
 
@@ -104,7 +110,7 @@
   background-color: #556EE6;
   position: relative;
   left: 10px;
-  top: 6px;
+  top: -4px;
 }
 
 .step-title {
@@ -191,6 +197,17 @@
 
 .card-right {
   cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 24px;
+  color: #ADB5BC;
+}
+
+.card-right:hover {
+  background-color: rgba(33,37,41,0.04);
+  color: #495057;
 }
 
 .card-item {
@@ -243,7 +260,7 @@
   right: 12px;
 }
 
-.copyBtn {
+.copy-btn {
   width: 48px;
   height: 24px;
   background: #FFFFFF;
@@ -251,9 +268,14 @@
   border-radius: 6px;
   color: #556EE6;
   text-align: center;
-  line-height: 24px;
+  line-height: 22px;
   font-size: 12px;
   display: inline-block;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background: rgba(85, 110, 230, 0.1);
 }
 
 .sdk-item {
@@ -274,4 +296,8 @@
   color: #495057;
   padding: 0 5px;
   height: 20px;
+}
+
+.save {
+  margin-top: 8px !important;
 }

@@ -185,13 +185,15 @@ const Steps = () => {
   return (
     <div className={styles.page}>
       <div className={styles.intro}>
-        <span className={styles['intro-title']}>
-          <FormattedMessage id='common.get.started.text' />
-        </span>
-        <span className={styles['intro-desc']}>
+        <div className={styles['intro-header']}>
+          <span className={styles['intro-title']}>
+            <FormattedMessage id='common.get.started.text' />
+          </span>
           <Icon type='info-circle' customClass={styles['intro-icon']} />
-          <FormattedMessage id='connect.description' />
-        </span>
+          <span className={styles['intro-desc']}>
+            <FormattedMessage id='connect.description' />
+          </span>
+        </div>
         <div className={styles['intro-info']}>
           <div className={styles['card-item']}>
             <div className={styles['card-title']}>
