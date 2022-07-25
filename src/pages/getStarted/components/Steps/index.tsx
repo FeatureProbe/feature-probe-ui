@@ -56,6 +56,7 @@ const Steps = () => {
   const [ sdkVersion, saveSDKVersion ] = useState<string>('');
   const [ returnType, saveReturnType ] = useState<string>('');
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(false);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
 
   const init = useCallback(() => {
@@ -154,6 +155,7 @@ const Steps = () => {
     saveDictionary(PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey, step).then((res) => {
       if (res.success) {
         saveCurrentStep(currentStep + 1);
+        saveIsLoading(true);
       }
     });
   }, [projectKey, environmentKey, toggleKey, currentStep]);
@@ -221,11 +223,13 @@ const Steps = () => {
           goBackToStep={goBackToStep}
         />
         <StepThird 
+          isLoading={isLoading}
           projectKey={projectKey}
           environmentKey={environmentKey}
           toggleKey={toggleKey}
           currentStep={currentStep}
           toggleAccess={toggleAccess}
+          saveIsLoading={saveIsLoading}
           checkToggleStatus={checkToggleStatus}
         />
       </div>

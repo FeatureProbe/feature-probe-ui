@@ -162,7 +162,7 @@ const StepSecond = (props: IProps) => {
                 </div>
                 <div className={styles['card-right']}>
                   <Icon 
-                    type='edit' 
+                    type='view' 
                     onClick={() => {
                       goBackToStep(CURRENT);
                     }} 

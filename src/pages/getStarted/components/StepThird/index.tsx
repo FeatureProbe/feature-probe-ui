@@ -1,27 +1,31 @@
+import { useEffect, useState } from 'react';
 import { Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
+import { IRouterParams } from 'interfaces/project';
 import styles from '../Steps/index.module.scss';
-import { useEffect, useState } from 'react';
 
 interface IProps {
+  isLoading: boolean;
   currentStep: number;
   toggleAccess: boolean;
   projectKey: string;
   environmentKey: string;
   toggleKey: string;
   checkToggleStatus(): void;
+  saveIsLoading(loading: boolean): void;
 }
 
 const CURRENT = 3;
 const INTERVAL = 30;
 
 const StepThird = (props: IProps) => {
-  const { currentStep, toggleAccess, environmentKey, toggleKey, checkToggleStatus } = props;
-  const [ isLoading, saveIsLoading ] = useState<boolean>(false);
-  const [ count, saveCount ] = useState<number>(1);
+  const { currentStep, toggleAccess, isLoading, checkToggleStatus, saveIsLoading } = props;
   const intl = useIntl();
+  const { toggleKey, environmentKey } = useParams<IRouterParams>();
+  const [ count, saveCount ] = useState<number>(1);
 
   useEffect(() => {
     if (isLoading) {
@@ -40,7 +44,7 @@ const StepThird = (props: IProps) => {
         clearInterval(timer);
       })
     }
-  }, [count, isLoading, checkToggleStatus]);
+  }, [count, isLoading, checkToggleStatus, saveIsLoading]);
 
   return (
     <div className={styles.step}>
