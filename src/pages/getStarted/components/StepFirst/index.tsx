@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Form, Dropdown } from 'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import classNames from 'classnames';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import java from 'images/java.svg';
@@ -10,6 +11,7 @@ import python from 'images/python.svg';
 import javascript from 'images/javascript.svg';
 import android from 'images/android.svg';
 import swift from 'images/swift.svg';
+import apple from 'images/apple.svg';
 import styles from '../Steps/index.module.scss';
 
 const SDK_LOGOS = {
@@ -20,17 +22,13 @@ const SDK_LOGOS = {
   'JavaScript': javascript,
   'Android': android,
   'Swift': swift,
-  'Objective-C': ''
+  'Objective-C': apple,
 };
 
 const SERVER_SIDE_SDKS = [
   {
     name: 'Java',
     logo: java,
-  },
-  {
-    name: 'Rust',
-    logo: rust,
   },
   {
     name: 'Go',
@@ -40,6 +38,10 @@ const SERVER_SIDE_SDKS = [
   //   name: 'Python',
   //   logo: python,
   // }
+  {
+    name: 'Rust',
+    logo: rust,
+  },
 ];
 
 const CLIENT_SIDE_SDKS = [
@@ -57,7 +59,7 @@ const CLIENT_SIDE_SDKS = [
   },
   {
     name: 'Objective-C',
-    logo: '',
+    logo: apple,
   }
 ];
 
@@ -79,7 +81,14 @@ const CURRENT = 1;
 const StepFirst = (props: IProps) => {
   const { currentStep, currentSDK, saveStep, goBackToStep, saveCurrentSDK } = props;
   const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
+  const intl = useIntl();
 
+  const stepTitleCls = classNames(
+    styles['step-title'],
+    {
+      [styles['step-title-selected']]: currentStep === CURRENT
+    }
+  );
 
   useEffect(() => {
     if (currentSDK) {
@@ -95,7 +104,7 @@ const StepFirst = (props: IProps) => {
           currentStep === CURRENT && (
             <>
               <div className={styles.circleCurrent}>{ CURRENT }</div>
-              <div className={styles.lineSelected}></div>
+              <div className={styles.line}></div>
             </>
           )
         }
@@ -111,7 +120,7 @@ const StepFirst = (props: IProps) => {
           currentStep > CURRENT && (
             <>
               <div className={styles.checked}>
-                <Icon type='check' />
+                <Icon type='check-circle' customClass={styles['checked-circle']} />
               </div>
               <div className={styles.lineSelected}></div>
             </>
@@ -119,7 +128,7 @@ const StepFirst = (props: IProps) => {
         }
       </div>
       <div className={styles['step-right']}>
-        <div className={styles['step-title']}>
+        <div className={stepTitleCls}>
           <FormattedMessage id='connect.second.title' />
         </div>
         <div className={styles['step-detail']}>
@@ -142,9 +151,7 @@ const StepFirst = (props: IProps) => {
                         {
                           currentSDK ? (
                             <>
-                              {
-                                selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' />
-                              }
+                              { selectedSDKLogo && <img className={styles['dropdown-logo']} src={selectedSDKLogo} alt='logo' /> }
                               <span className={styles['dropdown-text']}>
                                 { currentSDK }
                               </span>
@@ -157,21 +164,25 @@ const StepFirst = (props: IProps) => {
                     }
                   >
                     <Dropdown.Menu>
-                      <Dropdown.Header content='Server-side SDKs' />
+                      <Dropdown.Header content={intl.formatMessage({id: 'connect.second.server.sdks'})} />
                       <Dropdown.Divider />
                       {
                         SERVER_SIDE_SDKS.map((sdk: IOption) => {
                           return (
-                            <Dropdown.Item onClick={() => {
-                              saveCurrentSDK(sdk.name);
-                            }}>
-                              <img src={sdk.logo} alt='logo' />
-                              { sdk.name }
+                            <Dropdown.Item 
+                              onClick={() => {
+                                saveCurrentSDK(sdk.name);
+                              }}
+                            >
+                              <div className={styles['sdk-item']}>
+                                <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' />
+                                { sdk.name }
+                              </div>
                             </Dropdown.Item>
                           )
                         })
                       }
-                      <Dropdown.Header content='Client-side SDKs' />
+                      <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
                       <Dropdown.Divider />
                       {
                         CLIENT_SIDE_SDKS.map((sdk: IOption) => {
@@ -179,10 +190,10 @@ const StepFirst = (props: IProps) => {
                             <Dropdown.Item onClick={() => {
                               saveCurrentSDK(sdk.name);
                             }}>
-                              {
-                                sdk.logo && <img src={sdk.logo} alt='logo' />
-                              }
-                              { sdk.name }
+                              <div className={styles['sdk-item']}>
+                                { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }
+                                { sdk.name }
+                              </div>
                             </Dropdown.Item>
                           )
                         })
@@ -193,6 +204,7 @@ const StepFirst = (props: IProps) => {
                 <Button 
                   primary 
                   type='submit'
+                  className={styles.save}
                   disabled={!currentSDK}
                   onClick={() => {
                     saveStep(currentSDK);
@@ -215,9 +227,12 @@ const StepFirst = (props: IProps) => {
                   </div>
                 </div>
                 <div className={styles['card-right']}>
-                  <Icon type='edit' onClick={() => {
-                    goBackToStep(CURRENT);
-                  }} />
+                  <Icon 
+                    type='edit' 
+                    onClick={() => {
+                      goBackToStep(CURRENT);
+                    }} 
+                  />
                 </div>
               </div>
             )

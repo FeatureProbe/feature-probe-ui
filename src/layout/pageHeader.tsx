@@ -1,13 +1,13 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Form, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
-import { getUserInfo, logout } from 'services/user';
+import { getUserInfo } from 'services/user';
 import { IUserInfo } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
 import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
@@ -130,10 +130,9 @@ const PageHeader = () => {
   );
 
   const handleLogout = useCallback(async () => {
-    const res = await logout();
-    if (res.success) {
-      history.push('/login');
-    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('organizeId');
+    history.push('/login');
   }, [history]);
 
   const handleGotoDocument = useCallback(() => {

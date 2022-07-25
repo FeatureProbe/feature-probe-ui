@@ -1,6 +1,6 @@
 import request from '../utils/request';
 import API from '../constants/api';
-import { ApplicationJsonContentType } from 'constants/api/contentType';
+import { ApplicationJson } from 'constants/api/contentType';
 
 interface ILoginParams {
   account: string;
@@ -10,7 +10,12 @@ interface ILoginParams {
 export const getUserInfo = async<T> () => {
   const url = API.userInfoURI;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const login = async (data: ILoginParams) => {
@@ -19,7 +24,8 @@ export const login = async (data: ILoginParams) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      'Content-Type': 'application/json',
+      'Accept-Language': localStorage.getItem('i18n')?.replaceAll('"', '') || 'en-US',
     },
     body: JSON.stringify(data),
   });
@@ -28,5 +34,10 @@ export const login = async (data: ILoginParams) => {
 export const logout = async<T> () => {
   const url = API.logoutURI;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };

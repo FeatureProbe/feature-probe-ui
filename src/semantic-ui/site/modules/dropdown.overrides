@@ -78,3 +78,13 @@
   background: #fff6f6;
   border: 1px solid #e0b4b4;
 }
+
+.ui.dropdown .menu > .divider {
+  display: none;
+}
+
+.ui.dropdown .menu > .header {
+  color: #212529;
+  font-weight: normal;
+  text-transform: none;
+}

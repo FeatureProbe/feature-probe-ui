@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import classNames from 'classnames';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useParams } from 'react-router-dom';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { IRouterParams } from 'interfaces/project';
+import { ICondition, IRule } from 'interfaces/targeting';
 import { getAndroidCode, getGoCode, getJavaCode, getJSCode, getObjCCode, getRustCode, getSwiftCode } from '../constants';
 import styles from '../Steps/index.module.scss';
 
 interface IProps {
+  rules: IRule[]
   currentStep: number;
   currentSDK: string;
   returnType: string;
@@ -23,53 +26,103 @@ interface IProps {
 
 interface ICodeOption {
   title?: string;
-  name: string;
+  name?: string;
   code: string;
 }
 
 const CURRENT = 2;
 
 const StepSecond = (props: IProps) => {
-  const { currentStep, currentSDK, serverSdkKey, clientSdkKey, returnType, sdkVersion, saveStep, goBackToStep } = props;
+  const {
+    rules,
+    currentStep, 
+    currentSDK, 
+    serverSdkKey, 
+    clientSdkKey, 
+    returnType, 
+    sdkVersion, 
+    saveStep, 
+    goBackToStep 
+  } = props;
+
   const [ options, saveOptions ] = useState<ICodeOption[]>([]);
   const [ language, saveLanguage ] = useState<string>('java');
   const { toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
 
+  const stepTitleCls = classNames(
+    styles['step-title'],
+    {
+      [styles['step-title-selected']]: currentStep === CURRENT
+    }
+  );
+
   useEffect(() => {
     if (currentSDK) {
+      const result: string[] = [];
+      let userWithCode = '';
+
+      rules.forEach((rule: IRule) => {
+        rule.conditions.forEach((condition: ICondition) => {
+          if (!result.includes(condition.subject)) {
+            result.push(condition.subject);
+          }
+        })
+      });
+
       switch (currentSDK) {
         case 'Java': 
           saveLanguage('java');
-          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `.with("${item}", /* ${item} */)`
+          });
+          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Rust': 
           saveLanguage('rust');
-          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `let user = user.with("${item}", /* ${item} */);\n`
+          });
+          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Go': 
           saveLanguage('go');
-          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.With("${item}", /* ${item} */)\n`
+          });
+          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Android': 
           saveLanguage('java');
-          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", /* ${item} */)\n`
+          });
+          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Swift': 
           saveLanguage('swift');
-          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", /* ${item} */)\n`
+          });
+          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Objective-C': 
           saveLanguage('objectivec');
-          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `[user withKey:@"${item}" value:/* ${item} */];\n`
+          });
+          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'JavaScript': 
           saveLanguage('javascript');
-          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", /* ${item} */);\n`
+          });
+          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
       }
     }
-  }, [sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl]);
+  }, [rules, sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl]);
 
   return (
     <div className={styles.step}>
@@ -78,7 +131,7 @@ const StepSecond = (props: IProps) => {
           currentStep === CURRENT && (
             <>
               <div className={styles.circleCurrent}>{ CURRENT }</div>
-              <div className={styles.lineSelected}></div>
+              <div className={styles.line}></div>
             </>
           )
         }
@@ -94,7 +147,7 @@ const StepSecond = (props: IProps) => {
           currentStep > CURRENT && (
             <>
               <div className={styles.checked}>
-                <Icon type='check' />
+                <Icon type='check-circle' customClass={styles['checked-circle']} />
               </div>
               <div className={styles.lineSelected}></div>
             </>
@@ -102,7 +155,7 @@ const StepSecond = (props: IProps) => {
         }
       </div>
       <div className={styles['step-right']}>
-        <div className={styles['step-title']}>
+        <div className={stepTitleCls}>
           <FormattedMessage id='connect.third.title' />
         </div>
         <div className={styles['step-detail']}>
@@ -115,13 +168,18 @@ const StepSecond = (props: IProps) => {
                       return (
                         <div>
                           {
-                            item.title && <h3 className={styles['code-step-title']}>{item.title}</h3>
+                            item.title && (
+                              <div className={styles['code-step-title']}>
+                                <span className={styles['code-step-divider']}></span>
+                                {item.title}
+                              </div>
+                            )
                           }
                           <div className={styles['code-step']}>{item.name}</div>
                           <div className={styles.code}>
                             <span className={styles.copy}>
                               <CopyToClipboardPopup text={item.code}>
-                                <span className={styles.copyBtn}>
+                                <span className={styles['copy-btn']}>
                                   <FormattedMessage id='common.copy.uppercase.text' />
                                 </span>
                               </CopyToClipboardPopup>
@@ -130,7 +188,15 @@ const StepSecond = (props: IProps) => {
                               language={language} 
                               style={docco} 
                               wrapLongLines={true} 
-                              customStyle={{backgroundColor: 'rgba(33,37,41,0.04);', fontSize: '13px', borderRadius: '6px', minHeight: '36px'}}
+                              customStyle={{
+                                backgroundColor: 'rgba(33,37,41,0.04)', 
+                                fontSize: '13px', 
+                                borderRadius: '6px', 
+                                minHeight: '36px', 
+                                marginTop: '0',
+                                marginBottom: '12px',
+                                paddingRight: '70px'
+                              }}
                             >
                               {item.code}
                             </SyntaxHighlighter>
@@ -144,6 +210,7 @@ const StepSecond = (props: IProps) => {
                   <Button 
                     primary 
                     type='submit'
+                    className={styles.save}
                     onClick={() => {
                       saveStep();
                     }}
@@ -162,7 +229,7 @@ const StepSecond = (props: IProps) => {
                 </div>
                 <div className={styles['card-right']}>
                   <Icon 
-                    type='edit' 
+                    type='view' 
                     onClick={() => {
                       goBackToStep(CURRENT);
                     }} 

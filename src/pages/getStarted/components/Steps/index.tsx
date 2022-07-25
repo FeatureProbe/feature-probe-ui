@@ -1,16 +1,17 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import Icon from 'components/Icon';
 import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
-import { getToggleAccess, getToggleInfo } from 'services/toggle';
-import { IDictionary, IToggleInfo } from 'interfaces/targeting';
+import { getToggleAccess, getToggleInfo, getTargeting } from 'services/toggle';
+import { getProjectInfo } from 'services/project';
+import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { getEnvironment } from 'services/project';
-import { IEnvironment, IRouterParams } from 'interfaces/project';
+import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
 interface IStepDetail {
@@ -56,7 +57,13 @@ const Steps = () => {
   const [ sdkVersion, saveSDKVersion ] = useState<string>('');
   const [ returnType, saveReturnType ] = useState<string>('');
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
+  const [ projectName, saveProjectName ] = useState<string>('');
+  const [ environmentName, saveEnvironmentName ] = useState<string>('');
+  const [ toggleName, saveToggleName ] = useState<string>('');
+  const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
+  const intl = useIntl();
 
   const init = useCallback(() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
@@ -79,19 +86,37 @@ const Steps = () => {
       }
     });
 
+    getProjectInfo<IProject>(projectKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        saveProjectName(data.name);
+      }
+    });
+
     getEnvironment<IEnvironment>(projectKey, environmentKey).then( res=> {
       const { success, data} = res;
       if (success &&  data) {
         saveServerSDKKey(data.serverSdkKey);
         saveClientSdkKey(data.clientSdkKey);
+        saveEnvironmentName(data.name);
       }
     });
 
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
       const { data, success } = res;
+
       if (success && data) {
         saveReturnType(data.returnType);
+        saveToggleName(data.name);
       } 
+    });
+
+    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        const { content } = data;
+        saveRules(content?.rules || []);
+      }
     });
     
   }, [projectKey, environmentKey, toggleKey]);
@@ -154,6 +179,7 @@ const Steps = () => {
     saveDictionary(PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey, step).then((res) => {
       if (res.success) {
         saveCurrentStep(currentStep + 1);
+        saveIsLoading(true);
       }
     });
   }, [projectKey, environmentKey, toggleKey, currentStep]);
@@ -168,20 +194,22 @@ const Steps = () => {
   return (
     <div className={styles.page}>
       <div className={styles.intro}>
-        <span className={styles['intro-title']}>
-          <FormattedMessage id='common.get.started.text' />
-        </span>
-        <span className={styles['intro-desc']}>
+        <div className={styles['intro-header']}>
+          <span className={styles['intro-title']}>
+            <FormattedMessage id='common.get.started.text' />
+          </span>
           <Icon type='info-circle' customClass={styles['intro-icon']} />
-          <FormattedMessage id='connect.description' />
-        </span>
+          <span className={styles['intro-desc']}>
+            <FormattedMessage id='connect.description' />
+          </span>
+        </div>
         <div className={styles['intro-info']}>
           <div className={styles['card-item']}>
             <div className={styles['card-title']}>
               <FormattedMessage id='common.project.text' /> :
             </div>
             <div className={styles['card-value']}>
-              { projectKey }
+              { projectName }
             </div>
           </div>
           <div className={styles['card-item']}>
@@ -189,7 +217,7 @@ const Steps = () => {
               <FormattedMessage id='common.environment.text' /> :
             </div>
             <div className={styles['card-value']}>
-              { environmentKey }
+              { environmentName }
             </div>
           </div>
           <div className={styles['card-item']}>
@@ -197,7 +225,11 @@ const Steps = () => {
               <FormattedMessage id='common.toggle.text' /> :
             </div>
             <div className={styles['card-value']}>
-              { toggleKey }
+              {
+                intl.formatMessage({id: 'connect.first.toggle.view'},
+                {name: toggleName})
+              }
+              <span className={styles['toggle-key']}>{ toggleKey }</span>
             </div>
           </div>
         </div>
@@ -211,6 +243,7 @@ const Steps = () => {
           goBackToStep={goBackToStep}
         />
         <StepSecond 
+          rules={rules}
           currentStep={currentStep}
           currentSDK={currentSDK}
           returnType={returnType}
@@ -221,11 +254,13 @@ const Steps = () => {
           goBackToStep={goBackToStep}
         />
         <StepThird 
+          isLoading={isLoading}
           projectKey={projectKey}
           environmentKey={environmentKey}
           toggleKey={toggleKey}
           currentStep={currentStep}
           toggleAccess={toggleAccess}
+          saveIsLoading={saveIsLoading}
           checkToggleStatus={checkToggleStatus}
         />
       </div>
