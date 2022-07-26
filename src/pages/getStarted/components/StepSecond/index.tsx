@@ -23,7 +23,7 @@ interface IProps {
 
 interface ICodeOption {
   title?: string;
-  name: string;
+  name?: string;
   code: string;
 }
 

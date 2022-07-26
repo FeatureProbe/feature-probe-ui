@@ -2,10 +2,10 @@ import { IntlShape } from 'react-intl';
 
 export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    name: intl.formatMessage({id: 'getstarted.java.first.step'}),
+    title: intl.formatMessage({id: 'getstarted.java.first.step'}),
     code: 'mvn archetype:generate -DgroupId=com.featureprobe.demo -DartifactId=featureprobe-java-demo'
   }, {
-    name: intl.formatMessage({id: 'getstarted.java.second.step'}),
+    title: intl.formatMessage({id: 'getstarted.java.second.step'}),
     code: 
 `<dependency>
   <groupId>com.featureprobe</groupId>
@@ -14,7 +14,7 @@ export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: strin
 </dependency>
 `
   }, {
-    name: intl.formatMessage({id: 'getstarted.java.third.step'}),
+    title: intl.formatMessage({id: 'getstarted.java.third.step'}),
     code: 
 `public class Demo {
     private static final FPConfig config = FPConfig.builder()
@@ -36,10 +36,10 @@ export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: strin
 
 export const getRustCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    name: intl.formatMessage({id: 'getstarted.rust.first.step'}),
+    title: intl.formatMessage({id: 'getstarted.rust.first.step'}),
     code: `feature-probe-server-sdk = ${sdkVersion}`
   }, {
-    name: intl.formatMessage({id: 'getstarted.rust.second.step'}),
+    title: intl.formatMessage({id: 'getstarted.rust.second.step'}),
     code: 
 `use feature_probe_server_sdk::{FPConfig, FPUser, FeatureProbe};
 let config = FPConfig {
@@ -52,7 +52,7 @@ let config = FPConfig {
 let fp = match FeatureProbe::new(config).unwrap(); //should check result in production
 `
   }, {
-    name: intl.formatMessage({id: 'getstarted.rust.third.step'}),
+    title: intl.formatMessage({id: 'getstarted.rust.third.step'}),
     code: 
 `let user = FPUser::new("user@company.com").with("name", "bob");
 ${returnType === 'boolean' ? `let value = fp.bool_value("${toggleKey}", &user, false);` : ''}${returnType === 'number' ? `let value = fp.number_value("${toggleKey}", &user, 20.0), 12.5);` : ''}${returnType === 'string' ? `let value = fp.string_value("${toggleKey}", &user, "val".to_owned()), "value");` : ''}${returnType === 'json' ? `let value = fp.json_value("${toggleKey}", &user, json!("v"));` : ''}
@@ -97,14 +97,14 @@ export const getPythonCode = (sdkVersion: string, sdkKey: string, toggleKey: str
 
 export const getAndroidCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape) => [
   {
-    name: intl.formatMessage({id: 'getstarted.android.first.step'}),
+    title: intl.formatMessage({id: 'getstarted.android.first.step'}),
     code: 
 `implementation 'com.featureprobe.mobile:android_sdk:${sdkVersion}@aar'
 implementation "net.java.dev.jna:jna:5.7.0@aar"
 `
   }, 
   {
-    name: intl.formatMessage({id: 'getstarted.android.second.step'}),
+    title: intl.formatMessage({id: 'getstarted.android.second.step'}),
     code: 
 `import com.featureprobe.mobile.*;
 val url = FpUrlBuilder("remote_url/").build();
@@ -114,7 +114,7 @@ val config = FpConfig(url!!, "${sdkKey}", 10u, true)
 val fp = FeatureProbe(config, user)
 `
   }, {
-    name: intl.formatMessage({id: 'getstarted.android.third.step'}),
+    title: intl.formatMessage({id: 'getstarted.android.third.step'}),
     code: 
 `${returnType === 'boolean' ? `val value = fp.boolValue("${toggleKey}", false)` : ''}${returnType === 'number' ? `val value = fp.numberValue("${toggleKey}", 1.0)` : ''}${returnType === 'string' ? `val value = fp.stringValue("${toggleKey}", "s")` : ''}${returnType === 'json' ? `val value = fp.jsonValue("${toggleKey}", "{}")` : ''}
 `
