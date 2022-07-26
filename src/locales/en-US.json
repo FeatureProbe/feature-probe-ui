@@ -291,13 +291,15 @@
   "connect.first.toggle.view": "You are using toggle {name} with key",
   "connect.second.title": "Select SDK",
   "connect.second.sdk": "Select your SDK",
+  "connect.second.server.sdks": "Server-side SDKs:",
+  "connect.second.client.sdks": "Client-side SDKs:",
   "connect.third.title": "Set up your application",
   "connect.fourth.title": "Test your application",
   "connect.fourth.running": "Listening for events for {toggle} in the {environment} environment.",
   "connect.fourth.failed": "You have no applications connected using this SDK Key. ",
   "connect.fourth.success": "Successfully connected！",
   "connect.fourth.failed.button": "Retry Connection",
-
+  
   "getstarted.java.first.step": "Step 1: Create a new project（optional）",
   "getstarted.java.second.step": "Step 2: Add the SDK to your project",
   "getstarted.java.third.step": "Step 3: Add the following code to your Application",

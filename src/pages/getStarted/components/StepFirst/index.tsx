@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Form, Dropdown } from 'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import java from 'images/java.svg';
@@ -80,7 +80,7 @@ const CURRENT = 1;
 const StepFirst = (props: IProps) => {
   const { currentStep, currentSDK, saveStep, goBackToStep, saveCurrentSDK } = props;
   const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
-
+  const intl = useIntl();
 
   useEffect(() => {
     if (currentSDK) {
@@ -156,7 +156,7 @@ const StepFirst = (props: IProps) => {
                     }
                   >
                     <Dropdown.Menu>
-                      <Dropdown.Header content='Server-side SDKs' />
+                      <Dropdown.Header content={intl.formatMessage({id: 'connect.second.server.sdks'})} />
                       <Dropdown.Divider />
                       {
                         SERVER_SIDE_SDKS.map((sdk: IOption) => {
@@ -174,7 +174,7 @@ const StepFirst = (props: IProps) => {
                           )
                         })
                       }
-                      <Dropdown.Header content='Client-side SDKs' />
+                      <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
                       <Dropdown.Divider />
                       {
                         CLIENT_SIDE_SDKS.map((sdk: IOption) => {

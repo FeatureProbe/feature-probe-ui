@@ -291,6 +291,8 @@
   "connect.first.toggle.view": "您正在使用开关{name}，标识为",
   "connect.second.title": "选择SDK",
   "connect.second.sdk": "选择目标SDK",
+  "connect.second.server.sdks": "服务端SDK：",
+  "connect.second.client.sdks": "客户端SDK：",
   "connect.third.title": "设置应用程序",
   "connect.fourth.title": "测试应用程序",
   "connect.fourth.running": "正在{environment}环境中监听{toggle}的事件。",

@@ -98,7 +98,7 @@
 .line {
   height: 100%;
   width: 1px;
-  background-color: #74788D;
+  background-color: rgba(116, 120, 141, 0.3);
   position: relative;
   left: 10px;
   top: 6px;
@@ -252,6 +252,20 @@
 .code-step {
   font-size: 13px;
   color: #74788D;
+}
+
+.code-step-title {
+  font-family: HelveticaNeue-Medium;
+  color: #212529;
+  margin-bottom: 8px;
+}
+
+.code-step-divider {
+  width: 3px;
+  height: 10px;
+  background-color: #556EE6;
+  display: inline-block;
+  margin-right: 4px;
 }
 
 .copy {

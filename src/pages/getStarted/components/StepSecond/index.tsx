@@ -115,7 +115,12 @@ const StepSecond = (props: IProps) => {
                       return (
                         <div>
                           {
-                            item.title && <h3 className={styles['code-step-title']}>{item.title}</h3>
+                            item.title && (
+                              <div className={styles['code-step-title']}>
+                                <span className={styles['code-step-divider']}></span>
+                                {item.title}
+                              </div>
+                            )
                           }
                           <div className={styles['code-step']}>{item.name}</div>
                           <div className={styles.code}>
@@ -130,7 +135,15 @@ const StepSecond = (props: IProps) => {
                               language={language} 
                               style={docco} 
                               wrapLongLines={true} 
-                              customStyle={{backgroundColor: 'rgba(33,37,41,0.04)', fontSize: '13px', borderRadius: '6px', minHeight: '36px'}}
+                              customStyle={{
+                                backgroundColor: 'rgba(33,37,41,0.04)', 
+                                fontSize: '13px', 
+                                borderRadius: '6px', 
+                                minHeight: '36px', 
+                                marginTop: '0',
+                                marginBottom: '12px',
+                                paddingRight: '70px'
+                              }}
                             >
                               {item.code}
                             </SyntaxHighlighter>
