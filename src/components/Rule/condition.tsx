@@ -44,7 +44,7 @@ const RuleContent = (props: IProps) => {
 
   const intl = useIntl();
   const [ options, setOption ] = useState<IOption[]>();
-  let segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
+  const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
   let subjectOptions: IOption[] = attributeOptions;
 
   const {
@@ -54,7 +54,7 @@ const RuleContent = (props: IProps) => {
     handleChangeTimeZone,
     handleChangeValue,
     handleDeleteCondition,
-  } = ruleContainer.useContainer()
+  } = ruleContainer.useContainer();
 
   const {
     formState: { errors },
@@ -67,7 +67,7 @@ const RuleContent = (props: IProps) => {
   } = hooksFormContainer.useContainer();
 
   const handleDelete = useCallback(async (ruleIndex: number, conditionIndex: number, ruleId: string) => {
-    for(let key in getValues()) {
+    for(const key in getValues()) {
       if (key.startsWith(`rule_${ruleId}_condition`)) {
         unregister(key);
         clearErrors(key);
@@ -80,7 +80,7 @@ const RuleContent = (props: IProps) => {
     return ({
       content: label.text,
       removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
-    })
+    });
   }, []);
 
   useEffect(() => {
@@ -102,7 +102,7 @@ const RuleContent = (props: IProps) => {
       key: val,
       text: val,
       value: val,
-    }
+    };
   });
 
   if (useSegment) {
@@ -369,7 +369,7 @@ const RuleContent = (props: IProps) => {
         />
       }
     </div>
-  )
-}
+  );
+};
 
 export default RuleContent;

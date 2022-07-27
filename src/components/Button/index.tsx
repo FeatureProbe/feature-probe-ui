@@ -1,5 +1,5 @@
-import { useRef, MouseEvent, useCallback } from 'react'
-import { Button, ButtonProps } from 'semantic-ui-react'
+import { useRef, MouseEvent, useCallback } from 'react';
+import { Button, ButtonProps } from 'semantic-ui-react';
 
 const CustomButton = ({children, ...props}: ButtonProps) => {
   const { onClick } = props;
@@ -18,7 +18,7 @@ const CustomButton = ({children, ...props}: ButtonProps) => {
     <Button {...props} ref={buttonRef} onClick={handleOnClick}>
       { children }
     </Button>
-  )
-}
+  );
+};
 
 export default CustomButton;

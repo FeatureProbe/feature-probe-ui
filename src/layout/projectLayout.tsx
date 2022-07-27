@@ -59,7 +59,7 @@ const ProjectLayout = (props: IProps) => {
       return env.key === environmentKey;
     });
     setEnvIndex(index === -1 ? 0 : index);
-  }, [environmentKey, projectInfo.environments])
+  }, [environmentKey, projectInfo.environments]);
   
   const gotoProjects = useCallback(() => {
     history.push('/projects');
@@ -161,7 +161,7 @@ const ProjectLayout = (props: IProps) => {
         { props.children }
       </div>
     </div>
-	)
-}
+	);
+};
 
 export default ProjectLayout;

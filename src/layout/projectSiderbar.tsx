@@ -16,7 +16,6 @@ interface IProps {
   backgroundColor: string;
 }
 
-
 const ProjectSiderbar = (props: IProps) => {
   const { projectInfo, backgroundColor } = props;
   const { projectKey, environmentKey, toggleKey, navigation } = useParams<IRouterParams>();
@@ -64,7 +63,7 @@ const ProjectSiderbar = (props: IProps) => {
       key: env.key,
       text: env.name,
       value: env.key,
-    }
+    };
   });
 
   const handleChangeEnv = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
@@ -135,7 +134,7 @@ const ProjectSiderbar = (props: IProps) => {
       <Modal 
         open={open}
         width={400}
-        handleCancel={() => {setOpen(false)}}
+        handleCancel={() => {setOpen(false);}}
         handleConfirm={gotoPage}
       >
         <div>
@@ -157,7 +156,7 @@ const ProjectSiderbar = (props: IProps) => {
         </div>
       </Modal>
     </div>
-	)
-}
+	);
+};
 
 export default ProjectSiderbar;

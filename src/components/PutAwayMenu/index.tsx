@@ -37,7 +37,7 @@ const PutAwayMemu = (props: IProps) => {
         )
       }
     </div>
-	)
-}
+	);
+};
 
 export default PutAwayMemu;

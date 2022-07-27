@@ -81,5 +81,5 @@ export const timezoneOptions = (intl: IntlShape) => {
     {key: 23, text: intl.formatMessage({id: 'targeting.rule.timezone.west.three'}), value: '-03:00'},
     {key: 24, text: intl.formatMessage({id: 'targeting.rule.timezone.west.two'}), value: '-02:00'},
     {key: 25, text: intl.formatMessage({id: 'targeting.rule.timezone.west.one'}), value: '-01:00'},
-  ]
+  ];
 };

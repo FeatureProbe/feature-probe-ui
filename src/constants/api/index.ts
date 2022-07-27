@@ -12,6 +12,6 @@ const APIS = {
   ...member,
   ...segment,
   ...dictionary,
-}
+};
 
 export default APIS;

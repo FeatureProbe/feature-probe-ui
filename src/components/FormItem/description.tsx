@@ -5,7 +5,7 @@ import styles from './index.module.scss';
 
 interface IProps extends FormTextAreaProps {
   value: string;
-  size?: "big" | "small" | "mini" | "large" | "huge" | "massive" | undefined;
+  size?: 'big' | 'small' | 'mini' | 'large' | 'huge' | 'massive' | undefined;
   className?: string;
   onChange(e: SyntheticEvent, detail: TextAreaProps): void;
 }
@@ -28,7 +28,7 @@ const FormItemName = (props: IProps) => {
         />
       </Form.Field>
     </div>
-  )
-}
+  );
+};
 
 export default FormItemName;

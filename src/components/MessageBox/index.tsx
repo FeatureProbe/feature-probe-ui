@@ -40,16 +40,16 @@ const bgObj: IObject = {
   success: 'message-content-success',
   warn: 'message-content-warn',
   error: 'message-content-error',
-}
+};
 
 const MessageBox = (props: IProps) => {
   const [ msgs, setMsgs ] = useState<IProps[]>([]);
 
   useEffect(() => {
-    let msgscopy = cloneDeep(msgs);
+    const msgscopy = cloneDeep(msgs);
 
     setMsgs([...msgscopy, props]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   }, [props]);
 
   return (
@@ -66,7 +66,7 @@ const MessageBox = (props: IProps) => {
       }
     </div>
   );
-}
+};
 
 const Message = (props: IMessageProps) => {
   const { item } = props;
@@ -81,7 +81,7 @@ const Message = (props: IMessageProps) => {
 
     return () => {
       clearTimeout(timer);
-    }
+    };
   }, [duration]);
 
 
@@ -93,13 +93,13 @@ const Message = (props: IMessageProps) => {
       <span className={styles['message-content-text']}>{ content }</span>
     </div>
   );
-}
+};
 
 const message: IFunc = {};
 
 const notice = (props: IProps) => {
   return ReactDOM.render(<MessageBox {...props} />, RootDom);
-}
+};
 
 ['info', 'success', 'warn', 'error'].forEach((type: string) => {
   message[type] = (content: string, duration = 3) => {

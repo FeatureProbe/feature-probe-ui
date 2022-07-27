@@ -1,5 +1,5 @@
-import { createContainer } from "unstated-next";
-import { useLocalStorage } from "utils/hooks";
+import { createContainer } from 'unstated-next';
+import { useLocalStorage } from 'utils/hooks';
 
 export const usePutaway = () => {
   const [ isPutAway, setIsputAway ] = useLocalStorage('sidebarIsPutAway', false);

@@ -26,7 +26,7 @@ const CopyToClipboardPopup = (props: IProps) => {
       setSuccess(false);
       setOpen(false);
     }, 2000);
-  }
+  };
 
   const handleMouseEnter = debounce((e: SyntheticEvent) => {
     setOpen(true);
@@ -39,7 +39,7 @@ const CopyToClipboardPopup = (props: IProps) => {
   const handelUnmount = () => {
     setSuccess(false);
     clearTimeout(timer);
-  }
+  };
 
   return (
     <Popup 
@@ -69,7 +69,7 @@ const CopyToClipboardPopup = (props: IProps) => {
         </span>
       } 
     />
-  )
-}
+  );
+};
   
 export default CopyToClipboardPopup;

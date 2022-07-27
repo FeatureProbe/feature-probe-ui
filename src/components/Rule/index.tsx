@@ -1,5 +1,5 @@
 import { useState, MouseEvent, useCallback } from 'react';
-import { Accordion, AccordionTitleProps } from 'semantic-ui-react'
+import { Accordion, AccordionTitleProps } from 'semantic-ui-react';
 import { Draggable } from 'react-beautiful-dnd';
 import RuleTitle from './RuleTitle';
 import RuleContent from './RuleContent';
@@ -99,7 +99,7 @@ const Rule = (props: IProps) => {
         </div>
       )}
     </Draggable>
-	)
-}
+	);
+};
 
 export default Rule;

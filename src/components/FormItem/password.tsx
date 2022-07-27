@@ -52,7 +52,7 @@ const FormItemPassword = (props: IProps) => {
         <FormattedMessage id='login.password.tips' />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default FormItemPassword;

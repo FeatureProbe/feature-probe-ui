@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import Icon from 'components/Icon';
-import { SidebarContainer } from '../../layout/hooks';
+import { SidebarContainer } from 'layout/hooks';
 import styles from './index.module.scss';
 
 const PutAway = () => {
@@ -39,7 +39,7 @@ const PutAway = () => {
   }, [isPutAway, setIsputAway]);
 
   return (
-    <div className={putAwayCls} onClick={() => {setIsputAway(!isPutAway)}}>
+    <div className={putAwayCls} onClick={() => {setIsputAway(!isPutAway);}}>
       <div className={putAwayDividerCls}></div>
       {
         isPutAway 
@@ -52,7 +52,7 @@ const PutAway = () => {
         </span>
       }
     </div>
-	)
-}
+	);
+};
 
 export default PutAway;

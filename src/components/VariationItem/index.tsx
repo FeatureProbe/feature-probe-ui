@@ -301,7 +301,7 @@ const VariationItem = (props: IProps) => {
         </div>
       </Modal>
     </div>
-	)
-}
+	);
+};
 
 export default VariationItem;

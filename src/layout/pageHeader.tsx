@@ -65,7 +65,7 @@ const PageHeader = () => {
       if (i18nMenuOpen) {
         setI18nMenuOpen(false);
       }
-    }
+    };
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
@@ -178,11 +178,11 @@ const PageHeader = () => {
             </div>
           }
         >
-          <div className={styles['menu']} onClick={() => {setI18nMenuOpen(false)}}>
-            <div className={styles['menu-item']} onClick={()=> {setI18n('en-US')}}>
+          <div className={styles['menu']} onClick={() => {setI18nMenuOpen(false);}}>
+            <div className={styles['menu-item']} onClick={()=> {setI18n('en-US');}}>
               English
             </div>
-            <div className={styles['menu-item']} onClick={()=> {setI18n('zh-CN')}}>
+            <div className={styles['menu-item']} onClick={()=> {setI18n('zh-CN');}}>
               中文
             </div>
           </div>
@@ -206,7 +206,7 @@ const PageHeader = () => {
             </div>
           }
         >
-          <div className={styles['menu']} onClick={() => {setHelpMenuOpen(false)}}>
+          <div className={styles['menu']} onClick={() => {setHelpMenuOpen(false);}}>
             <div 
               className={styles['menu-item']} 
               onClick={()=> {
@@ -243,7 +243,7 @@ const PageHeader = () => {
             </div>
           }
         >
-          <div className={styles['menu']} onClick={() => {setMenuOpen(false)}}>
+          <div className={styles['menu']} onClick={() => {setMenuOpen(false);}}>
             <div className={styles['menu-item']} onClick={handleLogout}>
               <FormattedMessage id='common.logout.text' />
             </div>
@@ -251,7 +251,7 @@ const PageHeader = () => {
         </Popup>
       </div>
     </div>
-	)
-}
+	);
+};
 
 export default PageHeader;

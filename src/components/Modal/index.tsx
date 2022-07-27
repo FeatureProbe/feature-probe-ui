@@ -1,5 +1,5 @@
-import { ReactElement, SyntheticEvent } from "react";
-import { FormattedMessage } from "react-intl";
+import { ReactElement, SyntheticEvent } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Modal } from 'semantic-ui-react';
 import Button from 'components/Button';
 import styles from './index.module.scss';
@@ -43,7 +43,7 @@ const ConfirmModal = (props: IProps) => {
         }
       </Modal.Content>
     </Modal>
-  )
-}
+  );
+};
   
 export default ConfirmModal;

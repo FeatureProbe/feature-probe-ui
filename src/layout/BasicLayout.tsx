@@ -14,7 +14,7 @@ const BasicLayout = (props: IProps) => {
         { props.children }
       </div>
 		</div>
-	)
-}
+	);
+};
 
 export default BasicLayout;

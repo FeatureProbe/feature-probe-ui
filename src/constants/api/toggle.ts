@@ -1,4 +1,4 @@
-let origin = '/api';
+const origin = '/api';
 
 const ToggleURI = {
   getToggleListURI: `${origin}/projects/:projectKey/toggles`,
@@ -13,6 +13,6 @@ const ToggleURI = {
   environmentExistURI: `${origin}/projects/:projectKey/environments/exists`,
   targetingVersionsURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/versions`,
   targetingVersionsByVersionURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/versions/:version`
-}
+};
 
 export default ToggleURI;

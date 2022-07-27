@@ -1,4 +1,4 @@
-let origin = '/api';
+const origin = '/api';
 
 const ProjectURI = {
   addProjectURI: `${origin}/projects`,
@@ -8,6 +8,6 @@ const ProjectURI = {
   getProjectListURI: `${origin}/projects`,
   getProjectInfoURI: `${origin}/projects/:projectKey`,
   projectExistURI: `${origin}/projects/exists`
-}
+};
 
 export default ProjectURI;

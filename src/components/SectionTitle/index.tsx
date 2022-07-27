@@ -3,8 +3,8 @@ import Icon from 'components/Icon';
 import styles from './index.module.scss';
 
 interface IProp {
-  title: String;
-  tooltipText?: String;
+  title: string;
+  tooltipText?: string;
   showTooltip?: boolean;
 }
 
@@ -25,9 +25,8 @@ const SectionTitle = (props: IProp) => {
           />
         )
       }
-      
     </div>
-	)
-}
+	);
+};
 
 export default SectionTitle;

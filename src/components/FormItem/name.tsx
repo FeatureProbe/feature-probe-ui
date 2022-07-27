@@ -7,7 +7,7 @@ import styles from './index.module.scss';
 interface IProps extends FormInputProps {
   value: string;
   errors: FieldErrors;
-  size?: "big" | "small" | "mini" | "large" | "huge" | "massive" | undefined;
+  size?: 'big' | 'small' | 'mini' | 'large' | 'huge' | 'massive' | undefined;
   className?: string;
   register: UseFormRegister<FieldValues>;
   onChange(e: SyntheticEvent, detail: InputOnChangeData): void;
@@ -40,7 +40,7 @@ const FormItemName = (props: IProps) => {
       </Form.Field>
       { errors.name && <div className={styles['error-text']}>{ errors.name.message }</div> }
     </div>
-  )
-}
+  );
+};
 
 export default FormItemName;
