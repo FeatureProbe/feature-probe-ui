@@ -320,6 +320,7 @@ const RuleContent = (props: IProps) => {
                     result = detail.value.every((item) => {
                       return NUMBER_REG.test(item);
                     });
+
                     // @ts-ignore
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
                       return;

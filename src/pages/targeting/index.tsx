@@ -97,7 +97,7 @@ const Targeting = () => {
         message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
     });
-  }, [currentVersion, intl, projectKey, environmentKey, toggleKey]);
+  }, [intl, projectKey, environmentKey, toggleKey]);
 
   const initToggleInfo = useCallback(() => {
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(async(res) => {
