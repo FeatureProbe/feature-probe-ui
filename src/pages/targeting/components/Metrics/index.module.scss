@@ -130,6 +130,11 @@
   text-align: right;
 }
 
+.variation-name-deleted {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
 .variation-deleted {
   opacity: 0.45;
 }

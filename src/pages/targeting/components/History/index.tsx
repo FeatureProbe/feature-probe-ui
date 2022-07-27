@@ -5,7 +5,6 @@ import { FormattedMessage } from 'react-intl';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import Icon from 'components/Icon';
 import { IVersion } from 'interfaces/targeting';
 import styles from './index.module.scss';
 
@@ -15,13 +14,12 @@ interface IProps {
   latestVersion: number;
   selectedVersion: number;
   loadMore(): void;
-  viewHistory(version: IVersion): void;
-  quiteViewHistory(): void;
+  reviewHistory(version: IVersion): void;
+  setHistoryOpen(open: boolean): void;
 }
 
 const History = (props: IProps) => {
-  const { versions, hasMore, selectedVersion, latestVersion, loadMore, viewHistory, quiteViewHistory } = props;
-  const height = Math.min(85 * versions.length, 410);
+  const { versions, hasMore, selectedVersion, latestVersion, loadMore, reviewHistory } = props;
 
   return (
     <div className={styles.history}>
@@ -29,14 +27,13 @@ const History = (props: IProps) => {
         <span>
           <FormattedMessage id='common.history.text' />
         </span>
-        <Icon customClass={styles['history-title-icon']} type='close' onClick={quiteViewHistory} />
       </div>
-      <div className={styles.lists} id="scrollableDiv" style={{height: height}}>
+      <div className={styles.lists} id='scrollableDiv'>
         <InfiniteScroll
           dataLength={versions.length}
           next={loadMore}
           hasMore={hasMore}
-          scrollableTarget="scrollableDiv"
+          scrollableTarget='scrollableDiv'
           loader={
             <div className={styles.loading}>
               <FormattedMessage id='common.loading.text' />
@@ -81,7 +78,7 @@ const History = (props: IProps) => {
                     if (item?.version === Number(selectedVersion)) {
                       return;
                     }
-                    viewHistory(item);
+                    reviewHistory(item);
                   }}
                 >
                   <div className={styles['version-left']}>
@@ -137,8 +134,16 @@ const History = (props: IProps) => {
             })
           }
           {
+            hasMore && versions.length !== 0 && (
+              <div className={styles.hasMore} onClick={loadMore}>
+                <FormattedMessage id='targeting.view.more' />
+              </div>
+            )
+          }
+          {
             versions.length === 0 && (
-              <div className={styles.loading}>
+              <div className={styles['no-data']}>
+                <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
                 <FormattedMessage id='common.nodata.text' />
               </div>
             )

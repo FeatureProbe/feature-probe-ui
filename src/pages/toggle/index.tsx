@@ -36,7 +36,7 @@ interface ISearchParams {
   pageSize: number;
   sortBy?: string;
   environmentKey: string;
-  isVisited?: boolean;
+  visitFilter?: string;
   disabled?: number;
   tags?: string[];
   keyword?: number;
@@ -137,19 +137,24 @@ const Toggle = () => {
     return [
       { 
         key: 'in last 7 days', 
-        value: true, 
+        value: 'IN_WEEK_VISITED', 
         text: intl.formatMessage({id: 'toggles.filter.evaluated.last.seven.days'}) 
       },
       { 
         key: 'not in last 7 days', 
-        value: false, 
+        value: 'OUT_WEEK_VISITED', 
         text: intl.formatMessage({id: 'toggles.filter.evaluated.not.last.seven.days'}) 
+      },
+      { 
+        key: 'none', 
+        value: 'NOT_VISITED', 
+        text: intl.formatMessage({id: 'toggles.filter.evaluated.never'}) 
       },
     ];
   }, [intl]);
 
   const statusOptions = useMemo(() => {
-    return[
+    return [
       { 
         key: 'enabled', 
         value: false, 
@@ -174,7 +179,7 @@ const Toggle = () => {
     setSearchParams({
       ...searchParams,
       // @ts-ignore
-      isVisited: data.value
+      visitFilter: data.value
     });
   }, [searchParams]);
 
@@ -241,7 +246,7 @@ const Toggle = () => {
                       placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
                       options={evaluationOptions} 
                       icon={
-                        typeof searchParams.isVisited === 'boolean'
+                        searchParams.visitFilter
                           ? <Icon customClass={styles['angle-down']} type='remove-circle' />
                           : <Icon customClass={styles['angle-down']} type='angle-down' />
                       }

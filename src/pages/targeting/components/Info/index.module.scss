@@ -4,6 +4,7 @@
   padding: 16px 24px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
   border-radius: 0 0 12px 12px;
+  position: relative;
 }
   
 .info-title {
@@ -60,5 +61,20 @@
 }
 
 .label-value-copy {
+  cursor: pointer;
+}
+
+.link-sdk {
+  height: 32px;
+  background: #F2F4FF;
+  border-radius: 6px;
+  position: absolute;
+  right: 24px;
+  top: 16px;
+  text-align: center;
+  line-height: 32px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: #556EE6;
   cursor: pointer;
 }
