@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import classNames from 'classnames';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useParams } from 'react-router-dom';
 import Button from 'components/Button';
@@ -35,6 +36,13 @@ const StepSecond = (props: IProps) => {
   const [ language, saveLanguage ] = useState<string>('java');
   const { toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
+
+  const stepTitleCls = classNames(
+    styles['step-title'],
+    {
+      [styles['step-title-selected']]: currentStep === CURRENT
+    }
+  );
 
   useEffect(() => {
     if (currentSDK) {
@@ -102,7 +110,7 @@ const StepSecond = (props: IProps) => {
         }
       </div>
       <div className={styles['step-right']}>
-        <div className={styles['step-title']}>
+        <div className={stepTitleCls}>
           <FormattedMessage id='connect.third.title' />
         </div>
         <div className={styles['step-detail']}>

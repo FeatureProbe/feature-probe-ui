@@ -116,8 +116,13 @@
 .step-title {
   font-family: HelveticaNeue-Medium;
   font-size: 14px;
-  color: #212529;
   line-height: 28px;
+  font-weight: bold;
+  color: #6D6F72;
+}
+
+.step-title-selected {
+  color: #212529;
 }
 
 .step-detail {

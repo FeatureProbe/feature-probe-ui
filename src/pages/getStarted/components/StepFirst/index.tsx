@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Form, Dropdown } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import classNames from 'classnames';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import java from 'images/java.svg';
@@ -82,6 +83,13 @@ const StepFirst = (props: IProps) => {
   const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
   const intl = useIntl();
 
+  const stepTitleCls = classNames(
+    styles['step-title'],
+    {
+      [styles['step-title-selected']]: currentStep === CURRENT
+    }
+  );
+
   useEffect(() => {
     if (currentSDK) {
       // @ts-ignore
@@ -120,7 +128,7 @@ const StepFirst = (props: IProps) => {
         }
       </div>
       <div className={styles['step-right']}>
-        <div className={styles['step-title']}>
+        <div className={stepTitleCls}>
           <FormattedMessage id='connect.second.title' />
         </div>
         <div className={styles['step-detail']}>

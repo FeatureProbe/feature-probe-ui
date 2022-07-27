@@ -1,6 +1,6 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Form, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
