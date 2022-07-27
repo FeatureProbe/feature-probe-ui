@@ -29,7 +29,6 @@ interface ISearchParams {
   pageIndex: number;
   pageSize: number;
   sortBy?: string;
-  isVisited?: boolean;
   disabled?: number;
   tags?: string[];
   keyword?: number;

@@ -9,10 +9,11 @@ import styles from './index.module.scss';
 interface IProps {
   toggleInfo?: IToggleInfo;
   modifyInfo?: IModifyInfo;
+  gotoGetStarted(): void;
 }
 
 const Info = (props: IProps) => {
-  const { toggleInfo, modifyInfo } = props;
+  const { toggleInfo, modifyInfo, gotoGetStarted } = props;
 
 	return (
     <div className={styles.info}>
@@ -76,6 +77,9 @@ const Info = (props: IProps) => {
             </Grid.Column>
           </Grid.Row>
         </Grid>
+      </div>
+      <div className={styles['link-sdk']} onClick={gotoGetStarted}>
+        <FormattedMessage id='toggle.connect' />
       </div>
     </div>
 	)

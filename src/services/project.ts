@@ -77,6 +77,16 @@ export const editEnvironment = async(projectKey: string, environmentKey: string,
   });
 };
 
+export const getEnvironment = async<T> (projectKey: string, environmentKey: string) => {
+  const url = `${
+    API.editEnvironmentURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+  }`;
+
+  return request<T>(url);
+};
+
 export const checkProjectExist = async<T> (params: IExistParams) => {
   const url = `${API.projectExistURI}?${qs.stringify(params)}`;
   

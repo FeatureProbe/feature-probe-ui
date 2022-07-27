@@ -187,13 +187,43 @@ const PageHeader = () => {
             </div>
           </div>
         </Popup>
-        <div onClick={handleGotoDocument}>
+        <Popup
+          basic
+          open={helpMenuOpen}
+          on='click'
+          position='bottom right'
+          className={styles.popup}
+          trigger={
+            <div 
+              onClick={(e: SyntheticEvent) => {
+                document.body.click();
+                e.stopPropagation();
+                setHelpMenuOpen(true);
+              }}
+              className={styles['question-popup']}
+            >
+              <Icon customClass={styles['question']} type='question' />
+            </div>
+          }
+        >
+          <div className={styles['menu']} onClick={() => {setHelpMenuOpen(false)}}>
+            <div 
+              className={styles['menu-item']} 
+              onClick={()=> {
+                handleGotoDocument();
+              }}
+            >
+              <FormattedMessage id='common.documentation.text' />
+            </div>
+          </div>
+        </Popup>
+        {/* <div onClick={handleGotoDocument}>
           {
             isMainColorHeader
             ? <img className={styles.github} src={require('images/github-light.png')} alt='github' />
             : <img className={styles.github} src={require('images/github.png')} alt='github' />
           }
-        </div>
+        </div> */}
         <Popup
           basic
           open={menuOpen}

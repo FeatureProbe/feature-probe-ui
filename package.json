@@ -41,11 +41,13 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-intl": "^5.25.1",
     "react-router-dom": "^5.3.0",
+    "react-syntax-highlighter": "^15.5.0",
     "sass-loader": "^13.0.0",
     "semantic-ui-less": "^2.4.1",
     "semantic-ui-react": "^2.1.2",
     "typescript": "^4.4.2",
     "unstated-next": "^1.1.0",
+    "use-resize-observer": "^9.0.2",
     "uuid": "^8.3.2"
   },
   "scripts": {
@@ -90,6 +92,7 @@
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.3",
+    "@types/react-syntax-highlighter": "^15.5.3",
     "@types/uuid": "^8.3.4",
     "http-proxy-middleware": "^2.0.6",
     "react-scripts": "^5.0.1",

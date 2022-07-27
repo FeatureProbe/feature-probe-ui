@@ -2,6 +2,7 @@ import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react'
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { Menu, MenuItemProps } from 'semantic-ui-react';
 import localForage from 'localforage';
+import useResizeObserver from 'use-resize-observer';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import findIndex from 'lodash/findIndex';
@@ -15,11 +16,11 @@ import Metrics from './components/Metrics';
 import Info from './components/Info';
 import History from './components/History';
 import { Provider } from './provider';
-import { getTargeting, getToggleInfo, getTargetingVersion, getTargetingVersionsByVersion } from 'services/toggle';
 import { getSegmentList } from 'services/segment';
-import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion } from 'interfaces/targeting';
+import { getTargeting, getToggleInfo, getTargetingVersion, getTargetingVersionsByVersion } from 'services/toggle';
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams, IVersionParams } from 'interfaces/project';
+import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion } from 'interfaces/targeting';
 import { NOT_FOUND } from 'constants/httpCode';
 import styles from './index.module.scss';
 
@@ -28,6 +29,7 @@ const Targeting = () => {
   const history = useHistory();
   const intl = useIntl();
   const formRef = useRef();
+  const currentVersion = Number(new URLSearchParams(search).get('currentVersion'));
 
   const { projectKey, environmentKey, toggleKey, navigation } = useParams<IRouterParams>();
   const [ activeItem, saveActiveItem ] = useState(navigation || 'targeting');
@@ -44,10 +46,11 @@ const Targeting = () => {
   const [ targetingDisabled, saveTargetingDisabled ] = useState<boolean>(false);
   const [ selectedVersion, saveSelectedVersion ] = useState<number>(0);
   const [ latestVersion, saveLatestVersion ] = useState<number>(0);
-  const [ open, setOpen ] = useState<boolean>(false);
-  const [ currentVersion, saveCurrentVersion ] = useState<number>(Number(new URLSearchParams(search).get('currentVersion')));
-  const [ count, saveCount ] = useState<number>(0);
+  const [ open, setPageLeaveOpen ] = useState<boolean>(false);
+  const [ rememberVersion, saveRememberVersion ] = useState<boolean>(false);
+  const [ pageInitCount, saveCount ] = useState<number>(0);
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
+  const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
 
   useEffect(() => {
     const handler = () => {
@@ -89,14 +92,12 @@ const Targeting = () => {
           modifiedTime,
         });
         saveLatestVersion(version || 0);
-        if (!currentVersion) {
-          saveSelectedVersion(version || 0);
-        }
+        saveSelectedVersion(version || 0);
       } else {
         message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
     });
-  }, [currentVersion, intl, projectKey, environmentKey, toggleKey]);
+  }, [intl, projectKey, environmentKey, toggleKey]);
 
   const initToggleInfo = useCallback(() => {
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(async(res) => {
@@ -147,7 +148,7 @@ const Targeting = () => {
         return version.version === currentVersion;
       });
 
-      if (index !== -1) {
+      if (index > -1) {
         const current = data.versions[index];
         saveSelectedVersion(current?.version || 0);
         saveTargeting(cloneDeep(current?.content));
@@ -155,8 +156,16 @@ const Targeting = () => {
           disabled: current.disabled,
           content: current.content,
         }));
+
         saveToggleDisable(current.disabled);
-        saveTargetingDisabled(true);
+
+        // current version === latest version
+        if (index === 0) {
+          saveTargetingDisabled(false);
+        } 
+        else {
+          saveTargetingDisabled(true);
+        }
       }
 
       saveHistoryPageIndex(0);
@@ -164,14 +173,13 @@ const Targeting = () => {
     } else {
       message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
     }
-    
   }, [currentVersion, projectKey, environmentKey, toggleKey, intl]);
 
   useEffect(() => {
     if (currentVersion) {
       setHistoryOpen(true);
       getVersionsByVersion();
-      saveSelectedVersion(currentVersion);
+      saveRememberVersion(true);
     }
   }, [currentVersion, getVersionsByVersion]);
 
@@ -180,11 +188,9 @@ const Targeting = () => {
       pageIndex: historyPageIndex,
       pageSize: 10,
     };
-
-    if (currentVersion !== 0) {
+    if (rememberVersion) {
       params.version = currentVersion;
     }
-
     getTargetingVersion<ITargetingVersions>(
       projectKey, 
       environmentKey, 
@@ -201,28 +207,15 @@ const Targeting = () => {
         message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
       }
     });
-  }, [versions, currentVersion, projectKey, environmentKey, toggleKey, intl, historyPageIndex]);
+  }, [versions, currentVersion, rememberVersion, historyPageIndex, projectKey, environmentKey, toggleKey, intl]);
 
-  const quiteViewHistory = useCallback(() => {
-    initTargeting();
-    saveTargetingDisabled(false);
-    saveSelectedVersion(0)
-    setHistoryOpen(false);
-    saveCurrentVersion(0);
-    saveCount(0);
-    saveHistoryPageIndex(0);
-    saveVersions([]);
-  }, [initTargeting]);
-
-  const viewHistory = useCallback((version: IVersion) => {
+  const reviewHistory = useCallback((version: IVersion) => {
     saveActiveVersion(version);
-
-    if (count === 0 && !formRef.current) {
-      setOpen(true);
+    if (pageInitCount === 0 && !formRef.current) {
+      setPageLeaveOpen(true);
       return;
     }
-
-    saveCount(count + 1);
+    saveCount(pageInitCount + 1);
     saveSelectedVersion(version?.version || 0);
     saveTargeting(cloneDeep(version?.content));
     saveInitTargeting(cloneDeep({
@@ -231,14 +224,23 @@ const Targeting = () => {
     }));
     saveToggleDisable(version.disabled);
     if (version.version === latestVersion) {
-      saveTargetingDisabled(false);
       saveCount(0);
+      saveTargetingDisabled(false);
     } else {
       saveTargetingDisabled(true);
     }
-  }, [count, latestVersion]);
+  }, [pageInitCount, latestVersion]);
+
+  const quiteReviewHistory = useCallback(() => {
+    saveCount(0);
+    saveTargetingDisabled(false);
+    const current = versions[0];
+    if (current) {
+      reviewHistory(current);
+    }
+  }, [versions, reviewHistory]);
   
-  const confirmViewHistory = useCallback(() => {
+  const confirmReviewHistory = useCallback(() => {
     saveSelectedVersion(activeVersion?.version || 0);
     saveTargeting(cloneDeep(activeVersion?.content));
     saveInitTargeting(cloneDeep({
@@ -247,35 +249,43 @@ const Targeting = () => {
     }));
     saveToggleDisable(activeVersion?.disabled || false);
     saveTargetingDisabled(true);
-    setOpen(false);
+    setPageLeaveOpen(false);
   }, [activeVersion]);
+
+  const resetHistory = useCallback(() => {
+    initTargeting();
+    saveTargetingDisabled(false);
+    saveCount(0);
+    saveHistoryPageIndex(0);
+    setHistoryOpen(false);
+    saveVersions([]);
+    saveRememberVersion(false);
+  }, [initTargeting]);
+
+  const initHistory = useCallback(() => {
+    saveVersions([]);
+    saveHistoryPageIndex(0);
+    saveRememberVersion(false);
+    getVersionsList();
+  }, []);
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {
     history.push(`/${projectKey}/${environmentKey}/${toggleKey}/${value.name}`);
-    quiteViewHistory();
-  }, [history, projectKey, environmentKey, toggleKey, quiteViewHistory]);
+    resetHistory();
+  }, [history, projectKey, environmentKey, toggleKey, resetHistory]);
+
+  const gotoGetStarted = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/${toggleKey}/get-started`);
+  }, [history, projectKey, environmentKey, toggleKey]);
 
 	return (
     <ProjectLayout>
       <Provider>
         <div className={styles.targeting}>
-          {
-            targetingDisabled && (
-              <div className={styles.message}>
-                <div className={`${styles['message-content-warn']} ${styles['message-content']}`}>
-                  <i className={`${styles['icon-warning-circle']} icon-warning-circle iconfont`}></i>
-                  <span className={styles['message-content-text']}>
-                    <FormattedMessage id='targeting.view.versions' />
-                    <FormattedMessage id='common.version.text' />:
-                    { selectedVersion }
-                  </span>
-                </div>
-              </div>
-            )
-          }
           <Info
             toggleInfo={toggleInfo}
             modifyInfo={modifyInfo}
+            gotoGetStarted={gotoGetStarted}
           />
           <div className={styles.menus}>
             <Menu pointing secondary className={styles.menu}>
@@ -301,57 +311,89 @@ const Targeting = () => {
                     primary
                     type='button'
                     onClick={(e: SyntheticEvent) => {
-                      setHistoryOpen(true);
-                      getVersionsList();
+                      setHistoryOpen(!historyOpen);
+                      if (!versions.length) {
+                        getVersionsList();
+                      }
                     }}
-                    className={styles['variation-add-btn']} 
                   >
+                    {
+                      historyOpen 
+                        ? <Icon type='put-up' customClass={styles['put-away']} /> 
+                        : <Icon type='put-away' customClass={styles['put-away']} /> 
+                    }
                     <FormattedMessage id='common.history.text' />
                   </Button>
-                  {
-                    historyOpen && (
-                      <History 
-                        versions={versions}
-                        hasMore={historyHasMore}
-                        latestVersion={latestVersion}
-                        selectedVersion={selectedVersion}
-                        loadMore={() => {
-                          getVersionsList();
-                        }}
-                        viewHistory={viewHistory}
-                        quiteViewHistory={quiteViewHistory}
-                      />
-                    )
-                  }
                 </div>
               )
             }
           </div>
-          {
-            activeItem === 'targeting' && (
-              <TargetingForm
-                disabled={targetingDisabled}
-                targeting={targeting}
-                toggleInfo={toggleInfo}
-                segmentList={segmentList}
-                toggleDisabled={toggleDisabled}
-                initialTargeting={initialTargeting}
-                initTargeting={initTargeting}
-                saveToggleDisable={saveToggleDisable}
-                ref={formRef}
-              />
-            )
-          }
-          {
-            activeItem === 'metrics' && (
-              <Metrics />
-            )
-          }
+          <div className={styles.content}>
+            <div className={styles['content-left']}>
+              {
+                activeItem === 'targeting' && (
+                  <div id='targetingForm' ref={ref}>
+                    {
+                      targetingDisabled && (
+                        <div className={styles.message}>
+                          <div className={`${styles['message-content-warn']} ${styles['message-content']}`}>
+                            <i className={`${styles['icon-warning-circle']} icon-warning-circle iconfont`}></i>
+                            <span className={styles['message-content-text']}>
+                              <FormattedMessage id='targeting.view.versions' />
+                              <FormattedMessage id='common.version.text' />:
+                              { selectedVersion }
+                            </span>
+                            <Icon type='close' customClass={styles['close-icon']} onClick={() => quiteReviewHistory()} />
+                          </div>
+                        </div>
+                      )
+                    }
+                    <TargetingForm
+                      disabled={targetingDisabled}
+                      targeting={targeting}
+                      toggleInfo={toggleInfo}
+                      segmentList={segmentList}
+                      toggleDisabled={toggleDisabled}
+                      initialTargeting={initialTargeting}
+                      initTargeting={() => {
+                        initTargeting();
+                        initHistory();
+                      }}
+                      saveToggleDisable={saveToggleDisable}
+                      ref={formRef}
+                    />
+                  </div>
+                )
+              }
+              {
+                activeItem === 'metrics' && (
+                  <Metrics />
+                )
+              }
+            </div>
+            {
+              historyOpen && (
+                <div className={styles['content-right']} style={{ height }}>
+                  <History 
+                    versions={versions}
+                    hasMore={historyHasMore}
+                    latestVersion={latestVersion}
+                    selectedVersion={selectedVersion}
+                    loadMore={() => {
+                      getVersionsList();
+                    }}
+                    reviewHistory={reviewHistory}
+                    setHistoryOpen={setHistoryOpen}
+                  />
+                </div>
+              )
+            }
+          </div>
           <Modal 
             open={open}
             width={400}
-            handleCancel={() => {setOpen(false)}}
-            handleConfirm={confirmViewHistory}
+            handleCancel={() => {setPageLeaveOpen(false)}}
+            handleConfirm={confirmReviewHistory}
           >
             <div>
               <div className={styles['modal-header']}>

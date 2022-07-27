@@ -74,6 +74,7 @@
   bottom: 0;
   right: 30px;
   left: 220px;
+  z-index: 1;
 }
 
 .publish-btn {
@@ -104,6 +105,8 @@
   font-size: 14px;
   color: rgba(0, 0, 0, 0.60);
   margin: 0 -16px -4px;
+  border-bottom: 1px solid rgba(206, 212, 218, 0.6);
+  padding-bottom: 24px;
 
   :global {
     .d2h-file-header {
@@ -151,20 +154,12 @@
 }
 
 .comment {
-  background-color: #F8F9FA;
-  height: 48px;
   padding: 0 24px;
-  display: flex;
   align-items: center;
 }
 
 .comment-title {
-  margin-right: 5px;
-}
-
-.comment-content {
-  flex: 1;
-  margin-left: 5px;
+  margin-bottom: 8px;
 }
 
 .comment-input {
