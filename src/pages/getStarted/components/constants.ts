@@ -25,9 +25,11 @@ export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: strin
 
     private static final FeatureProbe fpClient = new FeatureProbe("${sdkKey}", config);
 
-    public void test() {
+    public static void main(String[] args) throws InterruptedException {
         FPUser user = new FPUser("user_unique_id").with("userId", "9876").with("tel", "12345678998");
-        ${returnType === 'boolean' ? `boolean boolValue = featureProbe.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = featureProbe.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = featureProbe.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = featureProbe.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
+        ${returnType === 'boolean' ? `boolean boolValue = fpClient.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = fpClient.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = fpClient.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = fpClient.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
+        fpClient.flush();
+        Thread.sleep(1000);
     }
 }
 `
