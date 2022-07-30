@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -7,6 +6,7 @@ import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
+import { getSdkVersion } from "services/misc";
 import { getToggleAccess, getToggleInfo } from 'services/toggle';
 import { getProjectInfo } from 'services/project';
 import { IDictionary, IToggleInfo } from 'interfaces/targeting';
@@ -130,10 +130,10 @@ const Steps = () => {
       }
 
       if (key) {
-        getFromDictionary<IDictionary>(key).then(res => {
+        getSdkVersion<string>(key).then(res => {
           const { success, data } = res;
           if (success && data) {
-            saveSDKVersion(data.value);
+            saveSDKVersion(data);
           }
         });
       }
