@@ -136,7 +136,13 @@ export const getMetrics = async<T> (projectKey: string, environmentKey: string, 
       .replace(':environmentKey', environmentKey)
       .replace(':toggleKey', toggleKey)
   }?${qs.stringify(params)}`;
-  return request<T>(url);
+
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const checkToggleExist = async<T> (projectKey: string, params: IExistParams) => {
