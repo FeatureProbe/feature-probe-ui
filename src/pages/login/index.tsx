@@ -34,6 +34,8 @@ const Login = () => {
     const { success } = res;
     if (success) {
       gotoHome();
+      // @ts-ignore
+      localStorage.setItem('token', res.data.token);
     } 
     else if (res.code === FORBIDDEN) {
       message.error(intl.formatMessage({id: 'login.error.text'}));

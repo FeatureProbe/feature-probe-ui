@@ -4,7 +4,7 @@ import API from '../constants/api';
 import { IToggle } from 'interfaces/toggle';
 import { ITag, IToggleParams, IExistParams, IVersionParams } from 'interfaces/project';
 import { IContent, IMetricParams } from 'interfaces/targeting';
-import { ApplicationJsonContentType } from 'constants/api/contentType';
+import { ApplicationJson } from 'constants/api/contentType';
 
 export const getToggleList = async<T> (projectKey: string, params: IToggleParams) => {
   const url = `${
@@ -12,7 +12,12 @@ export const getToggleList = async<T> (projectKey: string, params: IToggleParams
       .replace(':projectKey', projectKey)
   }?${qs.stringify(params)}`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 }
 
 export const getToggleInfo = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
@@ -23,7 +28,12 @@ export const getToggleInfo = async<T> (projectKey: string, environmentKey: strin
       .replace(':toggleKey', toggleKey)
   }`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const getTargeting = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
@@ -33,7 +43,13 @@ export const getTargeting = async<T> (projectKey: string, environmentKey: string
       .replace(':environmentKey', environmentKey)
       .replace(':toggleKey', toggleKey)
   }`;
-  return request<T>(url);
+
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const saveToggle = async (projectKey: string, environmentKey: string, toggleKey: string, data: IContent) => {
@@ -47,7 +63,7 @@ export const saveToggle = async (projectKey: string, environmentKey: string, tog
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -62,7 +78,7 @@ export const createToggle = async (projectKey: string, data: IToggle) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -78,7 +94,7 @@ export const editToggle = async (projectKey: string, toggleKey: string, data: IT
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -90,7 +106,12 @@ export const getTags = async<T> (projectKey: string) => {
       .replace(':projectKey', projectKey)
   }`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 }
 
 export const addTag = async (projectKey: string, data: ITag) => {
@@ -102,7 +123,7 @@ export const addTag = async (projectKey: string, data: ITag) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -127,7 +148,7 @@ export const checkToggleExist = async<T> (projectKey: string, params: IExistPara
   return request<T>(url, {
     method: 'GET',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
   });
 }
@@ -141,7 +162,7 @@ export const checkEnvironmentExist = async<T> (projectKey: string, params: IExis
   return request<T>(url, {
     method: 'GET',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
   });
 }
@@ -154,7 +175,12 @@ export const getTargetingVersion = async<T> (projectKey: string, environmentKey:
       .replace(':toggleKey', toggleKey)
   }?${qs.stringify(params)}`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const getTargetingVersionsByVersion = async<T> (projectKey: string, environmentKey: string, toggleKey: string, version: number) => {
@@ -166,7 +192,12 @@ export const getTargetingVersionsByVersion = async<T> (projectKey: string, envir
       .replace(':version', '' + version)
   }`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const getToggleAccess = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
@@ -177,5 +208,10 @@ export const getToggleAccess = async<T> (projectKey: string, environmentKey: str
       .replace(':toggleKey', toggleKey)
   }`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 }

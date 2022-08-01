@@ -1,4 +1,5 @@
-function parseJSON (response: Response) {
+function parseJSON(response: Response) {
+  localStorage.setItem('token', response.headers.get('token') || '');
   return response.json();
 }
 
