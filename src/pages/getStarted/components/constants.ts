@@ -206,16 +206,33 @@ FeatureProbe *fp = [[FeatureProbe alloc] initWithConfig:config user:user];`
 export const getJSCode = (sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape, userWithCode: string) => [
   {
     title: intl.formatMessage({id: 'getstarted.js.first.step.title'}),
-    name: 'npm',
+    name: 'NPM',
     code: 'npm install featureprobe-client-sdk-js --save'
   }, 
   {
-    name: 'CDN',
+    name: intl.formatMessage({id: 'getstarted.js.second.step.or'}) + 'CDN',
     code: '<script type="text/javascript" src="https://unpkg.com/featureprobe-client-sdk-js@latest/dist/featureprobe-client-sdk-js.min.js"></script>'
   },
   {
     title: intl.formatMessage({id: 'getstarted.js.second.step.title'}),
-    name: intl.formatMessage({id: 'getstarted.js.second.step.name.one'}),
+    name: 'NPM',
+    code: 
+`import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
+
+const uniqueUserId = /* uniqueUserId */;
+const user = new FPUser(uniqueUserId);
+${userWithCode}
+const fp = new FeatureProbe({
+    remoteUrl: "https://127.0.0.1:4007",
+    clientSdkKey: '${sdkKey}',
+    user,
+});
+
+fp.start();
+`
+  }, 
+  {
+    name: intl.formatMessage({id: 'getstarted.js.second.step.or'}) + 'CDN',
     code: 
 `const uniqueUserId = /* uniqueUserId */;
 const user = new featureProbe.FPUser(uniqueUserId);
