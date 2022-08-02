@@ -80,7 +80,7 @@ const Info = (props: IProps) => {
         </Grid>
       </div>
       <div className={styles['link-sdk']} onClick={gotoGetStarted}>
-        <Button secondary>
+        <Button secondary className={styles['link-sdk-btn']}>
           <FormattedMessage id='toggle.connect' />
         </Button>
       </div>
