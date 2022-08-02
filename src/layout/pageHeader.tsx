@@ -130,10 +130,8 @@ const PageHeader = () => {
   );
 
   const handleLogout = useCallback(async () => {
-    const res = await logout();
-    if (res.success) {
-      history.push('/login');
-    }
+    localStorage.removeItem('token');
+    history.push('/login');
   }, [history]);
 
   const handleGotoDocument = useCallback(() => {

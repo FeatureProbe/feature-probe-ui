@@ -1,5 +1,7 @@
 function parseJSON(response: Response) {
-  localStorage.setItem('token', response.headers.get('token') || '');
+  if (response.headers.get('token')) {
+    localStorage.setItem('token', response.headers.get('token') || '');
+  }
   return response.json();
 }
 
