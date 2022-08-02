@@ -217,14 +217,14 @@ export const getJSCode = (sdkKey: string, toggleKey: string, returnType: string,
     title: intl.formatMessage({id: 'getstarted.js.second.step.title'}),
     name: 'NPM',
     code: 
-`import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
+`import { FeatureProbe, FPUser } from "featureprobe-client-sdk-js";
 
 const uniqueUserId = /* uniqueUserId */;
 const user = new FPUser(uniqueUserId);
 ${userWithCode}
 const fp = new FeatureProbe({
     remoteUrl: "https://127.0.0.1:4007",
-    clientSdkKey: '${sdkKey}',
+    clientSdkKey: "${sdkKey}",
     user,
 });
 
@@ -239,7 +239,7 @@ const user = new featureProbe.FPUser(uniqueUserId);
 ${userWithCode}
 const fp = new featureProbe.FeatureProbe({
     remoteUrl: "https://127.0.0.1:4007",
-    clientSdkKey: '${sdkKey}',
+    clientSdkKey: "${sdkKey}",
     user,
 });
 
@@ -250,8 +250,8 @@ fp.start();
     title: intl.formatMessage({id: 'getstarted.js.third.step.title'}),
     name: intl.formatMessage({id: 'getstarted.js.third.step.name.one'}),
     code: 
-`fp.on('ready', function() {
-    ${returnType === 'boolean' ? `const value = fp.boolValue('${toggleKey}', false);` : ''}${returnType === 'number' ? `const value = fp.numberValue('${toggleKey}', 1.0);` : ''}${returnType === 'string' ? `const value = fp.stringValue('${toggleKey}', "s");` : ''}${returnType === 'json' ? `const value = fp.jsonValue('${toggleKey}', {});` : ''}
+`fp.on("ready", function() {
+    ${returnType === 'boolean' ? `const value = fp.boolValue("${toggleKey}", false);` : ''}${returnType === 'number' ? `const value = fp.numberValue("${toggleKey}", 1.0);` : ''}${returnType === 'string' ? `const value = fp.stringValue("${toggleKey}", "s");` : ''}${returnType === 'json' ? `const value = fp.jsonValue("${toggleKey}", {});` : ''}
 });
 `
   }
