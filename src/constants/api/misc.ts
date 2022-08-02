@@ -1,4 +1,4 @@
-let origin = '/api';
+let origin = "/api";
 
 const MiscURI = {
     sdkVersionURI: `${origin}/misc/sdk/:key`,
