@@ -1,5 +1,5 @@
 import request from "../utils/request";
-import API from '../constants/api';
+import API from "../constants/api";
 
 export const getSdkVersion = async <T>(key: string) => {
     const url = `${
