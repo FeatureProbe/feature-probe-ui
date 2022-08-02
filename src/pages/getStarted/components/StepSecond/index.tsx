@@ -81,7 +81,7 @@ const StepSecond = (props: IProps) => {
         case 'Rust': 
           saveLanguage('rust');
           result.forEach(item => {
-            userWithCode += `user.with("${item}", /* ${item} */);\n`
+            userWithCode += `user = user.with("${item}", /* ${item} */);\n`
           });
           saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
