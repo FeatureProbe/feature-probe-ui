@@ -8,10 +8,12 @@ import Button from 'components/Button';
 import Icon from 'components/Icon';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { IRouterParams } from 'interfaces/project';
+import { ICondition, IRule } from 'interfaces/targeting';
 import { getAndroidCode, getGoCode, getJavaCode, getJSCode, getObjCCode, getRustCode, getSwiftCode } from '../constants';
 import styles from '../Steps/index.module.scss';
 
 interface IProps {
+  rules: IRule[]
   currentStep: number;
   currentSDK: string;
   returnType: string;
@@ -31,7 +33,18 @@ interface ICodeOption {
 const CURRENT = 2;
 
 const StepSecond = (props: IProps) => {
-  const { currentStep, currentSDK, serverSdkKey, clientSdkKey, returnType, sdkVersion, saveStep, goBackToStep } = props;
+  const {
+    rules,
+    currentStep, 
+    currentSDK, 
+    serverSdkKey, 
+    clientSdkKey, 
+    returnType, 
+    sdkVersion, 
+    saveStep, 
+    goBackToStep 
+  } = props;
+
   const [ options, saveOptions ] = useState<ICodeOption[]>([]);
   const [ language, saveLanguage ] = useState<string>('java');
   const { toggleKey } = useParams<IRouterParams>();
@@ -46,38 +59,70 @@ const StepSecond = (props: IProps) => {
 
   useEffect(() => {
     if (currentSDK) {
+      const result: string[] = [];
+      let userWithCode = '';
+
+      rules.forEach((rule: IRule) => {
+        rule.conditions.forEach((condition: ICondition) => {
+          if (!result.includes(condition.subject)) {
+            result.push(condition.subject);
+          }
+        })
+      });
+
       switch (currentSDK) {
         case 'Java': 
           saveLanguage('java');
-          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `.with("${item}", $${item})`
+          });
+          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Rust': 
           saveLanguage('rust');
-          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", $${item});\n`
+          });
+          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Go': 
           saveLanguage('go');
-          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.With("${item}", $${item});\n`
+          });
+          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Android': 
           saveLanguage('java');
-          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.setAttr("${item}", $${item})\n`
+          });
+          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Swift': 
           saveLanguage('swift');
-          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.setAttr(key: "${item}", value: $${item})\n`
+          });
+          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Objective-C': 
           saveLanguage('objectivec');
-          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `[user setAttrWithKey:@"${item}" value:@${item}];\n`
+          });
+          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'JavaScript': 
           saveLanguage('javascript');
-          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", $${item});\n`
+          });
+          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
       }
     }
-  }, [sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl]);
+  }, [rules, sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl]);
 
   return (
     <div className={styles.step}>
