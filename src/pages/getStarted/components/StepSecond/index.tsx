@@ -74,49 +74,49 @@ const StepSecond = (props: IProps) => {
         case 'Java': 
           saveLanguage('java');
           result.forEach(item => {
-            userWithCode += `.with("${item}", $${item})`
+            userWithCode += `.with("${item}", /* ${item} */)`
           });
           saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Rust': 
           saveLanguage('rust');
           result.forEach(item => {
-            userWithCode += `user.with("${item}", $${item});\n`
+            userWithCode += `user.with("${item}", /* ${item} */);\n`
           });
           saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Go': 
           saveLanguage('go');
           result.forEach(item => {
-            userWithCode += `user.With("${item}", $${item});\n`
+            userWithCode += `user.With("${item}", /* ${item} */)\n`
           });
           saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Android': 
           saveLanguage('java');
           result.forEach(item => {
-            userWithCode += `user.setAttr("${item}", $${item})\n`
+            userWithCode += `user.with("${item}", /* ${item} */)\n`
           });
           saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Swift': 
           saveLanguage('swift');
           result.forEach(item => {
-            userWithCode += `user.setAttr(key: "${item}", value: $${item})\n`
+            userWithCode += `user.with("${item}", /* ${item} */)\n`
           });
           saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'Objective-C': 
           saveLanguage('objectivec');
           result.forEach(item => {
-            userWithCode += `[user setAttrWithKey:@"${item}" value:@${item}];\n`
+            userWithCode += `[user withKey:@"${item}" value:/* ${item} */];\n`
           });
           saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
         case 'JavaScript': 
           saveLanguage('javascript');
           result.forEach(item => {
-            userWithCode += `user.with("${item}", $${item});\n`
+            userWithCode += `user.with("${item}", /* ${item} */);\n`
           });
           saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
           break;
