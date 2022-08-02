@@ -1,4 +1,4 @@
-import request from '../utils/request';
+import request from "../utils/request";
 import API from '../constants/api';
 
 export const getSdkVersion = async<T> (key: string) => {
