@@ -324,7 +324,7 @@
   "getstarted.objc.third.step": "Step 3: Use the feature toggle",
   "getstarted.js.first.step.title": "Step 1. Install the JavaScript SDK",
   "getstarted.js.second.step.title": "Step 2. Create a FeatureProbe instance",
-  "getstarted.js.second.step.or": "or",
+  "getstarted.js.second.step.or": "Or via ",
   "getstarted.js.third.step.title": "Step 3. Use the instance to get your setting value",
   "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle"
 }
