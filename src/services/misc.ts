@@ -7,5 +7,5 @@ export const getSdkVersion = async <T>(key: string) => {
             .replace(':key', key)
     }`;
 
-    return request<T>(url);
+  return request<T>(url);
 };
