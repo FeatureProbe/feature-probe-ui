@@ -7,7 +7,7 @@ import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
-import { getUserInfo, logout } from 'services/user';
+import { getUserInfo } from 'services/user';
 import { IUserInfo } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
 import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';

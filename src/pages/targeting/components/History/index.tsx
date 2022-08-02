@@ -110,14 +110,14 @@ const History = (props: IProps) => {
                       { dayjs(item?.createdTime).fromNow() }  
                     </div>
                     {
-                      item.comment && <div className={styles.modifyTime}>
+                      item.comment && <div className={styles.comment}>
                         <FormattedMessage id='targeting.publish.modal.comment' />
                         <Popup
                           inverted
                           style={{opacity: '0.8'}}
                           className={styles.popup}
                           trigger={
-                            <span>{ item.comment }</span>
+                            <span className={styles['tooltip-text']}>{ item.comment }</span>
                           }
                           content={
                             <div className={styles.tooltip}>

@@ -2,6 +2,7 @@ import { Grid } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
+import Button from 'components/Button';
 import TagsList  from 'components/TagsList';
 import { IToggleInfo, IModifyInfo } from 'interfaces/targeting';
 import styles from './index.module.scss';
@@ -79,7 +80,9 @@ const Info = (props: IProps) => {
         </Grid>
       </div>
       <div className={styles['link-sdk']} onClick={gotoGetStarted}>
-        <FormattedMessage id='toggle.connect' />
+        <Button secondary>
+          <FormattedMessage id='toggle.connect' />
+        </Button>
       </div>
     </div>
 	)
