@@ -87,9 +87,8 @@ const History = (props: IProps) => {
                   <div className={clsRight}>
                     <div className={styles.title}>
                       <span className={clsVersion}>
-                        <FormattedMessage id='common.version.uppercase.text' />
+                        <FormattedMessage id='common.version.uppercase.text' />:
                       </span>
-                      :
                       <span className={clsVersionText}>
                         { item.version }
                       </span>
@@ -102,16 +101,23 @@ const History = (props: IProps) => {
                       }
                     </div>
                     <div className={styles.modifyBy}>
-                      <FormattedMessage id='common.modified.by.text' />:
+                      <span className={styles['version-title']}>
+                        <FormattedMessage id='common.modified.by.text' />
+                      </span>
+                      :
                       { item.createdBy }
                     </div>
                     <div className={styles.modifyTime}>
-                      <FormattedMessage id='common.modified.time.text' />:
+                      <span className={styles['version-title']}>
+                        <FormattedMessage id='common.modified.time.text' />:
+                      </span>
                       { dayjs(item?.createdTime).fromNow() }  
                     </div>
                     {
                       item.comment && <div className={styles.comment}>
-                        <FormattedMessage id='targeting.publish.modal.comment' />
+                        <span className={styles['version-title']}>
+                          <FormattedMessage id='targeting.publish.modal.comment' />
+                        </span>
                         <Popup
                           inverted
                           style={{opacity: '0.8'}}
