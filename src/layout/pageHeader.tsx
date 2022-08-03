@@ -131,6 +131,7 @@ const PageHeader = () => {
 
   const handleLogout = useCallback(async () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('organizeId');
     history.push('/login');
   }, [history]);
 

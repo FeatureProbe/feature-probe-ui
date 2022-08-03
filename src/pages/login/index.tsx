@@ -36,6 +36,8 @@ const Login = () => {
       gotoHome();
       // @ts-ignore
       localStorage.setItem('token', res.data.token);
+      // @ts-ignore
+      localStorage.setItem('organizeId', res.data.organizeId);
     } 
     else if (res.code === FORBIDDEN) {
       message.error(intl.formatMessage({id: 'login.error.text'}));
