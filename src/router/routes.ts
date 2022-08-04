@@ -5,6 +5,7 @@ import Member from '../pages/member';
 import Profile from '../pages/profile';
 import NotFound from '../pages/notFound';
 import Login from '../pages/login';
+import DemoLogin from '../pages/login/demoLogin';
 import Segment from '../pages/segment';
 import SegmentEdit from '../pages/segmentEdit';
 import GetStarted from '../pages/getStarted';
@@ -76,6 +77,6 @@ export const blankRoutes = [
   {
     path: '/login',
     exact: true,
-    component: Login
+    component: process.env.REACT_APP_MODE ? DemoLogin : Login
   }
 ];

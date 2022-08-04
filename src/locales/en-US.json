@@ -79,6 +79,8 @@
   "common.current.version.text": "Current version",
   "common.version.change.text": "Changed ",
   "common.copy.uppercase.text": "Copy",
+  "common.email.text": "Email",
+  "common.email.placeholder.text": "Please input email address",
 
   "header.getuser.error.text": "Get user info error!",
 
@@ -97,6 +99,8 @@
   "login.signin": "Sign in",
   "login.error.message": "Login error, please retry!",
   "login.error.text": "account or password is incorrect, please retry!",
+  "login.demo.text": "Access FeatureProbe demo instance",
+  "login.demo.tip": "No further data required",
 
   "members.createdby": "Created by",
   "members.lastseen": "Last seen",
@@ -288,7 +292,8 @@
   "connect.save.continue.button": "Save and continue",
   "connect.continue.button": "Continue",
 
-  "connect.first.toggle.view": "You are using toggle {name} with key",
+  "connect.first.toggle.view.left": "You are using toggle ",
+  "connect.first.toggle.view.right": " with key",
   "connect.second.title": "Select SDK",
   "connect.second.sdk": "Select your SDK",
   "connect.second.server.sdks": "Server-side SDKs:",

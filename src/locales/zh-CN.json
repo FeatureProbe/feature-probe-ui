@@ -79,6 +79,8 @@
   "common.current.version.text": "当前版本",
   "common.version.change.text": "版本变更",
   "common.copy.uppercase.text": "复制",
+  "common.email.text": "邮箱",
+  "common.email.placeholder.text": "请输入邮箱地址",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -97,6 +99,8 @@
   "login.signin": "登录",
   "login.error.message": "登录错误，请重试!",
   "login.error.text": "用户名或密码错误, 请重试!",
+  "login.demo.text": "访问 FeatureProbe 演示实例",
+  "login.demo.tip": "无须进一步提供其它数据",
 
   "members.createdby": "创建人",
   "members.lastseen": "最后登录时间",
@@ -288,7 +292,8 @@
   "connect.save.continue.button": "保存并继续",
   "connect.continue.button": "继续",
 
-  "connect.first.toggle.view": "您正在使用开关{name}，标识为",
+  "connect.first.toggle.view.left": "您正在使用开关",
+  "connect.first.toggle.view.right": "，标识为",
   "connect.second.title": "选择SDK",
   "connect.second.sdk": "选择目标SDK",
   "connect.second.server.sdks": "服务端SDK：",

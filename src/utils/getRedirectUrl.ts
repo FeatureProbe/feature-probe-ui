@@ -12,20 +12,23 @@ export const getRedirectUrl = async (defaultRedirectUrl: string) => {
   } else {
     const res = await getProjectList<IProject[]>();
     const { success, data } = res;
-
     if (success && data) {
-      const { key, environments } = data[0];
-      let envKey = '';
-      environments.some((environment: IEnvironment) => {
-        if (environment.key) {
-          envKey = environment.key;
-          return true;
+      if (data[0]) {
+        const { key, environments } = data[0];
+        let envKey = '';
+        environments.some((environment: IEnvironment) => {
+          if (environment.key) {
+            envKey = environment.key;
+            return true;
+          }
+          return environment;
+        });
+  
+        if (key && envKey) {
+          redirectUrl = `/${key}/${envKey}/toggles`;
         }
-        return environment;
-      });
-
-      if (key && envKey) {
-        redirectUrl = `/${key}/${envKey}/toggles`;
+      } else {
+        redirectUrl = `/projects`;
       }
     }
   }
