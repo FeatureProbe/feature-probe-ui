@@ -43,11 +43,6 @@ const ToggleItem = (props: IProps) => {
     history.push(`/${projectKey}/${environmentKey}/${toggleKey}/targeting`);
   }, [projectKey, environmentKey, history]);
 
-  const gotoGetStarted = useCallback((e: SyntheticEvent, toggleKey: string) => {
-    history.push(`/${projectKey}/${environmentKey}/${toggleKey}/get-started`);
-    e.stopPropagation();
-  }, [projectKey, environmentKey, history]);
-
   const handleEditToggle = useCallback((e: SyntheticEvent, toggleKey: string) => {
     e.stopPropagation();
 
