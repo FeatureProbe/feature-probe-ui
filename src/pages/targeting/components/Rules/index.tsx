@@ -30,7 +30,6 @@ const Rules = (props: IProps) => {
     hooksFormContainer, 
     segmentContainer 
   } = props;
-
   const { 
     rules,
     saveRules,
