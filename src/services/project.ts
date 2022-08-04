@@ -2,12 +2,17 @@ import request from '../utils/request';
 import qs from 'qs';
 import API from '../constants/api';
 import { IEnvironment, IProject, IExistParams } from 'interfaces/project';
-import { ApplicationJsonContentType } from 'constants/api/contentType';
+import { ApplicationJson } from 'constants/api/contentType';
 
 export const getProjectList = async<T> () => {
   const url = API.getProjectListURI;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 }
 
 export const getProjectInfo = async<T> (projectKey: string) => {
@@ -16,7 +21,12 @@ export const getProjectInfo = async<T> (projectKey: string) => {
       .replace(':projectKey', projectKey)
   }`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const addProject = async (data: IProject) => {
@@ -25,7 +35,7 @@ export const addProject = async (data: IProject) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -40,7 +50,7 @@ export const editProject = async(projectKey: string, data: IProject) => {
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -55,7 +65,7 @@ export const addEnvironment = async(projectKey: string, data: IEnvironment) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -71,7 +81,7 @@ export const editEnvironment = async(projectKey: string, environmentKey: string,
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -84,7 +94,12 @@ export const getEnvironment = async<T> (projectKey: string, environmentKey: stri
       .replace(':environmentKey', environmentKey)
   }`;
 
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const checkProjectExist = async<T> (params: IExistParams) => {
@@ -93,7 +108,7 @@ export const checkProjectExist = async<T> (params: IExistParams) => {
   return request<T>(url, {
     method: 'GET',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
   });
 }

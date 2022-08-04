@@ -1,6 +1,6 @@
 {
   "name": "feature-probe-ui",
-  "version": "1.4.0",
+  "version": "1.4.2",
   "description": "FeatureProbe UI/Portal",
   "license": "Apache-2.0",
   "keywords": [
@@ -29,6 +29,7 @@
     "less-loader": "^7.3.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
+    "moment": "^2.29.4",
     "node-sass": "^7.0.1",
     "qs": "^6.10.3",
     "react": "^17.0.0",
