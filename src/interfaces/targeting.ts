@@ -134,3 +134,10 @@ export interface IDictionary {
   value: string;
   updatedTime: string;
 }
+
+export interface IDictionary {
+  key: string;
+  createdTime: string;
+  value: string;
+  updatedTime: string;
+}
