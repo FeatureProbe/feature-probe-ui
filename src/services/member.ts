@@ -2,14 +2,19 @@ import qs from 'qs';
 import request from '../utils/request';
 import API from '../constants/api';
 import { IMemberParams, IAccount, IPasswords, IFormParams} from 'interfaces/member';
-import { ApplicationJsonContentType } from 'constants/api/contentType';
+import { ApplicationJson } from 'constants/api/contentType';
 
 export const getMemberList = async<T> (params: IMemberParams) => {
   const url = `${
     API.membersURI
   }?${qs.stringify(params)}`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const createMember = async (data: IFormParams) => {
@@ -18,7 +23,7 @@ export const createMember = async (data: IFormParams) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -30,7 +35,7 @@ export const updateMember = async (data: IFormParams) => {
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -42,7 +47,7 @@ export const deleteMember = async (data: IAccount) => {
   return request(url, {
     method: 'DELETE',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -54,7 +59,7 @@ export const modifyPassword = async (data: IPasswords) => {
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -65,5 +70,10 @@ export const getMember = async<T> (params: IAccount) => {
     API.getMemberURI
   }?${qs.stringify(params)}`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };

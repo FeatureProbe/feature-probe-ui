@@ -7,7 +7,10 @@ import ProjectSiderbar from './projectSiderbar';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
 import { getProjectInfo } from 'services/project';
+import { getToggleInfo } from 'services/toggle';
 import { IProject, IRouterParams } from 'interfaces/project';
+import { IToggleInfo } from 'interfaces/targeting';
+
 import { EnvironmentColors } from 'constants/colors';
 import { 
   TOGGLE_PATH, 
@@ -38,6 +41,7 @@ const ProjectLayout = (props: IProps) => {
     }]
   });
   const [ envIndex, setEnvIndex ] = useState<number>(0);
+  const [ toggleName, saveToggleName ] = useState<string>('');
   const history = useHistory();
   const match = useRouteMatch();
 
@@ -55,6 +59,17 @@ const ProjectLayout = (props: IProps) => {
   }, [projectKey]);
 
   useEffect(() => {
+    if (!toggleKey) return;
+    getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+
+      if (success && data) {
+        saveToggleName(data.name);
+      } 
+    });
+  }, [projectKey, environmentKey, toggleKey]);
+
+  useEffect(() => {
     const index = projectInfo.environments.findIndex(env => {
       return env.key === environmentKey;
     });
@@ -70,6 +85,10 @@ const ProjectLayout = (props: IProps) => {
       return;
     };
     history.push(`/${projectKey}/${environmentKey}/toggles`);
+  }, [history, projectKey, environmentKey, toggleKey]);
+
+  const gotoTargeting = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/${toggleKey}/targeting`);
   }, [history, projectKey, environmentKey, toggleKey]);
 
   const gotoSegments = useCallback(() => {
@@ -96,7 +115,20 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
-                  {toggleKey}
+                  { toggleName }
+                </Breadcrumb.Section>
+              </>
+            )
+          }
+          {
+            match.path === GET_STARTED_PATH && (
+              <>
+                <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
+                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Section link onClick={gotoTargeting}>{ toggleName }</Breadcrumb.Section>
+                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Section active>
+                  <FormattedMessage id='common.get.started.text' />
                 </Breadcrumb.Section>
               </>
             )

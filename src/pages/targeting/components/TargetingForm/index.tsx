@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Form, Radio, TextArea, CheckboxProps, TextAreaProps } from 'semantic-ui-react';
+import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
@@ -165,7 +165,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       rule.conditions.forEach((condition: ICondition) => {
         // @ts-ignore
         delete condition.id;
-
         if (condition.type === SEGMENT_TYPE) {
           // @ts-ignore
           delete condition.subject;
@@ -269,7 +268,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     }
   }, [disabledServe.select, variations]);
 
-  const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps) => {
+  const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps | InputOnChangeData) => {
     // @ts-ignore
     setComment(data.value);
   }, []);
@@ -356,6 +355,21 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
+            <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
+            <div className={styles['comment']}>
+              <div className={styles['comment-title']}>
+                <FormattedMessage id='targeting.publish.modal.comment' />
+              </div>
+              <div className={styles['comment-content']}>
+                <Form>
+                  <TextArea
+                    className={styles['comment-input']} 
+                    placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
+                    onChange={handleInputComment}
+                  />
+                </Form>
+              </div>
+            </div>
             <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
             <div className={styles['comment']}>
               <div className={styles['comment-title']}>
