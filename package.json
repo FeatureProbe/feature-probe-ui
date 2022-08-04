@@ -100,6 +100,5 @@
   },
   "resolutions": {
     "@types/react": "17.0.43"
-  },
-  "proxy": "http://featureprobe-df.intra.xiaojukeji.com/"
+  }
 }
