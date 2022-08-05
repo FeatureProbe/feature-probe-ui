@@ -36,8 +36,8 @@ export interface IToggleParams {
 }
 
 export interface IExistParams {
-    value: string;
-    type: string;
+  value: string;
+  type: string;
 }
 
 export interface IVersionParams {

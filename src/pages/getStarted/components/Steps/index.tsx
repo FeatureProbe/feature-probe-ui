@@ -7,9 +7,9 @@ import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { getSdkVersion } from "services/misc";
-import { getToggleAccess, getToggleInfo } from 'services/toggle';
+import { getToggleAccess, getToggleInfo, getTargeting } from 'services/toggle';
 import { getProjectInfo } from 'services/project';
-import { IDictionary, IToggleInfo } from 'interfaces/targeting';
+import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { getEnvironment } from 'services/project';
 import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
@@ -61,6 +61,7 @@ const Steps = () => {
   const [ environmentName, saveEnvironmentName ] = useState<string>('');
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
 
@@ -108,6 +109,14 @@ const Steps = () => {
         saveReturnType(data.returnType);
         saveToggleName(data.name);
       } 
+    });
+
+    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        const { content } = data;
+        saveRules(content?.rules || []);
+      }
     });
     
   }, [projectKey, environmentKey, toggleKey]);
@@ -234,6 +243,7 @@ const Steps = () => {
           goBackToStep={goBackToStep}
         />
         <StepSecond 
+          rules={rules}
           currentStep={currentStep}
           currentSDK={currentSDK}
           returnType={returnType}

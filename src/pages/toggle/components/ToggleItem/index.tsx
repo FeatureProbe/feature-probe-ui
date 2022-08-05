@@ -43,11 +43,6 @@ const ToggleItem = (props: IProps) => {
     history.push(`/${projectKey}/${environmentKey}/${toggleKey}/targeting`);
   }, [projectKey, environmentKey, history]);
 
-  const gotoGetStarted = useCallback((e: SyntheticEvent, toggleKey: string) => {
-    history.push(`/${projectKey}/${environmentKey}/${toggleKey}/get-started`);
-    e.stopPropagation();
-  }, [projectKey, environmentKey, history]);
-
   const handleEditToggle = useCallback((e: SyntheticEvent, toggleKey: string) => {
     e.stopPropagation();
 
@@ -162,10 +157,7 @@ const ToggleItem = (props: IProps) => {
                 <FormattedMessage id='toggles.evaluated.novisit' /> 
               </div>
               <div className={styles['toggle-evaluated-tips']}>
-                <span className={styles['toggle-evaluated-tips-link']} onClick={(e: SyntheticEvent) => gotoGetStarted(e, toggle.key)}>
-                  <FormattedMessage id='toggle.evaluated.link.sdk' /> 
-                </span>
-                <FormattedMessage id='toggle.evaluated.check.status' /> 
+                <FormattedMessage id='toggle.evaluated.link.sdk' /> 
               </div>
             </div>
           )
