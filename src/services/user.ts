@@ -31,6 +31,19 @@ export const login = async (data: ILoginParams) => {
   });
 }
 
+export const demoLogin = async (data: ILoginParams) => {
+  const url = `${API.demoLoginURI}`;
+  
+  return request(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept-Language': localStorage.getItem('i18n')?.replaceAll('"', '') || 'en-US',
+    },
+    body: JSON.stringify(data),
+  });
+}
+
 export const logout = async<T> () => {
   const url = API.logoutURI;
   

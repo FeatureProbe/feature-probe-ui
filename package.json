@@ -52,6 +52,7 @@
   },
   "scripts": {
     "start": "semantic-ui-css-patch && craco start",
+    "start:demo": "semantic-ui-css-patch && cross-env REACT_APP_MODE=demo craco start",
     "build": "semantic-ui-css-patch && craco build",
     "test": "craco test",
     "eject": "craco eject"
@@ -94,6 +95,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-syntax-highlighter": "^15.5.3",
     "@types/uuid": "^8.3.4",
+    "cross-env": "^7.0.3",
     "http-proxy-middleware": "^2.0.6",
     "react-scripts": "^5.0.1",
     "webpack": "^5.72.1"

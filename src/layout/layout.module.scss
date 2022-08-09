@@ -43,3 +43,31 @@
   background: #556ee6;
   min-width: 1080px;
 }
+
+.platform-tips {
+  background: #FFF5F4;
+  border-radius: 6px;
+  color: #660E16;
+  padding: 7px 12px;
+  margin: 0 20px;
+  z-index: 1000;
+  margin-top: 5px;
+  display: flex;
+}
+
+.platform-tips-text {
+  flex: 1;
+}
+
+.platform-tips-error {
+  color: #F5483B;
+  font-size: 17px !important;
+  margin-right: 10px;
+}
+
+.platform-tips-close {
+  color: #000000;
+  font-size: 12px !important;
+  margin-left: 100px;
+  cursor: pointer;
+}

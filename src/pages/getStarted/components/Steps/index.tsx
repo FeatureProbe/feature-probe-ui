@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import Icon from 'components/Icon';
 import StepFirst from '../StepFirst';
@@ -63,7 +63,6 @@ const Steps = () => {
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
   const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
-  const intl = useIntl();
 
   const init = useCallback(() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
@@ -225,10 +224,9 @@ const Steps = () => {
               <FormattedMessage id='common.toggle.text' /> :
             </div>
             <div className={styles['card-value']}>
-              {
-                intl.formatMessage({id: 'connect.first.toggle.view'},
-                {name: toggleName})
-              }
+              <FormattedMessage id='connect.first.toggle.view.left' />
+              <span className={styles['toggle-name']}>{ toggleName }</span>
+              <FormattedMessage id='connect.first.toggle.view.right' />
               <span className={styles['toggle-key']}>{ toggleKey }</span>
             </div>
           </div>
