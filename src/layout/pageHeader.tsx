@@ -17,6 +17,7 @@ import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
+const isDemo = localStorage.getItem('isDemo') === 'true';
 
 const PageHeader = () => {
   const history = useHistory();
@@ -153,7 +154,7 @@ const PageHeader = () => {
           <FormattedMessage id='common.projects.text' />
         </div>
         {
-          process.env.REACT_APP_MODE ? null : (
+          isDemo ? null : (
             <div className={settingCls} onClick={handleGotoAccount}>
               <FormattedMessage id='common.settings.text' />
             </div>
