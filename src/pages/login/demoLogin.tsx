@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
-import { login } from 'services/user';
+import { demoLogin } from 'services/user';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
 import { FORBIDDEN } from 'constants/httpCode';
 import logo from 'images/logo_large.svg';
@@ -30,12 +30,14 @@ const DemoLogin = () => {
   }, [history]);
 
   const onSubmit = useCallback(async (data) => {
-    const res = await login(data);
+    const res = await demoLogin(data);
     const { success } = res;
     if (success) {
       gotoHome();
       // @ts-ignore
       localStorage.setItem('token', res.data.token);
+      // @ts-ignore
+      localStorage.setItem('organizeId', res.data.organizeId);
     } 
     else if (res.code === FORBIDDEN) {
       message.error(intl.formatMessage({id: 'login.error.text'}));

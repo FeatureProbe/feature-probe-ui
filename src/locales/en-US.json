@@ -331,5 +331,7 @@
   "getstarted.js.second.step.title": "Step 2. Create a FeatureProbe instance",
   "getstarted.js.second.step.or": "Or via ",
   "getstarted.js.third.step.title": "Step 3. Use the instance to get your setting value",
-  "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle"
+  "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle",
+
+  "platform.warning.text": "根据国家相关规定，严禁将FeatureProbe用于违法金融借贷、区块链虚拟币、博彩以及任何含有网络电信诈骗功能的应用程序，一旦被发现，将会立即停止你使用FeantureProbe相关功能，并上报给网络安全监管部门。"
 }

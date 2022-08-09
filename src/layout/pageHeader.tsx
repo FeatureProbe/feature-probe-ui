@@ -152,9 +152,13 @@ const PageHeader = () => {
         <div className={projectCls} onClick={handleGotoProject}>
           <FormattedMessage id='common.projects.text' />
         </div>
-        <div className={settingCls} onClick={handleGotoAccount}>
-          <FormattedMessage id='common.settings.text' />
-        </div>
+        {
+          process.env.REACT_APP_MODE ? null : (
+            <div className={settingCls} onClick={handleGotoAccount}>
+              <FormattedMessage id='common.settings.text' />
+            </div>
+          )
+        }
       </div>
       <div className={'user'}>
         <Popup

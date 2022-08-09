@@ -20,6 +20,8 @@ export const GET_STARTED_PATH = '/:projectKey/:environmentKey/:toggleKey/get-sta
 export const MEMBER_PATH = '/settings/members';
 export const PROFILE_PATH = '/settings/profile';
 
+const isDemo = localStorage.getItem('isDemo') === 'true';
+
 export const headerRoutes = [
   {
     path: PROJECT_PATH,
@@ -55,8 +57,11 @@ export const headerRoutes = [
     path: TARGETING_PATH,
     exact: true,
     component: Targeting
-  },
-  {
+  }
+];
+
+if (!isDemo) {
+  headerRoutes.push({
     path: MEMBER_PATH,
     exact: true,
     component: Member
@@ -65,8 +70,8 @@ export const headerRoutes = [
     path: PROFILE_PATH,
     exact: true,
     component: Profile
-  },
-];
+  });
+}
 
 export const blankRoutes = [
   {
@@ -77,6 +82,6 @@ export const blankRoutes = [
   {
     path: '/login',
     exact: true,
-    component: process.env.REACT_APP_MODE ? DemoLogin : Login
+    component: isDemo? DemoLogin : Login
   }
 ];
