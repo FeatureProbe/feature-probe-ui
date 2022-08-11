@@ -143,12 +143,27 @@
   color: rgba(0, 0, 0, 0.38);
   margin-bottom: 4px;
   line-height: 20px;
+}
+
+.comment {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.38);
+  display: -webkit-box;
   overflow: hidden;
-  white-space: nowrap;
+  white-space: normal!important;
   text-overflow: ellipsis;
+  word-wrap: break-word;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .tooltip {
   max-width: 100px;
   word-break: break-all;
+}
+
+.version-title {
+  font-family: HelveticaNeue-Medium;
+  color: #74788D;
+  margin-right: 2px;
 }

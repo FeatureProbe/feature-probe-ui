@@ -101,9 +101,13 @@ const RuleContent = (props: IProps) => {
             <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEMVER_TYPE)}}>
               {SEMVER_TYPE}
             </div>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEGMENT_TYPE)}}>
-              {SEGMENT_TYPE}
-            </div>
+            {
+              useSegment && (
+                <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEGMENT_TYPE)}}>
+                  {SEGMENT_TYPE}
+                </div>
+              )
+            }
           </div>
         </Popup>
       </div>

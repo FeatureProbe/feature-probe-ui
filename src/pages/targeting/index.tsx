@@ -53,17 +53,6 @@ const Targeting = () => {
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
 
   useEffect(() => {
-    const handler = () => {
-      if (historyOpen) {
-        setHistoryOpen(false);
-      }
-    }
-    window.addEventListener('click', handler);
-
-    return () => window.removeEventListener('click', handler);
-  }, [historyOpen]);
-
-  useEffect(() => {
     if (projectKey) {
       localForage.setItem('projectKey', projectKey);
     }

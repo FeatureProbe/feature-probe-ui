@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -7,9 +6,10 @@ import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
-import { getToggleAccess, getToggleInfo } from 'services/toggle';
+import { getSdkVersion } from "services/misc";
+import { getToggleAccess, getToggleInfo, getTargeting } from 'services/toggle';
 import { getProjectInfo } from 'services/project';
-import { IDictionary, IToggleInfo } from 'interfaces/targeting';
+import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { getEnvironment } from 'services/project';
 import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
@@ -61,6 +61,7 @@ const Steps = () => {
   const [ environmentName, saveEnvironmentName ] = useState<string>('');
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
 
@@ -109,6 +110,14 @@ const Steps = () => {
         saveToggleName(data.name);
       } 
     });
+
+    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        const { content } = data;
+        saveRules(content?.rules || []);
+      }
+    });
     
   }, [projectKey, environmentKey, toggleKey]);
 
@@ -130,10 +139,10 @@ const Steps = () => {
       }
 
       if (key) {
-        getFromDictionary<IDictionary>(key).then(res => {
+        getSdkVersion<string>(key).then(res => {
           const { success, data } = res;
           if (success && data) {
-            saveSDKVersion(data.value);
+            saveSDKVersion(data);
           }
         });
       }
@@ -234,6 +243,7 @@ const Steps = () => {
           goBackToStep={goBackToStep}
         />
         <StepSecond 
+          rules={rules}
           currentStep={currentStep}
           currentSDK={currentSDK}
           returnType={returnType}

@@ -1,6 +1,6 @@
 import request from '../utils/request';
 import API from '../constants/api';
-import { ApplicationJsonContentType } from 'constants/api/contentType';
+import { ApplicationJson } from 'constants/api/contentType';
 
 export const getFromDictionary = async<T> (key: string) => {
   const url = `${
@@ -8,7 +8,12 @@ export const getFromDictionary = async<T> (key: string) => {
     .replace(':key', key)
   }`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const saveDictionary = async (key: string, data: any) => {
@@ -20,7 +25,7 @@ export const saveDictionary = async (key: string, data: any) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
