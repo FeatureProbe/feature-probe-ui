@@ -1,6 +1,6 @@
 {
   "name": "feature-probe-ui",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "FeatureProbe UI/Portal",
   "license": "Apache-2.0",
   "keywords": [
@@ -94,11 +94,13 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-syntax-highlighter": "^15.5.3",
     "@types/uuid": "^8.3.4",
+    "cross-env": "^7.0.3",
     "http-proxy-middleware": "^2.0.6",
     "react-scripts": "^5.0.1",
     "webpack": "^5.72.1"
   },
   "resolutions": {
     "@types/react": "17.0.43"
-  }
+  },
+  "proxy": "https://featureprobe.io/"
 }

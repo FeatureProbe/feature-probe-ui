@@ -7,7 +7,6 @@ import {
   PaginationProps, 
   InputOnChangeData 
 } from 'semantic-ui-react';
-import localForage from 'localforage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
 import SegmentItem from './components/SegmentItem';
@@ -16,8 +15,10 @@ import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import { getSegmentList } from 'services/segment';
+import { saveDictionary } from 'services/dictionary';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import { NOT_FOUND } from 'constants/httpCode';
+import { LAST_SEEN } from 'constants/dictionary_keys';
 import styles from './index.module.scss';
 
 interface IParams {
@@ -62,8 +63,7 @@ const Segment = () => {
           setTotal(totalElements);
           return;
         } else if (!success && code === NOT_FOUND) {
-          await localForage.removeItem('projectKey');
-          await localForage.removeItem('environmentKey');
+          saveDictionary(LAST_SEEN, {});
           history.push('/notfound');
           return;
         } else {

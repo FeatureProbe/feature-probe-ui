@@ -17,6 +17,7 @@ import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
+const isDemo = localStorage.getItem('isDemo') === 'true';
 
 const PageHeader = () => {
   const history = useHistory();
@@ -152,9 +153,13 @@ const PageHeader = () => {
         <div className={projectCls} onClick={handleGotoProject}>
           <FormattedMessage id='common.projects.text' />
         </div>
-        <div className={settingCls} onClick={handleGotoAccount}>
-          <FormattedMessage id='common.settings.text' />
-        </div>
+        {
+          isDemo ? null : (
+            <div className={settingCls} onClick={handleGotoAccount}>
+              <FormattedMessage id='common.settings.text' />
+            </div>
+          )
+        }
       </div>
       <div className={'user'}>
         <Popup

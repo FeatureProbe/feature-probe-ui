@@ -11,7 +11,6 @@ import {
   InputOnChangeData 
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import localForage from 'localforage';
 import { debounce } from 'lodash';
 import ToggleItem from './components/ToggleItem';
 import ToggleDrawer from './components/ToggleDrawer';
@@ -20,10 +19,12 @@ import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import { getToggleList, getTags } from 'services/toggle';
+import { saveDictionary } from 'services/dictionary';
 import { Provider } from './provider';
 import { IToggle, IToggleList,  } from 'interfaces/toggle';
 import { ITag, ITagOption } from 'interfaces/project';
 import { NOT_FOUND } from 'constants/httpCode';
+import { LAST_SEEN } from 'constants/dictionary_keys';
 import styles from './index.module.scss';
 
 interface IParams {
@@ -76,8 +77,7 @@ const Toggle = () => {
           setTotal(totalElements);
           return;
         } else if (!success && code === NOT_FOUND) {
-          await localForage.removeItem('projectKey');
-          await localForage.removeItem('environmentKey');
+          saveDictionary(LAST_SEEN, {});
           history.push('/notfound');
           return;
         } else {
@@ -120,11 +120,11 @@ const Toggle = () => {
   }, [getTagList]);
 
   useEffect(() => {
-    if (projectKey) {
-      localForage.setItem('projectKey', projectKey);
-    }
-    if (environmentKey) {
-      localForage.setItem('environmentKey', environmentKey);
+    if (projectKey && environmentKey) {
+      saveDictionary(LAST_SEEN, {
+        projectKey,
+        environmentKey,
+      });
     }
   }, [projectKey, environmentKey]);
 
