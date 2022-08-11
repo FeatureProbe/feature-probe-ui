@@ -33,11 +33,11 @@ const DemoLogin = () => {
     const res = await demoLogin(data);
     const { success } = res;
     if (success) {
-      gotoHome();
       // @ts-ignore
       localStorage.setItem('token', res.data.token);
       // @ts-ignore
       localStorage.setItem('organizeId', res.data.organizeId);
+      gotoHome();
     } 
     else if (res.code === FORBIDDEN) {
       message.error(intl.formatMessage({id: 'login.error.text'}));
@@ -84,6 +84,10 @@ const DemoLogin = () => {
                       value: 30,
                       message: intl.formatMessage({id: 'common.email.placeholder.text'})
                     },
+                    pattern: {
+                      value: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/i,
+                      message: intl.formatMessage({id: 'login.email.invalid.text'})
+                    }
                   })
                 }
                 onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {

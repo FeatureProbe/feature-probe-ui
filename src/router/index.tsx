@@ -6,6 +6,12 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { headerRoutes, blankRoutes } from './routes';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
 import BasicLayout from 'layout/BasicLayout';
+<<<<<<< HEAD
+=======
+
+let USER: FPUser;
+let FP: FeatureProbe;
+>>>>>>> main
 
 const Router = () => {
   const [ redirectUrl, setRedirectUrl ] = useState<string>('');
@@ -18,6 +24,7 @@ const Router = () => {
       }
       const redirectUrl = await getRedirectUrl('/notfound');
       setRedirectUrl(redirectUrl);
+<<<<<<< HEAD
     }
   }, [isLoading]);
 
@@ -44,6 +51,39 @@ const Router = () => {
       setIsLoading(false);
       initRedirectUrl();
     });
+=======
+    }
+  }, [isLoading]);
+
+  const init = useCallback(async() => {
+    if (!USER) {
+      USER = new FPUser(Date.now().toString());
+    }
+
+    if (!FP) {
+      FP = new FeatureProbe({
+        togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
+        eventsUrl:  window.location.origin + '/server/api/events',
+        clientSdkKey: 'client-29765c7e03e9cb49c0e96357b797b1e47e7f2dee',
+        user: USER,
+        refreshInterval: 5000,
+      });
+
+      FP.start();
+    
+      FP.on('ready', () => {
+        const result = FP.boolValue('demo_features', false);
+        localStorage.setItem('isDemo', result.toString());
+        setIsLoading(false);
+        initRedirectUrl();
+      });
+
+      FP.on('error', () => {
+        setIsLoading(false);
+        initRedirectUrl();
+      });
+    }
+>>>>>>> main
   }, [initRedirectUrl]);
 
   useEffect(() => {

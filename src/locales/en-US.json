@@ -101,6 +101,7 @@
   "login.error.text": "account or password is incorrect, please retry!",
   "login.demo.text": "Access FeatureProbe demo instance",
   "login.demo.tip": "No further data required",
+  "login.email.invalid.text": "Invalid email address",
 
   "members.createdby": "Created by",
   "members.lastseen": "Last seen",
@@ -333,5 +334,5 @@
   "getstarted.js.third.step.title": "Step 3. Use the instance to get your setting value",
   "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle",
 
-  "platform.warning.text": "根据国家相关规定，严禁将FeatureProbe用于违法金融借贷、区块链虚拟币、博彩以及任何含有网络电信诈骗功能的应用程序，一旦被发现，将会立即停止你使用FeantureProbe相关功能，并上报给网络安全监管部门。"
+  "platform.warning.text": "According to the Cybersecurity Law, it is prohibited to use FeatureProbe for illegal financial lending, cryptocurrency, gambling and any applications containing Telemarketing Scams functions, once discovered, you will be immediately stopped from using FeatureProbe and reported to the Cyber Security Department."
 }

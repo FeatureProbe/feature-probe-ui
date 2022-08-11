@@ -1,7 +1,6 @@
 import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { Menu, MenuItemProps } from 'semantic-ui-react';
-import localForage from 'localforage';
 import useResizeObserver from 'use-resize-observer';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
@@ -18,11 +17,14 @@ import History from './components/History';
 import { Provider } from './provider';
 import { getSegmentList } from 'services/segment';
 import { getTargeting, getToggleInfo, getTargetingVersion, getTargetingVersionsByVersion } from 'services/toggle';
+import { saveDictionary } from 'services/dictionary';
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams, IVersionParams } from 'interfaces/project';
 import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion } from 'interfaces/targeting';
 import { NOT_FOUND } from 'constants/httpCode';
+import { LAST_SEEN } from 'constants/dictionary_keys';
 import styles from './index.module.scss';
+
 
 const Targeting = () => {
   const { search } = useLocation();
@@ -53,11 +55,11 @@ const Targeting = () => {
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
 
   useEffect(() => {
-    if (projectKey) {
-      localForage.setItem('projectKey', projectKey);
-    }
-    if (environmentKey) {
-      localForage.setItem('environmentKey', environmentKey);
+    if (projectKey && environmentKey) {
+      saveDictionary(LAST_SEEN, {
+        projectKey,
+        environmentKey,
+      });
     }
   }, [projectKey, environmentKey]);
 
@@ -94,8 +96,7 @@ const Targeting = () => {
       if (success && data) {
         saveToggleInfo(data);
       } else if (!success && code === NOT_FOUND) {
-        await localForage.removeItem('projectKey');
-        await localForage.removeItem('environmentKey');
+        saveDictionary(LAST_SEEN, {});
         history.push('/notfound');
         return;
       } else {
