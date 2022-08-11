@@ -15,7 +15,7 @@ const Intl = (props: IProps) => {
   const {
     i18n,
   } = I18NContainer.useContainer();
-  
+
   const chooseLocale = (val: string) => {
     let _val = val || navigator.language;
     switch (_val) {

@@ -7,6 +7,9 @@ import { headerRoutes, blankRoutes } from './routes';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
 import BasicLayout from 'layout/BasicLayout';
 
+let USER: FPUser;
+let FP: FeatureProbe;
+
 const Router = () => {
   const [ redirectUrl, setRedirectUrl ] = useState<string>('');
   const [ isLoading, setIsLoading ] = useState<boolean>(true);
@@ -22,28 +25,33 @@ const Router = () => {
   }, [isLoading]);
 
   const init = useCallback(async() => {
-    const user = new FPUser(Date.now().toString());
-    const fp = new FeatureProbe({
-      togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
-      eventsUrl:  window.location.origin + '/server/api/events',
-      clientSdkKey: 'client-25614c7e03e9cb49c0e96357b797b1e47e7f2dff',
-      user,
-      refreshInterval: 5000,
-    });
+    if (!USER) {
+      USER = new FPUser(Date.now().toString());
+    }
 
-    fp.start();
+    if (!FP) {
+      FP = new FeatureProbe({
+        togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
+        eventsUrl:  window.location.origin + '/server/api/events',
+        clientSdkKey: 'client-29765c7e03e9cb49c0e96357b797b1e47e7f2dee',
+        user: USER,
+        refreshInterval: 5000,
+      });
+
+      FP.start();
     
-    fp.on('ready', () => {
-      const result = fp.boolValue('demo_features', false);
-      localStorage.setItem('isDemo', result.toString());
-      setIsLoading(false);
-      initRedirectUrl();
-    });
+      FP.on('ready', () => {
+        const result = FP.boolValue('demo_features', false);
+        localStorage.setItem('isDemo', result.toString());
+        setIsLoading(false);
+        initRedirectUrl();
+      });
 
-    fp.on('error', () => {
-      setIsLoading(false);
-      initRedirectUrl();
-    });
+      FP.on('error', () => {
+        setIsLoading(false);
+        initRedirectUrl();
+      });
+    }
   }, [initRedirectUrl]);
 
   useEffect(() => {

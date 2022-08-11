@@ -101,6 +101,7 @@
   "login.error.text": "用户名或密码错误, 请重试!",
   "login.demo.text": "访问 FeatureProbe 演示实例",
   "login.demo.tip": "无须进一步提供其它数据",
+  "login.email.invalid.text": "无效的邮箱地址",
 
   "members.createdby": "创建人",
   "members.lastseen": "最后登录时间",

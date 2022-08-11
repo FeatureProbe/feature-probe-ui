@@ -1,11 +1,23 @@
-import localForage from 'localforage';
 import { getProjectList } from 'services/project';
 import { IProject, IEnvironment } from 'interfaces/project';
+import { IDictionary } from 'interfaces/targeting';
+import { getFromDictionary } from 'services/dictionary';
+const KEY = 'user_last_seen';
+
+const getInfo = async () => {
+  const res =  await getFromDictionary<IDictionary>(KEY);
+  const { success, data } = res;
+  if (success && data) {
+    return JSON.parse(data.value);
+  } else {
+    return {};
+  }
+};
 
 export const getRedirectUrl = async (defaultRedirectUrl: string) => {
   let redirectUrl = defaultRedirectUrl;
-  const projectKey: string = await localForage.getItem('projectKey') || '';
-  const environmentKey: string = await localForage.getItem('environmentKey') || '';
+  const info = await getInfo();
+  const { projectKey, environmentKey } = info;
 
   if (!!projectKey && !!environmentKey) {
     redirectUrl = `/${projectKey}/${environmentKey}/toggles`;

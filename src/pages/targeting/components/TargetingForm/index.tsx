@@ -370,21 +370,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                 </Form>
               </div>
             </div>
-            <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
-            <div className={styles['comment']}>
-              <div className={styles['comment-title']}>
-                <FormattedMessage id='targeting.publish.modal.comment' />
-              </div>
-              <div className={styles['comment-content']}>
-                <Form>
-                  <TextArea
-                    className={styles['comment-input']} 
-                    placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
-                    onChange={handleInputComment}
-                  />
-                </Form>
-              </div>
-            </div>
           </div>
         </div>
       </Modal>

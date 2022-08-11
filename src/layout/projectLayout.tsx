@@ -170,17 +170,6 @@ const ProjectLayout = (props: IProps) => {
             )
           }
           {
-            match.path === GET_STARTED_PATH && (
-              <>
-                <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
-                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
-                <Breadcrumb.Section active>
-                  <FormattedMessage id='common.get.started.text' />
-                </Breadcrumb.Section>
-              </>
-            )
-          }
-          {
             match.path === TOGGLE_PATH && (
               <Breadcrumb.Section active>{ projectInfo?.name }</Breadcrumb.Section>
             )

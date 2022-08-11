@@ -33,11 +33,11 @@ const Login = () => {
     const res = await login(data);
     const { success } = res;
     if (success) {
-      gotoHome();
       // @ts-ignore
       localStorage.setItem('token', res.data.token);
       // @ts-ignore
       localStorage.setItem('organizeId', res.data.organizeId);
+      gotoHome();
     } 
     else if (res.code === FORBIDDEN) {
       message.error(intl.formatMessage({id: 'login.error.text'}));

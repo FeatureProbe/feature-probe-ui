@@ -1,0 +1,1 @@
+export const LAST_SEEN = 'user_last_seen';
