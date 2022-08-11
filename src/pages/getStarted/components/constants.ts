@@ -28,8 +28,8 @@ export const getJavaCode = (sdkVersion: string, sdkKey: string, toggleKey: strin
     private static final FeatureProbe fpClient = new FeatureProbe("${sdkKey}", config);
 
     public static void main(String[] args) throws InterruptedException {
-        String uniqueUserId = /* uniqueUserId */;
-        FPUser user = new FPUser(uniqueUserId)${userWithCode};
+        String userId = /* unique user id in your business logic */;
+        FPUser user = new FPUser(userId)${userWithCode};
         ${returnType === 'boolean' ? `boolean boolValue = fpClient.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = fpClient.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = fpClient.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = fpClient.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
         fpClient.flush();
         Thread.sleep(1000);
@@ -61,8 +61,8 @@ let fp = match FeatureProbe::new(config).unwrap(); //should check result in prod
   {
     title: intl.formatMessage({id: 'getstarted.rust.third.step'}),
     code: 
-`let unique_user_id = /* uniqueUserId */;
-let user = FPUser::new(unique_user_id);
+`let user_id = /* unique user id in your business logic */;
+let user = FPUser::new(user_id);
 ${userWithCode}
 ${returnType === 'boolean' ? `let value = fp.bool_value("${toggleKey}", &user, false);` : ''}${returnType === 'number' ? `let value = fp.number_value("${toggleKey}", &user, 20.0), 12.5);` : ''}${returnType === 'string' ? `let value = fp.string_value("${toggleKey}", &user, "val".to_owned()), "value");` : ''}${returnType === 'json' ? `let value = fp.json_value("${toggleKey}", &user, json!("v"));` : ''}
 `
@@ -96,8 +96,8 @@ fp, err := featureprobe.NewFeatureProbe(config)
     title: intl.formatMessage({id: 'getstarted.go.third.step.title'}),
     name: intl.formatMessage({id: 'getstarted.go.third.step.name.one'}),
     code: 
-`uniqueUserId := /* uniqueUserId */
-user := featureprobe.NewUser(uniqueUserId)
+`userId := /* unique user id in your business logic */
+user := featureprobe.NewUser(userId)
 ${userWithCode}
 ${returnType === 'boolean' ? `val := fp.BoolValue("${toggleKey}", user, true)` : ''}${returnType === 'string' ? `val := fp.StrValue("${toggleKey}", user, "1")` : ''}${returnType === 'number' ? `val := fp.NumberValue("${toggleKey}", user, 1.0)` : ''}${returnType === 'json' ? `val := fp.JsonValue("${toggleKey}", user, nil)` : ''}
 `
@@ -119,8 +119,8 @@ implementation "net.java.dev.jna:jna:5.7.0@aar"
     code: 
 `import com.featureprobe.mobile.*;
 val url = FpUrlBuilder("remote_url/").build();
-val uniqueUserId = /* uniqueUserId */
-val user = FpUser(uniqueUserId)
+val userId = /* unique user id in your business logic */
+val user = FpUser(userId)
 ${userWithCode}
 val config = FpConfig(url!!, "${sdkKey}", 10u, true)
 val fp = FeatureProbe(config, user)
@@ -156,8 +156,8 @@ export const getSwiftCode = (sdkKey: string, toggleKey: string, returnType: stri
     code: 
 `import featureprobe
 let url = FpUrlBuilder(remoteUrl: "remote_url/").build()
-let uniqueUserId = /* uniqueUserId */
-let user = FpUser(key: uniqueUserId)
+let userId = /* unique user id in your business logic */
+let user = FpUser(key: userId)
 ${userWithCode}
 let config = FpConfig(
     remoteUrl: url!,
@@ -190,9 +190,9 @@ export const getObjCCode = (sdkKey: string, toggleKey: string, returnType: strin
 `#import "FeatureProbe-Swift.h"
 
 NSString *urlStr = @"remote_url/";
-NSString *uniqueUserId = /* uniqueUserId */;
+NSString *userId = /* unique user id in your business logic */;
 FpUrl *url = [[[FpUrlBuilder alloc] initWithRemoteUrl: urlStr] build];
-FpUser *user = [[FpUser alloc] initWithKey: uniqueUserId];
+FpUser *user = [[FpUser alloc] initWithKey: userId];
 ${userWithCode}
 FpConfig *config = [[FpConfig alloc] initWithRemoteUrl: url
                                           clientSdkKey:@"${sdkKey}"
@@ -223,8 +223,8 @@ export const getJSCode = (sdkKey: string, toggleKey: string, returnType: string,
     code: 
 `import { FeatureProbe, FPUser } from "featureprobe-client-sdk-js";
 
-const uniqueUserId = /* uniqueUserId */;
-const user = new FPUser(uniqueUserId);
+const userId = /* unique user id in your business logic */;
+const user = new FPUser(userId);
 ${userWithCode}
 const fp = new FeatureProbe({
     remoteUrl: "https://127.0.0.1:4007",
@@ -238,8 +238,8 @@ fp.start();
   {
     name: intl.formatMessage({id: 'getstarted.js.second.step.or'}) + 'CDN',
     code: 
-`const uniqueUserId = /* uniqueUserId */;
-const user = new featureProbe.FPUser(uniqueUserId);
+`const userId = /* unique user id in your business logic */;
+const user = new featureProbe.FPUser(userId);
 ${userWithCode}
 const fp = new featureProbe.FeatureProbe({
     remoteUrl: "https://127.0.0.1:4007",
