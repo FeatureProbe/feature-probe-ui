@@ -4,4 +4,5 @@ dist
 yarn.lock
 yarn-error.log
 .vscode
+.idea
 build/
