@@ -109,8 +109,8 @@ export const getPythonCode = (sdkVersion: string, sdkKey: string, toggleKey: str
 export const getAndroidCode = (sdkVersion: string, sdkKey: string, toggleKey: string, returnType: string, intl: IntlShape, userWithCode: string) => [
   {
     title: intl.formatMessage({id: 'getstarted.android.first.step'}),
-    code: 
-`implementation 'com.featureprobe.mobile:android_sdk:${sdkVersion}@aar'
+    code:
+`implementation 'com.featureprobe:client-sdk-android:${sdkVersion}@aar'
 implementation "net.java.dev.jna:jna:5.7.0@aar"
 `
   }, 
@@ -186,7 +186,7 @@ export const getObjCCode = (sdkKey: string, toggleKey: string, returnType: strin
   {
     title: intl.formatMessage({id: 'getstarted.objc.second.step'}),
     name: '',
-    code: 
+    code:
 `#import "FeatureProbe-Swift.h"
 
 NSString *urlStr = @"remote_url/";
