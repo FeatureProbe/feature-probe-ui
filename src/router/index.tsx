@@ -15,14 +15,12 @@ const Router = () => {
   const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
   const initRedirectUrl = useCallback(async () => {
-    if (!isLoading) {
-      if (window.location.pathname === '/login') {
-        return;
-      }
-      const redirectUrl = await getRedirectUrl('/notfound');
-      setRedirectUrl(redirectUrl);
+    if (window.location.pathname === '/login') {
+      return;
     }
-  }, [isLoading]);
+    const redirectUrl = await getRedirectUrl('/notfound');
+    setRedirectUrl(redirectUrl);
+  }, []);
 
   const init = useCallback(async() => {
     if (!USER) {
