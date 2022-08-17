@@ -296,6 +296,7 @@ const StepSecond = (props: IProps) => {
                 <div className={styles['card-right']}>
                   <Icon 
                     type='view' 
+                    customClass={styles.iconfont}
                     onClick={() => {
                       goBackToStep(CURRENT);
                     }} 

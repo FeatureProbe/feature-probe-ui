@@ -18,6 +18,7 @@ import styles from './pageHeader.module.scss';
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
 const isDemo = localStorage.getItem('isDemo') === 'true';
+const isMainColorHeader = false;
 
 const PageHeader = () => {
   const history = useHistory();
@@ -29,7 +30,7 @@ const PageHeader = () => {
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
   const [ helpMenuOpen, setHelpMenuOpen ] = useState<boolean>(false);
   const [ i18nMenuOpen, setI18nMenuOpen ] = useState<boolean>(false);
-  const [ isMainColorHeader, setHeader ] = useState<boolean>(false);
+  // const [ isMainColorHeader, setHeader ] = useState<boolean>(false);
 
   const {
     i18n,
