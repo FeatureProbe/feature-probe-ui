@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
+// import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
@@ -37,22 +37,22 @@ const PageHeader = () => {
   } = I18NContainer.useContainer();
 
   useEffect(() => {
-    const user = new FPUser(Date.now().toString());
-    const fp = new FeatureProbe({
-      togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
-      eventsUrl:  window.location.origin + '/server/api/events',
-      clientSdkKey: 'client-25614c7e03e9cb49c0e96357b797b1e47e7f2dff',
-      user,
-      refreshInterval: 5000,
-    });
+    // const user = new FPUser(Date.now().toString());
+    // const fp = new FeatureProbe({
+    //   togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
+    //   eventsUrl:  window.location.origin + '/server/api/events',
+    //   clientSdkKey: 'client-25614c7e03e9cb49c0e96357b797b1e47e7f2dff',
+    //   user,
+    //   refreshInterval: 5000,
+    // });
 
-    fp.start();
-    fp.on('ready', () => {
-      const result = fp.boolValue('header_skin', false);
-      if (result) {
-        setHeader(true);
-      }
-    });
+    // fp.start();
+    // fp.on('ready', () => {
+    //   const result = fp.boolValue('header_skin', false);
+    //   if (result) {
+    //     setHeader(true);
+    //   }
+    // });
   }, []);
 
   useEffect(() => {
@@ -142,7 +142,7 @@ const PageHeader = () => {
 
   return (
     <div className={headerCls}>
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={handleGotoProject}>
         {
           isMainColorHeader 
           ? <img className={styles['logo-image']} src={logoWhite} alt='logo' />
@@ -221,13 +221,6 @@ const PageHeader = () => {
             </div>
           </div>
         </Popup>
-        {/* <div onClick={handleGotoDocument}>
-          {
-            isMainColorHeader
-            ? <img className={styles.github} src={require('images/github-light.png')} alt='github' />
-            : <img className={styles.github} src={require('images/github.png')} alt='github' />
-          }
-        </div> */}
         <Popup
           basic
           open={menuOpen}

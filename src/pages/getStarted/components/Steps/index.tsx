@@ -6,11 +6,11 @@ import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
-import { getSdkVersion } from "services/misc";
+import { getSdkVersion } from 'services/misc';
 import { getToggleAccess, getToggleInfo, getTargeting } from 'services/toggle';
 import { getProjectInfo } from 'services/project';
-import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { getEnvironment } from 'services/project';
+import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
@@ -117,7 +117,6 @@ const Steps = () => {
         saveRules(content?.rules || []);
       }
     });
-    
   }, [projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
