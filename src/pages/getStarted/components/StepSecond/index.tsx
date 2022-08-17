@@ -47,6 +47,7 @@ const StepSecond = (props: IProps) => {
 
   const [ options, saveOptions ] = useState<ICodeOption[]>([]);
   const [ language, saveLanguage ] = useState<string>('java');
+  const [ remoteUrl, saveRemoteUrl ] = useState<string>('http://127.0.0.1:4007');
   const { toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
 
@@ -56,6 +57,11 @@ const StepSecond = (props: IProps) => {
       [styles['step-title-selected']]: currentStep === CURRENT
     }
   );
+
+  useEffect(() => {
+    const remoteUrl = window.FP.stringValue('remote_url', '');
+    saveRemoteUrl(remoteUrl);
+  }, []);
 
   useEffect(() => {
     if (currentSDK) {
@@ -76,53 +82,113 @@ const StepSecond = (props: IProps) => {
           result.forEach(item => {
             userWithCode += `.with("${item}", /* ${item} */)`
           });
-          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
+          saveOptions(
+            getJavaCode({
+              sdkVersion, 
+              serverSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Rust': 
           saveLanguage('rust');
           result.forEach(item => {
             userWithCode += `let user = user.with("${item}", /* ${item} */);\n`
           });
-          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl, userWithCode));
+          saveOptions(
+            getRustCode({
+              sdkVersion, 
+              serverSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Go': 
           saveLanguage('go');
           result.forEach(item => {
             userWithCode += `user.With("${item}", /* ${item} */)\n`
           });
-          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl, userWithCode));
+          saveOptions(
+            getGoCode({
+              serverSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Android': 
           saveLanguage('java');
           result.forEach(item => {
             userWithCode += `user.with("${item}", /* ${item} */)\n`
           });
-          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl, userWithCode));
+          saveOptions(
+            getAndroidCode({
+              sdkVersion, 
+              clientSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Swift': 
           saveLanguage('swift');
           result.forEach(item => {
             userWithCode += `user.with("${item}", /* ${item} */)\n`
           });
-          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
+          saveOptions(getSwiftCode({
+            clientSdkKey, 
+            toggleKey, 
+            returnType, 
+            intl, 
+            userWithCode,
+            remoteUrl,
+          }));
           break;
         case 'Objective-C': 
           saveLanguage('objectivec');
           result.forEach(item => {
             userWithCode += `[user withKey:@"${item}" value:/* ${item} */];\n`
           });
-          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
+          saveOptions(getObjCCode({
+            clientSdkKey, 
+            toggleKey, 
+            returnType, 
+            intl, 
+            userWithCode,
+            remoteUrl,
+          }));
           break;
         case 'JavaScript': 
           saveLanguage('javascript');
           result.forEach(item => {
             userWithCode += `user.with("${item}", /* ${item} */);\n`
           });
-          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl, userWithCode));
+          saveOptions(getJSCode({
+            clientSdkKey, 
+            toggleKey, 
+            returnType, 
+            intl, 
+            userWithCode,
+            remoteUrl,
+          }));
           break;
       }
     }
-  }, [rules, sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl]);
+  }, [rules, sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl, remoteUrl]);
 
   return (
     <div className={styles.step}>

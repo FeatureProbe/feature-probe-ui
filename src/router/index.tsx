@@ -36,6 +36,8 @@ const Router = () => {
         refreshInterval: 5000,
       });
 
+      window.FP = FP;
+
       FP.start();
     
       FP.on('ready', () => {
@@ -74,7 +76,7 @@ const Router = () => {
                       key={route.path}
                       path={route.path}
                       exact={route.exact}
-                      render={props => (
+                      render={() => (
                         <Route key={route.path} exact path={route.path} component={route.component} />
                       )}
                     />
@@ -89,7 +91,7 @@ const Router = () => {
                             key={route.path}
                             path={route.path}
                             exact={route.exact}
-                            render={props => (
+                            render={() => (
                               <Route key={route.path} exact path={route.path} component={route.component} />
                             )}
                           />

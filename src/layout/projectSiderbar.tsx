@@ -7,7 +7,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import PutAwayMemu from 'components/PutAwayMenu';
 import { IRouterParams, IProject, IEnvironment } from 'interfaces/project';
-import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH } from 'router/routes';
+import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH, GET_STARTED_PATH } from 'router/routes';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
@@ -15,7 +15,6 @@ interface IProps {
   projectInfo: IProject;
   backgroundColor: string;
 }
-
 
 const ProjectSiderbar = (props: IProps) => {
   const { projectInfo, backgroundColor } = props;
@@ -52,7 +51,7 @@ const ProjectSiderbar = (props: IProps) => {
 
   useEffect(() => {
     const { path } = match;
-    if (path === TOGGLE_PATH || path === TARGETING_PATH) {
+    if (path === TOGGLE_PATH || path === TARGETING_PATH || path === GET_STARTED_PATH) {
       setSelectedItem('toggle');
     } else if (path === SEGMENT_PATH || path === SEGMENT_ADD_PATH || path === SEGMENT_EDIT_PATH) {
       setSelectedItem('segments');

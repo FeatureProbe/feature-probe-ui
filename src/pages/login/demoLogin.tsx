@@ -85,7 +85,7 @@ const DemoLogin = () => {
                       message: intl.formatMessage({id: 'common.email.placeholder.text'})
                     },
                     pattern: {
-                      value: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/i,
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/i,
                       message: intl.formatMessage({id: 'login.email.invalid.text'})
                     }
                   })
