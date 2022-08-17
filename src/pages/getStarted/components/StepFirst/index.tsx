@@ -229,6 +229,7 @@ const StepFirst = (props: IProps) => {
                 <div className={styles['card-right']}>
                   <Icon 
                     type='edit' 
+                    customClass={styles.iconfont}
                     onClick={() => {
                       goBackToStep(CURRENT);
                     }} 

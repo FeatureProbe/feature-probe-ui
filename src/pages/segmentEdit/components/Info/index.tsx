@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState, useCallback, useEffect } from 'react';
-import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps } from 'semantic-ui-react';
+import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
@@ -52,6 +52,7 @@ const Info = () => {
     totalPages: 1,
   });
   const [ total, setTotal ] = useState<number>(0);
+  const [ isLoading, setLoading ] = useState<boolean>(false);
   const intl = useIntl();
   const history = useHistory();
   const match = useRouteMatch();
@@ -180,6 +181,7 @@ const Info = () => {
   }, [intl, projectKey, segmentKey, publishSegment]);
 
   const onSubmit = useCallback(() => {
+    setLoading(true);
     if (match.path === SEGMENT_ADD_PATH) {
       addSegment(projectKey, publishSegment).then(res => {
         if (res.success) {
@@ -189,6 +191,7 @@ const Info = () => {
         } else {
           message.error(intl.formatMessage({id: 'segments.create.error'}));
         }
+        setLoading(false);
       });
     } else {
       getSegmentUsingToggles<IToggleList>(projectKey, segmentKey, searchParams).then((res) => {
@@ -215,6 +218,7 @@ const Info = () => {
           setTotal(0);
           message.error(intl.formatMessage({id: 'toggles.list.error.text'}));
         }
+        setLoading(false);
       });
     }
   }, [match.path, publishSegment, projectKey, segmentKey, searchParams, intl, handleGoBack, confirmEditSegment]);
@@ -302,6 +306,9 @@ const Info = () => {
 
       <div id='footer' className={styles.footer}>
         <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
+          {
+            isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+          }
           <FormattedMessage id='common.publish.text' />
         </Button>
         <Button basic type='reset' onClick={handleGoBack}>
