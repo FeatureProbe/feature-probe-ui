@@ -9,3 +9,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --toastify-text-color-info: #0A70F5;
+  --toastify-text-color-success: #00B365;
+  --toastify-text-color-warning: #592D00;
+  --toastify-text-color-error: #660E16;
+
+  --toastify-color-info: #EFF8FF;
+  --toastify-color-success: #EFFCF2;
+  --toastify-color-warning: #FFFAE0;
+  --toastify-color-error: #FFF5F4;
+
+  --toastify-toast-min-height: 36px;
+  --toastify-toast-max-height: 80px;
+
+  --toastify-toast-width: auto;
+}
+
+.Toastify__toast-container--top-center {
+  top: 48px !important;
+}
