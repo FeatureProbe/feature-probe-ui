@@ -235,7 +235,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   const onError = useCallback(() => {
     console.log(errors);
-    // message.error(intl.formatMessage({id: 'targeting.publish.error.text'}), 100);
+    // message.error(intl.formatMessage({id: 'targeting.publish.error.text'}));
   }, [errors]);
 
   const handlePublishCancel = useCallback(() => {
@@ -252,7 +252,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         ...publishTargeting
       });
       if (res.success) {
-        message.success(intl.formatMessage({id: 'targeting.publish.success.text'}), 5);
+        message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
         initTargeting();
         setComment('');
       }
