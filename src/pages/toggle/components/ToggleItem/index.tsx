@@ -181,6 +181,12 @@ const ToggleItem = (props: IProps) => {
               <div className={styles['toggle-operation-item']} onClick={(e) => handleEditToggle(e, toggle.key)}>
                 <FormattedMessage id='common.edit.text' />
               </div>
+              <div className={styles['toggle-operation-item']} onClick={(e) => {}}>
+                <FormattedMessage id='common.archive.text' />
+              </div>
+              <div className={styles['toggle-operation-item']} onClick={(e) => {}}>
+                <FormattedMessage id='common.restore.text' />
+              </div>
             </div>
           ) : (
             <div className={styles['toggle-operation']}></div>

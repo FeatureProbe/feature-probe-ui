@@ -4,6 +4,7 @@ import {
   Pagination, 
   Table, 
   Form, 
+  Popup,
   PaginationProps, 
   Dropdown, 
   DropdownItemProps, 
@@ -59,8 +60,21 @@ const Toggle = () => {
     pageSize: 10,
     environmentKey,
   });
+  const [ archiveOpen, setArchiveOpen ] = useState<boolean>(false);
+  const [ isArchived, setArchived ] = useState<boolean>(false);
   const history = useHistory();
   const intl = useIntl();
+
+  useEffect(() => {
+    const handler = () => {
+      if (archiveOpen) {
+        setArchiveOpen(false);
+      }
+    }
+    window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [archiveOpen]);
 
   const getToggleLists = useCallback(() => {
     searchParams.environmentKey = environmentKey;
@@ -227,9 +241,13 @@ const Toggle = () => {
         <Provider>
           <>
             <div className={styles.card}>
-              <div className={styles.heading}>
-                <FormattedMessage id='common.toggles.text' />
-              </div>
+              {
+                isArchived ? <div className={styles.heading}>
+                  <FormattedMessage id='common.archived.toggles.text' />
+                </div> : <div className={styles.heading}>
+                  <FormattedMessage id='common.toggles.text' />
+                </div>
+              }
               <div className={styles.add}>
                 <Form className={styles['filter-form']}>
                   <Form.Field className={styles['evaluation-field']}>
@@ -310,6 +328,35 @@ const Toggle = () => {
                   <Icon customClass={styles['iconfont']} type='add' />
                   <FormattedMessage id='common.toggle.text' />
                 </Button>
+                <Popup
+                  basic
+                  open={archiveOpen}
+                  on='click'
+                  position='bottom right'
+                  className={styles.popup}
+                  trigger={
+                    <div 
+                      onClick={(e: SyntheticEvent) => {
+                        document.body.click();
+                        e.stopPropagation();
+                        setArchiveOpen(true);
+                      }}
+                      className={styles['toggle-menu']}
+                    >
+                      <Icon customClass={styles['menu-angle-down']} type='angle-down' />
+                    </div>
+                  }
+                >
+                  <div className={styles['menu']} onClick={() => {setArchiveOpen(false)}}>
+                    {
+                      isArchived ? <div className={styles['menu-item']} onClick={() => { setArchived(false); }}>
+                        <FormattedMessage id='toggles.menu.view.active.toggle' />
+                      </div> : <div className={styles['menu-item']} onClick={() => { setArchived(true); }}>
+                        <FormattedMessage id='toggles.menu.view.archive.toggle' />
+                      </div>
+                    }
+                  </div>
+                </Popup>
               </div>
               <div className={styles.lists}>
                 <Table basic='very' unstackable>

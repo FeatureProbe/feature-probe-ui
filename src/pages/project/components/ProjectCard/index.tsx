@@ -95,8 +95,17 @@ const ProjectCard = (props: IProps) => {
               }}>
                 <FormattedMessage id='projects.menu.edit.project' />
               </div>
+              <div className={styles['menu-item']} onClick={() => {}}>
+                <FormattedMessage id='projects.menu.delete.project' />
+              </div>
               <div className={styles['menu-item']} onClick={handleAddEnvironment}>
                 <FormattedMessage id='projects.menu.add.environment' />
+              </div>
+              <div className={styles['menu-item']} onClick={() => {}}>
+                <FormattedMessage id='projects.menu.view.archive.environment' />
+              </div>
+              <div className={styles['menu-item']} onClick={() => {}}>
+                <FormattedMessage id='projects.menu.view.active.environment' />
               </div>
             </div>
           </Popup>

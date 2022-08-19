@@ -184,3 +184,43 @@
   width: 165px;
   margin: 150px 0 8px;
 }
+
+.toggle-menu {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: #556EE6;
+  border-radius: 6px;
+  color: #fff;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 32px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.menu-angle-down {
+  font-size: 24px !important;
+}
+
+.popup {
+  padding: 4px 0 !important;
+  margin-top: 4px !important;
+}
+
+.menu {
+  min-width: 90px;
+  color: #212529;
+}
+
+.menu-item {
+  height: 28px;
+  line-height: 28px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 12px;
+}
+
+.menu-item:hover {
+  background-color: #F8F9FA;
+}

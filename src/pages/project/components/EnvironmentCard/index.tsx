@@ -91,6 +91,12 @@ const EnvironmentCard = (props: IProps) => {
                   }}>
                     <FormattedMessage id='projects.menu.edit.environment' />
                   </div>
+                  <div className={styles['menu-item']} onClick={() => {}}>
+                    <FormattedMessage id='projects.menu.archive.environment' />
+                  </div>
+                  <div className={styles['menu-item']} onClick={() => {}}>
+                    <FormattedMessage id='projects.menu.restore.environment' />
+                  </div>
                 </div>
               </Popup>
             )
