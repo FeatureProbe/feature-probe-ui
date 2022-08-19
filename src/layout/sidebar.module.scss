@@ -97,7 +97,7 @@
 }
 
 .project-menu :only-child {
-  cursor: unset !important;
+  cursor: pointer;
 }
 
 .project-menu-item-close {
@@ -111,7 +111,7 @@
 .selected {
   color: #556EE6;
   font-family: HelveticaNeue-Bold;
-  cursor: unset;
+  cursor: pointer;
 }
 
 .project-menu-item:not(last-child) {

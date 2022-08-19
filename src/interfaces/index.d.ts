@@ -1,7 +1,7 @@
 
 declare interface Window {
   jsonlint: any;
-  fp: any;
+  FP: any;
 }
 
 declare module 'jsonlint-mod';

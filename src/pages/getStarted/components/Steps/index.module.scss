@@ -202,17 +202,20 @@
 
 .card-right {
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border-radius: 100%;
   text-align: center;
-  line-height: 24px;
-  color: #ADB5BC;
+  line-height: 32px;
+  color: #495057;
 }
 
 .card-right:hover {
   background-color: rgba(33,37,41,0.04);
-  color: #495057;
+}
+
+.iconfont {
+  font-size: 20px !important;
 }
 
 .card-item {

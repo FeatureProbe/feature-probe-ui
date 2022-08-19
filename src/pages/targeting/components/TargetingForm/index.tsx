@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData } from 'semantic-ui-react';
+import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData, Loader } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
@@ -60,6 +60,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const [ publishTargeting, setPublishTargeting ] = useState<IContent>();
   const [ diffContent, setDiffContent ] = useState<string>('');
   const [ comment, setComment ] = useState<string>('');
+  const [ isLoading, setLoading ] = useState<boolean>(false);
   const history = useHistory();
   const intl = useIntl();
   const formRef = useRef();
@@ -244,6 +245,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   const handlePublishConfirm = useCallback(async () => {
     setOpen(false);
+    setLoading(true);
     if (publishTargeting) {
       const res = await saveToggle(projectKey, environmentKey, toggleKey, {
         comment,
@@ -254,6 +256,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         initTargeting();
         setComment('');
       }
+      setLoading(false);
     }
   }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
 
@@ -335,7 +338,12 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       </div>
       <div id='footer' className={styles.footer}>
         <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
-          <FormattedMessage id='common.publish.text' />
+          {
+            isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+          }
+          <span className={styles['publish-btn-text']}>
+            <FormattedMessage id='common.publish.text' />
+          </span>
         </Button>
         <Button basic type='reset' onClick={handleGoBack}>
           <FormattedMessage id='common.cancel.text' />
