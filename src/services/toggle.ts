@@ -1,7 +1,7 @@
 import qs from 'qs';
 import request from '../utils/request';
 import API from '../constants/api';
-import { IToggle } from 'interfaces/toggle';
+import { IEditToggleParams, IToggle } from 'interfaces/toggle';
 import { ITag, IToggleParams, IExistParams, IVersionParams } from 'interfaces/project';
 import { IContent, IMetricParams } from 'interfaces/targeting';
 import { ApplicationJson } from 'constants/api/contentType';
@@ -84,7 +84,7 @@ export const createToggle = async (projectKey: string, data: IToggle) => {
   });
 }
 
-export const editToggle = async (projectKey: string, toggleKey: string, data: IToggle) => {
+export const editToggle = async (projectKey: string, toggleKey: string, data: IEditToggleParams) => {
   const url = `${
     API.editToggleURI
       .replace(':projectKey', projectKey)

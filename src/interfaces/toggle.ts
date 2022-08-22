@@ -24,7 +24,17 @@ export interface IToggle {
   disabled: true;
   visitedTime: string;
   modifiedTime: string;
-  modifiedBy: string
+  modifiedBy: string;
+}
+
+export interface IEditToggleParams {
+  archived?: boolean;
+  name?: string;
+  key?: string;
+  returnType?: string;
+  desc?: string;
+  tags?: string[];
+  disabled?: true;
 }
 
 export interface IToggleList {
