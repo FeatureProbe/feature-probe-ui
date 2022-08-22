@@ -57,6 +57,20 @@
   line-height: 30px;
 }
 
+.icon-back {
+  font-size: 20px !important;
+  cursor: pointer;
+  color: #000000;
+}
+
+.divider {
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 0 12px;
+}
+
 .filter-form {
   flex: 1;
   display: flex;
@@ -197,6 +211,10 @@
   line-height: 32px;
   margin-left: 4px;
   cursor: pointer;
+}
+
+.toggle-menu:hover {
+  background-color: #4458B8;
 }
 
 .menu-angle-down {

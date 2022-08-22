@@ -1,12 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, SyntheticEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
+import Modal from 'components/Modal';
+import Button from 'components/Button';
+import message from 'components/MessageBox';
 import EnvironmentCard from '../EnvironmentCard';
 import EnvironmentModal from '../EnvironmentModal';
 import { projectContainer } from '../../provider';
-import { IEnvironment, IProject } from 'interfaces/project';
+import { IArchivedParams, IEnvironment, IProject } from 'interfaces/project';
+import { getEnvironmentList, editProject } from 'services/project';
+import { getToggleList } from 'services/toggle';
 import styles from './index.module.scss';
+import { IToggleList } from 'interfaces/toggle';
 
 interface IProps {
   project: IProject;
@@ -19,6 +25,12 @@ const ProjectCard = (props: IProps) => {
   const [ modalOpen, setModalOpen ] = useState<boolean>(false);
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
   const [ isAddEnvironment, setIsAddEnvironment ] = useState<boolean>(true);
+  const [ deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const [ cannotDeleteOpen, setCannotDeleteOpen] = useState<boolean>(false);
+  const [ isArchived, setIsArchived ] = useState<boolean>(false);
+  const [ environments, saveEnvironments ] = useState<IEnvironment[]>(project.environments); 
+
+  const intl = useIntl();
 
   const {
     saveProjectInfo,
@@ -39,6 +51,10 @@ const ProjectCard = (props: IProps) => {
     return () => window.removeEventListener('click', handler);
   }, [project.key]);
 
+  useEffect(() => {
+    saveEnvironments(project.environments);
+  }, [project.environments]);
+
   const handleCancel = useCallback(() => {
     setModalOpen(false);
   }, []);
@@ -57,6 +73,42 @@ const ProjectCard = (props: IProps) => {
     setModalOpen(true);
     setIsAddEnvironment(false);
   }, []);
+
+  const refreshEnvironmentList = useCallback(async (archived: boolean) => {
+    const params: IArchivedParams = {};
+    if (archived) {
+      params.archived = archived;
+    }
+
+    const res = await getEnvironmentList<IEnvironment[]>(project.key, params);
+
+    if (res.success && res.data) {
+      console.log(res.data);
+      saveEnvironments(res.data);
+    }
+  }, [project]);
+
+  const checkProjectDeletable = useCallback(() => {
+    getToggleList<IToggleList>(project.key, {pageIndex: 1, pageSize: 10,})
+    .then(async (res) => {
+      const { success, data } = res;
+      if (success && data) {
+        setDeleteOpen(true);
+      } else {
+        setCannotDeleteOpen(true);
+      }
+    });
+  }, [project.key]);
+
+  const confirmDeleteProject = useCallback(async () => {
+    const res = await editProject(project.key, {archived: true});
+
+    if (res.success) {
+      refreshProjectsList();
+    } else {
+      message.error(intl.formatMessage({id: 'projects.delete.error'}))
+    }
+  }, [project.key, intl, refreshProjectsList]);
 
 	return (
     <div className={styles.card}>
@@ -95,17 +147,34 @@ const ProjectCard = (props: IProps) => {
               }}>
                 <FormattedMessage id='projects.menu.edit.project' />
               </div>
-              <div className={styles['menu-item']} onClick={() => {}}>
-                <FormattedMessage id='projects.menu.delete.project' />
-              </div>
               <div className={styles['menu-item']} onClick={handleAddEnvironment}>
                 <FormattedMessage id='projects.menu.add.environment' />
               </div>
-              <div className={styles['menu-item']} onClick={() => {}}>
-                <FormattedMessage id='projects.menu.view.archive.environment' />
-              </div>
-              <div className={styles['menu-item']} onClick={() => {}}>
-                <FormattedMessage id='projects.menu.view.active.environment' />
+              {
+                isArchived ? (
+                  <div 
+                    className={styles['menu-item']} 
+                    onClick={() => {
+                      setIsArchived(false);
+                      refreshEnvironmentList(false);
+                    }}
+                  >
+                    <FormattedMessage id='projects.menu.view.active.environment' />
+                  </div>
+                ) : (
+                  <div 
+                    className={styles['menu-item']} 
+                    onClick={() => {
+                      setIsArchived(true);
+                      refreshEnvironmentList(true);
+                    }}
+                  >
+                    <FormattedMessage id='projects.menu.view.archive.environment' />
+                  </div>
+                )
+              }
+              <div className={styles['menu-item']} onClick={() => { checkProjectDeletable() }}>
+                <FormattedMessage id='projects.menu.delete.project' />
               </div>
             </div>
           </Popup>
@@ -121,14 +190,17 @@ const ProjectCard = (props: IProps) => {
       </div>
       <div className={styles.content}>
         {
-          project.environments.map((env: IEnvironment, index: number) => {
+          environments.map((env: IEnvironment, index: number) => {
             return (
               <EnvironmentCard
                 key={env.key}
                 index={index}
                 item={env}
                 projectKey={project.key}
+                total={environments.length}
+                isArchived={isArchived}
                 handleEditEnvironment={handleEditEnvironment}
+                refreshEnvironmentList={refreshEnvironmentList}
               />
             )
           })
@@ -141,6 +213,54 @@ const ProjectCard = (props: IProps) => {
         handleCancel={handleCancel}
         handleConfirm={handleConfirm}
       />
+      <Modal 
+        open={deleteOpen}
+        width={400}
+        handleCancel={(e: SyntheticEvent) => {
+          e.stopPropagation();
+          setDeleteOpen(false);
+        }}
+        handleConfirm={(e: SyntheticEvent) => {
+          e.stopPropagation();
+          setDeleteOpen(false);
+          confirmDeleteProject();
+        }}
+      >
+        <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
+          <div className={styles['modal-header']}>
+            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <span className={styles['modal-header-text']}>
+              <FormattedMessage id='projects.delete.title' />
+            </span>
+          </div>
+          <div className={styles['modal-content']}>
+            <FormattedMessage id='projects.delete.content' />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal 
+        open={cannotDeleteOpen}
+        width={400}
+        footer={null}
+      >
+        <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
+          <div className={styles['modal-header']}>
+            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <span className={styles['modal-header-text']}>
+              <FormattedMessage id='projects.cannot.delete.title' />
+            </span>
+          </div>
+          <div className={styles['modal-content']}>
+            <FormattedMessage id='projects.cannot.delete.content' />
+          </div>
+          <div className={styles.footer}>
+            <Button size='mini' className={styles['btn']} primary onClick={ () => {setCannotDeleteOpen(false);} }>
+              <FormattedMessage id='common.confirm.text' />
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
 	)
 }

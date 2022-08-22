@@ -42,6 +42,7 @@ interface ISearchParams {
   disabled?: number;
   tags?: string[];
   keyword?: number;
+  archived?: boolean;
 }
 
 const Toggle = () => {
@@ -235,6 +236,13 @@ const Toggle = () => {
     });
   }, [searchParams]);
 
+  const handleSearchArchivedList = useCallback((archived: boolean) => {
+    setSearchParams({
+      ...searchParams,
+      archived,
+    });
+  }, [searchParams])
+
 	return (
     <ProjectLayout>
       <div className={styles.toggle}>
@@ -242,11 +250,24 @@ const Toggle = () => {
           <>
             <div className={styles.card}>
               {
-                isArchived ? <div className={styles.heading}>
-                  <FormattedMessage id='common.archived.toggles.text' />
-                </div> : <div className={styles.heading}>
-                  <FormattedMessage id='common.toggles.text' />
-                </div>
+                isArchived ? (
+                  <div className={styles.heading}>
+                    <Icon 
+                      type='back' 
+                      customClass={styles['icon-back']} 
+                      onClick={() => { 
+                        setArchived(false); 
+                        handleSearchArchivedList(false);
+                      }} 
+                    />
+                    <span className={styles.divider}></span>
+                    <FormattedMessage id='common.archived.toggles.text' />
+                  </div>
+                ) : (
+                  <div className={styles.heading}>
+                    <FormattedMessage id='common.toggles.text' />
+                  </div>
+                )
               }
               <div className={styles.add}>
                 <Form className={styles['filter-form']}>
@@ -347,13 +368,25 @@ const Toggle = () => {
                     </div>
                   }
                 >
-                  <div className={styles['menu']} onClick={() => {setArchiveOpen(false)}}>
+                  <div className={styles['menu']} onClick={() => {
+                    setArchiveOpen(false);
+                  }}>
                     {
-                      isArchived ? <div className={styles['menu-item']} onClick={() => { setArchived(false); }}>
-                        <FormattedMessage id='toggles.menu.view.active.toggle' />
-                      </div> : <div className={styles['menu-item']} onClick={() => { setArchived(true); }}>
-                        <FormattedMessage id='toggles.menu.view.archive.toggle' />
-                      </div>
+                      isArchived ? (
+                        <div className={styles['menu-item']} onClick={() => { 
+                          setArchived(false); 
+                          handleSearchArchivedList(false);
+                        }}>
+                          <FormattedMessage id='toggles.menu.view.active.toggle' />
+                        </div>
+                      ) : (
+                        <div className={styles['menu-item']} onClick={() => { 
+                          setArchived(true); 
+                          handleSearchArchivedList(true);
+                        }}>
+                          <FormattedMessage id='toggles.menu.view.archive.toggle' />
+                        </div>
+                      )
                     }
                   </div>
                 </Popup>
@@ -392,8 +425,10 @@ const Toggle = () => {
                               <ToggleItem 
                                 key={toggle.key}
                                 toggle={toggle} 
-                                setDrawerVisible={setDrawerVisible}
+                                isArchived={isArchived}
                                 setIsAdd={setIsAdd}
+                                getToggleLists={getToggleLists}
+                                setDrawerVisible={setDrawerVisible}
                               />
                             )
                           })
