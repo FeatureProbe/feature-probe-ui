@@ -374,6 +374,7 @@ const Toggle = () => {
                     {
                       isArchived ? (
                         <div className={styles['menu-item']} onClick={() => { 
+                          document.body.click();
                           setArchived(false); 
                           handleSearchArchivedList(false);
                         }}>
@@ -381,6 +382,7 @@ const Toggle = () => {
                         </div>
                       ) : (
                         <div className={styles['menu-item']} onClick={() => { 
+                          document.body.click();
                           setArchived(true); 
                           handleSearchArchivedList(true);
                         }}>

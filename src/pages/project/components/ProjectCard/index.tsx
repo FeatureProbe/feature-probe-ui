@@ -81,9 +81,7 @@ const ProjectCard = (props: IProps) => {
     }
 
     const res = await getEnvironmentList<IEnvironment[]>(project.key, params);
-
     if (res.success && res.data) {
-      console.log(res.data);
       saveEnvironments(res.data);
     }
   }, [project]);
@@ -93,7 +91,11 @@ const ProjectCard = (props: IProps) => {
     .then(async (res) => {
       const { success, data } = res;
       if (success && data) {
-        setDeleteOpen(true);
+        if (data.content.length > 0) {
+          setCannotDeleteOpen(true);
+        } else {
+          setDeleteOpen(true);
+        }
       } else {
         setCannotDeleteOpen(true);
       }

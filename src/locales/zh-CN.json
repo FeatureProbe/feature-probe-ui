@@ -214,6 +214,10 @@
   "toggles.archive.content": "所有环境下的此开关将一并下线",
   "toggles.restore.title": "确认恢复开关？",
   "toggles.restore.content": "所有环境下的此开关将一并恢复",
+  "toggles.environment.archive.success": "环境下线成功",
+  "toggles.environment.archive.error": "环境下线失败",
+  "toggles.environment.restore.success": "环境恢复成功",
+  "toggles.environment.restore.error": "环境恢复失败",
 
   "targeting.default.rule": "默认规则",
   "targeting.default.rule.tips": "指定上面所有规则都不命中时的返回分组",
