@@ -92,10 +92,10 @@ const ToggleItem = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.environment.archive.success'}));
+      message.success(intl.formatMessage({id: 'toggles.archive.success'}));
       getToggleLists();
     } else {
-      message.error(intl.formatMessage({id: 'toggles.environment.archive.error'}));
+      message.error(intl.formatMessage({id: 'toggles.archive.error'}));
     }
   }, [toggle.key, projectKey, intl, getToggleLists]);
 
@@ -105,10 +105,10 @@ const ToggleItem = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.environment.restore.success'}));
+      message.success(intl.formatMessage({id: 'toggles.restore.success'}));
       getToggleLists();
     } else {
-      message.error(intl.formatMessage({id: 'toggles.environment.restore.error'}));
+      message.error(intl.formatMessage({id: 'toggles.restore.error'}));
     }
   }, [toggle.key, projectKey, intl, getToggleLists]);
 
