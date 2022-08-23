@@ -191,7 +191,7 @@ const ProjectDrawer = (props: IProps) => {
 
           <FormItemDescription
             className={styles.formItem}
-            value={projectInfo?.desc}
+            value={projectInfo?.description}
             disabled={!isAdd}
             onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
               if (('' + detail.value).length > 500 ) return;
