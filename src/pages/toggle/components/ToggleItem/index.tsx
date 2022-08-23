@@ -213,12 +213,16 @@ const ToggleItem = (props: IProps) => {
         {
           visible ? (
             <div className={styles['toggle-operation']}>
-              <div className={styles['toggle-operation-item']} onClick={(e) => {
-                document.body.click();
-                handleEditToggle(e, toggle.key);
-              }}>
-                <FormattedMessage id='common.edit.text' />
-              </div>
+              {
+                !isArchived && (
+                  <div className={styles['toggle-operation-item']} onClick={(e) => {
+                    document.body.click();
+                    handleEditToggle(e, toggle.key);
+                  }}>
+                    <FormattedMessage id='common.edit.text' />
+                  </div>
+                )
+              }
               {
                 isArchived ? (
                   <div 
