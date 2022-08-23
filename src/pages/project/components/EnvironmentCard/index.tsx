@@ -57,10 +57,10 @@ const EnvironmentCard = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.enviroment.archive.success'}));
+      message.success(intl.formatMessage({id: 'toggles.environment.archive.success'}));
       refreshEnvironmentList(false);
     } else {
-      message.error(intl.formatMessage({id: 'toggles.enviroment.archive.error'}));
+      message.error(intl.formatMessage({id: 'toggles.environment.archive.error'}));
     }
   }, [item.key, projectKey, intl, refreshEnvironmentList]);
 
@@ -70,10 +70,10 @@ const EnvironmentCard = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.enviroment.restore.success'}));
+      message.success(intl.formatMessage({id: 'toggles.environment.restore.success'}));
       refreshEnvironmentList(true);
     } else {
-      message.error(intl.formatMessage({id: 'toggles.enviroment.restore.error'}));
+      message.error(intl.formatMessage({id: 'toggles.environment.restore.error'}));
     }
   }, [item.key, projectKey, intl, refreshEnvironmentList]);
 
@@ -101,6 +101,7 @@ const EnvironmentCard = (props: IProps) => {
                 trigger={
                   <div 
                     onClick={(e: SyntheticEvent) => {
+                      document.body.click();
                       e.stopPropagation();
                       setMenuOpen(true);
                     }}
@@ -110,6 +111,7 @@ const EnvironmentCard = (props: IProps) => {
                 }
               >
                 <div className={styles['menu']} onClick={(e: SyntheticEvent) => {
+                  document.body.click();
                   e.stopPropagation();
                   setMenuOpen(false);
                 }}>

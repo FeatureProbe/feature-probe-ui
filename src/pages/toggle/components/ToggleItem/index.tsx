@@ -92,10 +92,10 @@ const ToggleItem = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.enviroment.archive.success'}));
+      message.success(intl.formatMessage({id: 'toggles.environment.archive.success'}));
       getToggleLists();
     } else {
-      message.error(intl.formatMessage({id: 'toggles.enviroment.archive.error'}));
+      message.error(intl.formatMessage({id: 'toggles.environment.archive.error'}));
     }
   }, [toggle.key, projectKey, intl, getToggleLists]);
 
@@ -105,10 +105,10 @@ const ToggleItem = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.enviroment.restore.success'}));
+      message.success(intl.formatMessage({id: 'toggles.environment.restore.success'}));
       getToggleLists();
     } else {
-      message.error(intl.formatMessage({id: 'toggles.enviroment.restore.error'}));
+      message.error(intl.formatMessage({id: 'toggles.environment.restore.error'}));
     }
   }, [toggle.key, projectKey, intl, getToggleLists]);
 
@@ -213,7 +213,10 @@ const ToggleItem = (props: IProps) => {
         {
           visible ? (
             <div className={styles['toggle-operation']}>
-              <div className={styles['toggle-operation-item']} onClick={(e) => handleEditToggle(e, toggle.key)}>
+              <div className={styles['toggle-operation-item']} onClick={(e) => {
+                document.body.click();
+                handleEditToggle(e, toggle.key);
+              }}>
                 <FormattedMessage id='common.edit.text' />
               </div>
               {
@@ -221,6 +224,7 @@ const ToggleItem = (props: IProps) => {
                   <div 
                     className={styles['toggle-operation-item']} 
                     onClick={(e) => {
+                      document.body.click();
                       e.stopPropagation();
                       setRestoreOpen(true); 
                     }}
@@ -231,6 +235,7 @@ const ToggleItem = (props: IProps) => {
                   <div 
                     className={styles['toggle-operation-item']} 
                     onClick={(e) => { 
+                      document.body.click();
                       e.stopPropagation();
                       setArchiveOpen(true); 
                     }}
