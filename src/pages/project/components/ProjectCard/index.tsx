@@ -89,7 +89,7 @@ const ProjectCard = (props: IProps) => {
   }, [project]);
 
   const checkProjectDeletable = useCallback(() => {
-    getToggleList<IToggleList>(project.key, {pageIndex: 1, pageSize: 10,})
+    getToggleList<IToggleList>(project.key, {pageIndex: 0, pageSize: 10,})
     .then(async (res) => {
       const { success, data } = res;
       if (success && data) {
@@ -190,7 +190,7 @@ const ProjectCard = (props: IProps) => {
       </div>
       <div className={styles.content}>
         {
-          environments.map((env: IEnvironment, index: number) => {
+          environments.length > 0 && environments.map((env: IEnvironment, index: number) => {
             return (
               <EnvironmentCard
                 key={env.key}
@@ -204,6 +204,16 @@ const ProjectCard = (props: IProps) => {
               />
             )
           })
+        }
+        {
+          environments.length === 0 && (
+            <div className={styles['no-data']}>
+              <img className={styles['no-data-img']} src={require('images/no-data-available.png')} alt='no-data' />
+              <div className={styles['no-data-text']}>
+                <FormattedMessage id='targeting.metrics.no.data.text' />
+              </div>
+            </div>
+          )
         }
       </div>
       <EnvironmentModal
