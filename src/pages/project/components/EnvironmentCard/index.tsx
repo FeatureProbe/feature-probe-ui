@@ -7,6 +7,7 @@ import CopyToClipboardPopup from 'components/CopyToClipboard';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
+import { I18NContainer } from 'hooks';
 import { editEnvironment } from 'services/project';
 import { IEnvironment } from 'interfaces/project';
 import { environmentContainer } from '../../provider';
@@ -36,6 +37,10 @@ const EnvironmentCard = (props: IProps) => {
     saveOriginEnvironmentInfo,
   } = environmentContainer.useContainer();
 
+  const {
+    i18n,
+  } = I18NContainer.useContainer();
+
   useEffect(() => {
     const handler = () => {
       if (open) {
@@ -48,8 +53,11 @@ const EnvironmentCard = (props: IProps) => {
   }, [open]);
 
   const handleGotoToggle = useCallback((environmentKey: string) => {
+    if (isArchived) {
+      return;
+    }
     history.push(`/${projectKey}/${environmentKey}/toggles`);
-  }, [history, projectKey]);
+  }, [isArchived, history, projectKey]);
 
   const confirmArchiveEnv = useCallback(async () => {
     let res = await editEnvironment(projectKey, item.key, {
@@ -57,10 +65,10 @@ const EnvironmentCard = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.environment.archive.success'}));
+      message.success(intl.formatMessage({id: 'projects.environment.archive.success'}));
       refreshEnvironmentList(false);
     } else {
-      message.error(intl.formatMessage({id: 'toggles.environment.archive.error'}));
+      message.error(intl.formatMessage({id: 'projects.environment.archive.error'}));
     }
   }, [item.key, projectKey, intl, refreshEnvironmentList]);
 
@@ -70,10 +78,10 @@ const EnvironmentCard = (props: IProps) => {
     });
 
     if (res.success) {
-      message.success(intl.formatMessage({id: 'toggles.environment.restore.success'}));
+      message.success(intl.formatMessage({id: 'projects.environment.restore.success'}));
       refreshEnvironmentList(true);
     } else {
-      message.error(intl.formatMessage({id: 'toggles.environment.restore.error'}));
+      message.error(intl.formatMessage({id: 'projects.environment.restore.error'}));
     }
   }, [item.key, projectKey, intl, refreshEnvironmentList]);
 
@@ -86,6 +94,18 @@ const EnvironmentCard = (props: IProps) => {
     >
       <div style={{background: EnvironmentColors[index % 5]}} className={styles['environment-line']}></div>
       <div className={styles.content}>
+        {
+          isArchived && (
+            <div>
+              {
+                i18n === 'en-US' 
+                  ? <img className={styles['archived-img']} src={require('images/archived-en.png')} alt='archived' />
+                  : <img className={styles['archived-img']} src={require('images/archived-zh.png')} alt='archived' />
+              }
+              <div className={styles['archived-bg']}></div>
+            </div>
+          )
+        }
         <div className={styles.title}>
           <span>{ item.name }</span>
           {

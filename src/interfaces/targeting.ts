@@ -52,6 +52,7 @@ export interface IToggleInfo {
   returnType: string;
   clientAvailability: boolean;
   variations: IVariation[];
+  archived: boolean;
 }
 
 export interface ITarget {

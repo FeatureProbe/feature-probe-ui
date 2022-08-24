@@ -23,8 +23,8 @@ import { IRouterParams, IVersionParams } from 'interfaces/project';
 import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion } from 'interfaces/targeting';
 import { NOT_FOUND } from 'constants/httpCode';
 import { LAST_SEEN } from 'constants/dictionary_keys';
+import { I18NContainer } from 'hooks';
 import styles from './index.module.scss';
-
 
 const Targeting = () => {
   const { search } = useLocation();
@@ -38,6 +38,7 @@ const Targeting = () => {
   const [ toggleInfo, saveToggleInfo ] = useState<IToggleInfo>();
   const [ targeting, saveTargeting ] = useState<ITarget>();
   const [ segmentList, saveSegmentList ] = useState<ISegmentList>();
+  const [ toggleArchived, saveToggleArchived ] = useState<boolean>(false);
   const [ toggleDisabled, saveToggleDisable ] = useState<boolean>(false);
   const [ initialTargeting, saveInitTargeting ] = useState<IContent>();
   const [ historyOpen, setHistoryOpen ] = useState<boolean>(false);
@@ -53,6 +54,7 @@ const Targeting = () => {
   const [ pageInitCount, saveCount ] = useState<number>(0);
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
+  const { i18n } = I18NContainer.useContainer();
 
   useEffect(() => {
     if (projectKey && environmentKey) {
@@ -95,6 +97,9 @@ const Targeting = () => {
       const { data, success, code } = res;
       if (success && data) {
         saveToggleInfo(data);
+        if (data.archived) {
+          saveToggleArchived(true);
+        }
       } else if (!success && code === NOT_FOUND) {
         saveDictionary(LAST_SEEN, {});
         history.push('/notfound');
@@ -273,6 +278,17 @@ const Targeting = () => {
     <ProjectLayout>
       <Provider>
         <div className={styles.targeting}>
+          {
+            toggleArchived && (
+              <div>
+                {
+                  i18n === 'en-US' 
+                    ? <img className={styles['archived-img']} src={require('images/archived-en.png')} alt='archived' />
+                    : <img className={styles['archived-img']} src={require('images/archived-zh.png')} alt='archived' />
+                }
+              </div>
+            )
+          }
           <Info
             toggleInfo={toggleInfo}
             modifyInfo={modifyInfo}
@@ -340,7 +356,7 @@ const Targeting = () => {
                       )
                     }
                     <TargetingForm
-                      disabled={targetingDisabled}
+                      disabled={targetingDisabled || toggleArchived}
                       targeting={targeting}
                       toggleInfo={toggleInfo}
                       segmentList={segmentList}
