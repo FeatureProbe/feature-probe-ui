@@ -125,7 +125,34 @@ ${returnType === 'boolean' ? `val := fp.BoolValue("${toggleKey}", user, true)` :
   ];
 };
 
-export const getPythonCode = (options: IOption) => [];
+export const getPythonCode = (options: IOption) => {
+    const { intl, clientSdkKey, userWithCode, returnType, toggleKey, remoteUrl } = options;
+
+    return [
+        {
+            title: intl.formatMessage({id: 'getstarted.python.first.step'}),
+            code: 'pip3 install featureprobe-server-sdk-python'
+        },
+        {
+            title: intl.formatMessage({id: 'getstarted.python.second.step'}),
+            code:
+`import time
+import featureprobe as fp
+
+if __name__ == '__main__':
+    config = fp.Config(remote_uri='${remoteUrl}', sync_mode='pooling')
+    client = fp.Client('${clientSdkKey}', config)
+    
+    
+    user = fp.User('unique user id in your business logic')
+    ${userWithCode}
+    val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? `False` : ''}${returnType === 'string' ? `'not connected'` : ''}${returnType === 'number' ? `-1` : ''}${returnType === 'json' ? `{}` : ''})
+    client.flush()
+    time.sleep(1)    
+`
+        }
+    ];
+};
 
 export const getAndroidCode = (options: IOption) => {
   const { intl, clientSdkKey, userWithCode, returnType, toggleKey, remoteUrl, sdkVersion } = options;
