@@ -1,4 +1,4 @@
-import { useCallback, useState, SyntheticEvent, useEffect } from 'react';
+import { useCallback, SyntheticEvent } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -6,10 +6,9 @@ import SettingLayout from 'layout/settingLayout';
 import SectionTitle from 'components/SectionTitle';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
-import { getUserInfo } from 'services/user';
-import { IUserInfo } from 'interfaces/member'
 import { modifyPassword } from 'services/member';
 import { INVALID_REQUEST } from 'constants/httpCode';
+import { HeaderContainer } from 'layout/hooks';
 import styles from './index.module.scss';
 
 const Member = () => {
@@ -23,19 +22,8 @@ const Member = () => {
     setError,
   } = useForm();
 
-  const [ userInfo, setUserInfo ] = useState<IUserInfo>();
   const intl = useIntl();
-
-  const init = useCallback(async () => {
-    const userInfo = await getUserInfo<IUserInfo>();
-    if (userInfo.success) {
-      setUserInfo(userInfo.data);
-    }
-  }, []);
-
-  useEffect(() => {
-    init();
-  }, [init]);
+  const { userInfo } = HeaderContainer.useContainer();
 
   const onSubmit = useCallback(async (data) => {
     const res = await modifyPassword({

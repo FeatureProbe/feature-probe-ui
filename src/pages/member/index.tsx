@@ -8,8 +8,8 @@ import message from 'components/MessageBox';
 import MemberDrawer from './components/MemberDrawer';
 import MemberItem from './components/MemberItem';
 import { getMemberList } from 'services/member';
-import { getUserInfo } from 'services/user';
 import { IMemberList, IMember, IUserInfo } from 'interfaces/member';
+import { HeaderContainer } from 'layout/hooks';
 import styles from './index.module.scss';
 
 const Member = () => {
@@ -21,9 +21,9 @@ const Member = () => {
   const [ total, setTotal ] = useState<number>(0);
   const [ drawerVisible, setDrawerVisible ] = useState<boolean>(false);
   const [ isAdd, setIsAdd ] = useState<boolean>(false);
-  const [ userInfo, setUserInfo ] = useState<IUserInfo>();
   const [ editUser, setEditUser ] = useState<IUserInfo>();
   const intl = useIntl();
+  const { userInfo } = HeaderContainer.useContainer();
 
   const fetchMemberList = useCallback(async (pageIndex: number) => {
     const res = await getMemberList<IMemberList>({
@@ -52,14 +52,8 @@ const Member = () => {
     }
   }, [intl]);
 
-  const init = useCallback(async() => {
-    const userInfo = await getUserInfo<IUserInfo>();
-    if (userInfo.success) {
-      setUserInfo(userInfo.data);
-    }
-
-    await fetchMemberList(0);
-    
+  const init = useCallback(() => {
+    fetchMemberList(0);
   }, [fetchMemberList]);
 
   useEffect(() => {

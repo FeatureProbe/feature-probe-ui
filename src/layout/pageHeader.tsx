@@ -12,6 +12,7 @@ import { I18NContainer } from 'hooks';
 import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
+import { HeaderContainer } from './hooks';
 import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
@@ -23,6 +24,7 @@ const PageHeader = () => {
   const history = useHistory();
   const location = useLocation();
   const intl = useIntl();
+  const { saveUserInfo } = HeaderContainer.useContainer();
 
   const [ selectedNav, setSelectedNav ] = useState<string>('');
   const [ account, setAccount ] = useState<string>('');
@@ -59,12 +61,13 @@ const PageHeader = () => {
         const { data } = res;
         if (data) {
           setAccount(data?.account);
+          saveUserInfo(data);
         }
       } else {
         message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
       }
     });
-  }, [intl]);
+  }, [intl, saveUserInfo]);
 
   useEffect(() => {
     const reg = new RegExp('[^/]+$');
