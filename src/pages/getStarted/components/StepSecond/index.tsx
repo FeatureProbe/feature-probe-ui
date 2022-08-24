@@ -17,7 +17,7 @@ import {
   getObjCCode,
   getPythonCode,
   getRustCode,
-  getSwiftCode
+  getSwiftCode,
 } from '../constants';
 import styles from '../Steps/index.module.scss';
 
