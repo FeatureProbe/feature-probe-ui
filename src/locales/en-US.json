@@ -305,10 +305,13 @@
   "connect.fourth.failed": "You have no applications connected using this SDK Key. ",
   "connect.fourth.success": "Successfully connected！",
   "connect.fourth.failed.button": "Retry Connection",
-  
-  "getstarted.java.first.step": "Step 1: Create a new project (optional)",
-  "getstarted.java.second.step": "Step 2: Add the SDK to your project",
-  "getstarted.java.third.step": "Step 3: Add the following code to your Application",
+
+  "getstarted.java.first.step": "Step 1: Install the Java SDK to your project",
+  "getstarted.java.first.step.name.one": "Use your exist project, or create a new one as follow:",
+  "getstarted.java.first.step.name.two": "Add FeatureProbe Java SDK to dependency",
+  "getstarted.java.second.step": "Step 2: Create a single FeatureProbe Client instance for project",
+  "getstarted.java.third.step": "Step 3: Add following code to get the return value of toggle, use the toggle value afterward",
+  "getstarted.java.fourth.step": "Step 4: lose FeatureProbe Client before your program exist，or status check may be incorrect",
   "getstarted.rust.first.step": "Step 1: Add the following code to your Cargo.toml dependency section",
   "getstarted.rust.second.step": "Step 2: Init SDK instance",
   "getstarted.rust.third.step": "Step 3: Add the following code to your Application",
@@ -330,10 +333,10 @@
   "getstarted.objc.first.step": "Step 1: Install SDK",
   "getstarted.objc.second.step": "Step 2: Create a FeatureProbe instance",
   "getstarted.objc.third.step": "Step 3: Use the feature toggle",
-  "getstarted.js.first.step.title": "Step 1. Install the JavaScript SDK",
-  "getstarted.js.second.step.title": "Step 2. Create a FeatureProbe instance",
+  "getstarted.js.first.step.title": "Step 1: Install the JavaScript SDK",
+  "getstarted.js.second.step.title": "Step 2: Create a FeatureProbe instance",
   "getstarted.js.second.step.or": "Or via ",
-  "getstarted.js.third.step.title": "Step 3. Use the instance to get your setting value",
+  "getstarted.js.third.step.title": "Step 3: Use the instance to get your setting value",
   "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle",
 
   "platform.warning.text": "According to the Cybersecurity Law, it is prohibited to use FeatureProbe for illegal financial lending, cryptocurrency, gambling and any applications containing Telemarketing Scams functions, once discovered, you will be immediately stopped from using FeatureProbe and reported to the Cyber Security Department."
