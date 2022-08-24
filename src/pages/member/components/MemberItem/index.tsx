@@ -8,6 +8,8 @@ import { IMember, IUserInfo } from 'interfaces/member';
 import { deleteMember } from 'services/member';
 import message from 'components/MessageBox';
 import styles from './index.module.scss';
+import { OWNER } from 'constants/auth';
+import { HeaderContainer } from 'layout/hooks';
 
 interface IProps {
   member?: IMember;
@@ -19,9 +21,11 @@ interface IProps {
 }
 
 const MemberItem = (props: IProps) => {
-  const { member, userInfo, setDrawerVisible, setIsAdd, setEditUser, refreshMemberList } = props;
+  const { member, setDrawerVisible, setIsAdd, setEditUser, refreshMemberList } = props;
   const [ open, setOpen ] = useState<boolean>(false);
   const intl = useIntl();
+
+  const { userInfo } = HeaderContainer.useContainer();
 
   const handleEdit = useCallback(() => {
     setDrawerVisible(true);
@@ -76,7 +80,7 @@ const MemberItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         {
-          (member?.account.toLowerCase() !== userInfo?.account.toLowerCase()) && (userInfo?.role === 'ADMIN') ? (
+          (member?.account.toLowerCase() !== userInfo?.account.toLowerCase()) && (OWNER.includes(userInfo?.role)) ? (
             <div className={styles['member-operation']}>
               <div className={styles['member-operation-item']} onClick={() => handleEdit()}>
                 <FormattedMessage id='common.edit.text' />
