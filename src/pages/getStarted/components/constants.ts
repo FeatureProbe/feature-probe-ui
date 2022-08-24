@@ -274,7 +274,7 @@ fp.start();
     {
       name: intl.formatMessage({id: 'getstarted.js.second.step.or'}) + 'CDN',
       code: 
-`const userId = /* unique user id in your business logic */;
+`const userId = /* User id in your business context */;
 const user = new featureProbe.FPUser(userId);
 ${userWithCode}
 const fp = new featureProbe.FeatureProbe({
