@@ -5,14 +5,16 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
+import { HeaderContainer } from 'layout/hooks';
 import EnvironmentCard from '../EnvironmentCard';
 import EnvironmentModal from '../EnvironmentModal';
 import { projectContainer } from '../../provider';
 import { IArchivedParams, IEnvironment, IProject } from 'interfaces/project';
+import { IToggleList } from 'interfaces/toggle';
 import { getEnvironmentList, editProject } from 'services/project';
 import { getToggleList } from 'services/toggle';
+import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
-import { IToggleList } from 'interfaces/toggle';
 
 interface IProps {
   project: IProject;
@@ -32,6 +34,7 @@ const ProjectCard = (props: IProps) => {
 
   const intl = useIntl();
 
+  const { userInfo } = HeaderContainer.useContainer();
   const {
     saveProjectInfo,
     saveOriginProjectInfo,
@@ -119,67 +122,71 @@ const ProjectCard = (props: IProps) => {
           <div className={styles.name}>
             { project.name }
           </div>
-          <Popup
-            basic
-            open={menuOpen}
-            on='click'
-            position='bottom left'
-            className={styles.popup}
-            trigger={
-              <div onClick={() => {
-                setMenuOpen(true);
-              }}>
-                <Icon id={`${project.key}-icon-more`} customClass={styles['iconfont']} type='more' />
-              </div>
-            }
-          >
-            <div className={styles['menu']} onClick={() => {setMenuOpen(false)}}>
-              <div className={styles['menu-item']} onClick={() => {
-                saveProjectInfo({
-                  name: project.name,
-                  key: project.key,
-                  description: project.description,
-                });
-                saveOriginProjectInfo({
-                  name: project.name,
-                  key: project.key,
-                  description: project.description,
-                });
-                handleEditProject(project.key);
-              }}>
-                <FormattedMessage id='projects.menu.edit.project' />
-              </div>
-              <div className={styles['menu-item']} onClick={handleAddEnvironment}>
-                <FormattedMessage id='projects.menu.add.environment' />
-              </div>
-              {
-                isArchived ? (
-                  <div 
-                    className={styles['menu-item']} 
-                    onClick={() => {
-                      setIsArchived(false);
-                      refreshEnvironmentList(false);
-                    }}
-                  >
-                    <FormattedMessage id='projects.menu.view.active.environment' />
+          {
+            OWNER.includes(userInfo.role) && (
+              <Popup
+                basic
+                open={menuOpen}
+                on='click'
+                position='bottom left'
+                className={styles.popup}
+                trigger={
+                  <div onClick={() => {
+                    setMenuOpen(true);
+                  }}>
+                    <Icon id={`${project.key}-icon-more`} customClass={styles['iconfont']} type='more' />
                   </div>
-                ) : (
-                  <div 
-                    className={styles['menu-item']} 
-                    onClick={() => {
-                      setIsArchived(true);
-                      refreshEnvironmentList(true);
-                    }}
-                  >
-                    <FormattedMessage id='projects.menu.view.archive.environment' />
+                }
+              >
+                <div className={styles['menu']} onClick={() => {setMenuOpen(false)}}>
+                  <div className={styles['menu-item']} onClick={() => {
+                    saveProjectInfo({
+                      name: project.name,
+                      key: project.key,
+                      description: project.description,
+                    });
+                    saveOriginProjectInfo({
+                      name: project.name,
+                      key: project.key,
+                      description: project.description,
+                    });
+                    handleEditProject(project.key);
+                  }}>
+                    <FormattedMessage id='projects.menu.edit.project' />
                   </div>
-                )
-              }
-              <div className={styles['menu-item']} onClick={() => { checkProjectDeletable() }}>
-                <FormattedMessage id='projects.menu.delete.project' />
-              </div>
-            </div>
-          </Popup>
+                  <div className={styles['menu-item']} onClick={handleAddEnvironment}>
+                    <FormattedMessage id='projects.menu.add.environment' />
+                  </div>
+                  {
+                    isArchived ? (
+                      <div 
+                        className={styles['menu-item']} 
+                        onClick={() => {
+                          setIsArchived(false);
+                          refreshEnvironmentList(false);
+                        }}
+                      >
+                        <FormattedMessage id='projects.menu.view.active.environment' />
+                      </div>
+                    ) : (
+                      <div 
+                        className={styles['menu-item']} 
+                        onClick={() => {
+                          setIsArchived(true);
+                          refreshEnvironmentList(true);
+                        }}
+                      >
+                        <FormattedMessage id='projects.menu.view.archive.environment' />
+                      </div>
+                    )
+                  }
+                  <div className={styles['menu-item']} onClick={() => { checkProjectDeletable() }}>
+                    <FormattedMessage id='projects.menu.delete.project' />
+                  </div>
+                </div>
+              </Popup>
+            )
+          }
         </div>
         <div className={styles.key}>
           <span className={styles['key-label']}>

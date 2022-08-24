@@ -10,6 +10,8 @@ import Modal from 'components/Modal';
 import { I18NContainer } from 'hooks';
 import { editEnvironment } from 'services/project';
 import { IEnvironment } from 'interfaces/project';
+import { OWNER } from 'constants/auth';
+import { HeaderContainer } from 'layout/hooks';
 import { environmentContainer } from '../../provider';
 import styles from './index.module.scss';
 
@@ -37,9 +39,8 @@ const EnvironmentCard = (props: IProps) => {
     saveOriginEnvironmentInfo,
   } = environmentContainer.useContainer();
 
-  const {
-    i18n,
-  } = I18NContainer.useContainer();
+  const { userInfo } = HeaderContainer.useContainer();
+  const { i18n } = I18NContainer.useContainer();
 
   useEffect(() => {
     const handler = () => {
@@ -109,7 +110,7 @@ const EnvironmentCard = (props: IProps) => {
         <div className={styles.title}>
           <span>{ item.name }</span>
           {
-            isHover && (
+            isHover && OWNER.includes(userInfo.role) && (
               <Popup
                 open={open}
                 on='click'

@@ -4,10 +4,12 @@ import { getProjectList } from 'services/project';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
+import { HeaderContainer } from 'layout/hooks';
 import ProjectCard from './components/ProjectCard';
 import ProjectDrawer from './components/ProjectDrawer';
 import { Provider } from './provider';
 import { IProject } from 'interfaces/project';
+import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
 
 const Project = () => {
@@ -16,6 +18,7 @@ const Project = () => {
   const [ visible, setVisible ] = useState<boolean>(false);
   const [ projectKey, setProjectKey ] = useState<string>('');
   const intl = useIntl();
+  const { userInfo } = HeaderContainer.useContainer();
 
   const init = useCallback(async () => {
     const res = await getProjectList<IProject[]>();
@@ -53,12 +56,16 @@ const Project = () => {
               </span>
               <span className={styles.count}>{projectList.length}</span>
             </div>
-            <div>
-              <Button primary onClick={handleAddProject}>
-                <Icon customClass={styles.iconfont} type='add' />
-                <FormattedMessage id='common.project.text' />
-              </Button>
-            </div>
+            {
+              OWNER.includes(userInfo.role) && (
+                <div>
+                  <Button primary onClick={handleAddProject}>
+                    <Icon customClass={styles.iconfont} type='add' />
+                    <FormattedMessage id='common.project.text' />
+                  </Button>
+                </div>
+              )
+            }
           </div>
           <div className={styles.content}>
             {
