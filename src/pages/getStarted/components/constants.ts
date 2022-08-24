@@ -16,38 +16,40 @@ export const getJavaCode = (options: IOption) => {
   return [
     {
       title: intl.formatMessage({id: 'getstarted.java.first.step'}),
+      name: intl.formatMessage({id: 'getstarted.java.first.step.name.one'}),
       code: 'mvn archetype:generate -DgroupId=com.featureprobe.demo -DartifactId=featureprobe-java-demo'
-    }, 
+    },
     {
-      title: intl.formatMessage({id: 'getstarted.java.second.step'}),
-      code: 
+      name: intl.formatMessage({id: 'getstarted.java.first.step.name.two'}),
+      code:
 `<dependency>
   <groupId>com.featureprobe</groupId>
   <artifactId>server-sdk-java</artifactId>
   <version>${sdkVersion}</version>
 </dependency>
 `
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.java.second.step'}),
+      code:
+`private static final FPConfig config = FPConfig.builder()
+        .remoteUri("${remoteUrl}")
+        .build();
+
+private static final FeatureProbe fpClient = new FeatureProbe("${serverSdkKey}", config);
+`
     }, 
     {
       title: intl.formatMessage({id: 'getstarted.java.third.step'}),
       code: 
-`public class Demo {
-    private static final FPConfig config = FPConfig.builder()
-            .remoteUri("${remoteUrl}")
-            .pollingMode(Duration.ofSeconds(3))
-            .useMemoryRepository()
-            .build();
-
-    private static final FeatureProbe fpClient = new FeatureProbe("${serverSdkKey}", config);
-
-    public static void main(String[] args) throws InterruptedException {
-        String userId = /* unique user id in your business logic */;
-        FPUser user = new FPUser(userId)${userWithCode};
-        ${returnType === 'boolean' ? `boolean boolValue = fpClient.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = fpClient.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = fpClient.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = fpClient.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
-        fpClient.flush();
-        Thread.sleep(1000);
-    }
-}
+`FPUser user = new FPUser(/* unique user id for percentage rollout */)${userWithCode};
+${returnType === 'boolean' ? `boolean boolValue = fpClient.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = fpClient.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = fpClient.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = fpClient.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
+`
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.java.fourth.step'}),
+      code:
+`fpClient.close();
 `
     }
   ]
