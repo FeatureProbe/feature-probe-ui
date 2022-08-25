@@ -1,4 +1,4 @@
-import { useCallback, SyntheticEvent, useEffect } from 'react';
+import { useCallback, SyntheticEvent, useEffect, useState } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -26,6 +26,7 @@ interface IProps {
 
 const EnvironmentModal = (props: IProps) => {
   const { open, isAdd, projectKey, handleCancel, handleConfirm } = props;
+  const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
 
   const {
@@ -48,6 +49,7 @@ const EnvironmentModal = (props: IProps) => {
 
   useEffect(() => {
     if (open) {
+      saveKeyEdit(false);
       clearErrors();
     } else {
       saveEnvironmentInfo({
@@ -81,12 +83,12 @@ const EnvironmentModal = (props: IProps) => {
   }, [projectKey, setError]), 300);
 
   const onSubmit = useCallback(async () => {
-    let res; 
+    let res;
 
     const params = replaceSpace(cloneDeep(environmentInfo));
     if (params.name === '') {
       setError('name', {
-        message: intl.formatMessage({id: 'projects.environment.name.required'})
+        message: intl.formatMessage({ id: 'projects.environment.name.required' })
       });
       return;
     }
@@ -99,9 +101,9 @@ const EnvironmentModal = (props: IProps) => {
 
     if (res.success) {
       message.success(
-        isAdd 
-        ? intl.formatMessage({id: 'projects.create.environment.success'})
-        : intl.formatMessage({id: 'projects.edit.environment.success'})
+        isAdd
+          ? intl.formatMessage({ id: 'projects.create.environment.success' })
+          : intl.formatMessage({ id: 'projects.edit.environment.success' })
       );
       handleConfirm();
     } else {
@@ -112,32 +114,32 @@ const EnvironmentModal = (props: IProps) => {
         return;
       }
       message.error(
-        isAdd 
-          ? intl.formatMessage({id: 'projects.create.environment.error'})
-          : intl.formatMessage({id: 'projects.edit.environment.error'})
+        isAdd
+          ? intl.formatMessage({ id: 'projects.create.environment.error' })
+          : intl.formatMessage({ id: 'projects.edit.environment.error' })
       );
     }
   }, [isAdd, intl, projectKey, setError, environmentInfo, handleConfirm]);
 
-	return (
+  return (
     <Modal
       open={open}
       width={480}
       footer={null}
       handleCancel={handleCancel}
-      handleConfirm={() => {}}
+      handleConfirm={() => { }}
     >
       <div className={styles.modal}>
         <div className={styles['modal-header']}>
           <span className={styles['modal-header-text']}>
-            {isAdd ? intl.formatMessage({id: 'projects.create.environment'}) : intl.formatMessage({id: 'projects.edit.environment'})} 
+            {isAdd ? intl.formatMessage({ id: 'projects.create.environment' }) : intl.formatMessage({ id: 'projects.edit.environment' })}
           </span>
           <Icon customClass={styles['modal-close-icon']} type='close' onClick={handleCancel} />
         </div>
         <div className={styles['modal-content']}>
-          <Form 
+          <Form
             autoComplete='off'
-            onSubmit={handleSubmit(onSubmit)} 
+            onSubmit={handleSubmit(onSubmit)}
           >
             <FormItemName
               className={styles.field}
@@ -145,13 +147,24 @@ const EnvironmentModal = (props: IProps) => {
               errors={errors}
               register={register}
               onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                if (detail.value.length > 15 ) return;
+                if (detail.value.length > 15) return;
                 if (detail.value !== originEnvironmentInfo.name) {
                   checkExist('NAME', detail.value);
                 }
                 handleChange(e, detail, 'name');
                 setValue(detail.name, detail.value);
                 await trigger('name');
+
+                if (isKeyEdit || !isAdd) {
+                  return;
+                }
+
+                const reg = /[^A-Z0-9._-]+/gi;
+                const keyValue = detail.value.replace(reg, '_');
+                handleChange(e, { ...detail, value: keyValue }, 'key');
+                checkExist('KEY', detail.value);
+                setValue('key', keyValue);
+                await trigger('key');
               }}
             />
 
@@ -162,6 +175,7 @@ const EnvironmentModal = (props: IProps) => {
               register={register}
               showPopup={false}
               onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                saveKeyEdit(true);
                 checkExist('KEY', detail.value);
                 handleChange(e, detail, 'key');
                 setValue(detail.name, detail.value);
@@ -181,7 +195,7 @@ const EnvironmentModal = (props: IProps) => {
         </div>
       </div>
     </Modal>
-	)
+  )
 }
 
 export default EnvironmentModal;

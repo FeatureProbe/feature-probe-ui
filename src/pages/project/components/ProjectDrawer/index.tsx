@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useCallback } from 'react';
+import { SyntheticEvent, useEffect, useCallback, useState } from 'react';
 import { 
   Form,
   InputOnChangeData,
@@ -31,6 +31,7 @@ interface IProps {
 
 const ProjectDrawer = (props: IProps) => {
   const { isAdd, visible, projectKey, setDrawerVisible, refreshProjectsList } = props;
+  const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
   const {
     formState: { errors },
@@ -64,6 +65,7 @@ const ProjectDrawer = (props: IProps) => {
 
   useEffect(() => {
     if (visible) {
+      saveKeyEdit(false);
       clearErrors();
     } else {
       saveProjectInfo({
@@ -171,6 +173,17 @@ const ProjectDrawer = (props: IProps) => {
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
               await trigger('name');
+
+              if (isKeyEdit || !isAdd) {
+                return;
+              }
+
+              const reg = /[^A-Z0-9._-]+/gi;
+              const keyValue = detail.value.replace(reg, '_');
+              handleChange(e, {...detail, value: keyValue}, 'key');
+              checkExist('KEY', detail.value);
+              setValue('key', keyValue);
+              await trigger('key');
             }}
           />
 
@@ -182,6 +195,7 @@ const ProjectDrawer = (props: IProps) => {
             register={register}
             showPopup={false}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+              saveKeyEdit(true);
               checkExist('KEY', detail.value);
               handleChange(e, detail, 'key');
               setValue(detail.name, detail.value);
