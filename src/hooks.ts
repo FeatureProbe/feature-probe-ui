@@ -11,3 +11,16 @@ export const useI18N = () => {
 };
 
 export const I18NContainer = createContainer(useI18N);
+
+export const useSearchTime = () => {
+  let searchTime: number = 0;
+  return {
+    searchTime,
+    setSearchTime: (time: number) => {
+      searchTime = time;
+    },
+    check: (time: number) => {
+      return time === searchTime;
+    }
+  }
+}
