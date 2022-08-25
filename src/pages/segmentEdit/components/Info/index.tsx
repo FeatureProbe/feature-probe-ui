@@ -266,7 +266,7 @@ const Info = () => {
             setValue(detail.name, detail.value);
             await trigger('name');
             
-            if (isKeyEdit) {
+            if (isKeyEdit || match.path === SEGMENT_EDIT_PATH) {
               return;
             }
 
