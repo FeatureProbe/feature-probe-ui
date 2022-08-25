@@ -243,6 +243,7 @@ const Toggle = () => {
   const handleSearchArchivedList = useCallback((archived: boolean) => {
     setSearchParams({
       ...searchParams,
+      pageIndex: 0,
       archived,
     });
   }, [searchParams])
@@ -251,7 +252,7 @@ const Toggle = () => {
     <ProjectLayout>
       <div className={styles.toggle}>
         {
-          isArchived && toggleList.length > 0 && (
+          isArchived && (
             <div className={styles.archive}>
               {
                 i18n === 'en-US' 
@@ -449,7 +450,7 @@ const Toggle = () => {
                                 toggle={toggle} 
                                 isArchived={isArchived}
                                 setIsAdd={setIsAdd}
-                                getToggleLists={getToggleLists}
+                                refreshToggleList={refreshToggleList}
                                 setDrawerVisible={setDrawerVisible}
                               />
                             )
