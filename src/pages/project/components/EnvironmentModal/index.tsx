@@ -1,4 +1,4 @@
-import { useCallback, SyntheticEvent, useEffect, useState } from 'react';
+import { useCallback, SyntheticEvent, useEffect, useState, useMemo } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -15,6 +15,7 @@ import { checkEnvironmentExist } from 'services/toggle';
 import { CONFLICT } from 'constants/httpCode';
 import { replaceSpace } from 'utils/tools';
 import styles from './index.module.scss';
+import { useSearchTime } from 'hooks';
 
 interface IProps {
   open: boolean;
@@ -26,7 +27,7 @@ interface IProps {
 
 const EnvironmentModal = (props: IProps) => {
   const { open, isAdd, projectKey, handleCancel, handleConfirm } = props;
-  const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
+  const [isKeyEdit, saveKeyEdit] = useState<boolean>(false);
   const intl = useIntl();
 
   const {
@@ -68,19 +69,34 @@ const EnvironmentModal = (props: IProps) => {
     setValue('key', environmentInfo.key);
   }, [environmentInfo, setValue]);
 
-  const checkExist = debounce(useCallback(async (type: string, value: string) => {
-    const res = await checkEnvironmentExist(projectKey, {
-      type,
-      value
-    });
+  const { check, setSearchTime } = useSearchTime();
 
-    if (res.code === CONFLICT) {
-      setError(type.toLocaleLowerCase(), {
-        message: res.message,
-      });
-      return;
-    }
-  }, [projectKey, setError]), 300);
+  const debounceSearch = useMemo(() => {
+    return debounce(
+      async (type: string, value: string) => {
+        const time = Date.now();
+        setSearchTime(time);
+        const res = await checkEnvironmentExist(projectKey, {
+          type,
+          value
+        });
+
+        if (!check(time)) {
+          return;
+        }
+
+        if (res.code === CONFLICT) {
+          setError(type.toLocaleLowerCase(), {
+            message: res.message,
+          });
+        }
+      }
+      , 300);
+  }, [projectKey, setError, check, setSearchTime]);
+
+  const checkExist = useCallback((type: string, value: string) => {
+    debounceSearch(type, value);
+  }, [debounceSearch]);
 
   const onSubmit = useCallback(async () => {
     let res;
@@ -162,7 +178,7 @@ const EnvironmentModal = (props: IProps) => {
                 const reg = /[^A-Z0-9._-]+/gi;
                 const keyValue = detail.value.replace(reg, '_');
                 handleChange(e, { ...detail, value: keyValue }, 'key');
-                checkExist('KEY', detail.value);
+                checkExist('KEY', keyValue);
                 setValue('key', keyValue);
                 await trigger('key');
               }}

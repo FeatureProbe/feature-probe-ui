@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState, useCallback, useEffect } from 'react';
+import { SyntheticEvent, useState, useCallback, useEffect, useMemo } from 'react';
 import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
@@ -23,6 +23,7 @@ import { IRule, ICondition } from 'interfaces/targeting';
 import { DATETIME_TYPE } from 'components/Rule/constants';
 
 import styles from './index.module.scss';
+import { useSearchTime } from 'hooks';
 
 interface IParams {
   projectKey: string;
@@ -74,6 +75,8 @@ const Info = () => {
     setError,
     handleSubmit,
   } = hooksFormContainer.useContainer();
+
+  const {check, setSearchTime} = useSearchTime();
 
   useBeforeUnload(!publishDisabled, intl.formatMessage({id: 'targeting.page.leave.text'}));
 
@@ -227,20 +230,33 @@ const Info = () => {
   const onError = useCallback(() => {
     console.log(errors);
   }, [errors]);
+  
+  const debounceSearch = useMemo(() => {
+    return debounce(
+      async (type: string, value: string) => {
+        const time = Date.now();
+        setSearchTime(time);
+        const res = await checkSegmentExist(projectKey, {
+          type,
+          value
+        });
+        
+        if(!check(time)) {
+          return;
+        }
 
-  const checkExist = debounce(useCallback(async (type: string, value: string) => {
-    const res = await checkSegmentExist(projectKey, {
-      type,
-      value
-    });
+        if (res.code === CONFLICT) {
+          setError(type.toLocaleLowerCase(), {
+            message: res.message,
+          });
+        }
+      }
+    , 300);
+  }, [projectKey, setError, check, setSearchTime]);
 
-    if (res.code === CONFLICT) {
-      setError(type.toLocaleLowerCase(), {
-        message: res.message,
-      });
-      return;
-    }
-  }, [projectKey, setError]), 300);
+  const checkExist = useCallback((type: string, value: string) => {
+    debounceSearch(type, value);
+  }, [debounceSearch]);
 
   const handlePageChange = useCallback((e: SyntheticEvent, data: PaginationProps) => {
     setSearchParams({
@@ -273,7 +289,7 @@ const Info = () => {
             const reg = /[^A-Z0-9._-]+/gi;
             const keyValue = detail.value.replace(reg, '_');
             handleChange(e, {...detail, value: keyValue}, 'key');
-            checkExist('KEY', detail.value);
+            checkExist('KEY', keyValue);
             setValue('key', keyValue);
             await trigger('key');
           }}
