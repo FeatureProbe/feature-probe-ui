@@ -53,6 +53,7 @@ const Info = () => {
   });
   const [ total, setTotal ] = useState<number>(0);
   const [ isLoading, setLoading ] = useState<boolean>(false);
+  const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
   const history = useHistory();
   const match = useRouteMatch();
@@ -264,6 +265,17 @@ const Info = () => {
             handleChange(e, detail, 'name')
             setValue(detail.name, detail.value);
             await trigger('name');
+            
+            if (isKeyEdit) {
+              return;
+            }
+
+            const reg = /[^A-Z0-9._-]+/gi;
+            const keyValue = detail.value.replace(reg, '_');
+            handleChange(e, {...detail, value: keyValue}, 'key');
+            checkExist('KEY', detail.value);
+            setValue('key', keyValue);
+            await trigger('key');
           }}
         />
 
@@ -275,6 +287,7 @@ const Info = () => {
           register={register}
           showPopup={false}
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+            saveKeyEdit(true);
             checkExist('KEY', detail.value);
             handleChange(e, detail, 'key');
             setValue(detail.name, detail.value);
