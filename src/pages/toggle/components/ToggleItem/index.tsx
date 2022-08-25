@@ -24,11 +24,11 @@ interface IProps {
   isArchived?: boolean;
   setDrawerVisible(visible: boolean): void;
   setIsAdd(isAdd: boolean): void;
-  getToggleLists(): void;
+  refreshToggleList(): void;
 }
 
 const ToggleItem = (props: IProps) => {
-  const { toggle, isArchived, setDrawerVisible, setIsAdd, getToggleLists } = props;
+  const { toggle, isArchived, setDrawerVisible, setIsAdd, refreshToggleList } = props;
   const [ visible, setVisible ] = useState<boolean>(false);
   const [ archiveOpen, setArchiveOpen] = useState<boolean>(false);
   const [ restoreOpen, setRestoreOpen] = useState<boolean>(false);
@@ -93,11 +93,11 @@ const ToggleItem = (props: IProps) => {
 
     if (res.success) {
       message.success(intl.formatMessage({id: 'toggles.archive.success'}));
-      getToggleLists();
+      refreshToggleList();
     } else {
       message.error(intl.formatMessage({id: 'toggles.archive.error'}));
     }
-  }, [toggle.key, projectKey, intl, getToggleLists]);
+  }, [toggle.key, projectKey, intl, refreshToggleList]);
 
   const confirmRestoreToggle = useCallback(async () => {
     let res = await editToggle(projectKey, toggle.key, {
@@ -106,11 +106,11 @@ const ToggleItem = (props: IProps) => {
 
     if (res.success) {
       message.success(intl.formatMessage({id: 'toggles.restore.success'}));
-      getToggleLists();
+      refreshToggleList();
     } else {
       message.error(intl.formatMessage({id: 'toggles.restore.error'}));
     }
-  }, [toggle.key, projectKey, intl, getToggleLists]);
+  }, [toggle.key, projectKey, intl, refreshToggleList]);
 
 	return (
     <Table.Row
