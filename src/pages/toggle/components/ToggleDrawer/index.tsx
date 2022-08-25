@@ -1,4 +1,4 @@
-import { SyntheticEvent, FormEvent, useEffect, useState, useCallback } from 'react';
+import { SyntheticEvent, FormEvent, useEffect, useState, useCallback, useMemo } from 'react';
 import { 
   Form,
   Popup,
@@ -31,6 +31,8 @@ import { ITag, ITagOption } from 'interfaces/project';
 import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'services/toggle';
 
 import styles from './index.module.scss';
+import { debounce } from 'lodash';
+import { useSearchTime } from 'hooks';
 
 interface IParams {
   isAdd: boolean;
@@ -71,7 +73,8 @@ const Drawer = (props: IParams) => {
     saveToggleInfo, 
     saveOriginToggleInfo,
   } = toggleInfoContainer.useContainer();
-
+  
+  const {check, setSearchTime} = useSearchTime();
 
   const options = variations?.map((item: IVariation, index: number) => {
     const text = item.name || item.value || `variation ${index + 1}`
@@ -233,20 +236,33 @@ const Drawer = (props: IParams) => {
       }
     }
   }, [getValues, clearErrors]);
+  
+  const debounceSearch = useMemo(() => {
+    return debounce(
+      async (type: string, value: string) => {
+        const time = Date.now();
+        setSearchTime(time);
+        const res = await checkToggleExist(projectKey, {
+          type,
+          value
+        });
+    
+        if(!check(time)) {
+          return;
+        }
 
-  const checkExist = useCallback(async (type: string, value: string) => {
-    const res = await checkToggleExist(projectKey, {
-      type,
-      value
-    });
+        if (res.code === CONFLICT) {
+          setError(type.toLocaleLowerCase(), {
+            message: res.message,
+          });
+        }
+      }
+    , 300);
+  }, [projectKey, setError, check, setSearchTime]);
 
-    if (res.code === CONFLICT) {
-      setError(type.toLocaleLowerCase(), {
-        message: res.message,
-      });
-      return;
-    }
-  }, [projectKey, setError]);
+  const checkExist = useCallback((type: string, value: string) => {
+    debounceSearch(type, value);
+  }, [debounceSearch]);
 
 	return (
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
@@ -300,7 +316,7 @@ const Drawer = (props: IParams) => {
               const reg = /[^A-Z0-9._-]+/gi;
               const keyValue = detail.value.replace(reg, '_');
               handleChange(e, {...detail, value: keyValue}, 'key');
-              checkExist('KEY', detail.value);
+              checkExist('KEY', keyValue);
               setValue('key', keyValue);
               await trigger('key');
             }}
