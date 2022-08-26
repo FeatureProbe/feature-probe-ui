@@ -41,11 +41,11 @@
 
 .card {
   background-color: #FFFFFF;
-  padding: 12px 24px 24px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
   height: calc(100vh - 94px);
   overflow-y: auto;
   overflow-x: hidden;
+  position: relative;
 }
 
 .heading {
@@ -55,6 +55,33 @@
   letter-spacing: 0;
   text-align: justify;
   line-height: 30px;
+  padding: 12px 24px;
+}
+
+.heading-archive {
+  font-family: HelveticaNeue-Medium;
+  font-size: 20px;
+  color: #212529;
+  letter-spacing: 0;
+  text-align: justify;
+  line-height: 30px;
+  background-image: url('images/archived.png');
+  background-repeat: repeat-x;
+  padding: 12px 24px;
+}
+
+.icon-back {
+  font-size: 20px !important;
+  cursor: pointer;
+  color: #000000;
+}
+
+.divider {
+  display: inline-block;
+  width: 1px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 0 12px;
 }
 
 .filter-form {
@@ -130,6 +157,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  padding: 0 24px;
 }
 
 .add-button {
@@ -138,6 +166,15 @@
 
 .lists {
   margin-top: 16px;
+  padding: 0 24px;
+}
+
+.archived-img {
+  position: fixed;
+  right: -0;
+  top: 20px;
+  width: 160px;
+  z-index: 1;
 }
 
 .table-header {
@@ -152,11 +189,11 @@
 }
 
 .pagination {
-  margin-top: 16px;
+  margin: 16px 0;
   text-align: right;
   display: flex;
   justify-content: space-between;
-  padding-left: 24px;
+  padding-left: 48px;
 }
 
 .total {
@@ -183,4 +220,48 @@
 .no-data-image {
   width: 165px;
   margin: 150px 0 8px;
+}
+
+.toggle-menu {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: #556EE6;
+  border-radius: 6px;
+  color: #fff;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 32px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.toggle-menu:hover {
+  background-color: #4458B8;
+}
+
+.menu-angle-down {
+  font-size: 24px !important;
+}
+
+.popup {
+  padding: 4px 0 !important;
+  margin-top: 4px !important;
+}
+
+.menu {
+  min-width: 90px;
+  color: #212529;
+}
+
+.menu-item {
+  height: 28px;
+  line-height: 28px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 12px;
+}
+
+.menu-item:hover {
+  background-color: #F8F9FA;
 }

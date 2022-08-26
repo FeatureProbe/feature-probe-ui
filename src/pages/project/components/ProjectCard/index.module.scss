@@ -80,7 +80,7 @@
 }
 
 .iconfont:hover {
-  background: rgba(33,37,41,0.04);
+  background: rgba(33, 37, 41, 0.04);
 }
 
 .popup {
@@ -102,4 +102,42 @@
 
 .menu-item:hover {
   background-color: #F8F9FA;
+}
+
+.warning-circle {
+  font-size: 20px !important;
+  color: #F5483B;
+  padding: 0 10px;
+}
+
+.modal-header-text {
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.modal-content {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 8px;
+  margin-left: 40px;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.no-data {
+  text-align: center;
+}
+
+.no-data-img {
+  width: 140px;
+}
+
+.no-data-text {
+  font-family: PingFangSC-Medium;
+  font-size: 14px;
+  color: #ADB5BC;
 }

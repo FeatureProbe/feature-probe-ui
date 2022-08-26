@@ -16,6 +16,7 @@
   background-color: #ffffff;
   border-radius: 0 0 8px 8px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
+  position: relative;
 }
 
 .title {
@@ -29,6 +30,7 @@
   justify-content: space-between;
   height: 20px;
   align-items: center;
+  position: relative;
 }
 
 .key {
@@ -57,6 +59,8 @@
   text-align: center;
   display: inline-block;
   color: #74788D;
+  position: relative;
+  z-index: 2;
 }
 
 .iconfont:hover {
@@ -112,4 +116,41 @@
 
 .menu-item:hover {
   background-color: #F8F9FA;
+}
+
+.warning-circle {
+  font-size: 20px !important;
+  color: #F5483B;
+  padding: 0 10px;
+}
+
+.modal-header-text {
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.modal-content {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 8px;
+  margin-left: 40px;
+}
+
+.archived-img {
+  position: absolute;
+  width: 50px;
+  top: 5px;
+  right: 2px;
+  z-index: 1;
+}
+
+.archived-bg {
+  background-image: url('images/archived.png');
+  background-size: cover;
+  width: 242px;
+  height: 28px;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
