@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef } from 'react';
 import { createContainer } from "unstated-next";
 import { useLocalStorage } from "utils/hooks";
 
@@ -13,24 +13,19 @@ export const useI18N = () => {
 
 export const I18NContainer = createContainer(useI18N);
 
-export const useSearchTime = () => {
-  let searchTime = useRef(0);
+export const useRequestTimeCheck = () => {
+  const requestTimes = useRef(new Map());
 
-  const saveSearchTime = (time: number) => {
-    searchTime.current = time;
-  };
+  const creatRequestTimeCheck = useCallback((key: string) => {
+    const requestTime = Date.now();
+    requestTimes.current.set(key, requestTime);
 
-  const setSearchTime = useCallback(saveSearchTime, []);
+    const check = () => {
+      return requestTimes.current.get(key) === requestTime;
+    };
 
-  const check = useCallback(
-    (time: number) => {
-      return time === searchTime.current;
-    },
-    [searchTime]
-  );
+    return check;
+  }, [requestTimes]);
 
-  return {
-    setSearchTime,
-    check,
-  };
+  return creatRequestTimeCheck;
 }

@@ -20,7 +20,7 @@ import { replaceSpace } from 'utils/tools';
 import { CONFLICT } from 'constants/httpCode';
 
 import styles from './index.module.scss';
-import { useSearchTime } from 'hooks';
+import { useRequestTimeCheck } from 'hooks';
 
 interface IProps {
   isAdd: boolean;
@@ -87,34 +87,57 @@ const ProjectDrawer = (props: IProps) => {
     setValue('key', projectInfo.key);
   }, [projectInfo, setValue]);
 
-  const {check, setSearchTime} = useSearchTime();
+  const creatRequestTimeCheck = useRequestTimeCheck();
 
-  const debounceSearch = useMemo(() => {
-    return debounce(
-      async (type: string, value: string) => {
-        const time = Date.now();
-        setSearchTime(time);
-        const res = await checkProjectExist({
-          type,
-          value
-        });
+  const debounceNameExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("name");
+      const res = await checkProjectExist({
+        type,
+        value
+      });
 
-        if(!check(time)) {
-          return;
-        }
-    
-        if (res.code === CONFLICT) {
-          setError(type.toLocaleLowerCase(), {
-            message: res.message,
-          });
-        }
+      if(!check()) {
+        return;
       }
-    , 300);
-  }, [setError, check, setSearchTime]);
 
-  const checkExist = useCallback((type: string, value: string) => {
-    debounceSearch(type, value);
-  }, [debounceSearch]);
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+
+    }, 500);
+  }, [creatRequestTimeCheck, setError]);
+
+  const debounceKeyExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("key");
+      const res = await checkProjectExist({
+        type,
+        value
+      });
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+    }, 500);
+  }, [creatRequestTimeCheck, setError]);
+
+  const checkNameExist = useCallback(async (type: string, value: string) => {
+    await debounceNameExist(type, value);
+  }, [debounceNameExist]);
+
+  const checkKeyExist = useCallback(async (type: string, value: string) => {
+    await debounceKeyExist(type, value);
+  }, [debounceKeyExist]);
+
 
 
   const onSubmit = useCallback(async () => {
@@ -185,7 +208,7 @@ const ProjectDrawer = (props: IProps) => {
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
               if (detail.value !== originProjectInfo.name) {
-                checkExist('NAME', detail.value);
+                checkNameExist('NAME', detail.value);
               }
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
@@ -198,7 +221,7 @@ const ProjectDrawer = (props: IProps) => {
               const reg = /[^A-Z0-9._-]+/gi;
               const keyValue = detail.value.replace(reg, '_');
               handleChange(e, {...detail, value: keyValue}, 'key');
-              checkExist('KEY', keyValue);
+              checkKeyExist('KEY', keyValue);
               setValue('key', keyValue);
               await trigger('key');
             }}
@@ -213,7 +236,7 @@ const ProjectDrawer = (props: IProps) => {
             showPopup={false}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               saveKeyEdit(true);
-              checkExist('KEY', detail.value);
+              checkKeyExist('KEY', detail.value);
               handleChange(e, detail, 'key');
               setValue(detail.name, detail.value);
               await trigger('key');
