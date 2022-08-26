@@ -106,7 +106,7 @@ const StepSecond = (props: IProps) => {
         case 'Python':
           saveLanguage('python');
           result.forEach(item => {
-            userWithCode += `user['${item}'] = 'value for ${item}'  # or use 'user.with_attr(key, value)'`
+            userWithCode += `user['${item}'] = 'value for ${item}'  # or use 'user.with_attr(key, value)'\n    `;
           });
           saveOptions(
             getPythonCode({
