@@ -1,7 +1,7 @@
 import request from '../utils/request';
 import qs from 'qs';
 import API from '../constants/api';
-import { IEnvironment, IProject, IExistParams } from 'interfaces/project';
+import { IEnvironmentParams, IProject, IProjectParams, IExistParams, IArchivedParams } from 'interfaces/project';
 import { ApplicationJson } from 'constants/api/contentType';
 
 export const getProjectList = async<T> () => {
@@ -13,7 +13,18 @@ export const getProjectList = async<T> () => {
       ...ApplicationJson()
     },
   });
-}
+};
+
+export const getEnvironmentList = async<T> (projectKey: string, params: IArchivedParams) => {
+  const url = `${API.environmentURI.replace(':projectKey', projectKey)}?${qs.stringify(params)}`;
+  
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
 
 export const getProjectInfo = async<T> (projectKey: string) => {
   const url = `${
@@ -41,7 +52,7 @@ export const addProject = async (data: IProject) => {
   });
 };
 
-export const editProject = async(projectKey: string, data: IProject) => {
+export const editProject = async(projectKey: string, data: IProjectParams) => {
   const url = `${
     API.editProjectURI
       .replace(':projectKey', projectKey)
@@ -56,7 +67,7 @@ export const editProject = async(projectKey: string, data: IProject) => {
   });
 };
 
-export const addEnvironment = async(projectKey: string, data: IEnvironment) => {
+export const addEnvironment = async(projectKey: string, data: IEnvironmentParams) => {
   const url = `${
     API.addEnvironmentURI
       .replace(':projectKey', projectKey)
@@ -71,7 +82,7 @@ export const addEnvironment = async(projectKey: string, data: IEnvironment) => {
   });
 };
 
-export const editEnvironment = async(projectKey: string, environmentKey: string, data: IEnvironment) => {
+export const editEnvironment = async(projectKey: string, environmentKey: string, data: IEnvironmentParams) => {
   const url = `${
     API.editEnvironmentURI
       .replace(':projectKey', projectKey)

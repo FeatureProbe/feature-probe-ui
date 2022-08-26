@@ -1,16 +1,18 @@
 import { SyntheticEvent, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import dayjs from 'dayjs';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Table } from 'semantic-ui-react';
+import dayjs from 'dayjs';
 import Icon from 'components/Icon';
-import { getToggleInfo } from 'services/toggle';
-import { variationContainer, toggleInfoContainer } from '../../provider';
+import Modal from 'components/Modal';
+import message from 'components/MessageBox';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import TagsList from 'components/TagsList';
+import { editToggle, getToggleInfo } from 'services/toggle';
 import { IToggle } from 'interfaces/toggle';
 import { IToggleInfo } from 'interfaces/targeting';
+import { variationContainer, toggleInfoContainer } from '../../provider';
 import styles from './index.module.scss';
-import { FormattedMessage } from 'react-intl';
 
 interface ILocationParams {
   projectKey: string;
@@ -19,15 +21,22 @@ interface ILocationParams {
 
 interface IProps {
   toggle: IToggle
+  isArchived?: boolean;
   setDrawerVisible(visible: boolean): void;
   setIsAdd(isAdd: boolean): void;
+  refreshToggleList(): void;
 }
 
 const ToggleItem = (props: IProps) => {
-  const { toggle, setDrawerVisible, setIsAdd } = props;
+  const { toggle, isArchived, setDrawerVisible, setIsAdd, refreshToggleList } = props;
+  const [ visible, setVisible ] = useState<boolean>(false);
+  const [ archiveOpen, setArchiveOpen] = useState<boolean>(false);
+  const [ restoreOpen, setRestoreOpen] = useState<boolean>(false);
+
   const history = useHistory();
+  const intl = useIntl();
   const { projectKey, environmentKey } = useParams<ILocationParams>();
-  const [ visible, setVisible ] = useState(false);
+
   const { saveVariations } = variationContainer.useContainer();
   const { saveToggleInfo, saveOriginToggleInfo } = toggleInfoContainer.useContainer();
 
@@ -76,6 +85,32 @@ const ToggleItem = (props: IProps) => {
       }
     });
   }, [projectKey, environmentKey, saveToggleInfo, saveOriginToggleInfo, saveVariations, setIsAdd, setDrawerVisible]);
+
+  const confirmArchiveToggle = useCallback(async () => {
+    let res = await editToggle(projectKey, toggle.key, {
+      archived: true,
+    });
+
+    if (res.success) {
+      message.success(intl.formatMessage({id: 'toggles.archive.success'}));
+      refreshToggleList();
+    } else {
+      message.error(intl.formatMessage({id: 'toggles.archive.error'}));
+    }
+  }, [toggle.key, projectKey, intl, refreshToggleList]);
+
+  const confirmRestoreToggle = useCallback(async () => {
+    let res = await editToggle(projectKey, toggle.key, {
+      archived: false,
+    });
+
+    if (res.success) {
+      message.success(intl.formatMessage({id: 'toggles.restore.success'}));
+      refreshToggleList();
+    } else {
+      message.error(intl.formatMessage({id: 'toggles.restore.error'}));
+    }
+  }, [toggle.key, projectKey, intl, refreshToggleList]);
 
 	return (
     <Table.Row
@@ -157,7 +192,7 @@ const ToggleItem = (props: IProps) => {
                 <FormattedMessage id='toggles.evaluated.novisit' /> 
               </div>
               <div className={styles['toggle-evaluated-tips']}>
-                <FormattedMessage id='toggle.evaluated.link.sdk' /> 
+                <FormattedMessage id='toggles.evaluated.link.sdk' /> 
               </div>
             </div>
           )
@@ -178,15 +213,98 @@ const ToggleItem = (props: IProps) => {
         {
           visible ? (
             <div className={styles['toggle-operation']}>
-              <div className={styles['toggle-operation-item']} onClick={(e) => handleEditToggle(e, toggle.key)}>
-                <FormattedMessage id='common.edit.text' />
-              </div>
+              {
+                !isArchived && (
+                  <div className={styles['toggle-operation-item']} onClick={(e) => {
+                    document.body.click();
+                    handleEditToggle(e, toggle.key);
+                  }}>
+                    <FormattedMessage id='common.edit.text' />
+                  </div>
+                )
+              }
+              {
+                isArchived ? (
+                  <div 
+                    className={styles['toggle-operation-item']} 
+                    onClick={(e) => {
+                      document.body.click();
+                      e.stopPropagation();
+                      setRestoreOpen(true); 
+                    }}
+                  >
+                    <FormattedMessage id='common.restore.text' />
+                  </div>
+                ) : (
+                  <div 
+                    className={styles['toggle-operation-item']} 
+                    onClick={(e) => { 
+                      document.body.click();
+                      e.stopPropagation();
+                      setArchiveOpen(true); 
+                    }}
+                  >
+                    <FormattedMessage id='common.archive.text' />
+                  </div>
+                )
+              }
             </div>
           ) : (
             <div className={styles['toggle-operation']}></div>
           )
         }
       </Table.Cell>
+      <Modal 
+        open={archiveOpen}
+        width={400}
+        handleCancel={(e: SyntheticEvent) => {
+          e.stopPropagation();
+          setArchiveOpen(false);
+        }}
+        handleConfirm={(e: SyntheticEvent) => {
+          e.stopPropagation();
+          setArchiveOpen(false);
+          confirmArchiveToggle();
+        }}
+      >
+        <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
+          <div className={styles['modal-header']}>
+            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <span className={styles['modal-header-text']}>
+              <FormattedMessage id='toggles.archive.title' />
+            </span>
+          </div>
+          <div className={styles['modal-content']}>
+            <FormattedMessage id='toggles.archive.content' />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal 
+        open={restoreOpen}
+        width={400}
+        handleCancel={(e: SyntheticEvent) => {
+          e.stopPropagation();
+          setRestoreOpen(false);
+        }}
+        handleConfirm={(e: SyntheticEvent) => {
+          e.stopPropagation();
+          setRestoreOpen(false);
+          confirmRestoreToggle();
+        }}
+      >
+        <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
+          <div className={styles['modal-header']}>
+            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <span className={styles['modal-header-text']}>
+              <FormattedMessage id='toggles.restore.title' />
+            </span>
+          </div>
+          <div className={styles['modal-content']}>
+            <FormattedMessage id='toggles.restore.content' />
+          </div>
+        </div>
+      </Modal>
     </Table.Row>
 	)
 }

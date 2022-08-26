@@ -108,6 +108,7 @@ const ToggleItem = (props: IProps) => {
           <div 
             className={styles['toggle-operation-item']} 
             onClick={(e: SyntheticEvent) => {
+              document.body.click();
               e.stopPropagation();
               checkSegmentDelete(segment?.key);
             }}
