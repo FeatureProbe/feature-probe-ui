@@ -32,7 +32,7 @@ import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'ser
 
 import styles from './index.module.scss';
 import { debounce } from 'lodash';
-import { useSearchTime } from 'hooks';
+import { useRequestTimeCheck } from 'hooks';
 
 interface IParams {
   isAdd: boolean;
@@ -73,8 +73,6 @@ const Drawer = (props: IParams) => {
     saveToggleInfo, 
     saveOriginToggleInfo,
   } = toggleInfoContainer.useContainer();
-  
-  const {check, setSearchTime} = useSearchTime();
 
   const options = variations?.map((item: IVariation, index: number) => {
     const text = item.name || item.value || `variation ${index + 1}`
@@ -236,33 +234,57 @@ const Drawer = (props: IParams) => {
       }
     }
   }, [getValues, clearErrors]);
+
+  const creatRequestTimeCheck = useRequestTimeCheck();
   
-  const debounceSearch = useMemo(() => {
-    return debounce(
-      async (type: string, value: string) => {
-        const time = Date.now();
-        setSearchTime(time);
-        const res = await checkToggleExist(projectKey, {
-          type,
-          value
-        });
-    
-        if(!check(time)) {
-          return;
-        }
+  const debounceNameExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("name");
+      const res = await checkToggleExist(projectKey, {
+        type,
+        value
+      });
 
-        if (res.code === CONFLICT) {
-          setError(type.toLocaleLowerCase(), {
-            message: res.message,
-          });
-        }
+      if(!check()) {
+        return;
       }
-    , 300);
-  }, [projectKey, setError, check, setSearchTime]);
 
-  const checkExist = useCallback((type: string, value: string) => {
-    debounceSearch(type, value);
-  }, [debounceSearch]);
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const debounceKeyExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("key");
+      const res = await checkToggleExist(projectKey, {
+        type,
+        value
+      });
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const checkNameExist = useCallback(async (type: string, value: string) => {
+    await debounceNameExist(type, value);
+  }, [debounceNameExist]);
+
+  const checkKeyExist = useCallback(async (type: string, value: string) => {
+    await debounceKeyExist(type, value);
+  }, [debounceKeyExist]);
 
 	return (
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
@@ -303,7 +325,7 @@ const Drawer = (props: IParams) => {
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
               if (detail.value !== originToggleInfo.name) {
-                checkExist('NAME', detail.value);
+                checkNameExist('NAME', detail.value);
               }
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
@@ -316,7 +338,7 @@ const Drawer = (props: IParams) => {
               const reg = /[^A-Z0-9._-]+/gi;
               const keyValue = detail.value.replace(reg, '_');
               handleChange(e, {...detail, value: keyValue}, 'key');
-              checkExist('KEY', keyValue);
+              checkKeyExist('KEY', keyValue);
               setValue('key', keyValue);
               await trigger('key');
             }}
@@ -333,7 +355,7 @@ const Drawer = (props: IParams) => {
             popupText={intl.formatMessage({id: 'toggles.key.tips'})}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               saveKeyEdit(true);
-              checkExist('KEY', detail.value);
+              checkKeyExist('KEY', detail.value);
               handleChange(e, detail, 'key');
               setValue(detail.name, detail.value);
               await trigger('key');
