@@ -1,6 +1,6 @@
 {
   "name": "feature-probe-ui",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "FeatureProbe UI/Portal",
   "license": "Apache-2.0",
   "keywords": [
@@ -103,5 +103,5 @@
   "resolutions": {
     "@types/react": "17.0.43"
   },
-  "proxy": "http://featureprobe-df.intra.xiaojukeji.com/"
+  "proxy": "https://featureprobe.io/"
 }
