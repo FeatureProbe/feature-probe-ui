@@ -43,7 +43,7 @@ const Project = () => {
     setIsAdd(false);
     setVisible(true);
     setProjectKey(projectKey);
-  }, [])
+  }, []);
 
 	return (
     <div className={styles.project}>
