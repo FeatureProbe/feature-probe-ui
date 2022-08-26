@@ -34,10 +34,10 @@ const SERVER_SIDE_SDKS = [
     name: 'Go',
     logo: go,
   },
-  // {
-  //   name: 'Python',
-  //   logo: python,
-  // }
+  {
+    name: 'Python',
+    logo: python,
+  },
   {
     name: 'Rust',
     logo: rust,

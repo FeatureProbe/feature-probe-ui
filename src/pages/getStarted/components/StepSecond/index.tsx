@@ -9,7 +9,16 @@ import Icon from 'components/Icon';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { IRouterParams } from 'interfaces/project';
 import { ICondition, IRule } from 'interfaces/targeting';
-import { getAndroidCode, getGoCode, getJavaCode, getJSCode, getObjCCode, getRustCode, getSwiftCode } from '../constants';
+import {
+  getAndroidCode,
+  getGoCode,
+  getJavaCode,
+  getJSCode,
+  getObjCCode,
+  getPythonCode,
+  getRustCode,
+  getSwiftCode,
+} from '../constants';
 import styles from '../Steps/index.module.scss';
 
 interface IProps {
@@ -77,7 +86,7 @@ const StepSecond = (props: IProps) => {
       });
 
       switch (currentSDK) {
-        case 'Java': 
+        case 'Java':
           saveLanguage('java');
           result.forEach(item => {
             userWithCode += `.with("${item}", /* ${item} */)`
@@ -89,6 +98,23 @@ const StepSecond = (props: IProps) => {
               toggleKey, 
               returnType, 
               intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
+          break;
+        case 'Python':
+          saveLanguage('python');
+          result.forEach(item => {
+            userWithCode += `user['${item}'] = 'value for ${item}'  # or use 'user.with_attr(key, value)'`
+          });
+          saveOptions(
+            getPythonCode({
+              sdkVersion,
+              serverSdkKey,
+              toggleKey,
+              returnType,
+              intl,
               userWithCode,
               remoteUrl,
             })
@@ -158,30 +184,30 @@ const StepSecond = (props: IProps) => {
             remoteUrl,
           }));
           break;
-        case 'Objective-C': 
+        case 'Objective-C':
           saveLanguage('objectivec');
           result.forEach(item => {
             userWithCode += `[user withKey:@"${item}" value:/* ${item} */];\n`
           });
           saveOptions(getObjCCode({
-            clientSdkKey, 
-            toggleKey, 
-            returnType, 
-            intl, 
+            clientSdkKey,
+            toggleKey,
+            returnType,
+            intl,
             userWithCode,
             remoteUrl,
           }));
           break;
-        case 'JavaScript': 
+        case 'JavaScript':
           saveLanguage('javascript');
           result.forEach(item => {
             userWithCode += `user.with("${item}", /* ${item} */);\n`
           });
           saveOptions(getJSCode({
-            clientSdkKey, 
-            toggleKey, 
-            returnType, 
-            intl, 
+            clientSdkKey,
+            toggleKey,
+            returnType,
+            intl,
             userWithCode,
             remoteUrl,
           }));
@@ -250,15 +276,15 @@ const StepSecond = (props: IProps) => {
                                 </span>
                               </CopyToClipboardPopup>
                             </span>
-                            <SyntaxHighlighter 
-                              language={language} 
-                              style={docco} 
-                              wrapLongLines={true} 
+                            <SyntaxHighlighter
+                              language={language}
+                              style={docco}
+                              wrapLongLines={true}
                               customStyle={{
-                                backgroundColor: 'rgba(33,37,41,0.04)', 
-                                fontSize: '13px', 
-                                borderRadius: '6px', 
-                                minHeight: '36px', 
+                                backgroundColor: 'rgba(33,37,41,0.04)',
+                                fontSize: '13px',
+                                borderRadius: '6px',
+                                minHeight: '36px',
                                 marginTop: '0',
                                 marginBottom: '12px',
                                 paddingRight: '70px'
@@ -273,8 +299,8 @@ const StepSecond = (props: IProps) => {
                   }
                 </div>
                 <div>
-                  <Button 
-                    primary 
+                  <Button
+                    primary
                     type='submit'
                     className={styles.save}
                     onClick={() => {
@@ -294,12 +320,12 @@ const StepSecond = (props: IProps) => {
                   <FormattedMessage id='connect.third.title' />
                 </div>
                 <div className={styles['card-right']}>
-                  <Icon 
-                    type='view' 
+                  <Icon
+                    type='view'
                     customClass={styles.iconfont}
                     onClick={() => {
                       goBackToStep(CURRENT);
-                    }} 
+                    }}
                   />
                 </div>
               </div>
