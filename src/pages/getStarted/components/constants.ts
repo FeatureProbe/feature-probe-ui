@@ -143,14 +143,10 @@ import featureprobe as fp
 
 if __name__ == '__main__':
     config = fp.Config(remote_uri='${remoteUrl}', sync_mode='pooling')
-    client = fp.Client('${clientSdkKey}', config)
-    
-    
-    user = fp.User('unique user id in your business logic')
-    ${userWithCode}
-    val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? `False` : ''}${returnType === 'string' ? `'not connected'` : ''}${returnType === 'number' ? `-1` : ''}${returnType === 'json' ? `{}` : ''})
-    client.flush()
-    time.sleep(1)    
+    with fp.Client('${clientSdkKey}', config) as client:
+      user = fp.User(stable_rollout_key='unique user id in your business logic')
+      ${userWithCode}
+      val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? `False` : ''}${returnType === 'string' ? `'not connected'` : ''}${returnType === 'number' ? `-1` : ''}${returnType === 'json' ? `{}` : ''})  
 `
         }
     ];
