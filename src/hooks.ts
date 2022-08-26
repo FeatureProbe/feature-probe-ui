@@ -3,11 +3,11 @@ import { createContainer } from "unstated-next";
 import { useLocalStorage } from "utils/hooks";
 
 export const useI18N = () => {
-  const [ i18n, setI18n ] = useLocalStorage('i18n', 'en-US');
+  const [i18n, setI18n] = useLocalStorage('i18n', 'en-US');
 
-  return { 
-    i18n, 
-    setI18n, 
+  return {
+    i18n,
+    setI18n,
   };
 };
 
@@ -18,16 +18,19 @@ export const useSearchTime = () => {
 
   const saveSearchTime = (time: number) => {
     searchTime.current = time;
-  }
+  };
 
   const setSearchTime = useCallback(saveSearchTime, []);
 
-  const check = useCallback((time: number) => {
-    return time === searchTime.current;
-  }, [searchTime]);
+  const check = useCallback(
+    (time: number) => {
+      return time === searchTime.current;
+    },
+    [searchTime]
+  );
 
   return {
     setSearchTime,
-    check
-  }
+    check,
+  };
 }
