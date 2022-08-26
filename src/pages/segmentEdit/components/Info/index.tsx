@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState, useCallback, useEffect } from 'react';
+import { SyntheticEvent, useState, useCallback, useEffect, useMemo } from 'react';
 import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
@@ -23,6 +23,7 @@ import { IRule, ICondition } from 'interfaces/targeting';
 import { DATETIME_TYPE } from 'components/Rule/constants';
 
 import styles from './index.module.scss';
+import { useRequestTimeCheck } from 'hooks';
 
 interface IParams {
   projectKey: string;
@@ -53,6 +54,7 @@ const Info = () => {
   });
   const [ total, setTotal ] = useState<number>(0);
   const [ isLoading, setLoading ] = useState<boolean>(false);
+  const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
   const history = useHistory();
   const match = useRouteMatch();
@@ -227,19 +229,56 @@ const Info = () => {
     console.log(errors);
   }, [errors]);
 
-  const checkExist = debounce(useCallback(async (type: string, value: string) => {
-    const res = await checkSegmentExist(projectKey, {
-      type,
-      value
-    });
-
-    if (res.code === CONFLICT) {
-      setError(type.toLocaleLowerCase(), {
-        message: res.message,
+  const creatRequestTimeCheck = useRequestTimeCheck();
+  
+  const debounceNameExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("name");
+      const res = await checkSegmentExist(projectKey, {
+        type,
+        value
       });
-      return;
-    }
-  }, [projectKey, setError]), 300);
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const debounceKeyExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("key");
+      const res = await checkSegmentExist(projectKey, {
+        type,
+        value
+      });
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const checkNameExist = useCallback(async (type: string, value: string) => {
+    await debounceNameExist(type, value);
+  }, [debounceNameExist]);
+
+  const checkKeyExist = useCallback(async (type: string, value: string) => {
+    await debounceKeyExist(type, value);
+  }, [debounceKeyExist]);
 
   const handlePageChange = useCallback((e: SyntheticEvent, data: PaginationProps) => {
     setSearchParams({
@@ -259,11 +298,22 @@ const Info = () => {
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
             if (detail.value.length > 50 ) return;
             if (detail.value !== originSegmentInfo.name) {
-              checkExist('NAME', detail.value);
+              checkNameExist('NAME', detail.value);
             }
             handleChange(e, detail, 'name')
             setValue(detail.name, detail.value);
             await trigger('name');
+            
+            if (isKeyEdit || match.path === SEGMENT_EDIT_PATH) {
+              return;
+            }
+
+            const reg = /[^A-Z0-9._-]+/gi;
+            const keyValue = detail.value.replace(reg, '_');
+            handleChange(e, {...detail, value: keyValue}, 'key');
+            checkKeyExist('KEY', keyValue);
+            setValue('key', keyValue);
+            await trigger('key');
           }}
         />
 
@@ -275,7 +325,8 @@ const Info = () => {
           register={register}
           showPopup={false}
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-            checkExist('KEY', detail.value);
+            saveKeyEdit(true);
+            checkKeyExist('KEY', detail.value);
             handleChange(e, detail, 'key');
             setValue(detail.name, detail.value);
             await trigger('key');

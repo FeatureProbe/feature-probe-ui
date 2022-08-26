@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useCallback } from 'react';
+import { SyntheticEvent, useEffect, useCallback, useState, useMemo } from 'react';
 import { 
   Form,
   InputOnChangeData,
@@ -20,6 +20,7 @@ import { replaceSpace } from 'utils/tools';
 import { CONFLICT } from 'constants/httpCode';
 
 import styles from './index.module.scss';
+import { useRequestTimeCheck } from 'hooks';
 
 interface IProps {
   isAdd: boolean;
@@ -31,6 +32,7 @@ interface IProps {
 
 const ProjectDrawer = (props: IProps) => {
   const { isAdd, visible, projectKey, setDrawerVisible, refreshProjectsList } = props;
+  const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
   const {
     formState: { errors },
@@ -64,6 +66,7 @@ const ProjectDrawer = (props: IProps) => {
 
   useEffect(() => {
     if (visible) {
+      saveKeyEdit(false);
       clearErrors();
     } else {
       saveProjectInfo({
@@ -84,19 +87,58 @@ const ProjectDrawer = (props: IProps) => {
     setValue('key', projectInfo.key);
   }, [projectInfo, setValue]);
 
-  const checkExist = debounce(useCallback(async (type: string, value: string) => {
-    const res = await checkProjectExist({
-      type,
-      value
-    });
+  const creatRequestTimeCheck = useRequestTimeCheck();
 
-    if (res.code === CONFLICT) {
-      setError(type.toLocaleLowerCase(), {
-        message: res.message,
+  const debounceNameExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("name");
+      const res = await checkProjectExist({
+        type,
+        value
       });
-      return;
-    }
-  }, [setError]), 300);
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+
+    }, 500);
+  }, [creatRequestTimeCheck, setError]);
+
+  const debounceKeyExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck("key");
+      const res = await checkProjectExist({
+        type,
+        value
+      });
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+    }, 500);
+  }, [creatRequestTimeCheck, setError]);
+
+  const checkNameExist = useCallback(async (type: string, value: string) => {
+    await debounceNameExist(type, value);
+  }, [debounceNameExist]);
+
+  const checkKeyExist = useCallback(async (type: string, value: string) => {
+    await debounceKeyExist(type, value);
+  }, [debounceKeyExist]);
+
+
 
   const onSubmit = useCallback(async () => {
     let res;
@@ -166,11 +208,22 @@ const ProjectDrawer = (props: IProps) => {
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
               if (detail.value !== originProjectInfo.name) {
-                checkExist('NAME', detail.value);
+                checkNameExist('NAME', detail.value);
               }
               handleChange(e, detail, 'name')
               setValue(detail.name, detail.value);
               await trigger('name');
+
+              if (isKeyEdit || !isAdd) {
+                return;
+              }
+
+              const reg = /[^A-Z0-9._-]+/gi;
+              const keyValue = detail.value.replace(reg, '_');
+              handleChange(e, {...detail, value: keyValue}, 'key');
+              checkKeyExist('KEY', keyValue);
+              setValue('key', keyValue);
+              await trigger('key');
             }}
           />
 
@@ -182,7 +235,8 @@ const ProjectDrawer = (props: IProps) => {
             register={register}
             showPopup={false}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-              checkExist('KEY', detail.value);
+              saveKeyEdit(true);
+              checkKeyExist('KEY', detail.value);
               handleChange(e, detail, 'key');
               setValue(detail.name, detail.value);
               await trigger('key');
