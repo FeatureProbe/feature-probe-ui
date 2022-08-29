@@ -11,6 +11,7 @@ import { Provider } from './provider';
 import { IProject } from 'interfaces/project';
 import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
+import EventTracker from 'components/EventTracker';
 
 const Project = () => {
   const [ projectList, saveProjectList ] = useState<IProject[]>([]);
@@ -59,10 +60,12 @@ const Project = () => {
             {
               OWNER.includes(userInfo.role) && (
                 <div>
-                  <Button primary onClick={handleAddProject}>
-                    <Icon customClass={styles.iconfont} type='add' />
-                    <FormattedMessage id='common.project.text' />
-                  </Button>
+                  <EventTracker category='project' action='create-project'>
+                    <Button primary onClick={handleAddProject}>
+                      <Icon customClass={styles.iconfont} type='add' />
+                      <FormattedMessage id='common.project.text' />
+                    </Button>
+                  </EventTracker>
                 </div>
               )
             }

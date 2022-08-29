@@ -1,5 +1,5 @@
-import { useCallback, SyntheticEvent } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useCallback, SyntheticEvent, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
@@ -10,11 +10,17 @@ import { demoLogin } from 'services/user';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
 import { FORBIDDEN } from 'constants/httpCode';
 import logo from 'images/logo_large.svg';
+import { EventTrack } from 'utils/track';
 import styles from './index.module.scss';
 
 const DemoLogin = () => {
   const history = useHistory();
   const intl = useIntl();
+  const location = useLocation();
+
+  useEffect(() => {
+    EventTrack.pageView(location.pathname);
+  }, [location.pathname]);
 
   const {
     formState: { errors },

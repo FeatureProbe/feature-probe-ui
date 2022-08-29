@@ -1,16 +1,16 @@
 import React, { SyntheticEvent } from 'react';
+import { EventTrack } from 'utils/track';
 
 interface IProps {
+  category: string;
   action: string;
   children: any;
 }
 
 const EventTracker = (props: IProps) => {
-  const { action, children } = props;
+  const { category, action, children } = props;
   const onClick = (e: SyntheticEvent) => {
-    const action1 = action || '未命名';
-    // TaoTie.trackUserClickEvent(action);
-    console.log(action1);
+    EventTrack.track(category, action);
 
     if (typeof children.props.onClick === 'function') {
       children.props.onClick(e);

@@ -13,6 +13,7 @@ import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
+import { EventTrack } from 'utils/track';
 import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
@@ -62,6 +63,7 @@ const PageHeader = () => {
         if (data) {
           setAccount(data?.account);
           saveUserInfo(data);
+          EventTrack.setUserId(data.account);
         }
       } else {
         message.error(intl.formatMessage({id: 'header.getuser.error.text'}));

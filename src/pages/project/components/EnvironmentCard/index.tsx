@@ -136,19 +136,23 @@ const EnvironmentCard = (props: IProps) => {
                   e.stopPropagation();
                   setMenuOpen(false);
                 }}>
-                  <div className={styles['menu-item']} onClick={() => {
-                    saveEnvironmentInfo({
-                      name: item.name,
-                      key: item.key,
-                    });
-                    saveOriginEnvironmentInfo({
-                      name: item.name,
-                      key: item.key,
-                    });
-                    handleEditEnvironment();
-                  }}>
-                    <FormattedMessage id='projects.menu.edit.environment' />
-                  </div>
+                  {
+                    !isArchived && (
+                      <div className={styles['menu-item']} onClick={() => {
+                        saveEnvironmentInfo({
+                          name: item.name,
+                          key: item.key,
+                        });
+                        saveOriginEnvironmentInfo({
+                          name: item.name,
+                          key: item.key,
+                        });
+                        handleEditEnvironment();
+                      }}>
+                        <FormattedMessage id='projects.menu.edit.environment' />
+                      </div>
+                    )
+                  }
                   {
                     isArchived ? (
                       <div className={styles['menu-item']} onClick={() => { setRestoreOpen(true); }}>
