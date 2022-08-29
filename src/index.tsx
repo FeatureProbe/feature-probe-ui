@@ -12,7 +12,6 @@ import 'semantic-ui-less/semantic.less';
 import "react-datetime/css/react-datetime.css";
 import 'react-toastify/dist/ReactToastify.css';
 import 'dayjs/locale/zh-cn';
-
 import './index.scss';
 
 dayjs.extend(relativeTime);

@@ -19,6 +19,7 @@ import Modal from 'components/Modal';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
 import SectionTitle from 'components/SectionTitle';
+import EventTracker from 'components/EventTracker';
 import { saveToggle } from 'services/toggle';
 import { replaceSpace } from 'utils/tools';
 import { 
@@ -337,14 +338,16 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         />
       </div>
       <div id='footer' className={styles.footer}>
-        <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
-          {
-            isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
-          }
-          <span className={styles['publish-btn-text']}>
-            <FormattedMessage id='common.publish.text' />
-          </span>
-        </Button>
+        <EventTracker category='targeting' action='publish-toggle'>
+          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
+            {
+              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+            }
+            <span className={styles['publish-btn-text']}>
+              <FormattedMessage id='common.publish.text' />
+            </span>
+          </Button>
+        </EventTracker>
         <Button basic type='reset' onClick={handleGoBack}>
           <FormattedMessage id='common.cancel.text' />
         </Button>

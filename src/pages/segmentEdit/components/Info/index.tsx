@@ -11,6 +11,7 @@ import FormItemName from 'components/FormItem/name';
 import FormItemKey from 'components/FormItem/key';
 import FormItemDescription from 'components/FormItem/description';
 import message from 'components/MessageBox';
+import EventTracker from 'components/EventTracker';
 import Rules from 'pages/targeting/components/Rules';
 import { useBeforeUnload } from 'pages/targeting/hooks';
 import ConfirmModal from '../Modal';
@@ -356,12 +357,15 @@ const Info = () => {
       </div>
 
       <div id='footer' className={styles.footer}>
-        <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
-          {
-            isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
-          }
-          <FormattedMessage id='common.publish.text' />
-        </Button>
+        <EventTracker category='segment' action='publish-segment'>
+          <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
+            {
+              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+            }
+            <FormattedMessage id='common.publish.text' />
+          </Button>
+        </EventTracker>
+        
         <Button basic type='reset' onClick={handleGoBack}>
           <FormattedMessage id='common.cancel.text' />
         </Button>

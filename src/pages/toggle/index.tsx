@@ -19,6 +19,7 @@ import ProjectLayout from 'layout/projectLayout';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
+import EventTracker from 'components/EventTracker';
 import { I18NContainer } from 'hooks';
 import { getToggleList, getTags } from 'services/toggle';
 import { saveDictionary } from 'services/dictionary';
@@ -362,10 +363,12 @@ const Toggle = () => {
                 </Form>
                 {
                   !isArchived && (
-                    <Button primary className={styles['add-button']} onClick={handleAddToggle}>
-                      <Icon customClass={styles['iconfont']} type='add' />
-                      <FormattedMessage id='common.toggle.text' />
-                    </Button>
+                    <EventTracker category='toggle' action='create-toggle'>
+                      <Button primary className={styles['add-button']} onClick={handleAddToggle}>
+                        <Icon customClass={styles['iconfont']} type='add' />
+                        <FormattedMessage id='common.toggle.text' />
+                      </Button>
+                    </EventTracker>
                   )
                 }
                 <Popup
