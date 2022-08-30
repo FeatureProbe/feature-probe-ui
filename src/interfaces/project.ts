@@ -10,6 +10,12 @@ export interface IEnvironment {
   key: string;
   clientSdkKey: string;
   serverSdkKey: string;
+  archived?: boolean;
+}
+
+export interface IEnvironmentParams {
+  name?: string;
+  archived?: boolean;
 }
 
 export interface IProject {
@@ -17,6 +23,12 @@ export interface IProject {
   key: string;
   description: string;
   environments: IEnvironment[];
+}
+
+export interface IProjectParams {
+  name?: string;
+  description?: string;
+  archived?: boolean;
 }
 
 export interface ITag {
@@ -32,16 +44,20 @@ export interface ITagOption {
 export interface IToggleParams {
   pageIndex: number;
   pageSize: number;
-  environmentKey: string;
+  environmentKey?: string;
 }
 
 export interface IExistParams {
-    value: string;
-    type: string;
+  value: string;
+  type: string;
 }
 
 export interface IVersionParams {
   pageIndex: number;
   pageSize: number;
   version?: number;
+}
+
+export interface IArchivedParams {
+  archived?: boolean;
 }

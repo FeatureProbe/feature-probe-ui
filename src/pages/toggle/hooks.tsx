@@ -19,12 +19,12 @@ export const useVarition = () => {
       description: '',
     });
     saveVariations([...variations]);
-  }
+  };
 
   const handleDelete = (index: number) => {
     variations.splice(index, 1);
     saveVariations([...variations]);
-  }
+  };
 
   const handleInput = (e: SyntheticEvent, detail: InputOnChangeData) => {
     const { value, index, customname } = detail;
@@ -35,7 +35,7 @@ export const useVarition = () => {
     }
 
     saveVariations([...variations]);
-  }
+  };
 
   const handleChangeVariation = (index: number, value: string) => {
     if (variations[index]) {
@@ -43,7 +43,7 @@ export const useVarition = () => {
     }
 
     saveVariations([...variations]);
-  }
+  };
 
   return { 
     variations, 
@@ -53,7 +53,7 @@ export const useVarition = () => {
     handleInput,
     handleChangeVariation,
   };
-}
+};
 
 export const useToggleInfo = () => {
   const [toggleInfo, saveToggleInfo] = useState<IToggleInfo>({
@@ -77,7 +77,7 @@ export const useToggleInfo = () => {
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps | DropdownProps | CheckboxProps, type: string) => {
-    let value = detail.value;
+    const value = detail.value;
 
     if (type === 'clientAvailability') {
       toggleInfo[type] = detail.name === 'yes';
@@ -87,7 +87,7 @@ export const useToggleInfo = () => {
     }
 
     saveToggleInfo({...toggleInfo});
-  }
+  };
 
   return {
     toggleInfo,
@@ -95,11 +95,11 @@ export const useToggleInfo = () => {
     handleChange,
     saveToggleInfo,
     saveOriginToggleInfo,
-  }
-}
+  };
+};
 
 export const useReactHookForm = () => {
   return {
     ...useForm(),
-  }
-}
+  };
+};

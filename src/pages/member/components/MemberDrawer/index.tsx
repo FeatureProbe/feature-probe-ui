@@ -64,7 +64,7 @@ const MemberDrawer = (props: IParams) => {
     if (isAdd) {
       unregister('account',
         { keepIsValid: true }
-      )
+      );
     }
   }, [isAdd, unregister]);
 
@@ -72,7 +72,7 @@ const MemberDrawer = (props: IParams) => {
     if (visible && !passwordVisible) {
       unregister('password',
         { keepIsValid: true }
-      )
+      );
     }
   }, [visible, passwordVisible, unregister]);
 
@@ -133,7 +133,7 @@ const MemberDrawer = (props: IParams) => {
         key: item,
         text: item,
         value: item,
-      }
+      };
     });
   }, [memberValues]);
 
@@ -183,7 +183,7 @@ const MemberDrawer = (props: IParams) => {
           <div className={styles['title-left']}>
             { isAdd ? intl.formatMessage({id: 'members.add.members'}) : intl.formatMessage({id: 'members.edit.member'}) }
           </div>
-          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false)}}>
+          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false);}}>
             <FormattedMessage id='common.cancel.text' />
           </Button>
           <Button size='mini' primary type='submit'>
@@ -290,7 +290,7 @@ const MemberDrawer = (props: IParams) => {
         </div>
       </Form>
     </div>
-	)
-}
+	);
+};
 
 export default MemberDrawer;

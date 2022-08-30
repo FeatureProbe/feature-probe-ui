@@ -8,10 +8,21 @@ import Button from 'components/Button';
 import Icon from 'components/Icon';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { IRouterParams } from 'interfaces/project';
-import { getAndroidCode, getGoCode, getJavaCode, getJSCode, getObjCCode, getRustCode, getSwiftCode } from '../constants';
+import { ICondition, IRule } from 'interfaces/targeting';
+import {
+  getAndroidCode,
+  getGoCode,
+  getJavaCode,
+  getJSCode,
+  getObjCCode,
+  getPythonCode,
+  getRustCode,
+  getSwiftCode,
+} from '../constants';
 import styles from '../Steps/index.module.scss';
 
 interface IProps {
+  rules: IRule[]
   currentStep: number;
   currentSDK: string;
   returnType: string;
@@ -31,9 +42,21 @@ interface ICodeOption {
 const CURRENT = 2;
 
 const StepSecond = (props: IProps) => {
-  const { currentStep, currentSDK, serverSdkKey, clientSdkKey, returnType, sdkVersion, saveStep, goBackToStep } = props;
+  const {
+    rules,
+    currentStep, 
+    currentSDK, 
+    serverSdkKey, 
+    clientSdkKey, 
+    returnType, 
+    sdkVersion, 
+    saveStep, 
+    goBackToStep 
+  } = props;
+
   const [ options, saveOptions ] = useState<ICodeOption[]>([]);
   const [ language, saveLanguage ] = useState<string>('java');
+  const [ remoteUrl, saveRemoteUrl ] = useState<string>('http://127.0.0.1:4007');
   const { toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
 
@@ -45,39 +68,153 @@ const StepSecond = (props: IProps) => {
   );
 
   useEffect(() => {
+    const remoteUrl = window.FP.stringValue('remote_url', '');
+    saveRemoteUrl(remoteUrl);
+  }, []);
+
+  useEffect(() => {
     if (currentSDK) {
+      const result: string[] = [];
+      let userWithCode = '';
+
+      rules.forEach((rule: IRule) => {
+        rule.conditions.forEach((condition: ICondition) => {
+          if (!result.includes(condition.subject)) {
+            result.push(condition.subject);
+          }
+        });
+      });
+
       switch (currentSDK) {
-        case 'Java': 
+        case 'Java':
           saveLanguage('java');
-          saveOptions(getJavaCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `.with("${item}", /* ${item} */)`;
+          });
+          saveOptions(
+            getJavaCode({
+              sdkVersion, 
+              serverSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
+          break;
+        case 'Python':
+          saveLanguage('python');
+          result.forEach(item => {
+            userWithCode += `user['${item}'] = 'value for ${item}'  # or use 'user.with_attr(key, value)'\n    `;
+          });
+          saveOptions(
+            getPythonCode({
+              sdkVersion,
+              serverSdkKey,
+              toggleKey,
+              returnType,
+              intl,
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Rust': 
           saveLanguage('rust');
-          saveOptions(getRustCode(sdkVersion, serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `let user = user.with("${item}", /* ${item} */);\n`;
+          });
+          saveOptions(
+            getRustCode({
+              sdkVersion, 
+              serverSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Go': 
           saveLanguage('go');
-          saveOptions(getGoCode(serverSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.With("${item}", /* ${item} */)\n`;
+          });
+          saveOptions(
+            getGoCode({
+              serverSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Android': 
           saveLanguage('java');
-          saveOptions(getAndroidCode(sdkVersion, clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", /* ${item} */)\n`;
+          });
+          saveOptions(
+            getAndroidCode({
+              sdkVersion, 
+              clientSdkKey, 
+              toggleKey, 
+              returnType, 
+              intl, 
+              userWithCode,
+              remoteUrl,
+            })
+          );
           break;
         case 'Swift': 
           saveLanguage('swift');
-          saveOptions(getSwiftCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", /* ${item} */)\n`;
+          });
+          saveOptions(getSwiftCode({
+            clientSdkKey, 
+            toggleKey, 
+            returnType, 
+            intl, 
+            userWithCode,
+            remoteUrl,
+          }));
           break;
-        case 'Objective-C': 
+        case 'Objective-C':
           saveLanguage('objectivec');
-          saveOptions(getObjCCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `[user withKey:@"${item}" value:/* ${item} */];\n`;
+          });
+          saveOptions(getObjCCode({
+            clientSdkKey,
+            toggleKey,
+            returnType,
+            intl,
+            userWithCode,
+            remoteUrl,
+          }));
           break;
-        case 'JavaScript': 
+        case 'JavaScript':
           saveLanguage('javascript');
-          saveOptions(getJSCode(clientSdkKey, toggleKey, returnType, intl));
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", /* ${item} */);\n`;
+          });
+          saveOptions(getJSCode({
+            clientSdkKey,
+            toggleKey,
+            returnType,
+            intl,
+            userWithCode,
+            remoteUrl,
+          }));
           break;
       }
     }
-  }, [sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl]);
+  }, [rules, sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl, remoteUrl]);
 
   return (
     <div className={styles.step}>
@@ -139,15 +276,15 @@ const StepSecond = (props: IProps) => {
                                 </span>
                               </CopyToClipboardPopup>
                             </span>
-                            <SyntaxHighlighter 
-                              language={language} 
-                              style={docco} 
-                              wrapLongLines={true} 
+                            <SyntaxHighlighter
+                              language={language}
+                              style={docco}
+                              wrapLongLines={true}
                               customStyle={{
-                                backgroundColor: 'rgba(33,37,41,0.04)', 
-                                fontSize: '13px', 
-                                borderRadius: '6px', 
-                                minHeight: '36px', 
+                                backgroundColor: 'rgba(33,37,41,0.04)',
+                                fontSize: '13px',
+                                borderRadius: '6px',
+                                minHeight: '36px',
                                 marginTop: '0',
                                 marginBottom: '12px',
                                 paddingRight: '70px'
@@ -157,13 +294,13 @@ const StepSecond = (props: IProps) => {
                             </SyntaxHighlighter>
                           </div>
                         </div>
-                      )
+                      );
                     })
                   }
                 </div>
                 <div>
-                  <Button 
-                    primary 
+                  <Button
+                    primary
                     type='submit'
                     className={styles.save}
                     onClick={() => {
@@ -183,11 +320,12 @@ const StepSecond = (props: IProps) => {
                   <FormattedMessage id='connect.third.title' />
                 </div>
                 <div className={styles['card-right']}>
-                  <Icon 
-                    type='view' 
+                  <Icon
+                    type='view'
+                    customClass={styles.iconfont}
                     onClick={() => {
                       goBackToStep(CURRENT);
-                    }} 
+                    }}
                   />
                 </div>
               </div>
@@ -196,7 +334,7 @@ const StepSecond = (props: IProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default StepSecond;

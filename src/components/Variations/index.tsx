@@ -79,8 +79,7 @@ const Variations = (props: IProps) => {
           message: intl.formatMessage({
             id: 'variations.dulpicated.error.text'
           })
-        }
-      );
+        });
     } else {
       clearErrors('variations_duplicated');
     }

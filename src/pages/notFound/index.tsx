@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import Button from 'components/Button';
-import { getRedirectUrl } from 'utils/getRedirectUrl';
+import { getRedirectUrl } from 'utils/GetRedirectUrl';
+import { EventTrack } from 'utils/track';
 import styles from './index.module.scss';
 
 const NotFound = () => {
   const history = useHistory();
   const [ redirectUrl, setRedirectUrl ] = useState<string>('');
+  const location = useLocation();
+
+  useEffect(() => {
+    EventTrack.pageView(location.pathname);
+  }, [location.pathname]);
 
   const handleGoHome = useCallback(() => {
     history.push(redirectUrl);
@@ -20,7 +26,7 @@ const NotFound = () => {
   
   useEffect(() => {
     init();
-  }, [init])
+  }, [init]);
 
 	return (
 		<div className={styles['not-found']}>
@@ -41,7 +47,7 @@ const NotFound = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default NotFound;

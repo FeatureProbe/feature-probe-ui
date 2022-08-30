@@ -1,9 +1,10 @@
 import { SyntheticEvent, useEffect, useState, useCallback, useMemo } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { 
   Pagination, 
   Table, 
   Form, 
+  Popup,
   PaginationProps, 
   Dropdown, 
   DropdownItemProps, 
@@ -11,7 +12,6 @@ import {
   InputOnChangeData 
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import localForage from 'localforage';
 import { debounce } from 'lodash';
 import ToggleItem from './components/ToggleItem';
 import ToggleDrawer from './components/ToggleDrawer';
@@ -19,11 +19,15 @@ import ProjectLayout from 'layout/projectLayout';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
+import EventTracker from 'components/EventTracker';
+import { I18NContainer } from 'hooks';
 import { getToggleList, getTags } from 'services/toggle';
+import { saveDictionary } from 'services/dictionary';
 import { Provider } from './provider';
 import { IToggle, IToggleList,  } from 'interfaces/toggle';
 import { ITag, ITagOption } from 'interfaces/project';
 import { NOT_FOUND } from 'constants/httpCode';
+import { LAST_SEEN } from 'constants/dictionary_keys';
 import styles from './index.module.scss';
 
 interface IParams {
@@ -40,12 +44,14 @@ interface ISearchParams {
   disabled?: number;
   tags?: string[];
   keyword?: number;
+  archived?: boolean;
 }
 
 const Toggle = () => {
+  const { search } = useLocation();
   const { projectKey, environmentKey } = useParams<IParams>();
-  const [toggleList, setToggleList] = useState<IToggle[]>([]);
-  const [pagination, setPagination] = useState({
+  const [ toggleList, setToggleList ] = useState<IToggle[]>([]);
+  const [ pagination, setPagination ] = useState({
     pageIndex: 1,
     totalPages: 1,
   });
@@ -57,9 +63,24 @@ const Toggle = () => {
     pageIndex: 0,
     pageSize: 10,
     environmentKey,
+    archived: search.indexOf('isArchived=true') > -1,
   });
+  const [ archiveOpen, setArchiveOpen ] = useState<boolean>(false);
+  const [ isArchived, setArchived ] = useState<boolean>(search.indexOf('isArchived=true') > -1);
   const history = useHistory();
   const intl = useIntl();
+  const { i18n } = I18NContainer.useContainer();
+
+  useEffect(() => {
+    const handler = () => {
+      if (archiveOpen) {
+        setArchiveOpen(false);
+      }
+    };
+    window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [archiveOpen]);
 
   const getToggleLists = useCallback(() => {
     searchParams.environmentKey = environmentKey;
@@ -76,8 +97,7 @@ const Toggle = () => {
           setTotal(totalElements);
           return;
         } else if (!success && code === NOT_FOUND) {
-          await localForage.removeItem('projectKey');
-          await localForage.removeItem('environmentKey');
+          saveDictionary(LAST_SEEN, {});
           history.push('/notfound');
           return;
         } else {
@@ -106,7 +126,7 @@ const Toggle = () => {
           key: item.name,
           text: item.name,
           value: item.name,
-        }
+        };
       });
 
       setTagsOptions(tags);
@@ -120,11 +140,11 @@ const Toggle = () => {
   }, [getTagList]);
 
   useEffect(() => {
-    if (projectKey) {
-      localForage.setItem('projectKey', projectKey);
-    }
-    if (environmentKey) {
-      localForage.setItem('environmentKey', environmentKey);
+    if (projectKey && environmentKey) {
+      saveDictionary(LAST_SEEN, {
+        projectKey,
+        environmentKey,
+      });
     }
   }, [projectKey, environmentKey]);
 
@@ -221,15 +241,51 @@ const Toggle = () => {
     });
   }, [searchParams]);
 
+  const handleSearchArchivedList = useCallback((archived: boolean) => {
+    setSearchParams({
+      ...searchParams,
+      pageIndex: 0,
+      archived,
+    });
+  }, [searchParams]);
+
 	return (
     <ProjectLayout>
       <div className={styles.toggle}>
+        {
+          isArchived && (
+            <div className={styles.archive}>
+              {
+                i18n === 'en-US' 
+                  ? <img className={styles['archived-img']} src={require('images/archived-en.png')} alt='archived' />
+                  : <img className={styles['archived-img']} src={require('images/archived-zh.png')} alt='archived' />
+              }
+            </div>
+          )
+        }
         <Provider>
           <>
             <div className={styles.card}>
-              <div className={styles.heading}>
-                <FormattedMessage id='common.toggles.text' />
-              </div>
+              {
+                isArchived ? (
+                  <div className={styles['heading-archive']}>
+                    <Icon 
+                      type='back' 
+                      customClass={styles['icon-back']} 
+                      onClick={() => { 
+                        setArchived(false); 
+                        handleSearchArchivedList(false);
+                      }} 
+                    />
+                    <span className={styles.divider}></span>
+                    <FormattedMessage id='common.archived.toggles.text' />
+                  </div>
+                ) : (
+                  <div className={styles.heading}>
+                    <FormattedMessage id='common.toggles.text' />
+                  </div>
+                )
+              }
               <div className={styles.add}>
                 <Form className={styles['filter-form']}>
                   <Form.Field className={styles['evaluation-field']}>
@@ -305,11 +361,61 @@ const Toggle = () => {
                     />
                   </Form.Field>
                 </Form>
-
-                <Button primary className={styles['add-button']} onClick={handleAddToggle}>
-                  <Icon customClass={styles['iconfont']} type='add' />
-                  <FormattedMessage id='common.toggle.text' />
-                </Button>
+                {
+                  !isArchived && (
+                    <EventTracker category='toggle' action='create-toggle'>
+                      <Button primary className={styles['add-button']} onClick={handleAddToggle}>
+                        <Icon customClass={styles['iconfont']} type='add' />
+                        <FormattedMessage id='common.toggle.text' />
+                      </Button>
+                    </EventTracker>
+                  )
+                }
+                <Popup
+                  basic
+                  open={archiveOpen}
+                  on='click'
+                  position='bottom right'
+                  className={styles.popup}
+                  trigger={
+                    <div 
+                      onClick={(e: SyntheticEvent) => {
+                        document.body.click();
+                        e.stopPropagation();
+                        setArchiveOpen(true);
+                      }}
+                      className={styles['toggle-menu']}
+                    >
+                      <Icon customClass={styles['menu-angle-down']} type='angle-down' />
+                    </div>
+                  }
+                >
+                  <div className={styles['menu']} onClick={() => {
+                    setArchiveOpen(false);
+                  }}>
+                    {
+                      isArchived ? (
+                        <div className={styles['menu-item']} onClick={() => { 
+                          document.body.click();
+                          setArchived(false); 
+                          history.push(`/${projectKey}/${environmentKey}/toggles`);
+                          handleSearchArchivedList(false);
+                        }}>
+                          <FormattedMessage id='toggles.menu.view.active.toggle' />
+                        </div>
+                      ) : (
+                        <div className={styles['menu-item']} onClick={() => { 
+                          document.body.click();
+                          setArchived(true); 
+                          history.push(`/${projectKey}/${environmentKey}/toggles?isArchived=true`);
+                          handleSearchArchivedList(true);
+                        }}>
+                          <FormattedMessage id='toggles.menu.view.archive.toggle' />
+                        </div>
+                      )
+                    }
+                  </div>
+                </Popup>
               </div>
               <div className={styles.lists}>
                 <Table basic='very' unstackable>
@@ -345,10 +451,12 @@ const Toggle = () => {
                               <ToggleItem 
                                 key={toggle.key}
                                 toggle={toggle} 
-                                setDrawerVisible={setDrawerVisible}
+                                isArchived={isArchived}
                                 setIsAdd={setIsAdd}
+                                refreshToggleList={refreshToggleList}
+                                setDrawerVisible={setDrawerVisible}
                               />
-                            )
+                            );
                           })
                         }
                       </Table.Body>
@@ -406,7 +514,7 @@ const Toggle = () => {
         </Provider>
       </div>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default Toggle;

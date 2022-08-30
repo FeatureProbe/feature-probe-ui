@@ -1,20 +1,27 @@
-import { useCallback, SyntheticEvent } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useCallback, SyntheticEvent, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import EventTracker from 'components/EventTracker';
 import { login } from 'services/user';
-import { getRedirectUrl } from 'utils/getRedirectUrl';
+import { getRedirectUrl } from 'utils/GetRedirectUrl';
 import { FORBIDDEN } from 'constants/httpCode';
 import logo from 'images/logo_large.svg';
+import { EventTrack } from 'utils/track';
 import styles from './index.module.scss';
 
 const Login = () => {
   const history = useHistory();
   const intl = useIntl();
+  const location = useLocation();
+
+  useEffect(() => {
+    EventTrack.pageView(location.pathname);
+  }, [location.pathname]);
 
   const {
     formState: { errors },
@@ -33,6 +40,10 @@ const Login = () => {
     const res = await login(data);
     const { success } = res;
     if (success) {
+      // @ts-ignore
+      localStorage.setItem('token', res.data.token);
+      // @ts-ignore
+      localStorage.setItem('organizeId', res.data.organizeId);
       gotoHome();
     } 
     else if (res.code === FORBIDDEN) {
@@ -127,15 +138,17 @@ const Login = () => {
             </Form.Field>
 
             <div className={styles.footer}>
-              <Button className={styles.btn} type='submit' primary disabled={!!errors.account || !!errors.password}>
-                <FormattedMessage id='login.signin' />
-              </Button>
+              <EventTracker category='login' action='login'>
+                <Button className={styles.btn} type='submit' primary disabled={!!errors.account || !!errors.password}>
+                  <FormattedMessage id='login.signin' />
+                </Button>
+              </EventTracker>
             </div>
           </Form>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Login;

@@ -5,6 +5,7 @@ import Member from '../pages/member';
 import Profile from '../pages/profile';
 import NotFound from '../pages/notFound';
 import Login from '../pages/login';
+import DemoLogin from '../pages/login/demoLogin';
 import Segment from '../pages/segment';
 import SegmentEdit from '../pages/segmentEdit';
 import GetStarted from '../pages/getStarted';
@@ -18,6 +19,8 @@ export const TARGETING_PATH = '/:projectKey/:environmentKey/:toggleKey/:navigati
 export const GET_STARTED_PATH = '/:projectKey/:environmentKey/:toggleKey/get-started';
 export const MEMBER_PATH = '/settings/members';
 export const PROFILE_PATH = '/settings/profile';
+
+const isDemo = localStorage.getItem('isDemo') === 'true';
 
 export const headerRoutes = [
   {
@@ -54,8 +57,11 @@ export const headerRoutes = [
     path: TARGETING_PATH,
     exact: true,
     component: Targeting
-  },
-  {
+  }
+];
+
+if (!isDemo) {
+  headerRoutes.push({
     path: MEMBER_PATH,
     exact: true,
     component: Member
@@ -64,8 +70,8 @@ export const headerRoutes = [
     path: PROFILE_PATH,
     exact: true,
     component: Profile
-  },
-];
+  });
+}
 
 export const blankRoutes = [
   {
@@ -76,6 +82,6 @@ export const blankRoutes = [
   {
     path: '/login',
     exact: true,
-    component: Login
+    component: isDemo? DemoLogin : Login
   }
 ];

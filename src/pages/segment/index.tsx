@@ -7,7 +7,6 @@ import {
   PaginationProps, 
   InputOnChangeData 
 } from 'semantic-ui-react';
-import localForage from 'localforage';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
 import SegmentItem from './components/SegmentItem';
@@ -15,9 +14,12 @@ import ProjectLayout from 'layout/projectLayout';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
+import EventTracker from 'components/EventTracker';
 import { getSegmentList } from 'services/segment';
+import { saveDictionary } from 'services/dictionary';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import { NOT_FOUND } from 'constants/httpCode';
+import { LAST_SEEN } from 'constants/dictionary_keys';
 import styles from './index.module.scss';
 
 interface IParams {
@@ -62,8 +64,7 @@ const Segment = () => {
           setTotal(totalElements);
           return;
         } else if (!success && code === NOT_FOUND) {
-          await localForage.removeItem('projectKey');
-          await localForage.removeItem('environmentKey');
+          saveDictionary(LAST_SEEN, {});
           history.push('/notfound');
           return;
         } else {
@@ -119,11 +120,12 @@ const Segment = () => {
                 />
               </Form.Field>
             </Form>
-
-            <Button primary className={styles['add-button']} onClick={handleAddSegment}>
-              <Icon customClass={styles['iconfont']} type='add' />
-              <FormattedMessage id='common.segment.text' />
-            </Button>
+            <EventTracker category='segment' action='create-segment'>
+              <Button primary className={styles['add-button']} onClick={handleAddSegment}>
+                <Icon customClass={styles['iconfont']} type='add' />
+                <FormattedMessage id='common.segment.text' />
+              </Button>
+            </EventTracker>
           </div>
           <div className={styles.lists}>
             <Table basic='very' unstackable>
@@ -154,7 +156,7 @@ const Segment = () => {
                             segment={segment}
                             fetchSegmentLists={fetchSegmentLists}
                           />
-                        )
+                        );
                       })
                     }
                   </Table.Body>
@@ -204,7 +206,7 @@ const Segment = () => {
         </div>
       </div>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default Segment;

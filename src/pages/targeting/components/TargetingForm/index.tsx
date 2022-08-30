@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Form, Radio, TextArea, CheckboxProps, TextAreaProps } from 'semantic-ui-react';
+import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData, Loader } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
@@ -19,6 +19,7 @@ import Modal from 'components/Modal';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
 import SectionTitle from 'components/SectionTitle';
+import EventTracker from 'components/EventTracker';
 import { saveToggle } from 'services/toggle';
 import { replaceSpace } from 'utils/tools';
 import { 
@@ -60,6 +61,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const [ publishTargeting, setPublishTargeting ] = useState<IContent>();
   const [ diffContent, setDiffContent ] = useState<string>('');
   const [ comment, setComment ] = useState<string>('');
+  const [ isLoading, setLoading ] = useState<boolean>(false);
   const history = useHistory();
   const intl = useIntl();
   const formRef = useRef();
@@ -121,7 +123,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       }
 
       rule.conditions?.forEach((condition: ICondition) => {
-        setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
+        if (condition.type === 'segment') {
+          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.predicate);
+        } else {
+          setValue(`rule_${rule.id}_condition_${condition.id}_subject`, condition.subject);
+        }
         setValue(`rule_${rule.id}_condition_${condition.id}_predicate`, condition.predicate);
 
         if (condition.type === DATETIME_TYPE) {
@@ -161,12 +167,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       rule.conditions.forEach((condition: ICondition) => {
         // @ts-ignore
         delete condition.id;
-
         if (condition.type === SEGMENT_TYPE) {
           // @ts-ignore
           delete condition.subject;
         } else if (condition.type === DATETIME_TYPE) {
-          let result = [];
+          const result = [];
           result.push('' + condition.datetime + condition.timezone);
           condition.objects = result;
           delete condition.datetime;
@@ -191,7 +196,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         defaultServe,
         variations: requestVariations,
       }
-    })
+    });
   }, [toggleDisabled, rules, variations, defaultServe, disabledServe]);
 
   useEffect(() => {
@@ -205,11 +210,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     let isError = false;
     const clonevariations: IVariation[] = cloneDeep(variations);
     clonevariations.forEach((variation: IVariation) => {
-      let res = replaceSpace(variation);
+      const res = replaceSpace(variation);
       if (res.value === '') {
         setError(`variation_${variation.id}`, {
           message: intl.formatMessage({id: 'common.input.placeholder'}),
-        })
+        });
         isError = true;
       }
     });
@@ -241,6 +246,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   const handlePublishConfirm = useCallback(async () => {
     setOpen(false);
+    setLoading(true);
     if (publishTargeting) {
       const res = await saveToggle(projectKey, environmentKey, toggleKey, {
         comment,
@@ -251,8 +257,9 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         initTargeting();
         setComment('');
       }
+      setLoading(false);
     }
-  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
+  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting]);
 
   const handleGoBack = useCallback(() => {
     history.push(`/${projectKey}/${environmentKey}/toggles`);
@@ -261,11 +268,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {
       return variations[disabledServe.select].name 
-      || variations[disabledServe.select].value
+      || variations[disabledServe.select].value;
     }
   }, [disabledServe.select, variations]);
 
-  const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps) => {
+  const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps | InputOnChangeData) => {
     // @ts-ignore
     setComment(data.value);
   }, []);
@@ -331,9 +338,16 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         />
       </div>
       <div id='footer' className={styles.footer}>
-        <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
-          <FormattedMessage id='common.publish.text' />
-        </Button>
+        <EventTracker category='targeting' action='publish-toggle'>
+          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
+            {
+              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+            }
+            <span className={styles['publish-btn-text']}>
+              <FormattedMessage id='common.publish.text' />
+            </span>
+          </Button>
+        </EventTracker>
         <Button basic type='reset' onClick={handleGoBack}>
           <FormattedMessage id='common.cancel.text' />
         </Button>
@@ -375,7 +389,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         message={intl.formatMessage({id: 'targeting.page.leave.text'})}
       />
     </Form>
-	)
-})
+	);
+});
 
 export default Targeting;

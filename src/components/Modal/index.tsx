@@ -8,8 +8,8 @@ interface IProps {
   width?: number;
   open: boolean;
   confirmDisabled?: boolean;
-  handleCancel(e: SyntheticEvent): void;
-  handleConfirm(e: SyntheticEvent): void;
+  handleCancel?(e: SyntheticEvent): void;
+  handleConfirm?(e: SyntheticEvent): void;
   children: ReactElement;
   footer?: ReactElement | null;
 }
@@ -29,7 +29,7 @@ const ConfirmModal = (props: IProps) => {
         { children }
         {
           (typeof(footer) === 'undefined') ? (
-            <div className={styles['footer']}>
+            <div className={styles['footer']} onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
               <Button size='mini' className={styles['btn']} basic type='reset' onClick={handleCancel}>
                 <FormattedMessage id='common.cancel.text' />
               </Button>

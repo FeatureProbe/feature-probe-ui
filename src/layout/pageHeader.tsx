@@ -3,56 +3,40 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { FeatureProbe, FPUser } from 'featureprobe-client-sdk-js';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
-import { getUserInfo, logout } from 'services/user';
+import { getUserInfo } from 'services/user';
 import { IUserInfo } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
 import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
+import { HeaderContainer } from './hooks';
+import { EventTrack } from 'utils/track';
 import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
+const isDemo = localStorage.getItem('isDemo') === 'true';
+const isMainColorHeader = false;
 
 const PageHeader = () => {
   const history = useHistory();
   const location = useLocation();
   const intl = useIntl();
+  const { saveUserInfo } = HeaderContainer.useContainer();
 
   const [ selectedNav, setSelectedNav ] = useState<string>('');
   const [ account, setAccount ] = useState<string>('');
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
   const [ helpMenuOpen, setHelpMenuOpen ] = useState<boolean>(false);
   const [ i18nMenuOpen, setI18nMenuOpen ] = useState<boolean>(false);
-  const [ isMainColorHeader, setHeader ] = useState<boolean>(false);
 
   const {
     i18n,
     setI18n
   } = I18NContainer.useContainer();
-
-  useEffect(() => {
-    const user = new FPUser(Date.now().toString());
-    const fp = new FeatureProbe({
-      togglesUrl: window.location.origin + '/server/api/client-sdk/toggles',
-      eventsUrl:  window.location.origin + '/server/api/events',
-      clientSdkKey: 'client-25614c7e03e9cb49c0e96357b797b1e47e7f2dff',
-      user,
-      refreshInterval: 5000,
-    });
-
-    fp.start();
-    fp.on('ready', () => {
-      const result = fp.boolValue('header_skin', false);
-      if (result) {
-        setHeader(true);
-      }
-    });
-  }, []);
 
   useEffect(() => {
     const handler = () => {
@@ -78,12 +62,14 @@ const PageHeader = () => {
         const { data } = res;
         if (data) {
           setAccount(data?.account);
+          saveUserInfo(data);
+          EventTrack.setUserId(data.account);
         }
       } else {
         message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
       }
     });
-  }, [intl]);
+  }, [intl, saveUserInfo]);
 
   useEffect(() => {
     const reg = new RegExp('[^/]+$');
@@ -130,19 +116,22 @@ const PageHeader = () => {
   );
 
   const handleLogout = useCallback(async () => {
-    const res = await logout();
-    if (res.success) {
-      history.push('/login');
-    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('organizeId');
+    history.push('/login');
   }, [history]);
 
-  const handleGotoDocument = useCallback(() => {
+  const handleGotoGithub = useCallback(() => {
     window.open('https://github.com/FeatureProbe/FeatureProbe');
+  }, []);
+
+  const handleGotoDocument = useCallback(() => {
+    window.open('http://doc.featureprobe.io/');
   }, []);
 
   return (
     <div className={headerCls}>
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={handleGotoProject}>
         {
           isMainColorHeader 
           ? <img className={styles['logo-image']} src={logoWhite} alt='logo' />
@@ -153,9 +142,13 @@ const PageHeader = () => {
         <div className={projectCls} onClick={handleGotoProject}>
           <FormattedMessage id='common.projects.text' />
         </div>
-        <div className={settingCls} onClick={handleGotoAccount}>
-          <FormattedMessage id='common.settings.text' />
-        </div>
+        {
+          isDemo ? null : (
+            <div className={settingCls} onClick={handleGotoAccount}>
+              <FormattedMessage id='common.settings.text' />
+            </div>
+          )
+        }
       </div>
       <div className={'user'}>
         <Popup
@@ -215,15 +208,16 @@ const PageHeader = () => {
             >
               <FormattedMessage id='common.documentation.text' />
             </div>
+            <div 
+              className={styles['menu-item']} 
+              onClick={()=> {
+                handleGotoGithub();
+              }}
+            >
+              Github
+            </div>
           </div>
         </Popup>
-        {/* <div onClick={handleGotoDocument}>
-          {
-            isMainColorHeader
-            ? <img className={styles.github} src={require('images/github-light.png')} alt='github' />
-            : <img className={styles.github} src={require('images/github.png')} alt='github' />
-          }
-        </div> */}
         <Popup
           basic
           open={menuOpen}

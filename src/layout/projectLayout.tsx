@@ -7,7 +7,12 @@ import ProjectSiderbar from './projectSiderbar';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
 import { getProjectInfo } from 'services/project';
+import { getToggleInfo } from 'services/toggle';
+import { saveDictionary, getFromDictionary } from 'services/dictionary';
+import { IDictionary } from 'interfaces/targeting';
 import { IProject, IRouterParams } from 'interfaces/project';
+import { IToggleInfo } from 'interfaces/targeting';
+
 import { EnvironmentColors } from 'constants/colors';
 import { 
   TOGGLE_PATH, 
@@ -19,6 +24,8 @@ import {
 } from 'router/routes';
 
 import styles from './layout.module.scss';
+
+const DEMO_TIP_SHOW = 'is_demo_tips_show';
 
 interface IProps {
   children: ReactElement
@@ -38,6 +45,8 @@ const ProjectLayout = (props: IProps) => {
     }]
   });
   const [ envIndex, setEnvIndex ] = useState<number>(0);
+  const [ toggleName, saveToggleName ] = useState<string>('');
+  const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
   const history = useHistory();
   const match = useRouteMatch();
 
@@ -55,11 +64,34 @@ const ProjectLayout = (props: IProps) => {
   }, [projectKey]);
 
   useEffect(() => {
+    if (!toggleKey) return;
+    getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+
+      if (success && data) {
+        saveToggleName(data.name);
+      } 
+    });
+  }, [projectKey, environmentKey, toggleKey]);
+
+  useEffect(() => {
     const index = projectInfo.environments.findIndex(env => {
       return env.key === environmentKey;
     });
     setEnvIndex(index === -1 ? 0 : index);
   }, [environmentKey, projectInfo.environments]);
+
+  useEffect(() => {
+    getFromDictionary<IDictionary>(DEMO_TIP_SHOW).then(res => {
+      const { success, data } = res;
+      if (success && data) {
+        const savedData = JSON.parse(data.value);
+        saveTipVisible(savedData);
+      } else {
+        saveTipVisible(true);
+      }
+    });
+  }, []);
   
   const gotoProjects = useCallback(() => {
     history.push('/projects');
@@ -72,9 +104,21 @@ const ProjectLayout = (props: IProps) => {
     history.push(`/${projectKey}/${environmentKey}/toggles`);
   }, [history, projectKey, environmentKey, toggleKey]);
 
+  const gotoTargeting = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/${toggleKey}/targeting`);
+  }, [history, projectKey, environmentKey, toggleKey]);
+
   const gotoSegments = useCallback(() => {
     history.push(`/${projectKey}/${environmentKey}/segments`);
   }, [history, projectKey, environmentKey]);
+
+  const hideTip = useCallback(() => {
+    saveDictionary(DEMO_TIP_SHOW, false).then((res) => {
+      if (res.success) {
+        saveTipVisible(false);
+      }
+    });
+  }, []);
 
   return (
     <div className={styles.main}>
@@ -85,6 +129,17 @@ const ProjectLayout = (props: IProps) => {
         />
       </SideBar>
       <div className={styles.content}>
+        {
+          tipVisible && (localStorage.getItem('isDemo') === 'true') && (
+            <div className={styles['platform-tips']}>
+              <Icon type='error-circle' customClass={styles['platform-tips-error']} />
+              <span className={styles['platform-tips-text']}>
+                <FormattedMessage id='platform.warning.text' />
+              </span>
+              <Icon type='close' customClass={styles['platform-tips-close']} onClick={() => {hideTip();}} />
+            </div>
+          )
+        }
         <Breadcrumb className={styles.breadcrumb}>
           <Breadcrumb.Section link onClick={gotoProjects}>
             <FormattedMessage id='common.projects.text' />
@@ -96,7 +151,7 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
-                  {toggleKey}
+                  { toggleName }
                 </Breadcrumb.Section>
               </>
             )
@@ -105,6 +160,8 @@ const ProjectLayout = (props: IProps) => {
             match.path === GET_STARTED_PATH && (
               <>
                 <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
+                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Section link onClick={gotoTargeting}>{ toggleName }</Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   <FormattedMessage id='common.get.started.text' />

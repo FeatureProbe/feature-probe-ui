@@ -1,10 +1,9 @@
 import request from '../utils/request';
 import API from '../constants/api';
 import qs from 'qs';
-import { ApplicationJsonContentType } from 'constants/api/contentType';
+import { ApplicationJson } from 'constants/api/contentType';
 import { IExistParams } from 'interfaces/project';
 import { ISegmentInfo } from 'interfaces/segment';
-
 
 interface ISegmentParams {
   pageIndex: number;
@@ -17,7 +16,12 @@ export const getSegmentList = async<T> (projectKey: string, params: ISegmentPara
       .replace(':projectKey', projectKey)
   }?${qs.stringify(params)}`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const getSegmentDetail = async<T> (projectKey: string, segmentKey: string) => {
@@ -27,7 +31,12 @@ export const getSegmentDetail = async<T> (projectKey: string, segmentKey: string
       .replace(':segmentKey', segmentKey)
   }`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const addSegment = async (projectKey: string, data?: ISegmentInfo) => {
@@ -39,7 +48,7 @@ export const addSegment = async (projectKey: string, data?: ISegmentInfo) => {
   return request(url, {
     method: 'POST',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -55,7 +64,7 @@ export const editSegment = async (projectKey: string, segmentKey: string, data?:
   return request(url, {
     method: 'PATCH',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
     body: JSON.stringify(data),
   });
@@ -68,7 +77,12 @@ export const getSegmentUsingToggles = async<T> (projectKey: string, segmentKey: 
       .replace(':segmentKey', segmentKey)
   }?${qs.stringify(params)}`;
   
-  return request<T>(url);
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
 };
 
 export const deleteSegment = async (projectKey: string, segmentKey: string) => {
@@ -81,7 +95,7 @@ export const deleteSegment = async (projectKey: string, segmentKey: string) => {
   return request(url, {
     method: 'DELETE',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
   });
 };
@@ -95,7 +109,7 @@ export const checkSegmentExist = async<T> (projectKey: string, params: IExistPar
   return request<T>(url, {
     method: 'GET',
     headers: {
-      ...ApplicationJsonContentType()
+      ...ApplicationJson()
     },
   });
-}
+};

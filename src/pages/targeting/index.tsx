@@ -1,7 +1,6 @@
 import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { Menu, MenuItemProps } from 'semantic-ui-react';
-import localForage from 'localforage';
 import useResizeObserver from 'use-resize-observer';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
@@ -18,10 +17,13 @@ import History from './components/History';
 import { Provider } from './provider';
 import { getSegmentList } from 'services/segment';
 import { getTargeting, getToggleInfo, getTargetingVersion, getTargetingVersionsByVersion } from 'services/toggle';
+import { saveDictionary } from 'services/dictionary';
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams, IVersionParams } from 'interfaces/project';
 import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion } from 'interfaces/targeting';
 import { NOT_FOUND } from 'constants/httpCode';
+import { LAST_SEEN } from 'constants/dictionary_keys';
+import { I18NContainer } from 'hooks';
 import styles from './index.module.scss';
 
 const Targeting = () => {
@@ -36,6 +38,7 @@ const Targeting = () => {
   const [ toggleInfo, saveToggleInfo ] = useState<IToggleInfo>();
   const [ targeting, saveTargeting ] = useState<ITarget>();
   const [ segmentList, saveSegmentList ] = useState<ISegmentList>();
+  const [ toggleArchived, saveToggleArchived ] = useState<boolean>(false);
   const [ toggleDisabled, saveToggleDisable ] = useState<boolean>(false);
   const [ initialTargeting, saveInitTargeting ] = useState<IContent>();
   const [ historyOpen, setHistoryOpen ] = useState<boolean>(false);
@@ -51,13 +54,14 @@ const Targeting = () => {
   const [ pageInitCount, saveCount ] = useState<number>(0);
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
+  const { i18n } = I18NContainer.useContainer();
 
   useEffect(() => {
-    if (projectKey) {
-      localForage.setItem('projectKey', projectKey);
-    }
-    if (environmentKey) {
-      localForage.setItem('environmentKey', environmentKey);
+    if (projectKey && environmentKey) {
+      saveDictionary(LAST_SEEN, {
+        projectKey,
+        environmentKey,
+      });
     }
   }, [projectKey, environmentKey]);
 
@@ -93,9 +97,11 @@ const Targeting = () => {
       const { data, success, code } = res;
       if (success && data) {
         saveToggleInfo(data);
+        if (data.archived) {
+          saveToggleArchived(true);
+        }
       } else if (!success && code === NOT_FOUND) {
-        await localForage.removeItem('projectKey');
-        await localForage.removeItem('environmentKey');
+        saveDictionary(LAST_SEEN, {});
         history.push('/notfound');
         return;
       } else {
@@ -272,6 +278,17 @@ const Targeting = () => {
     <ProjectLayout>
       <Provider>
         <div className={styles.targeting}>
+          {
+            toggleArchived && (
+              <div>
+                {
+                  i18n === 'en-US' 
+                    ? <img className={styles['archived-img']} src={require('images/archived-en.png')} alt='archived' />
+                    : <img className={styles['archived-img']} src={require('images/archived-zh.png')} alt='archived' />
+                }
+              </div>
+            )
+          }
           <Info
             toggleInfo={toggleInfo}
             modifyInfo={modifyInfo}
@@ -339,7 +356,7 @@ const Targeting = () => {
                       )
                     }
                     <TargetingForm
-                      disabled={targetingDisabled}
+                      disabled={targetingDisabled || toggleArchived}
                       targeting={targeting}
                       toggleInfo={toggleInfo}
                       segmentList={segmentList}
@@ -382,7 +399,7 @@ const Targeting = () => {
           <Modal 
             open={open}
             width={400}
-            handleCancel={() => {setPageLeaveOpen(false)}}
+            handleCancel={() => {setPageLeaveOpen(false);}}
             handleConfirm={confirmReviewHistory}
           >
             <div>
@@ -400,7 +417,7 @@ const Targeting = () => {
         </div>
       </Provider>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default Targeting;

@@ -1,5 +1,5 @@
-import { SyntheticEvent, useState, useCallback, useEffect } from 'react';
-import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps } from 'semantic-ui-react';
+import { SyntheticEvent, useState, useCallback, useEffect, useMemo } from 'react';
+import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
@@ -11,6 +11,7 @@ import FormItemName from 'components/FormItem/name';
 import FormItemKey from 'components/FormItem/key';
 import FormItemDescription from 'components/FormItem/description';
 import message from 'components/MessageBox';
+import EventTracker from 'components/EventTracker';
 import Rules from 'pages/targeting/components/Rules';
 import { useBeforeUnload } from 'pages/targeting/hooks';
 import ConfirmModal from '../Modal';
@@ -21,7 +22,7 @@ import { ISegmentInfo, IToggleList, IToggle } from 'interfaces/segment';
 import { SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH } from 'router/routes';
 import { IRule, ICondition } from 'interfaces/targeting';
 import { DATETIME_TYPE } from 'components/Rule/constants';
-
+import { useRequestTimeCheck } from 'hooks';
 import styles from './index.module.scss';
 
 interface IParams {
@@ -52,6 +53,8 @@ const Info = () => {
     totalPages: 1,
   });
   const [ total, setTotal ] = useState<number>(0);
+  const [ isLoading, setLoading ] = useState<boolean>(false);
+  const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
   const history = useHistory();
   const match = useRouteMatch();
@@ -104,7 +107,7 @@ const Info = () => {
         } else {
           message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
-      })
+      });
     }
   }, [match.path, projectKey, segmentKey, intl, saveSegmentInfo, saveOriginSegmentInfo, saveRules]);
 
@@ -116,7 +119,7 @@ const Info = () => {
         delete condition.id;
 
         if (condition.type === DATETIME_TYPE) {
-          let result = [];
+          const result = [];
           result.push('' + condition.datetime + condition.timezone);
           condition.objects = result;
           delete condition.datetime;
@@ -180,6 +183,7 @@ const Info = () => {
   }, [intl, projectKey, segmentKey, publishSegment]);
 
   const onSubmit = useCallback(() => {
+    setLoading(true);
     if (match.path === SEGMENT_ADD_PATH) {
       addSegment(projectKey, publishSegment).then(res => {
         if (res.success) {
@@ -189,6 +193,7 @@ const Info = () => {
         } else {
           message.error(intl.formatMessage({id: 'segments.create.error'}));
         }
+        setLoading(false);
       });
     } else {
       getSegmentUsingToggles<IToggleList>(projectKey, segmentKey, searchParams).then((res) => {
@@ -215,6 +220,7 @@ const Info = () => {
           setTotal(0);
           message.error(intl.formatMessage({id: 'toggles.list.error.text'}));
         }
+        setLoading(false);
       });
     }
   }, [match.path, publishSegment, projectKey, segmentKey, searchParams, intl, handleGoBack, confirmEditSegment]);
@@ -223,19 +229,56 @@ const Info = () => {
     console.log(errors);
   }, [errors]);
 
-  const checkExist = debounce(useCallback(async (type: string, value: string) => {
-    const res = await checkSegmentExist(projectKey, {
-      type,
-      value
-    });
-
-    if (res.code === CONFLICT) {
-      setError(type.toLocaleLowerCase(), {
-        message: res.message,
+  const creatRequestTimeCheck = useRequestTimeCheck();
+  
+  const debounceNameExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck('name');
+      const res = await checkSegmentExist(projectKey, {
+        type,
+        value
       });
-      return;
-    }
-  }, [projectKey, setError]), 300);
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const debounceKeyExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck('key');
+      const res = await checkSegmentExist(projectKey, {
+        type,
+        value
+      });
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const checkNameExist = useCallback(async (type: string, value: string) => {
+    await debounceNameExist(type, value);
+  }, [debounceNameExist]);
+
+  const checkKeyExist = useCallback(async (type: string, value: string) => {
+    await debounceKeyExist(type, value);
+  }, [debounceKeyExist]);
 
   const handlePageChange = useCallback((e: SyntheticEvent, data: PaginationProps) => {
     setSearchParams({
@@ -255,11 +298,22 @@ const Info = () => {
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
             if (detail.value.length > 50 ) return;
             if (detail.value !== originSegmentInfo.name) {
-              checkExist('NAME', detail.value);
+              checkNameExist('NAME', detail.value);
             }
-            handleChange(e, detail, 'name')
+            handleChange(e, detail, 'name');
             setValue(detail.name, detail.value);
             await trigger('name');
+            
+            if (isKeyEdit || match.path === SEGMENT_EDIT_PATH) {
+              return;
+            }
+
+            const reg = /[^A-Z0-9._-]+/gi;
+            const keyValue = detail.value.replace(reg, '_');
+            handleChange(e, {...detail, value: keyValue}, 'key');
+            checkKeyExist('KEY', keyValue);
+            setValue('key', keyValue);
+            await trigger('key');
           }}
         />
 
@@ -271,7 +325,8 @@ const Info = () => {
           register={register}
           showPopup={false}
           onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-            checkExist('KEY', detail.value);
+            saveKeyEdit(true);
+            checkKeyExist('KEY', detail.value);
             handleChange(e, detail, 'key');
             setValue(detail.name, detail.value);
             await trigger('key');
@@ -285,7 +340,7 @@ const Info = () => {
           disabled={false}
           onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
             if (('' + detail.value).length > 500 ) return;
-            handleChange(e, detail, 'description')
+            handleChange(e, detail, 'description');
             setValue(detail.name, detail.value);
             await trigger('description');
           }}
@@ -301,9 +356,15 @@ const Info = () => {
       </div>
 
       <div id='footer' className={styles.footer}>
-        <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
-          <FormattedMessage id='common.publish.text' />
-        </Button>
+        <EventTracker category='segment' action='publish-segment'>
+          <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
+            {
+              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+            }
+            <FormattedMessage id='common.publish.text' />
+          </Button>
+        </EventTracker>
+        
         <Button basic type='reset' onClick={handleGoBack}>
           <FormattedMessage id='common.cancel.text' />
         </Button>
@@ -324,7 +385,7 @@ const Info = () => {
         message={intl.formatMessage({id: 'targeting.page.leave.text'})}
       />
     </Form>
-	)
-}
+	);
+};
 
 export default Info;

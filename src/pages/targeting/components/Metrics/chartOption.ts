@@ -1,5 +1,5 @@
 import { IntlShape } from 'react-intl';
-import { externalTooltipHandler } from "./chartTooltip";
+import { externalTooltipHandler } from './chartTooltip';
 import { IMetric } from 'interfaces/targeting';
 const lang = localStorage.getItem('i18n')?.replaceAll('"', '') || 'en-US';
 
@@ -52,7 +52,7 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
         borderColor: '#FFEBE9',
         borderWidth: 1,
         click: () => {
-          window.open(`/${projectKey}/${environmentKey}/${toggleKey}/targeting?currentVersion=${item.lastChangeVersion}`)
+          window.open(`/${projectKey}/${environmentKey}/${toggleKey}/targeting?currentVersion=${item.lastChangeVersion}`);
         },
         label: {
           enabled: true,
@@ -69,9 +69,9 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
             bottomRight: 4,
           }
         }
-      }
+      };
     }
-  })
+  });
   return config;
 };
   

@@ -71,7 +71,7 @@ const Metrics = () => {
     
     return () => {
       clearInterval(timer.current as NodeJS.Timeout);
-    }
+    };
   }, [initMetrics, filterValue]);
 
   const chartOptions = useMemo(() => {
@@ -161,7 +161,7 @@ const Metrics = () => {
                           { item.count }
                         </span>
                       </div>
-                    )
+                    );
                   })
                 }
               </div>
@@ -191,8 +191,8 @@ const Metrics = () => {
         )
       }
 		</div>
-	)
-}
+	);
+};
 
 export default Metrics;
 

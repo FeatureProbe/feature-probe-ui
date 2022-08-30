@@ -48,7 +48,7 @@ const ToggleItem = (props: IProps) => {
         }
         setOpen(true);
       }
-    })
+    });
   }, [projectKey]);
 
   const confirmDeleteSegment = useCallback((segmentKey: string) => {
@@ -60,7 +60,7 @@ const ToggleItem = (props: IProps) => {
         message.success(intl.formatMessage({id: 'segments.delete.error'}));
       }
       setOpen(false);
-    })
+    });
   }, [intl, projectKey, fetchSegmentLists]);
 
 	return (
@@ -75,7 +75,7 @@ const ToggleItem = (props: IProps) => {
           </div>
           <div className={styles['toggle-info-key']}>
             <CopyToClipboardPopup text={segment.key}>
-              <div onClick={(e) => {e.stopPropagation()}} className={styles['toggle-info-key-label']}>
+              <div onClick={(e) => {e.stopPropagation();}} className={styles['toggle-info-key-label']}>
                 {segment.key}
               </div>
             </CopyToClipboardPopup>
@@ -108,6 +108,7 @@ const ToggleItem = (props: IProps) => {
           <div 
             className={styles['toggle-operation-item']} 
             onClick={(e: SyntheticEvent) => {
+              document.body.click();
               e.stopPropagation();
               checkSegmentDelete(segment?.key);
             }}
@@ -169,7 +170,7 @@ const ToggleItem = (props: IProps) => {
         </div>
       </Modal>
     </Table.Row>
-	)
-}
+	);
+};
 
 export default ToggleItem;

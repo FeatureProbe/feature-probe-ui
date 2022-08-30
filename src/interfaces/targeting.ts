@@ -52,6 +52,7 @@ export interface IToggleInfo {
   returnType: string;
   clientAvailability: boolean;
   variations: IVariation[];
+  archived: boolean;
 }
 
 export interface ITarget {
@@ -126,6 +127,13 @@ export interface ITargetingVersions {
 export interface ITargetingVersionsByVersion {
   total: number;
   versions: IVersion[]
+}
+
+export interface IDictionary {
+  key: string;
+  createdTime: string;
+  value: string;
+  updatedTime: string;
 }
 
 export interface IDictionary {

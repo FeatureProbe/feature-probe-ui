@@ -1,16 +1,16 @@
-
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import Icon from 'components/Icon';
 import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
-import { getToggleAccess, getToggleInfo } from 'services/toggle';
+import { getSdkVersion } from 'services/misc';
+import { getToggleAccess, getToggleInfo, getTargeting } from 'services/toggle';
 import { getProjectInfo } from 'services/project';
-import { IDictionary, IToggleInfo } from 'interfaces/targeting';
 import { getEnvironment } from 'services/project';
+import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
@@ -61,8 +61,8 @@ const Steps = () => {
   const [ environmentName, saveEnvironmentName ] = useState<string>('');
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
-  const intl = useIntl();
 
   const init = useCallback(() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
@@ -109,7 +109,14 @@ const Steps = () => {
         saveToggleName(data.name);
       } 
     });
-    
+
+    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        const { content } = data;
+        saveRules(content?.rules || []);
+      }
+    });
   }, [projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
@@ -130,10 +137,10 @@ const Steps = () => {
       }
 
       if (key) {
-        getFromDictionary<IDictionary>(key).then(res => {
+        getSdkVersion<string>(key).then(res => {
           const { success, data } = res;
           if (success && data) {
-            saveSDKVersion(data.value);
+            saveSDKVersion(data);
           }
         });
       }
@@ -146,7 +153,7 @@ const Steps = () => {
       if (res.success && data) {
         saveToggleAccess(data.isAccess);
       }
-    })
+    });
   }, [projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
@@ -216,10 +223,9 @@ const Steps = () => {
               <FormattedMessage id='common.toggle.text' /> :
             </div>
             <div className={styles['card-value']}>
-              {
-                intl.formatMessage({id: 'connect.first.toggle.view'},
-                {name: toggleName})
-              }
+              <FormattedMessage id='connect.first.toggle.view.left' />
+              <span className={styles['toggle-name']}>{ toggleName }</span>
+              <FormattedMessage id='connect.first.toggle.view.right' />
               <span className={styles['toggle-key']}>{ toggleKey }</span>
             </div>
           </div>
@@ -234,6 +240,7 @@ const Steps = () => {
           goBackToStep={goBackToStep}
         />
         <StepSecond 
+          rules={rules}
           currentStep={currentStep}
           currentSDK={currentSDK}
           returnType={returnType}
@@ -255,7 +262,7 @@ const Steps = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Steps;

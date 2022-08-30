@@ -34,10 +34,10 @@ const SERVER_SIDE_SDKS = [
     name: 'Go',
     logo: go,
   },
-  // {
-  //   name: 'Python',
-  //   logo: python,
-  // }
+  {
+    name: 'Python',
+    logo: python,
+  },
   {
     name: 'Rust',
     logo: rust,
@@ -179,7 +179,7 @@ const StepFirst = (props: IProps) => {
                                 { sdk.name }
                               </div>
                             </Dropdown.Item>
-                          )
+                          );
                         })
                       }
                       <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
@@ -195,7 +195,7 @@ const StepFirst = (props: IProps) => {
                                 { sdk.name }
                               </div>
                             </Dropdown.Item>
-                          )
+                          );
                         })
                       }
                     </Dropdown.Menu>
@@ -229,6 +229,7 @@ const StepFirst = (props: IProps) => {
                 <div className={styles['card-right']}>
                   <Icon 
                     type='edit' 
+                    customClass={styles.iconfont}
                     onClick={() => {
                       goBackToStep(CURRENT);
                     }} 
@@ -240,7 +241,7 @@ const StepFirst = (props: IProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default StepFirst;

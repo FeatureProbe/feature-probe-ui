@@ -28,7 +28,7 @@ const SegmentEdit = () => {
         </div>
       </Provider>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default SegmentEdit;

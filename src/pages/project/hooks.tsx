@@ -20,7 +20,7 @@ export const useProjectInfo = () => {
     // @ts-ignore
     projectInfo[type] = value;
     saveProjectInfo({...projectInfo});
-  }
+  };
 
   return {
     projectInfo,
@@ -28,8 +28,8 @@ export const useProjectInfo = () => {
     handleChange,
     saveProjectInfo,
     saveOriginProjectInfo,
-  }
-}
+  };
+};
 
 export const useEnvironmentInfo = () => {
   const [ environmentInfo, saveEnvironmentInfo ] = useState({
@@ -47,7 +47,7 @@ export const useEnvironmentInfo = () => {
     // @ts-ignore
     environmentInfo[type] = value;
     saveEnvironmentInfo({...environmentInfo});
-  }
+  };
 
   return {
     environmentInfo,
@@ -55,11 +55,11 @@ export const useEnvironmentInfo = () => {
     handleChange,
     saveEnvironmentInfo,
     saveOriginEnvironmentInfo,
-  }
-}
+  };
+};
 
 export const useReactHookForm = () => {
   return {
     ...useForm(),
-  }
-}
+  };
+};

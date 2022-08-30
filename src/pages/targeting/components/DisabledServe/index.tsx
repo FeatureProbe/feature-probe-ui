@@ -37,7 +37,7 @@ const DisabledServe = (props: IProps) => {
       });
       setValue('disabledServe', null);
     }
-  }, [intl, disabledServe, variations, setError, setValue])
+  }, [intl, disabledServe, variations, setError, setValue]);
 
   const options = variations.map((item: IVariation, index: number) => {
     const text = item.name || item.value;
@@ -50,7 +50,7 @@ const DisabledServe = (props: IProps) => {
           <span>{ text }</span>
         </div>
       ),
-    }
+    };
   });
 
   return (
@@ -97,7 +97,7 @@ const DisabledServe = (props: IProps) => {
         { errors.disabledServe.message }
       </div> }
     </div>
-  )
-}
+  );
+};
 
 export default DisabledServe;

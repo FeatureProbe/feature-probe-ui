@@ -1,4 +1,4 @@
-import { SyntheticEvent, FormEvent, useEffect, useState, useCallback } from 'react';
+import { SyntheticEvent, FormEvent, useEffect, useState, useCallback, useMemo } from 'react';
 import { 
   Form,
   Popup,
@@ -31,6 +31,8 @@ import { ITag, ITagOption } from 'interfaces/project';
 import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'services/toggle';
 
 import styles from './index.module.scss';
+import { debounce } from 'lodash';
+import { useRequestTimeCheck } from 'hooks';
 
 interface IParams {
   isAdd: boolean;
@@ -72,9 +74,8 @@ const Drawer = (props: IParams) => {
     saveOriginToggleInfo,
   } = toggleInfoContainer.useContainer();
 
-
   const options = variations?.map((item: IVariation, index: number) => {
-    const text = item.name || item.value || `variation ${index + 1}`
+    const text = item.name || item.value || `variation ${index + 1}`;
     return {
       text,
       value: index,
@@ -84,7 +85,7 @@ const Drawer = (props: IParams) => {
           <span>{ text }</span>
         </div>
       ),
-    }
+    };
   });
 
   const getTagList = useCallback(async () => {
@@ -96,7 +97,7 @@ const Drawer = (props: IParams) => {
           key: item.name,
           text: item.name,
           value: item.name,
-        }
+        };
       });
       saveTagsOptions(tags);
     } else {
@@ -129,7 +130,7 @@ const Drawer = (props: IParams) => {
         disabledServe: 0
       });
     }
-  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo])
+  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo]);
 
   useEffect(() => {
     setValue('name', toggleInfo.name);
@@ -170,7 +171,7 @@ const Drawer = (props: IParams) => {
     clonevariations.forEach((variation: IVariation) => {
       // @ts-ignore
       delete variation.id;
-    })
+    });
 
     if (isAdd) {
       res = await createToggle(projectKey, {
@@ -227,26 +228,63 @@ const Drawer = (props: IParams) => {
   }, [errors]);
 
   const clearVariationErrors = useCallback(() => {
-   for(let key in getValues()) {
-      if (key.startsWith(`variation_`)) {
+   for(const key in getValues()) {
+      if (key.startsWith('variation_')) {
         clearErrors(key);
       }
     }
   }, [getValues, clearErrors]);
 
-  const checkExist = useCallback(async (type: string, value: string) => {
-    const res = await checkToggleExist(projectKey, {
-      type,
-      value
-    });
-
-    if (res.code === CONFLICT) {
-      setError(type.toLocaleLowerCase(), {
-        message: res.message,
+  const creatRequestTimeCheck = useRequestTimeCheck();
+  
+  const debounceNameExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck('name');
+      const res = await checkToggleExist(projectKey, {
+        type,
+        value
       });
-      return;
-    }
-  }, [projectKey, setError]);
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const debounceKeyExist = useMemo(() => {
+    return debounce(async (type:string, value: string) => {
+      const check = creatRequestTimeCheck('key');
+      const res = await checkToggleExist(projectKey, {
+        type,
+        value
+      });
+
+      if(!check()) {
+        return;
+      }
+
+      if (res.code === CONFLICT) {
+        setError(type.toLocaleLowerCase(), {
+          message: res.message,
+        });
+      }
+    }, 500);
+  }, [creatRequestTimeCheck, projectKey, setError]);
+
+  const checkNameExist = useCallback(async (type: string, value: string) => {
+    await debounceNameExist(type, value);
+  }, [debounceNameExist]);
+
+  const checkKeyExist = useCallback(async (type: string, value: string) => {
+    await debounceKeyExist(type, value);
+  }, [debounceKeyExist]);
 
 	return (
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
@@ -264,7 +302,7 @@ const Drawer = (props: IParams) => {
             size='mini' 
             type='reset' 
             className={styles['btn-cancel']} 
-            onClick={() => {setDrawerVisible(false)}}
+            onClick={() => {setDrawerVisible(false);}}
           >
             <FormattedMessage id='common.cancel.text' />
           </Button>
@@ -287,9 +325,9 @@ const Drawer = (props: IParams) => {
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
               if (detail.value !== originToggleInfo.name) {
-                checkExist('NAME', detail.value);
+                checkNameExist('NAME', detail.value);
               }
-              handleChange(e, detail, 'name')
+              handleChange(e, detail, 'name');
               setValue(detail.name, detail.value);
               await trigger('name');
 
@@ -300,7 +338,7 @@ const Drawer = (props: IParams) => {
               const reg = /[^A-Z0-9._-]+/gi;
               const keyValue = detail.value.replace(reg, '_');
               handleChange(e, {...detail, value: keyValue}, 'key');
-              checkExist('KEY', detail.value);
+              checkKeyExist('KEY', keyValue);
               setValue('key', keyValue);
               await trigger('key');
             }}
@@ -317,7 +355,7 @@ const Drawer = (props: IParams) => {
             popupText={intl.formatMessage({id: 'toggles.key.tips'})}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               saveKeyEdit(true);
-              checkExist('KEY', detail.value);
+              checkKeyExist('KEY', detail.value);
               handleChange(e, detail, 'key');
               setValue(detail.name, detail.value);
               await trigger('key');
@@ -331,7 +369,7 @@ const Drawer = (props: IParams) => {
             disabled={!isAdd}
             onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
               if (('' + detail.value).length > 500 ) return;
-              handleChange(e, detail, 'desc')
+              handleChange(e, detail, 'desc');
               setValue(detail.name, detail.value);
               await trigger('desc');
             }}
@@ -497,7 +535,7 @@ const Drawer = (props: IParams) => {
         </div>
       </Form>
     </div>
-	)
-}
+	);
+};
 
 export default Drawer;

@@ -19,10 +19,8 @@
     "import"
 	],
 	"rules":{
-    // ESM imports need extensions, but TS doesn't re-write them.
-    // this forces us to add `.js` to all imports, which makes sure our ESM modules work.
     "import/extensions": [
-      "warn",
+      "off",
       "ignorePackages",
       {
         "ts": "always",
@@ -30,7 +28,7 @@
       }
     ],
     "linebreak-style":[
-      "warn",
+      "error",
       "unix"
     ],
     "quotes":[
@@ -41,15 +39,9 @@
       "error",
       "always"
     ],
-    "check-file/filename-naming-convention":[
+    "@typescript-eslint/ban-ts-comment": [
       "warn",
-        {
-          "**/*.{js,ts}":"KEBAB_CASE"
-        },
-        {
-          "ignoreMiddleExtensions": true
-        }
-    ],
-    "@typescript-eslint/ban-ts-ignore": "off"
+      {"ts-ignore": "allow-with-description"}
+    ]
   }
 }
