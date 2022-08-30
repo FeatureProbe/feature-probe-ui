@@ -66,7 +66,7 @@ const RuleContent = (props: IProps) => {
     clearErrors,
   } = hooksFormContainer.useContainer();
 
-  const handleDelete = useCallback(async (ruleIndex: number, conditionIndex: number, ruleId: string) => {
+  const handleDelete = useCallback(async (ruleIndex: number, conditionIndex: number, ruleId?: string) => {
     for(const key in getValues()) {
       if (key.startsWith(`rule_${ruleId}_condition`)) {
         unregister(key);
@@ -106,7 +106,7 @@ const RuleContent = (props: IProps) => {
   });
 
   if (useSegment) {
-    subjectOptions = getSubjectSegmentOptions(intl);
+    subjectOptions = getSubjectSegmentOptions();
   }
   
   const subjectIndex = subjectOptions?.findIndex((attr) => {
@@ -203,7 +203,7 @@ const RuleContent = (props: IProps) => {
               })
             }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
-              // @ts-ignore
+              // @ts-ignore detail value
               if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value)) {
                 handleChangeValue(ruleIndex, conditionIndex, []);
               } 
@@ -261,7 +261,7 @@ const RuleContent = (props: IProps) => {
                   floating
                   allowAdditions={false}
                   disabled={disabled}
-                  options={timezoneOptions(intl)}
+                  options={timezoneOptions()}
                   value={condition.timezone || moment().format().slice(-6)}
                   openOnFocus={false}
                   renderLabel={renderLabel}
@@ -316,23 +316,23 @@ const RuleContent = (props: IProps) => {
                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                   let result = true;
                   if (condition.type === NUMBER_TYPE) {
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     result = detail.value.every((item) => {
                       return NUMBER_REG.test(item);
                     });
 
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
                       return;
                     } 
                   } 
                   else if (condition.type === SEMVER_TYPE) {
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     result = detail.value.every((item) => {
                       return SEMVER_REG.test(item);
                     });
 
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
                       return;
                     } 

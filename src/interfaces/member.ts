@@ -29,6 +29,13 @@ export interface IMemberList {
 export interface IUserInfo {
   account: string;
   role: string;
+  token: string;
+  organizeId: number;
+}
+
+export interface IUser {
+  account: string;
+  role: string;
 }
 
 export interface IPassword {

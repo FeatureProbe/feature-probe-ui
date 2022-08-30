@@ -1,7 +1,7 @@
-import { IPageable, ISort } from "./toggle";
+import { IPageable, ISort } from './toggle';
 
 export interface IVariation {
-  id: string;
+  id?: string;
   name?: string;
   value?: string;
   description?: string;
@@ -18,9 +18,9 @@ export interface IOption {
 }
 
 export interface ICondition {
-  id: string;
+  id?: string;
   type: string;
-  subject: string;
+  subject?: string;
   predicate: string;
   objects?: string[];
   datetime?: string;
@@ -33,7 +33,7 @@ export interface IServe {
 }
 
 export interface IRule {
-  id: string;
+  id?: string;
   name: string;
   conditions: ICondition[];
   serve?: IServe;

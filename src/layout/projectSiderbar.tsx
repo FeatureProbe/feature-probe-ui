@@ -69,7 +69,7 @@ const ProjectSiderbar = (props: IProps) => {
   const handleChangeEnv = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
     setOpen(true);
 
-    // @ts-ignore
+    // @ts-ignore detail value
     setEnv(detail.value);
   }, []);
 

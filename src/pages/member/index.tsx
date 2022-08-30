@@ -8,7 +8,7 @@ import message from 'components/MessageBox';
 import MemberDrawer from './components/MemberDrawer';
 import MemberItem from './components/MemberItem';
 import { getMemberList } from 'services/member';
-import { IMemberList, IMember, IUserInfo } from 'interfaces/member';
+import { IMemberList, IMember, IUser } from 'interfaces/member';
 import { HeaderContainer } from 'layout/hooks';
 import styles from './index.module.scss';
 import { OWNER } from 'constants/auth';
@@ -22,7 +22,7 @@ const Member = () => {
   const [ total, setTotal ] = useState<number>(0);
   const [ drawerVisible, setDrawerVisible ] = useState<boolean>(false);
   const [ isAdd, setIsAdd ] = useState<boolean>(false);
-  const [ editUser, setEditUser ] = useState<IUserInfo>();
+  const [ editUser, setEditUser ] = useState<IUser>();
   const intl = useIntl();
   const { userInfo } = HeaderContainer.useContainer();
 
@@ -112,7 +112,6 @@ const Member = () => {
                           <MemberItem 
                             key={member.account}
                             member={member} 
-                            userInfo={userInfo}
                             setIsAdd={setIsAdd}
                             setEditUser={setEditUser}
                             setDrawerVisible={setDrawerVisible}

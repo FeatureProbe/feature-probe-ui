@@ -4,7 +4,7 @@ import { FPUser, FeatureProbe } from 'featureprobe-client-sdk-js';
 import { FormattedMessage } from 'react-intl';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { headerRoutes, blankRoutes } from './routes';
-import { getRedirectUrl } from 'utils/GetRedirectUrl';
+import { getRedirectUrl } from 'utils/getRedirectUrl';
 import BasicLayout from 'layout/BasicLayout';
 import { EventTrack } from 'utils/track';
 

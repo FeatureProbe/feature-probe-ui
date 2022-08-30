@@ -92,7 +92,7 @@ const StepFirst = (props: IProps) => {
 
   useEffect(() => {
     if (currentSDK) {
-      // @ts-ignore
+      // @ts-ignore currentSDK
       saveSelectedSDKLogo(SDK_LOGOS[currentSDK]);
     }
   }, [currentSDK]);

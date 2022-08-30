@@ -6,7 +6,7 @@ const CustomButton = ({children, ...props}: ButtonProps) => {
   const buttonRef = useRef(null);
   
   const handleOnClick = useCallback((e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, {...props}) => {
-    // @ts-ignore
+    // @ts-ignore object null compatibility
     buttonRef.current.ref?.current.blur();
 
     if (onClick) {

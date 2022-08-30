@@ -169,7 +169,6 @@ const Drawer = (props: IParams) => {
     const params = replaceSpace(cloneDeep(toggleInfo));
     const clonevariations = cloneDeep(variations);
     clonevariations.forEach((variation: IVariation) => {
-      // @ts-ignore
       delete variation.id;
     });
 

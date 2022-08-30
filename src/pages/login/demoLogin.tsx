@@ -8,10 +8,11 @@ import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import EventTracker from 'components/EventTracker';
 import { demoLogin } from 'services/user';
-import { getRedirectUrl } from 'utils/GetRedirectUrl';
+import { getRedirectUrl } from 'utils/getRedirectUrl';
 import { EventTrack } from 'utils/track';
 import { FORBIDDEN } from 'constants/httpCode';
 import logo from 'images/logo_large.svg';
+import { IUserInfo } from 'interfaces/member';
 import styles from './index.module.scss';
 
 const DemoLogin = () => {
@@ -36,14 +37,12 @@ const DemoLogin = () => {
     history.push(redirectUrl);
   }, [history]);
 
-  const onSubmit = useCallback(async (data) => {
-    const res = await demoLogin(data);
-    const { success } = res;
-    if (success) {
-      // @ts-ignore
-      localStorage.setItem('token', res.data.token);
-      // @ts-ignore
-      localStorage.setItem('organizeId', res.data.organizeId);
+  const onSubmit = useCallback(async (params) => {
+    const res = await demoLogin<IUserInfo>(params);
+    const { success, data } = res;
+    if (success && data) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('organizeId', String(data.organizeId));
       gotoHome();
     } 
     else if (res.code === FORBIDDEN) {

@@ -46,7 +46,7 @@ const RuleTitle = (props: IProps) => {
     }
   }, [isHover]);
   
-  const handleDelete = useCallback((e: SyntheticEvent, index: number, ruleId: string) => {
+  const handleDelete = useCallback((e: SyntheticEvent, index: number, ruleId?: string) => {
     e.stopPropagation();
 
     for(const key in getValues()) {

@@ -30,7 +30,7 @@ export const useVarition = () => {
   const handleInput = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps) => {
     const { value, index, customname } = detail;
     if (variations[index]) {
-      // @ts-ignore
+      // @ts-ignore any compatibility
       variations[index][customname] = value;
     }
     saveVariations([...variations]);

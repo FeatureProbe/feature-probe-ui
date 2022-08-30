@@ -17,7 +17,7 @@ export const useProjectInfo = () => {
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
     const { value } = detail;
-    // @ts-ignore
+    // @ts-ignore detail value
     projectInfo[type] = value;
     saveProjectInfo({...projectInfo});
   };
@@ -44,7 +44,7 @@ export const useEnvironmentInfo = () => {
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
     const { value } = detail;
-    // @ts-ignore
+    // @ts-ignore detail value
     environmentInfo[type] = value;
     saveEnvironmentInfo({...environmentInfo});
   };

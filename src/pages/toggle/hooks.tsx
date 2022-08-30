@@ -30,7 +30,7 @@ export const useVarition = () => {
     const { value, index, customname } = detail;
 
     if (variations[index]) {
-      // @ts-ignore
+      // @ts-ignore detail value
       variations[index][customname] = value;
     }
 
@@ -82,7 +82,7 @@ export const useToggleInfo = () => {
     if (type === 'clientAvailability') {
       toggleInfo[type] = detail.name === 'yes';
     } else {
-      // @ts-ignore
+      // @ts-ignore detail value
       toggleInfo[type] = value;
     }
 

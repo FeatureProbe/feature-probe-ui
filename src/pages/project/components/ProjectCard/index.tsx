@@ -42,7 +42,7 @@ const ProjectCard = (props: IProps) => {
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      // @ts-ignore
+      // @ts-ignore null compatibility
       if (e.target?.id === `${project.key}-icon-more`) {
         return;
       } else {

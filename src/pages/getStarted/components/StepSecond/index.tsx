@@ -79,7 +79,7 @@ const StepSecond = (props: IProps) => {
 
       rules.forEach((rule: IRule) => {
         rule.conditions.forEach((condition: ICondition) => {
-          if (!result.includes(condition.subject)) {
+          if (condition.subject && !result.includes(condition.subject)) {
             result.push(condition.subject);
           }
         });

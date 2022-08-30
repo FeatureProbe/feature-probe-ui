@@ -113,8 +113,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, [segmentList, saveSegmentList]);
 
   useEffect(() => {
-    rules.forEach((rule: IRule, index: number) => {
-      if (rule?.serve?.hasOwnProperty('select')) {
+    rules.forEach((rule: IRule) => {
+      if (Object.prototype.hasOwnProperty.call(rule.serve, 'select')) {
         if (Number(rule?.serve?.select) < variations.length) {
           setValue(`rule_${rule.id}_serve`, rule.serve);
         }
@@ -152,7 +152,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         setValue(`variation_${variation.id}`, variation.value);
       });
 
-      if (disabledServe.hasOwnProperty('select') && Number(disabledServe?.select) < variations.length) {
+      if (Object.prototype.hasOwnProperty.call(disabledServe, 'select') && Number(disabledServe?.select) < variations.length) {
         setValue('disabledServe', disabledServe);
       }
       if (defaultServe && (typeof(defaultServe.select) !== 'undefined' || typeof(defaultServe.split) !== 'undefined')) {
@@ -165,10 +165,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     const requestRules = cloneDeep(rules);
     requestRules.forEach((rule: IRule) => {
       rule.conditions.forEach((condition: ICondition) => {
-        // @ts-ignore
         delete condition.id;
         if (condition.type === SEGMENT_TYPE) {
-          // @ts-ignore
           delete condition.subject;
         } else if (condition.type === DATETIME_TYPE) {
           const result = [];
@@ -178,13 +176,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
           delete condition.timezone;
         }
       });
-      // @ts-ignore
       delete rule.id;
     });
 
     const requestVariations = cloneDeep(variations);
     requestVariations.forEach((variation: IVariation) => {
-      // @ts-ignore
       delete variation.id;
     });
 
@@ -236,7 +232,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   const onError = useCallback(() => {
     console.log(errors);
-    // message.error(intl.formatMessage({id: 'targeting.publish.error.text'}));
   }, [errors]);
 
   const handlePublishCancel = useCallback(() => {
@@ -273,7 +268,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, [disabledServe.select, variations]);
 
   const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps | InputOnChangeData) => {
-    // @ts-ignore
+    // @ts-ignore detail value
     setComment(data.value);
   }, []);
 
