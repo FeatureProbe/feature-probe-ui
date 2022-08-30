@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import EventTracker from 'components/EventTracker';
 import { login } from 'services/user';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
 import { FORBIDDEN } from 'constants/httpCode';
@@ -137,9 +138,11 @@ const Login = () => {
             </Form.Field>
 
             <div className={styles.footer}>
-              <Button className={styles.btn} type='submit' primary disabled={!!errors.account || !!errors.password}>
-                <FormattedMessage id='login.signin' />
-              </Button>
+              <EventTracker category='login' action='login'>
+                <Button className={styles.btn} type='submit' primary disabled={!!errors.account || !!errors.password}>
+                  <FormattedMessage id='login.signin' />
+                </Button>
+              </EventTracker>
             </div>
           </Form>
         </div>

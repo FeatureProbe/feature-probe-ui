@@ -6,11 +6,12 @@ import { useForm } from 'react-hook-form';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import EventTracker from 'components/EventTracker';
 import { demoLogin } from 'services/user';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
+import { EventTrack } from 'utils/track';
 import { FORBIDDEN } from 'constants/httpCode';
 import logo from 'images/logo_large.svg';
-import { EventTrack } from 'utils/track';
 import styles from './index.module.scss';
 
 const DemoLogin = () => {
@@ -105,9 +106,11 @@ const DemoLogin = () => {
             </Form.Field>
 
             <div className={styles['demo-footer']}>
-              <Button className={styles['demo-btn']} type='submit' primary disabled={!!errors.account || !!errors.password}>
-                <FormattedMessage id='login.signin' />
-              </Button>
+              <EventTracker category='login' action='demo-login'>
+                <Button className={styles['demo-btn']} type='submit' primary disabled={!!errors.account || !!errors.password}>
+                  <FormattedMessage id='login.signin' />
+                </Button>
+              </EventTracker>
             </div>
           </Form>
         </div>

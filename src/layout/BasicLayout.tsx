@@ -13,6 +13,7 @@ const BasicLayout = (props: IProps) => {
   const location = useLocation();
 
   useEffect(() => {
+
     EventTrack.pageView(location.pathname);
   }, [location.pathname]);
 

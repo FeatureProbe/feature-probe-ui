@@ -1,10 +1,10 @@
-import React, { SyntheticEvent } from 'react';
+import React, { ReactElement, SyntheticEvent } from 'react';
 import { EventTrack } from 'utils/track';
 
 interface IProps {
   category: string;
   action: string;
-  children: any;
+  children: ReactElement;
 }
 
 const EventTracker = (props: IProps) => {
