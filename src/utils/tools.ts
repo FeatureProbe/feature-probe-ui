@@ -2,6 +2,7 @@ import isString from 'lodash/isString';
 import trim from 'lodash/trim';
 import { IVariation } from 'interfaces/targeting';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const replaceSpace = (obj: any) => {
   for (const k in obj) {
     if (obj[k] && isString(obj[k])) {

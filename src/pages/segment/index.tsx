@@ -98,7 +98,7 @@ const Segment = () => {
   const handleSearch = debounce(useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore
+      // @ts-ignore detail value
       keyword: data.value,
     });
   }, [searchParams]), 300);

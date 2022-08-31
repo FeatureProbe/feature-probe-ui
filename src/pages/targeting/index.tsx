@@ -262,6 +262,7 @@ const Targeting = () => {
     saveHistoryPageIndex(0);
     saveRememberVersion(false);
     getVersionsList();
+    // eslint-disable-next-line
   }, []);
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {
@@ -316,7 +317,7 @@ const Targeting = () => {
                   <Button 
                     primary
                     type='button'
-                    onClick={(e: SyntheticEvent) => {
+                    onClick={() => {
                       setHistoryOpen(!historyOpen);
                       if (!versions.length) {
                         getVersionsList();

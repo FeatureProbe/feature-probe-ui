@@ -115,7 +115,6 @@ const Info = () => {
     const requestRules = cloneDeep(rules);
     requestRules?.forEach((rule: IRule) => {
       rule?.conditions?.forEach((condition: ICondition) => {
-        // @ts-ignore
         delete condition.id;
 
         if (condition.type === DATETIME_TYPE) {
@@ -126,7 +125,6 @@ const Info = () => {
           delete condition.timezone;
         }
       });
-      // @ts-ignore
       delete rule.id;
     });
 

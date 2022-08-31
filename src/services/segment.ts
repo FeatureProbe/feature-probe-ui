@@ -70,6 +70,7 @@ export const editSegment = async (projectKey: string, segmentKey: string, data?:
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getSegmentUsingToggles = async<T> (projectKey: string, segmentKey: string, params: any) => {
   const url = `${
     API.getSegmentToggleURI

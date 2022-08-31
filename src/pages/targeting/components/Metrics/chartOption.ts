@@ -3,6 +3,7 @@ import { externalTooltipHandler } from './chartTooltip';
 import { IMetric } from 'interfaces/targeting';
 const lang = localStorage.getItem('i18n')?.replaceAll('"', '') || 'en-US';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createChartOptions = (metric: IMetric[], projectKey: string, environmentKey: string, toggleKey: string, intl: IntlShape): any => {
   const config = {
     responsive: true,
@@ -44,7 +45,7 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
   metric.forEach((item: IMetric, index: number) => {
     if (item.lastChangeVersion !== undefined) {
       const key = 'line' + index;
-      // @ts-ignore
+      // @ts-ignore null compatibility
       config.plugins.annotation.annotations[key] = {
         type: 'line',
         xMin: index,

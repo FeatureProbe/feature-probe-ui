@@ -84,7 +84,7 @@ const DisabledServe = (props: IProps) => {
           }
           onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
             saveDisabledServe({
-              // @ts-ignore
+              // @ts-ignore detail value
               select: detail.value
             });
             setValue(detail.name, detail.value);

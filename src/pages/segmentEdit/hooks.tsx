@@ -123,7 +123,7 @@ export const useSegmentInfo = () => {
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
     const { value } = detail;
-    // @ts-ignore
+    // @ts-ignore detail value
     segmentInfo[type] = value;
     saveSegmentInfo({...segmentInfo});
   };

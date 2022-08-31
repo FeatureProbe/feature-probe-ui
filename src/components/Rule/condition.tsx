@@ -248,6 +248,7 @@ const RuleContent = (props: IProps) => {
                   timeFormat='HH:mm:ss'
                   inputProps={inputProps}
                   value={condition.datetime ? moment(condition.datetime) : moment()}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onChange={async (e: any) => {
                     handleChangeDateTime(ruleIndex, conditionIndex, e.format().slice(0, 19));
                     setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, e.format().slice(0, 19));

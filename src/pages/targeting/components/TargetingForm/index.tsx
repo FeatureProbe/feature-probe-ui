@@ -49,6 +49,7 @@ interface IProps {
   saveToggleDisable(status: boolean): void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Targeting = forwardRef((props: IProps, ref: any) => {
   const { disabled, toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
   const { rules, saveRules } = ruleContainer.useContainer();

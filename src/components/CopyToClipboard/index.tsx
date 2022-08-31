@@ -1,4 +1,4 @@
-import { ReactElement, SyntheticEvent, useState } from 'react';
+import { ReactElement, useState } from 'react';
 import debounce from 'lodash/debounce';
 import { Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
@@ -28,11 +28,11 @@ const CopyToClipboardPopup = (props: IProps) => {
     }, 2000);
   };
 
-  const handleMouseEnter = debounce((e: SyntheticEvent) => {
+  const handleMouseEnter = debounce(() => {
     setOpen(true);
   }, 300);
 
-  const handleMouseLeave = debounce((e: SyntheticEvent) => {
+  const handleMouseLeave = debounce(() => {
     setOpen(false);
   }, 300);
 
