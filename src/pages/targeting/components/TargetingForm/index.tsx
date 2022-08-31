@@ -114,7 +114,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   useEffect(() => {
     rules.forEach((rule: IRule) => {
-      if (Object.prototype.hasOwnProperty.call(rule.serve, 'select')) {
+      if (rule.serve && Object.prototype.hasOwnProperty.call(rule.serve, 'select')) {
         if (Number(rule?.serve?.select) < variations.length) {
           setValue(`rule_${rule.id}_serve`, rule.serve);
         }
@@ -152,7 +152,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         setValue(`variation_${variation.id}`, variation.value);
       });
 
-      if (Object.prototype.hasOwnProperty.call(disabledServe, 'select') && Number(disabledServe?.select) < variations.length) {
+      if (
+        disabledServe && 
+        Object.prototype.hasOwnProperty.call(disabledServe, 'select') && 
+        Number(disabledServe?.select) < variations.length
+      ) {
         setValue('disabledServe', disabledServe);
       }
       if (defaultServe && (typeof(defaultServe.select) !== 'undefined' || typeof(defaultServe.split) !== 'undefined')) {

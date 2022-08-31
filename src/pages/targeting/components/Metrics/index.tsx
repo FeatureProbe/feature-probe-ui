@@ -83,7 +83,7 @@ const Metrics = () => {
   }, [metrics, summary]);
 
   const handleSelectChange = useCallback((e: SyntheticEvent, detail: DropdownProps) => {
-    // @ts-ignore
+    // @ts-ignore detail value
     setFilterValue(detail.value || '24');
   }, []);
 
@@ -208,9 +208,9 @@ ChartJS.register(
   {
     id: Date.now().toString(),
     afterDraw: (chart: Chart) => {
-      // @ts-ignore
+      // @ts-ignore null compatibility
       if (chart.tooltip._active && chart.tooltip._active.length) {
-        // @ts-ignore
+        // @ts-ignore null compatibility
         const activePoint = chart.tooltip._active[0];
         const ctx = chart.ctx;
         const x = activePoint.element.x;

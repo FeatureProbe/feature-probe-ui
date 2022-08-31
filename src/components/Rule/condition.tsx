@@ -5,11 +5,20 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import canlendar from 'images/calendar.svg';
 import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
-import { getAttrOptions, attributeOptions, getSubjectSegmentOptions, timezoneOptions, DATETIME_TYPE, SEGMENT_TYPE, SEMVER_TYPE, NUMBER_TYPE } from './constants';
 import { ISegment, ISegmentList } from 'interfaces/segment';
-import canlendar from 'images/calendar.svg';
+import { 
+  getAttrOptions,
+  attributeOptions,
+  getSubjectSegmentOptions,
+  timezoneOptions,
+  DATETIME_TYPE,
+  SEGMENT_TYPE,
+  SEMVER_TYPE,
+  NUMBER_TYPE,
+} from './constants';
 import styles from './index.module.scss';
 
 interface IProps {

@@ -3,14 +3,14 @@ import trim from 'lodash/trim';
 import { IVariation } from 'interfaces/targeting';
 
 export const replaceSpace = (obj: any) => {
-  for (let k in obj) {
+  for (const k in obj) {
     if (obj[k] && isString(obj[k])) {
       obj[k] = trim(obj[k]);
     }
   }
 
   return obj;
-}
+};
 
 export const isJSON = (str: string) => {
   try {
@@ -20,7 +20,7 @@ export const isJSON = (str: string) => {
   } catch (error) {
     return false;
   }
-}
+};
 
 export const getVariationName = (variations: IVariation[]) => {
   let name = '';
@@ -34,4 +34,4 @@ export const getVariationName = (variations: IVariation[]) => {
     }
   }
   return name;
-}
+};
