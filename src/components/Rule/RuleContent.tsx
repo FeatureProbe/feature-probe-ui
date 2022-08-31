@@ -89,21 +89,21 @@ const RuleContent = (props: IProps) => {
           }
         >
           <div className={styles['menu']}>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, STRING_TYPE)}}>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, STRING_TYPE);}}>
               {STRING_TYPE}
             </div>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, NUMBER_TYPE)}}>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, NUMBER_TYPE);}}>
               {NUMBER_TYPE}
             </div>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, DATETIME_TYPE)}}>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, DATETIME_TYPE);}}>
               {DATETIME_TYPE}
             </div>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEMVER_TYPE)}}>
+            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEMVER_TYPE);}}>
               {SEMVER_TYPE}
             </div>
             {
               useSegment && (
-                <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEGMENT_TYPE)}}>
+                <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEGMENT_TYPE);}}>
                   {SEGMENT_TYPE}
                 </div>
               )
@@ -127,7 +127,7 @@ const RuleContent = (props: IProps) => {
         )
       }
     </div>
-	)
-}
+	);
+};
 
 export default RuleContent;

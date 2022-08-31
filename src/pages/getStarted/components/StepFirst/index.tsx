@@ -92,7 +92,7 @@ const StepFirst = (props: IProps) => {
 
   useEffect(() => {
     if (currentSDK) {
-      // @ts-ignore
+      // @ts-ignore currentSDK
       saveSelectedSDKLogo(SDK_LOGOS[currentSDK]);
     }
   }, [currentSDK]);
@@ -179,7 +179,7 @@ const StepFirst = (props: IProps) => {
                                 { sdk.name }
                               </div>
                             </Dropdown.Item>
-                          )
+                          );
                         })
                       }
                       <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
@@ -195,7 +195,7 @@ const StepFirst = (props: IProps) => {
                                 { sdk.name }
                               </div>
                             </Dropdown.Item>
-                          )
+                          );
                         })
                       }
                     </Dropdown.Menu>
@@ -241,7 +241,7 @@ const StepFirst = (props: IProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default StepFirst;

@@ -7,12 +7,13 @@ import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo } from 'services/user';
-import { IUserInfo } from 'interfaces/member';
+import { IUser } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
 import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
+import { EventTrack } from 'utils/track';
 import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
@@ -48,20 +49,21 @@ const PageHeader = () => {
       if (i18nMenuOpen) {
         setI18nMenuOpen(false);
       }
-    }
+    };
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
   }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
 
   useEffect(() => {
-    getUserInfo<IUserInfo>().then((res) => {
+    getUserInfo<IUser>().then((res) => {
       const { success } = res;
       if (success) {
         const { data } = res;
         if (data) {
           setAccount(data?.account);
           saveUserInfo(data);
+          EventTrack.setUserId(data.account);
         }
       } else {
         message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
@@ -169,11 +171,11 @@ const PageHeader = () => {
             </div>
           }
         >
-          <div className={styles['menu']} onClick={() => {setI18nMenuOpen(false)}}>
-            <div className={styles['menu-item']} onClick={()=> {setI18n('en-US')}}>
+          <div className={styles['menu']} onClick={() => {setI18nMenuOpen(false);}}>
+            <div className={styles['menu-item']} onClick={()=> {setI18n('en-US');}}>
               English
             </div>
-            <div className={styles['menu-item']} onClick={()=> {setI18n('zh-CN')}}>
+            <div className={styles['menu-item']} onClick={()=> {setI18n('zh-CN');}}>
               中文
             </div>
           </div>
@@ -197,7 +199,7 @@ const PageHeader = () => {
             </div>
           }
         >
-          <div className={styles['menu']} onClick={() => {setHelpMenuOpen(false)}}>
+          <div className={styles['menu']} onClick={() => {setHelpMenuOpen(false);}}>
             <div 
               className={styles['menu-item']} 
               onClick={()=> {
@@ -235,7 +237,7 @@ const PageHeader = () => {
             </div>
           }
         >
-          <div className={styles['menu']} onClick={() => {setMenuOpen(false)}}>
+          <div className={styles['menu']} onClick={() => {setMenuOpen(false);}}>
             <div className={styles['menu-item']} onClick={handleLogout}>
               <FormattedMessage id='common.logout.text' />
             </div>
@@ -243,7 +245,7 @@ const PageHeader = () => {
         </Popup>
       </div>
     </div>
-	)
-}
+	);
+};
 
 export default PageHeader;

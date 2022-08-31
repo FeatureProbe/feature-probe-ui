@@ -6,6 +6,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import { headerRoutes, blankRoutes } from './routes';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
 import BasicLayout from 'layout/BasicLayout';
+import { EventTrack } from 'utils/track';
 
 let USER: FPUser;
 let FP: FeatureProbe;
@@ -20,6 +21,10 @@ const Router = () => {
     }
     const redirectUrl = await getRedirectUrl('/notfound');
     setRedirectUrl(redirectUrl);
+  }, []);
+
+  useEffect(() => {
+    EventTrack.init();
   }, []);
 
   const init = useCallback(async() => {
@@ -95,7 +100,7 @@ const Router = () => {
                               <Route key={route.path} exact path={route.path} component={route.component} />
                             )}
                           />
-                        )
+                        );
                       })
                     }
                     {
@@ -108,7 +113,7 @@ const Router = () => {
           )
       }
     </>
-  )
+  );
 };
 
 export default Router;

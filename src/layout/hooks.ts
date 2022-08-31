@@ -1,5 +1,5 @@
-import { createContainer } from "unstated-next";
-import { useLocalStorage } from "utils/hooks";
+import { createContainer } from 'unstated-next';
+import { useLocalStorage } from 'utils/hooks';
 import { useState } from 'react';
 
 export const usePutaway = () => {
@@ -20,7 +20,7 @@ export const useUserInfo = () => {
   return {
     userInfo,
     saveUserInfo,
-  }
+  };
 };
 
 export const SidebarContainer = createContainer(usePutaway);

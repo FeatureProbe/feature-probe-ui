@@ -49,7 +49,7 @@ const StepThird = (props: IProps) => {
   
       return (() => {
         clearInterval(timer);
-      })
+      });
     }
   }, [count, isLoading, checkToggleStatus, saveIsLoading]);
 
@@ -120,7 +120,7 @@ const StepThird = (props: IProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default StepThird;

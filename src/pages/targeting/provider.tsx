@@ -14,9 +14,9 @@ export const segmentContainer: IContainer = createContainer(useSegment);
 function compose(...containers: IContainer[]) {
   return function Component(props: IChildren) {
     return containers.reduceRight((children: ReactElement, Container: IContainer) => {
-      return <Container.Provider>{children}</Container.Provider>
-    }, props.children)
-  }
+      return <Container.Provider>{children}</Container.Provider>;
+    }, props.children);
+  };
 }
   
 export const Provider = compose(

@@ -10,7 +10,7 @@ const GetStarted = () => {
         <Steps />
       </div>
     </ProjectLayout>
-  )
-}
+  );
+};
 
 export default GetStarted;

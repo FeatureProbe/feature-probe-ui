@@ -17,10 +17,10 @@ export const useProjectInfo = () => {
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
     const { value } = detail;
-    // @ts-ignore
+    // @ts-ignore detail value
     projectInfo[type] = value;
     saveProjectInfo({...projectInfo});
-  }
+  };
 
   return {
     projectInfo,
@@ -28,8 +28,8 @@ export const useProjectInfo = () => {
     handleChange,
     saveProjectInfo,
     saveOriginProjectInfo,
-  }
-}
+  };
+};
 
 export const useEnvironmentInfo = () => {
   const [ environmentInfo, saveEnvironmentInfo ] = useState({
@@ -44,10 +44,10 @@ export const useEnvironmentInfo = () => {
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
     const { value } = detail;
-    // @ts-ignore
+    // @ts-ignore detail value
     environmentInfo[type] = value;
     saveEnvironmentInfo({...environmentInfo});
-  }
+  };
 
   return {
     environmentInfo,
@@ -55,11 +55,11 @@ export const useEnvironmentInfo = () => {
     handleChange,
     saveEnvironmentInfo,
     saveOriginEnvironmentInfo,
-  }
-}
+  };
+};
 
 export const useReactHookForm = () => {
   return {
     ...useForm(),
-  }
-}
+  };
+};

@@ -14,6 +14,7 @@ import ProjectLayout from 'layout/projectLayout';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
+import EventTracker from 'components/EventTracker';
 import { getSegmentList } from 'services/segment';
 import { saveDictionary } from 'services/dictionary';
 import { ISegment, ISegmentList } from 'interfaces/segment';
@@ -97,7 +98,7 @@ const Segment = () => {
   const handleSearch = debounce(useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore
+      // @ts-ignore detail value
       keyword: data.value,
     });
   }, [searchParams]), 300);
@@ -119,11 +120,12 @@ const Segment = () => {
                 />
               </Form.Field>
             </Form>
-
-            <Button primary className={styles['add-button']} onClick={handleAddSegment}>
-              <Icon customClass={styles['iconfont']} type='add' />
-              <FormattedMessage id='common.segment.text' />
-            </Button>
+            <EventTracker category='segment' action='create-segment'>
+              <Button primary className={styles['add-button']} onClick={handleAddSegment}>
+                <Icon customClass={styles['iconfont']} type='add' />
+                <FormattedMessage id='common.segment.text' />
+              </Button>
+            </EventTracker>
           </div>
           <div className={styles.lists}>
             <Table basic='very' unstackable>
@@ -154,7 +156,7 @@ const Segment = () => {
                             segment={segment}
                             fetchSegmentLists={fetchSegmentLists}
                           />
-                        )
+                        );
                       })
                     }
                   </Table.Body>
@@ -204,7 +206,7 @@ const Segment = () => {
         </div>
       </div>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default Segment;

@@ -5,11 +5,20 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import canlendar from 'images/calendar.svg';
 import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
-import { getAttrOptions, attributeOptions, getSubjectSegmentOptions, timezoneOptions, DATETIME_TYPE, SEGMENT_TYPE, SEMVER_TYPE, NUMBER_TYPE } from './constants';
 import { ISegment, ISegmentList } from 'interfaces/segment';
-import canlendar from 'images/calendar.svg';
+import { 
+  getAttrOptions,
+  attributeOptions,
+  getSubjectSegmentOptions,
+  timezoneOptions,
+  DATETIME_TYPE,
+  SEGMENT_TYPE,
+  SEMVER_TYPE,
+  NUMBER_TYPE,
+} from './constants';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -44,7 +53,7 @@ const RuleContent = (props: IProps) => {
 
   const intl = useIntl();
   const [ options, setOption ] = useState<IOption[]>();
-  let segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
+  const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
   let subjectOptions: IOption[] = attributeOptions;
 
   const {
@@ -54,7 +63,7 @@ const RuleContent = (props: IProps) => {
     handleChangeTimeZone,
     handleChangeValue,
     handleDeleteCondition,
-  } = ruleContainer.useContainer()
+  } = ruleContainer.useContainer();
 
   const {
     formState: { errors },
@@ -66,8 +75,8 @@ const RuleContent = (props: IProps) => {
     clearErrors,
   } = hooksFormContainer.useContainer();
 
-  const handleDelete = useCallback(async (ruleIndex: number, conditionIndex: number, ruleId: string) => {
-    for(let key in getValues()) {
+  const handleDelete = useCallback(async (ruleIndex: number, conditionIndex: number, ruleId?: string) => {
+    for(const key in getValues()) {
       if (key.startsWith(`rule_${ruleId}_condition`)) {
         unregister(key);
         clearErrors(key);
@@ -80,7 +89,7 @@ const RuleContent = (props: IProps) => {
     return ({
       content: label.text,
       removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
-    })
+    });
   }, []);
 
   useEffect(() => {
@@ -102,11 +111,11 @@ const RuleContent = (props: IProps) => {
       key: val,
       text: val,
       value: val,
-    }
+    };
   });
 
   if (useSegment) {
-    subjectOptions = getSubjectSegmentOptions(intl);
+    subjectOptions = getSubjectSegmentOptions();
   }
   
   const subjectIndex = subjectOptions?.findIndex((attr) => {
@@ -203,7 +212,7 @@ const RuleContent = (props: IProps) => {
               })
             }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
-              // @ts-ignore
+              // @ts-ignore detail value
               if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value)) {
                 handleChangeValue(ruleIndex, conditionIndex, []);
               } 
@@ -239,6 +248,7 @@ const RuleContent = (props: IProps) => {
                   timeFormat='HH:mm:ss'
                   inputProps={inputProps}
                   value={condition.datetime ? moment(condition.datetime) : moment()}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   onChange={async (e: any) => {
                     handleChangeDateTime(ruleIndex, conditionIndex, e.format().slice(0, 19));
                     setValue(`rule_${rule.id}_condition_${condition.id}_datetime`, e.format().slice(0, 19));
@@ -261,7 +271,7 @@ const RuleContent = (props: IProps) => {
                   floating
                   allowAdditions={false}
                   disabled={disabled}
-                  options={timezoneOptions(intl)}
+                  options={timezoneOptions()}
                   value={condition.timezone || moment().format().slice(-6)}
                   openOnFocus={false}
                   renderLabel={renderLabel}
@@ -316,23 +326,23 @@ const RuleContent = (props: IProps) => {
                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                   let result = true;
                   if (condition.type === NUMBER_TYPE) {
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     result = detail.value.every((item) => {
                       return NUMBER_REG.test(item);
                     });
 
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
                       return;
                     } 
                   } 
                   else if (condition.type === SEMVER_TYPE) {
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     result = detail.value.every((item) => {
                       return SEMVER_REG.test(item);
                     });
 
-                    // @ts-ignore
+                    // @ts-ignore detail value
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
                       return;
                     } 
@@ -369,7 +379,7 @@ const RuleContent = (props: IProps) => {
         />
       }
     </div>
-  )
-}
+  );
+};
 
 export default RuleContent;

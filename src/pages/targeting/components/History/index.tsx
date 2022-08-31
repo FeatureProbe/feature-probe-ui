@@ -136,7 +136,7 @@ const History = (props: IProps) => {
                     }
                   </div>
                 </div>
-              )
+              );
             })
           }
           {
@@ -157,7 +157,7 @@ const History = (props: IProps) => {
         </InfiniteScroll>
       </div>
     </div>
-  )
+  );
 };
 
 export default History;

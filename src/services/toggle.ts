@@ -18,7 +18,7 @@ export const getToggleList = async<T> (projectKey: string, params: IToggleParams
       ...ApplicationJson()
     },
   });
-}
+};
 
 export const getToggleInfo = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
   const url = `${
@@ -67,7 +67,7 @@ export const saveToggle = async (projectKey: string, environmentKey: string, tog
     },
     body: JSON.stringify(data),
   });
-}
+};
 
 export const createToggle = async (projectKey: string, data: IToggle) => {
   const url = `${
@@ -82,7 +82,7 @@ export const createToggle = async (projectKey: string, data: IToggle) => {
     },
     body: JSON.stringify(data),
   });
-}
+};
 
 export const editToggle = async (projectKey: string, toggleKey: string, data: IEditToggleParams) => {
   const url = `${
@@ -98,7 +98,7 @@ export const editToggle = async (projectKey: string, toggleKey: string, data: IE
     },
     body: JSON.stringify(data),
   });
-}
+};
 
 export const getTags = async<T> (projectKey: string) => {
   const url = `${
@@ -112,7 +112,7 @@ export const getTags = async<T> (projectKey: string) => {
       ...ApplicationJson()
     },
   });
-}
+};
 
 export const addTag = async (projectKey: string, data: ITag) => {
   const url = `${
@@ -127,7 +127,7 @@ export const addTag = async (projectKey: string, data: ITag) => {
     },
     body: JSON.stringify(data),
   });
-}
+};
 
 export const getMetrics = async<T> (projectKey: string, environmentKey: string, toggleKey: string, params: IMetricParams) => {
   const url = `${
@@ -157,7 +157,7 @@ export const checkToggleExist = async<T> (projectKey: string, params: IExistPara
       ...ApplicationJson()
     },
   });
-}
+};
 
 export const checkEnvironmentExist = async<T> (projectKey: string, params: IExistParams) => {
   const url = `${
@@ -171,7 +171,7 @@ export const checkEnvironmentExist = async<T> (projectKey: string, params: IExis
       ...ApplicationJson()
     },
   });
-}
+};
 
 export const getTargetingVersion = async<T> (projectKey: string, environmentKey: string, toggleKey: string, params: IVersionParams) => {
   const url = `${
@@ -220,4 +220,4 @@ export const getToggleAccess = async<T> (projectKey: string, environmentKey: str
       ...ApplicationJson()
     },
   });
-}
+};

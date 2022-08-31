@@ -122,4 +122,4 @@ export const checkProjectExist = async<T> (params: IExistParams) => {
       ...ApplicationJson()
     },
   });
-}
+};

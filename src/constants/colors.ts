@@ -35,4 +35,4 @@ export const EnvironmentBgColors = [
   'rgba(110, 164, 14, 0.1)',
   'rgba(49, 120, 207, 0.1)',
   'rgba(38, 164, 186, 0.1)'
-]
+];

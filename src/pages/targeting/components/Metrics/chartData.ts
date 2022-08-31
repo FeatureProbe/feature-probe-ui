@@ -35,7 +35,7 @@ export const createChartData = (
       pointHoverRadius: 4,
       fill: false,
       tension: 0.4
-    }
+    };
   });
 
   return { 

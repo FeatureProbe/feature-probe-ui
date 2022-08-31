@@ -15,7 +15,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
-import { IUserInfo, IFormParams } from 'interfaces/member';
+import { IUser, IFormParams } from 'interfaces/member';
 import { createMember, updateMember, getMember } from 'services/member';
 import styles from './index.module.scss';
 import FormItemPassword from 'components/FormItem/password';
@@ -23,7 +23,7 @@ import FormItemPassword from 'components/FormItem/password';
 interface IParams {
   isAdd: boolean;
   visible: boolean;
-  editUser?: IUserInfo
+  editUser?: IUser
   setDrawerVisible: (visible: boolean) => void;
   refreshMemberList:(pageIndex: number) => void;
 }
@@ -64,7 +64,7 @@ const MemberDrawer = (props: IParams) => {
     if (isAdd) {
       unregister('account',
         { keepIsValid: true }
-      )
+      );
     }
   }, [isAdd, unregister]);
 
@@ -72,7 +72,7 @@ const MemberDrawer = (props: IParams) => {
     if (visible && !passwordVisible) {
       unregister('password',
         { keepIsValid: true }
-      )
+      );
     }
   }, [visible, passwordVisible, unregister]);
 
@@ -88,14 +88,14 @@ const MemberDrawer = (props: IParams) => {
   }, []);
 
   const handleChange = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
-    // @ts-ignore
+    // @ts-ignore detail value
     setMemberValues(detail.value);
     setValue(detail.name, detail.value);
     await trigger('accounts');
   }, [trigger, setValue]);
 
   const handleCheckboxChange = useCallback((e: SyntheticEvent, detail: CheckboxProps) => {
-    // @ts-ignore
+    // @ts-ignore detail checked
     setPasswordVisible(!detail.checked);
   }, []);
 
@@ -133,19 +133,19 @@ const MemberDrawer = (props: IParams) => {
         key: item,
         text: item,
         value: item,
-      }
+      };
     });
   }, [memberValues]);
 
   const handleAddAccount = useCallback(async(event: SyntheticEvent, data: DropdownProps) => {
     const res = await getMember({
-      // @ts-ignore
+      // @ts-ignore detail value
       account: data.value,
     });
 
     if (res.success) {
       message.error(intl.formatMessage({id: 'members.add.dulplicate.error.text'}));
-      // @ts-ignore
+      // @ts-ignore detail value
       setDulplicateAccount(data.value);
     }
   }, [intl]);
@@ -183,7 +183,7 @@ const MemberDrawer = (props: IParams) => {
           <div className={styles['title-left']}>
             { isAdd ? intl.formatMessage({id: 'members.add.members'}) : intl.formatMessage({id: 'members.edit.member'}) }
           </div>
-          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false)}}>
+          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false);}}>
             <FormattedMessage id='common.cancel.text' />
           </Button>
           <Button size='mini' primary type='submit'>
@@ -290,7 +290,7 @@ const MemberDrawer = (props: IParams) => {
         </div>
       </Form>
     </div>
-	)
-}
+	);
+};
 
 export default MemberDrawer;

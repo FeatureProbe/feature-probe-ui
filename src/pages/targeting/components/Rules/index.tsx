@@ -83,7 +83,7 @@ const Rules = (props: IProps) => {
                         hooksFormContainer={hooksFormContainer}
                         variationContainer={variationContainer}
                       />
-                    )
+                    );
                   })
                 }
               </div>
@@ -106,7 +106,7 @@ const Rules = (props: IProps) => {
         <FormattedMessage id='targeting.rule.add.text'/>
       </div>
 		</div>
-	)
-}
+	);
+};
 
 export default Rules;

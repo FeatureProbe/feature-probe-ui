@@ -63,13 +63,13 @@ const ProjectSiderbar = (props: IProps) => {
       key: env.key,
       text: env.name,
       value: env.key,
-    }
+    };
   });
 
   const handleChangeEnv = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
     setOpen(true);
 
-    // @ts-ignore
+    // @ts-ignore detail value
     setEnv(detail.value);
   }, []);
 
@@ -134,7 +134,7 @@ const ProjectSiderbar = (props: IProps) => {
       <Modal 
         open={open}
         width={400}
-        handleCancel={() => {setOpen(false)}}
+        handleCancel={() => {setOpen(false);}}
         handleConfirm={gotoPage}
       >
         <div>
@@ -156,7 +156,7 @@ const ProjectSiderbar = (props: IProps) => {
         </div>
       </Modal>
     </div>
-	)
-}
+	);
+};
 
 export default ProjectSiderbar;

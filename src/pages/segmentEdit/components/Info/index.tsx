@@ -11,6 +11,7 @@ import FormItemName from 'components/FormItem/name';
 import FormItemKey from 'components/FormItem/key';
 import FormItemDescription from 'components/FormItem/description';
 import message from 'components/MessageBox';
+import EventTracker from 'components/EventTracker';
 import Rules from 'pages/targeting/components/Rules';
 import { useBeforeUnload } from 'pages/targeting/hooks';
 import ConfirmModal from '../Modal';
@@ -21,9 +22,8 @@ import { ISegmentInfo, IToggleList, IToggle } from 'interfaces/segment';
 import { SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH } from 'router/routes';
 import { IRule, ICondition } from 'interfaces/targeting';
 import { DATETIME_TYPE } from 'components/Rule/constants';
-
-import styles from './index.module.scss';
 import { useRequestTimeCheck } from 'hooks';
+import styles from './index.module.scss';
 
 interface IParams {
   projectKey: string;
@@ -107,7 +107,7 @@ const Info = () => {
         } else {
           message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
-      })
+      });
     }
   }, [match.path, projectKey, segmentKey, intl, saveSegmentInfo, saveOriginSegmentInfo, saveRules]);
 
@@ -115,18 +115,16 @@ const Info = () => {
     const requestRules = cloneDeep(rules);
     requestRules?.forEach((rule: IRule) => {
       rule?.conditions?.forEach((condition: ICondition) => {
-        // @ts-ignore
         delete condition.id;
 
         if (condition.type === DATETIME_TYPE) {
-          let result = [];
+          const result = [];
           result.push('' + condition.datetime + condition.timezone);
           condition.objects = result;
           delete condition.datetime;
           delete condition.timezone;
         }
       });
-      // @ts-ignore
       delete rule.id;
     });
 
@@ -233,7 +231,7 @@ const Info = () => {
   
   const debounceNameExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("name");
+      const check = creatRequestTimeCheck('name');
       const res = await checkSegmentExist(projectKey, {
         type,
         value
@@ -254,7 +252,7 @@ const Info = () => {
 
   const debounceKeyExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("key");
+      const check = creatRequestTimeCheck('key');
       const res = await checkSegmentExist(projectKey, {
         type,
         value
@@ -300,7 +298,7 @@ const Info = () => {
             if (detail.value !== originSegmentInfo.name) {
               checkNameExist('NAME', detail.value);
             }
-            handleChange(e, detail, 'name')
+            handleChange(e, detail, 'name');
             setValue(detail.name, detail.value);
             await trigger('name');
             
@@ -340,7 +338,7 @@ const Info = () => {
           disabled={false}
           onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
             if (('' + detail.value).length > 500 ) return;
-            handleChange(e, detail, 'description')
+            handleChange(e, detail, 'description');
             setValue(detail.name, detail.value);
             await trigger('description');
           }}
@@ -356,12 +354,15 @@ const Info = () => {
       </div>
 
       <div id='footer' className={styles.footer}>
-        <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
-          {
-            isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
-          }
-          <FormattedMessage id='common.publish.text' />
-        </Button>
+        <EventTracker category='segment' action='publish-segment'>
+          <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
+            {
+              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+            }
+            <FormattedMessage id='common.publish.text' />
+          </Button>
+        </EventTracker>
+        
         <Button basic type='reset' onClick={handleGoBack}>
           <FormattedMessage id='common.cancel.text' />
         </Button>
@@ -382,7 +383,7 @@ const Info = () => {
         message={intl.formatMessage({id: 'targeting.page.leave.text'})}
       />
     </Form>
-	)
-}
+	);
+};
 
 export default Info;

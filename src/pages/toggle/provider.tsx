@@ -10,9 +10,9 @@ export const hooksFormContainer: IContainer = createContainer(useReactHookForm);
 function compose(...containers: IContainer[]) {
   return function Component(props: IChildren) {
     return containers.reduceRight((children: ReactElement, Container: IContainer) => {
-      return <Container.Provider>{children}</Container.Provider>
-    }, props.children)
-  }
+      return <Container.Provider>{children}</Container.Provider>;
+    }, props.children);
+  };
 }
   
 export const Provider = compose(variationContainer, toggleInfoContainer, hooksFormContainer);

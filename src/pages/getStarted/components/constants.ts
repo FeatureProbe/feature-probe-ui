@@ -52,7 +52,7 @@ ${returnType === 'boolean' ? `boolean boolValue = fpClient.boolValue("${toggleKe
 `fpClient.close();
 `
     }
-  ]
+  ];
 };
 
 export const getRustCode = (options: IOption) => {
@@ -156,7 +156,7 @@ if __name__ == '__main__':
   with fp.Client('${serverSdkKey}', config) as client:
     user = fp.User()
     ${userWithCode}
-    val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? `False` : ''}${returnType === 'string' ? `'not connected'` : ''}${returnType === 'number' ? `-1` : ''}${returnType === 'json' ? `{}` : ''})  
+    val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? 'False' : ''}${returnType === 'string' ? 'not connected' : ''}${returnType === 'number' ? '-1' : ''}${returnType === 'json' ? '{}' : ''})  
 `
     }
   ];
@@ -234,7 +234,7 @@ let fp = FeatureProbe(config: config, user: user)
       code: `${returnType === 'boolean' ? `let value = fp.boolValue("${toggleKey}", false)` : ''}${returnType === 'number' ? `let value = fp.numberValue("${toggleKey}", 1.0)` : ''}${returnType === 'string' ? `let value = fp.stringValue("${toggleKey}", "s")` : ''}${returnType === 'json' ? `let value = fp.jsonValue("${toggleKey}", "{}")` : ''}`
     }
   ];
-}
+};
 
 export const getObjCCode = (options: IOption) => {
   const { intl, clientSdkKey, userWithCode, returnType, toggleKey, remoteUrl } = options;
@@ -271,7 +271,7 @@ FeatureProbe *fp = [[FeatureProbe alloc] initWithConfig:config user:user];`
       code: `${returnType === 'boolean' ? `bool value = [fp boolValueWithKey: @"${toggleKey}" defaultValue: false];` : ''}${returnType === 'number' ? `double value = [fp numberValueWithKey: @"${toggleKey}" defaultValue: 1.0];` : ''}${returnType === 'string' ? `NSString* value = [fp stringValueWithKey: @"${toggleKey}" defaultValue: @"s"];` : ''}${returnType === 'json' ? `NSString* value = [fp jsonValueWithKey: @"${toggleKey}" defaultValue: @"{}"];` : ''}`
     }
   ];
-}
+};
 
 export const getJSCode = (options: IOption) => {
   const { intl, clientSdkKey, userWithCode, returnType, toggleKey, remoteUrl } = options;
@@ -326,4 +326,4 @@ fp.start();
 `
     }
   ];
-}
+};

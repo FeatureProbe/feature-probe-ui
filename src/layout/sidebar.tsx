@@ -14,7 +14,7 @@ const Sidebar = (props: IProps) => {
         <PutAway />
       </div>
     </SidebarContainer.Provider>
-	)
-}
+	);
+};
 
 export default Sidebar;

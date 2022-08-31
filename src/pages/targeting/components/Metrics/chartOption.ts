@@ -1,8 +1,9 @@
 import { IntlShape } from 'react-intl';
-import { externalTooltipHandler } from "./chartTooltip";
+import { externalTooltipHandler } from './chartTooltip';
 import { IMetric } from 'interfaces/targeting';
 const lang = localStorage.getItem('i18n')?.replaceAll('"', '') || 'en-US';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createChartOptions = (metric: IMetric[], projectKey: string, environmentKey: string, toggleKey: string, intl: IntlShape): any => {
   const config = {
     responsive: true,
@@ -44,7 +45,7 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
   metric.forEach((item: IMetric, index: number) => {
     if (item.lastChangeVersion !== undefined) {
       const key = 'line' + index;
-      // @ts-ignore
+      // @ts-ignore null compatibility
       config.plugins.annotation.annotations[key] = {
         type: 'line',
         xMin: index,
@@ -52,7 +53,7 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
         borderColor: '#FFEBE9',
         borderWidth: 1,
         click: () => {
-          window.open(`/${projectKey}/${environmentKey}/${toggleKey}/targeting?currentVersion=${item.lastChangeVersion}`)
+          window.open(`/${projectKey}/${environmentKey}/${toggleKey}/targeting?currentVersion=${item.lastChangeVersion}`);
         },
         label: {
           enabled: true,
@@ -69,9 +70,9 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
             bottomRight: 4,
           }
         }
-      }
+      };
     }
-  })
+  });
   return config;
 };
   

@@ -11,6 +11,7 @@ import { Provider } from './provider';
 import { IProject } from 'interfaces/project';
 import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
+import EventTracker from 'components/EventTracker';
 
 const Project = () => {
   const [ projectList, saveProjectList ] = useState<IProject[]>([]);
@@ -26,7 +27,7 @@ const Project = () => {
     if (res.success && data) {
       saveProjectList(data);
     } else {
-      message.error(res.message || intl.formatMessage({id: 'projects.list.error.text'}))
+      message.error(res.message || intl.formatMessage({id: 'projects.list.error.text'}));
     }
   }, [intl]);
 
@@ -43,7 +44,7 @@ const Project = () => {
     setIsAdd(false);
     setVisible(true);
     setProjectKey(projectKey);
-  }, [])
+  }, []);
 
 	return (
     <div className={styles.project}>
@@ -59,10 +60,12 @@ const Project = () => {
             {
               OWNER.includes(userInfo.role) && (
                 <div>
-                  <Button primary onClick={handleAddProject}>
-                    <Icon customClass={styles.iconfont} type='add' />
-                    <FormattedMessage id='common.project.text' />
-                  </Button>
+                  <EventTracker category='project' action='create-project'>
+                    <Button primary onClick={handleAddProject}>
+                      <Icon customClass={styles.iconfont} type='add' />
+                      <FormattedMessage id='common.project.text' />
+                    </Button>
+                  </EventTracker>
                 </div>
               )
             }
@@ -77,7 +80,7 @@ const Project = () => {
                     handleEditProject={handleEditProject}
                     refreshProjectsList={init}
                   />
-                )
+                );
               })
             }
           </div>
@@ -91,7 +94,7 @@ const Project = () => {
         </>
       </Provider>
     </div>
-	)
-}
+	);
+};
 
 export default Project;

@@ -19,6 +19,7 @@ import Modal from 'components/Modal';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
 import SectionTitle from 'components/SectionTitle';
+import EventTracker from 'components/EventTracker';
 import { saveToggle } from 'services/toggle';
 import { replaceSpace } from 'utils/tools';
 import { 
@@ -48,6 +49,7 @@ interface IProps {
   saveToggleDisable(status: boolean): void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Targeting = forwardRef((props: IProps, ref: any) => {
   const { disabled, toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
   const { rules, saveRules } = ruleContainer.useContainer();
@@ -112,8 +114,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, [segmentList, saveSegmentList]);
 
   useEffect(() => {
-    rules.forEach((rule: IRule, index: number) => {
-      if (rule?.serve?.hasOwnProperty('select')) {
+    rules.forEach((rule: IRule) => {
+      if (rule.serve && Object.prototype.hasOwnProperty.call(rule.serve, 'select')) {
         if (Number(rule?.serve?.select) < variations.length) {
           setValue(`rule_${rule.id}_serve`, rule.serve);
         }
@@ -151,7 +153,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         setValue(`variation_${variation.id}`, variation.value);
       });
 
-      if (disabledServe.hasOwnProperty('select') && Number(disabledServe?.select) < variations.length) {
+      if (
+        disabledServe && 
+        Object.prototype.hasOwnProperty.call(disabledServe, 'select') && 
+        Number(disabledServe?.select) < variations.length
+      ) {
         setValue('disabledServe', disabledServe);
       }
       if (defaultServe && (typeof(defaultServe.select) !== 'undefined' || typeof(defaultServe.split) !== 'undefined')) {
@@ -164,26 +170,22 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     const requestRules = cloneDeep(rules);
     requestRules.forEach((rule: IRule) => {
       rule.conditions.forEach((condition: ICondition) => {
-        // @ts-ignore
         delete condition.id;
         if (condition.type === SEGMENT_TYPE) {
-          // @ts-ignore
           delete condition.subject;
         } else if (condition.type === DATETIME_TYPE) {
-          let result = [];
+          const result = [];
           result.push('' + condition.datetime + condition.timezone);
           condition.objects = result;
           delete condition.datetime;
           delete condition.timezone;
         }
       });
-      // @ts-ignore
       delete rule.id;
     });
 
     const requestVariations = cloneDeep(variations);
     requestVariations.forEach((variation: IVariation) => {
-      // @ts-ignore
       delete variation.id;
     });
 
@@ -195,7 +197,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         defaultServe,
         variations: requestVariations,
       }
-    })
+    });
   }, [toggleDisabled, rules, variations, defaultServe, disabledServe]);
 
   useEffect(() => {
@@ -209,11 +211,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     let isError = false;
     const clonevariations: IVariation[] = cloneDeep(variations);
     clonevariations.forEach((variation: IVariation) => {
-      let res = replaceSpace(variation);
+      const res = replaceSpace(variation);
       if (res.value === '') {
         setError(`variation_${variation.id}`, {
           message: intl.formatMessage({id: 'common.input.placeholder'}),
-        })
+        });
         isError = true;
       }
     });
@@ -235,7 +237,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
 
   const onError = useCallback(() => {
     console.log(errors);
-    // message.error(intl.formatMessage({id: 'targeting.publish.error.text'}));
   }, [errors]);
 
   const handlePublishCancel = useCallback(() => {
@@ -258,7 +259,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       }
       setLoading(false);
     }
-  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting])
+  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting]);
 
   const handleGoBack = useCallback(() => {
     history.push(`/${projectKey}/${environmentKey}/toggles`);
@@ -267,12 +268,12 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {
       return variations[disabledServe.select].name 
-      || variations[disabledServe.select].value
+      || variations[disabledServe.select].value;
     }
   }, [disabledServe.select, variations]);
 
   const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps | InputOnChangeData) => {
-    // @ts-ignore
+    // @ts-ignore detail value
     setComment(data.value);
   }, []);
 
@@ -337,14 +338,16 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         />
       </div>
       <div id='footer' className={styles.footer}>
-        <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
-          {
-            isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
-          }
-          <span className={styles['publish-btn-text']}>
-            <FormattedMessage id='common.publish.text' />
-          </span>
-        </Button>
+        <EventTracker category='targeting' action='publish-toggle'>
+          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
+            {
+              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+            }
+            <span className={styles['publish-btn-text']}>
+              <FormattedMessage id='common.publish.text' />
+            </span>
+          </Button>
+        </EventTracker>
         <Button basic type='reset' onClick={handleGoBack}>
           <FormattedMessage id='common.cancel.text' />
         </Button>
@@ -386,7 +389,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         message={intl.formatMessage({id: 'targeting.page.leave.text'})}
       />
     </Form>
-	)
-})
+	);
+});
 
 export default Targeting;

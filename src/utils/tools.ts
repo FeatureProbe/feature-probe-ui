@@ -2,15 +2,16 @@ import isString from 'lodash/isString';
 import trim from 'lodash/trim';
 import { IVariation } from 'interfaces/targeting';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const replaceSpace = (obj: any) => {
-  for (let k in obj) {
+  for (const k in obj) {
     if (obj[k] && isString(obj[k])) {
       obj[k] = trim(obj[k]);
     }
   }
 
   return obj;
-}
+};
 
 export const isJSON = (str: string) => {
   try {
@@ -20,7 +21,7 @@ export const isJSON = (str: string) => {
   } catch (error) {
     return false;
   }
-}
+};
 
 export const getVariationName = (variations: IVariation[]) => {
   let name = '';
@@ -34,4 +35,4 @@ export const getVariationName = (variations: IVariation[]) => {
     }
   }
   return name;
-}
+};

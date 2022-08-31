@@ -5,7 +5,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import { MEMBER_PATH, PROFILE_PATH } from 'router/routes';
 import PutAwayMemu from 'components/PutAwayMenu';
 import { MEMBERS, PROFILE } from 'constants/sidebar';
-import { SidebarContainer } from './hooks'
+import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
 const Sidebar = () => {
@@ -62,7 +62,7 @@ const Sidebar = () => {
         />
       </div>
     </div>
-	)
-}
+	);
+};
 
 export default Sidebar;

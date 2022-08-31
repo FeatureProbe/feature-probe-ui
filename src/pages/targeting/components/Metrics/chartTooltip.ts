@@ -90,9 +90,9 @@ export const externalTooltipHandler = (context: { chart: Chart; tooltip: Tooltip
       containerDiv.style.alignItems = 'center';
 
       const colorDiv = document.createElement('div');
-      // @ts-ignore
+      // @ts-ignore type compatibility
       colorDiv.style.background = colors.backgroundColor;
-      // @ts-ignore
+      // @ts-ignore type compatibility
       colorDiv.style.borderColor = colors.borderColor;
       colorDiv.style.borderWidth = '2px';
       colorDiv.style.marginRight = '10px';

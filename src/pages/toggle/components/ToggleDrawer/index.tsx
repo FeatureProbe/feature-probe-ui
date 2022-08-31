@@ -75,7 +75,7 @@ const Drawer = (props: IParams) => {
   } = toggleInfoContainer.useContainer();
 
   const options = variations?.map((item: IVariation, index: number) => {
-    const text = item.name || item.value || `variation ${index + 1}`
+    const text = item.name || item.value || `variation ${index + 1}`;
     return {
       text,
       value: index,
@@ -85,7 +85,7 @@ const Drawer = (props: IParams) => {
           <span>{ text }</span>
         </div>
       ),
-    }
+    };
   });
 
   const getTagList = useCallback(async () => {
@@ -97,7 +97,7 @@ const Drawer = (props: IParams) => {
           key: item.name,
           text: item.name,
           value: item.name,
-        }
+        };
       });
       saveTagsOptions(tags);
     } else {
@@ -130,7 +130,7 @@ const Drawer = (props: IParams) => {
         disabledServe: 0
       });
     }
-  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo])
+  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo]);
 
   useEffect(() => {
     setValue('name', toggleInfo.name);
@@ -169,9 +169,8 @@ const Drawer = (props: IParams) => {
     const params = replaceSpace(cloneDeep(toggleInfo));
     const clonevariations = cloneDeep(variations);
     clonevariations.forEach((variation: IVariation) => {
-      // @ts-ignore
       delete variation.id;
-    })
+    });
 
     if (isAdd) {
       res = await createToggle(projectKey, {
@@ -228,8 +227,8 @@ const Drawer = (props: IParams) => {
   }, [errors]);
 
   const clearVariationErrors = useCallback(() => {
-   for(let key in getValues()) {
-      if (key.startsWith(`variation_`)) {
+   for(const key in getValues()) {
+      if (key.startsWith('variation_')) {
         clearErrors(key);
       }
     }
@@ -239,7 +238,7 @@ const Drawer = (props: IParams) => {
   
   const debounceNameExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("name");
+      const check = creatRequestTimeCheck('name');
       const res = await checkToggleExist(projectKey, {
         type,
         value
@@ -260,7 +259,7 @@ const Drawer = (props: IParams) => {
 
   const debounceKeyExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("key");
+      const check = creatRequestTimeCheck('key');
       const res = await checkToggleExist(projectKey, {
         type,
         value
@@ -302,7 +301,7 @@ const Drawer = (props: IParams) => {
             size='mini' 
             type='reset' 
             className={styles['btn-cancel']} 
-            onClick={() => {setDrawerVisible(false)}}
+            onClick={() => {setDrawerVisible(false);}}
           >
             <FormattedMessage id='common.cancel.text' />
           </Button>
@@ -327,7 +326,7 @@ const Drawer = (props: IParams) => {
               if (detail.value !== originToggleInfo.name) {
                 checkNameExist('NAME', detail.value);
               }
-              handleChange(e, detail, 'name')
+              handleChange(e, detail, 'name');
               setValue(detail.name, detail.value);
               await trigger('name');
 
@@ -369,7 +368,7 @@ const Drawer = (props: IParams) => {
             disabled={!isAdd}
             onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
               if (('' + detail.value).length > 500 ) return;
-              handleChange(e, detail, 'desc')
+              handleChange(e, detail, 'desc');
               setValue(detail.name, detail.value);
               await trigger('desc');
             }}
@@ -535,7 +534,7 @@ const Drawer = (props: IParams) => {
         </div>
       </Form>
     </div>
-	)
-}
+	);
+};
 
 export default Drawer;

@@ -47,7 +47,7 @@ const JsonEditor = (props: IProps) => {
 
   return (
     <textarea ref={editorRef}></textarea>
-  )
-}
+  );
+};
 
 export default JsonEditor;

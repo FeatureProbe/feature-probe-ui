@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { Popup } from 'semantic-ui-react';
 import styles from './index.module.scss';
 
@@ -22,7 +22,7 @@ const TagsList = (props: IProps) => {
     } else {
       saveShowTags(tags);
     }
-  }, [tags, showCount])
+  }, [tags, showCount]);
 
   return (
     <div className={styles['tags-list']}>
@@ -34,7 +34,7 @@ const TagsList = (props: IProps) => {
                 { val }
               </span>
             </div>
-          )
+          );
         })
       }
 
@@ -66,7 +66,7 @@ const TagsList = (props: IProps) => {
                         { val }
                       </span>
                     </div>
-                  )
+                  );
                 })
               }
             </div>
@@ -74,7 +74,7 @@ const TagsList = (props: IProps) => {
         )
       }
     </div>
-  )
-}
+  );
+};
   
 export default TagsList;

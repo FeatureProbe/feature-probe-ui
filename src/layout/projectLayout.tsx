@@ -218,7 +218,7 @@ const ProjectLayout = (props: IProps) => {
         { props.children }
       </div>
     </div>
-	)
-}
+	);
+};
 
 export default ProjectLayout;

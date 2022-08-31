@@ -1,20 +1,28 @@
-import { useCallback, SyntheticEvent } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useCallback, SyntheticEvent, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import EventTracker from 'components/EventTracker';
 import { demoLogin } from 'services/user';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
+import { EventTrack } from 'utils/track';
 import { FORBIDDEN } from 'constants/httpCode';
 import logo from 'images/logo_large.svg';
+import { IUserInfo } from 'interfaces/member';
 import styles from './index.module.scss';
 
 const DemoLogin = () => {
   const history = useHistory();
   const intl = useIntl();
+  const location = useLocation();
+
+  useEffect(() => {
+    EventTrack.pageView(location.pathname);
+  }, [location.pathname]);
 
   const {
     formState: { errors },
@@ -29,14 +37,12 @@ const DemoLogin = () => {
     history.push(redirectUrl);
   }, [history]);
 
-  const onSubmit = useCallback(async (data) => {
-    const res = await demoLogin(data);
-    const { success } = res;
-    if (success) {
-      // @ts-ignore
-      localStorage.setItem('token', res.data.token);
-      // @ts-ignore
-      localStorage.setItem('organizeId', res.data.organizeId);
+  const onSubmit = useCallback(async (params) => {
+    const res = await demoLogin<IUserInfo>(params);
+    const { success, data } = res;
+    if (success && data) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('organizeId', String(data.organizeId));
       gotoHome();
     } 
     else if (res.code === FORBIDDEN) {
@@ -99,15 +105,17 @@ const DemoLogin = () => {
             </Form.Field>
 
             <div className={styles['demo-footer']}>
-              <Button className={styles['demo-btn']} type='submit' primary disabled={!!errors.account || !!errors.password}>
-                <FormattedMessage id='login.signin' />
-              </Button>
+              <EventTracker category='login' action='demo-login'>
+                <Button className={styles['demo-btn']} type='submit' primary disabled={!!errors.account || !!errors.password}>
+                  <FormattedMessage id='login.signin' />
+                </Button>
+              </EventTracker>
             </div>
           </Form>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default DemoLogin;

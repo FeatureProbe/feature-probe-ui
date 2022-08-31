@@ -113,7 +113,7 @@ const Serve = (props: IProps) => {
 
   useEffect(() => {
     if (total !== TOTAL && percentageShow) {
-      setError(id ? `rule_${id}_serve_total` : 'defaultServe_total', { message: 'total is not 100%' })
+      setError(id ? `rule_${id}_serve_total` : 'defaultServe_total', { message: 'total is not 100%' });
     } else {
       clearErrors(id ? `rule_${id}_serve_total`: 'defaultServe_total');
     }
@@ -239,7 +239,7 @@ const Serve = (props: IProps) => {
                       style={{width: item.percentage, background: VariationColors[index % 20]}} 
                       className={styles['percentage-item']}
                     />
-                  )
+                  );
                 })
               }
             </div>
@@ -286,7 +286,7 @@ const Serve = (props: IProps) => {
                         </span>
                       </div>
                     </div>
-                  )
+                  );
                 })
               }
             </div>
@@ -294,7 +294,7 @@ const Serve = (props: IProps) => {
         )
       }
     </div>
-	)
-}
+	);
+};
 
 export default Serve;

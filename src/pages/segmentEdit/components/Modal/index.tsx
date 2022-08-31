@@ -140,7 +140,7 @@ const ConfirmModal = (props: IProps) => {
                         }
                       </Table.Cell>
                     </Table.Row>
-                  )
+                  );
                 })
               }
             </Table.Body>
@@ -167,7 +167,7 @@ const ConfirmModal = (props: IProps) => {
         </div>
       </div>
     </Modal>
-	)
-}
+	);
+};
 
 export default ConfirmModal;

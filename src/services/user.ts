@@ -18,10 +18,10 @@ export const getUserInfo = async<T> () => {
   });
 };
 
-export const login = async (data: ILoginParams) => {
+export const login = async<T>(data: ILoginParams) => {
   const url = `${API.loginURI}`;
   
-  return request(url, {
+  return request<T>(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,12 +29,12 @@ export const login = async (data: ILoginParams) => {
     },
     body: JSON.stringify(data),
   });
-}
+};
 
-export const demoLogin = async (data: ILoginParams) => {
+export const demoLogin = async<T>(data: ILoginParams) => {
   const url = `${API.demoLoginURI}`;
   
-  return request(url, {
+  return request<T>(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export const demoLogin = async (data: ILoginParams) => {
     },
     body: JSON.stringify(data),
   });
-}
+};
 
 export const logout = async<T> () => {
   const url = API.logoutURI;
