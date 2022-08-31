@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
-import { createContainer } from "unstated-next";
-import { useLocalStorage } from "utils/hooks";
+import { createContainer } from 'unstated-next';
+import { useLocalStorage } from 'utils/hooks';
 
 export const useI18N = () => {
   const [i18n, setI18n] = useLocalStorage('i18n', 'en-US');
@@ -28,4 +28,4 @@ export const useRequestTimeCheck = () => {
   }, [requestTimes]);
 
   return creatRequestTimeCheck;
-}
+};

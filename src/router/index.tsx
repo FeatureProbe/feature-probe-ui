@@ -100,7 +100,7 @@ const Router = () => {
                               <Route key={route.path} exact path={route.path} component={route.component} />
                             )}
                           />
-                        )
+                        );
                       })
                     }
                     {
@@ -113,7 +113,7 @@ const Router = () => {
           )
       }
     </>
-  )
+  );
 };
 
 export default Router;

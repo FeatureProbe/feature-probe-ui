@@ -21,7 +21,7 @@ const iconObj: IObject = {
 
 
 const options: ToastOptions = {
-  position: "top-center",
+  position: 'top-center',
   hideProgressBar: true,
   closeOnClick: true,
   pauseOnHover: true,
@@ -29,7 +29,7 @@ const options: ToastOptions = {
   closeButton: false,
   transition: Slide,
   className: styles['message'],
-}
+};
 
 const message: IFunc = {
   info: (content: string, duration?: number) => {
@@ -37,28 +37,28 @@ const message: IFunc = {
       ...options,
       icon: <i className={`${styles[iconObj['info']]} ${iconObj['info']} iconfont`}></i>,
       autoClose: duration || 3000,
-    })
+    });
   },
   success: (content: string, duration?: number) => {
     toast.success(content, {
       ...options,
       icon: <i className={`${styles[iconObj['success']]} ${iconObj['success']} iconfont`}></i>,
       autoClose: duration || 3000,
-    })
+    });
   },
   warn: (content: string, duration?: number) => {
     toast.warning(content, {
       ...options,
       icon: <i className={`${styles[iconObj['warn']]} ${iconObj['warn']} iconfont`}></i>,
       autoClose: duration || 3000,
-    })
+    });
   },
   error: (content: string, duration?: number) => {
     toast.error(content, {
       ...options,
       icon: <i className={`${styles[iconObj['error']]} ${iconObj['error']} iconfont`}></i>,
       autoClose: duration || 3000,
-    })
+    });
   }
 };
 

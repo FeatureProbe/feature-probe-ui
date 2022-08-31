@@ -1,5 +1,5 @@
-import request from "../utils/request";
-import API from "../constants/api";
+import request from '../utils/request';
+import API from '../constants/api';
 import { ApplicationJson } from 'constants/api/contentType';
 
 export const getSdkVersion = async <T>(key: string) => {

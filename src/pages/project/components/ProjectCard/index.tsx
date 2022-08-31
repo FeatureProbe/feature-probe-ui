@@ -42,13 +42,13 @@ const ProjectCard = (props: IProps) => {
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      // @ts-ignore
+      // @ts-ignore null compatibility
       if (e.target?.id === `${project.key}-icon-more`) {
         return;
       } else {
         setMenuOpen(false);
       }
-    }
+    };
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
@@ -111,7 +111,7 @@ const ProjectCard = (props: IProps) => {
     if (res.success) {
       refreshProjectsList();
     } else {
-      message.error(intl.formatMessage({id: 'projects.delete.error'}))
+      message.error(intl.formatMessage({id: 'projects.delete.error'}));
     }
   }, [project.key, intl, refreshProjectsList]);
 
@@ -138,7 +138,7 @@ const ProjectCard = (props: IProps) => {
                   </div>
                 }
               >
-                <div className={styles['menu']} onClick={() => {setMenuOpen(false)}}>
+                <div className={styles['menu']} onClick={() => {setMenuOpen(false);}}>
                   <div className={styles['menu-item']} onClick={() => {
                     saveProjectInfo({
                       name: project.name,
@@ -180,7 +180,7 @@ const ProjectCard = (props: IProps) => {
                       </div>
                     )
                   }
-                  <div className={styles['menu-item']} onClick={() => { checkProjectDeletable() }}>
+                  <div className={styles['menu-item']} onClick={() => { checkProjectDeletable(); }}>
                     <FormattedMessage id='projects.menu.delete.project' />
                   </div>
                 </div>
@@ -211,7 +211,7 @@ const ProjectCard = (props: IProps) => {
                 handleEditEnvironment={handleEditEnvironment}
                 refreshEnvironmentList={refreshEnvironmentList}
               />
-            )
+            );
           })
         }
         {
@@ -281,7 +281,7 @@ const ProjectCard = (props: IProps) => {
         </div>
       </Modal>
     </div>
-	)
-}
+	);
+};
 
 export default ProjectCard;

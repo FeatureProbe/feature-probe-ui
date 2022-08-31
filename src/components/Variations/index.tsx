@@ -34,7 +34,7 @@ const Variations = (props: IProps) => {
     clearErrors,
   } = hooksFormContainer.useContainer();
 
-  const handleDeleteVariation = useCallback((index: number, variationId: string) => {
+  const handleDeleteVariation = useCallback((index: number, variationId?: string) => {
     unregister(`variation_${variationId}_name`);
     unregister(`variation_${variationId}`);
     handleDelete(index);
@@ -79,7 +79,7 @@ const Variations = (props: IProps) => {
           message: intl.formatMessage({
             id: 'variations.dulpicated.error.text'
           })
-        })
+        });
     } else {
       clearErrors('variations_duplicated');
     }
@@ -134,7 +134,7 @@ const Variations = (props: IProps) => {
       }
 
 		</div>
-	)
-}
+	);
+};
 
 export default Variations;

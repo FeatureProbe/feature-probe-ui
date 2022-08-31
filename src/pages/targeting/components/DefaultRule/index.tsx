@@ -31,12 +31,12 @@ const DefaultRule = (props: IProps) => {
           serve={defaultServe}
           variations={variations}
           customStyle={{width: '328px'}}
-          handleChangeServe={(item) => {saveDefaultServe(item)}}
+          handleChangeServe={(item) => {saveDefaultServe(item);}}
           hooksFormContainer={hooksFormContainer}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default DefaultRule;

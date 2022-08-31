@@ -25,7 +25,7 @@ const BasicLayout = (props: IProps) => {
         </div>
       </HeaderContainer.Provider>
 		</div>
-	)
-}
+	);
+};
 
 export default BasicLayout;

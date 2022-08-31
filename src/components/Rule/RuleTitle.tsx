@@ -46,10 +46,10 @@ const RuleTitle = (props: IProps) => {
     }
   }, [isHover]);
   
-  const handleDelete = useCallback((e: SyntheticEvent, index: number, ruleId: string) => {
+  const handleDelete = useCallback((e: SyntheticEvent, index: number, ruleId?: string) => {
     e.stopPropagation();
 
-    for(let key in getValues()) {
+    for(const key in getValues()) {
       if (key.startsWith(`rule_${ruleId}_`)) {
         unregister(key);
         clearErrors(key);
@@ -113,7 +113,7 @@ const RuleTitle = (props: IProps) => {
         )
       }
     </div>
-	)
-}
+	);
+};
 
 export default RuleTitle;

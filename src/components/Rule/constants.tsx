@@ -14,7 +14,7 @@ export const attributeOptions: IOption[] = [
   { key: 'userId', text: 'userId', value: 'userId' },
 ];
 
-export const getSubjectSegmentOptions = (intl: IntlShape) => [
+export const getSubjectSegmentOptions = () => [
   { key: 'userId', text: 'userId', value: 'userId' },
 ];
 
@@ -54,7 +54,7 @@ export const getAttrOptions = (intl: IntlShape, type?:string) => {
   }
 };
 
-export const timezoneOptions = (intl: IntlShape) => {
+export const timezoneOptions = () => {
   return [
     {key: 1, text: 'UTC +0', value: '+00:00'},
     {key: 2, text: 'UTC +1', value: '+01:00'},
@@ -81,5 +81,5 @@ export const timezoneOptions = (intl: IntlShape) => {
     {key: 23, text: 'UTC -3', value: '-03:00'},
     {key: 24, text: 'UTC -2', value: '-02:00'},
     {key: 25, text: 'UTC -1', value: '-01:00'},
-  ]
+  ];
 };

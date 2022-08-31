@@ -1,8 +1,8 @@
-import { ReactElement, SyntheticEvent } from "react";
+import { ReactElement, SyntheticEvent } from 'react';
 import { Popup } from 'semantic-ui-react';
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage } from 'react-intl';
 import Button from 'components/Button';
-import Icon from "components/Icon";
+import Icon from 'components/Icon';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -33,7 +33,7 @@ const PopupConfirm = (props: IProps) => {
         </Button>
       </div>
     </Popup>
-  )
-}
+  );
+};
   
 export default PopupConfirm;

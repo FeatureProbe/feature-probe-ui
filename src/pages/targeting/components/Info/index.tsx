@@ -85,7 +85,7 @@ const Info = (props: IProps) => {
         </Button>
       </div>
     </div>
-	)
-}
+	);
+};
 
 export default Info;

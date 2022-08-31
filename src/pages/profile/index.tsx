@@ -182,7 +182,7 @@ const Member = () => {
         </div>
       </div>
     </SettingLayout>
-  )
-}
+  );
+};
 
 export default Member;

@@ -10,7 +10,7 @@ const Icon = (props: IProps) => {
 
   return (
    <span {...props} className={`iconfont icon-${type} ${customClass}`} ></span>
-  )
-}
+  );
+};
   
 export default Icon;

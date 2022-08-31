@@ -79,17 +79,17 @@ const StepSecond = (props: IProps) => {
 
       rules.forEach((rule: IRule) => {
         rule.conditions.forEach((condition: ICondition) => {
-          if (!result.includes(condition.subject)) {
+          if (condition.subject && !result.includes(condition.subject)) {
             result.push(condition.subject);
           }
-        })
+        });
       });
 
       switch (currentSDK) {
         case 'Java':
           saveLanguage('java');
           result.forEach(item => {
-            userWithCode += `.with("${item}", /* ${item} */)`
+            userWithCode += `.with("${item}", /* ${item} */)`;
           });
           saveOptions(
             getJavaCode({
@@ -123,7 +123,7 @@ const StepSecond = (props: IProps) => {
         case 'Rust': 
           saveLanguage('rust');
           result.forEach(item => {
-            userWithCode += `let user = user.with("${item}", /* ${item} */);\n`
+            userWithCode += `let user = user.with("${item}", /* ${item} */);\n`;
           });
           saveOptions(
             getRustCode({
@@ -140,7 +140,7 @@ const StepSecond = (props: IProps) => {
         case 'Go': 
           saveLanguage('go');
           result.forEach(item => {
-            userWithCode += `user.With("${item}", /* ${item} */)\n`
+            userWithCode += `user.With("${item}", /* ${item} */)\n`;
           });
           saveOptions(
             getGoCode({
@@ -156,7 +156,7 @@ const StepSecond = (props: IProps) => {
         case 'Android': 
           saveLanguage('java');
           result.forEach(item => {
-            userWithCode += `user.with("${item}", /* ${item} */)\n`
+            userWithCode += `user.with("${item}", /* ${item} */)\n`;
           });
           saveOptions(
             getAndroidCode({
@@ -173,7 +173,7 @@ const StepSecond = (props: IProps) => {
         case 'Swift': 
           saveLanguage('swift');
           result.forEach(item => {
-            userWithCode += `user.with("${item}", /* ${item} */)\n`
+            userWithCode += `user.with("${item}", /* ${item} */)\n`;
           });
           saveOptions(getSwiftCode({
             clientSdkKey, 
@@ -187,7 +187,7 @@ const StepSecond = (props: IProps) => {
         case 'Objective-C':
           saveLanguage('objectivec');
           result.forEach(item => {
-            userWithCode += `[user withKey:@"${item}" value:/* ${item} */];\n`
+            userWithCode += `[user withKey:@"${item}" value:/* ${item} */];\n`;
           });
           saveOptions(getObjCCode({
             clientSdkKey,
@@ -201,7 +201,7 @@ const StepSecond = (props: IProps) => {
         case 'JavaScript':
           saveLanguage('javascript');
           result.forEach(item => {
-            userWithCode += `user.with("${item}", /* ${item} */);\n`
+            userWithCode += `user.with("${item}", /* ${item} */);\n`;
           });
           saveOptions(getJSCode({
             clientSdkKey,
@@ -294,7 +294,7 @@ const StepSecond = (props: IProps) => {
                             </SyntaxHighlighter>
                           </div>
                         </div>
-                      )
+                      );
                     })
                   }
                 </div>
@@ -334,7 +334,7 @@ const StepSecond = (props: IProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default StepSecond;

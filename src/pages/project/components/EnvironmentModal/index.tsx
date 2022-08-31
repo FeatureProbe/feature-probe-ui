@@ -73,7 +73,7 @@ const EnvironmentModal = (props: IProps) => {
 
   const debounceNameExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("name");
+      const check = creatRequestTimeCheck('name');
       const res = await checkEnvironmentExist(projectKey, {
         type,
         value
@@ -94,7 +94,7 @@ const EnvironmentModal = (props: IProps) => {
 
   const debounceKeyExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("key");
+      const check = creatRequestTimeCheck('key');
       const res = await checkEnvironmentExist(projectKey, {
         type,
         value
@@ -165,7 +165,6 @@ const EnvironmentModal = (props: IProps) => {
       width={480}
       footer={null}
       handleCancel={handleCancel}
-      handleConfirm={() => { }}
     >
       <div className={styles.modal}>
         <div className={styles['modal-header']}>
@@ -233,7 +232,7 @@ const EnvironmentModal = (props: IProps) => {
         </div>
       </div>
     </Modal>
-  )
-}
+  );
+};
 
 export default EnvironmentModal;

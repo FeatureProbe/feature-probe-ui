@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ContainerProviderProps } from 'unstated-next';
 import { ReactElement } from 'react';
 

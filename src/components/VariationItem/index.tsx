@@ -11,7 +11,7 @@ import { isJSON } from 'utils/tools';
 import styles from './index.module.scss';
 
 interface IItem {
-  id: string;
+  id?: string;
   index: number;
   name?: string;
   value?: string;
@@ -83,7 +83,7 @@ const VariationItem = (props: IProps) => {
   }, []);
 
   const handleChangeBoolean = useCallback((e: SyntheticEvent, detail: DropdownProps) => {
-    // @ts-ignore
+    // @ts-ignore detail value
     handleChangeVariation(index, detail.value);
   }, [index, handleChangeVariation]);
 
@@ -301,7 +301,7 @@ const VariationItem = (props: IProps) => {
         </div>
       </Modal>
     </div>
-	)
-}
+	);
+};
 
 export default VariationItem;

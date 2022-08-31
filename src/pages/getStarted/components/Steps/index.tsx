@@ -153,7 +153,7 @@ const Steps = () => {
       if (res.success && data) {
         saveToggleAccess(data.isAccess);
       }
-    })
+    });
   }, [projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
@@ -262,7 +262,7 @@ const Steps = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Steps;

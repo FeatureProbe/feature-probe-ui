@@ -47,7 +47,7 @@ const EnvironmentCard = (props: IProps) => {
       if (open) {
         setMenuOpen(false);
       }
-    }
+    };
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
@@ -61,7 +61,7 @@ const EnvironmentCard = (props: IProps) => {
   }, [isArchived, history, projectKey]);
 
   const confirmArchiveEnv = useCallback(async () => {
-    let res = await editEnvironment(projectKey, item.key, {
+    const res = await editEnvironment(projectKey, item.key, {
       archived: true,
     });
 
@@ -74,7 +74,7 @@ const EnvironmentCard = (props: IProps) => {
   }, [item.key, projectKey, intl, refreshEnvironmentList]);
 
   const confirmRestoreEnv = useCallback(async () => {
-    let res = await editEnvironment(projectKey, item.key, {
+    const res = await editEnvironment(projectKey, item.key, {
       archived: false,
     });
 
@@ -257,7 +257,7 @@ const EnvironmentCard = (props: IProps) => {
         </div>
       </Modal>
     </div>
-	)
-}
+	);
+};
 
 export default EnvironmentCard;

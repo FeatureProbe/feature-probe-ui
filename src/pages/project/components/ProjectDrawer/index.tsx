@@ -91,7 +91,7 @@ const ProjectDrawer = (props: IProps) => {
 
   const debounceNameExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("name");
+      const check = creatRequestTimeCheck('name');
       const res = await checkProjectExist({
         type,
         value
@@ -112,7 +112,7 @@ const ProjectDrawer = (props: IProps) => {
 
   const debounceKeyExist = useMemo(() => {
     return debounce(async (type:string, value: string) => {
-      const check = creatRequestTimeCheck("key");
+      const check = creatRequestTimeCheck('key');
       const res = await checkProjectExist({
         type,
         value
@@ -137,8 +137,6 @@ const ProjectDrawer = (props: IProps) => {
   const checkKeyExist = useCallback(async (type: string, value: string) => {
     await debounceKeyExist(type, value);
   }, [debounceKeyExist]);
-
-
 
   const onSubmit = useCallback(async () => {
     let res;
@@ -188,7 +186,7 @@ const ProjectDrawer = (props: IProps) => {
           <div className={styles['title-left']}>
             { isAdd ? intl.formatMessage({id: 'projects.create.project'}) : intl.formatMessage({id: 'projects.edit.project'}) }
           </div>
-          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false)}}>
+          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false);}}>
             <FormattedMessage id='common.cancel.text' />
           </Button>
           <Button size='mini' primary type='submit' disabled={errors.name || errors.key}>
@@ -210,7 +208,7 @@ const ProjectDrawer = (props: IProps) => {
               if (detail.value !== originProjectInfo.name) {
                 checkNameExist('NAME', detail.value);
               }
-              handleChange(e, detail, 'name')
+              handleChange(e, detail, 'name');
               setValue(detail.name, detail.value);
               await trigger('name');
 
@@ -249,7 +247,7 @@ const ProjectDrawer = (props: IProps) => {
             disabled={!isAdd}
             onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
               if (('' + detail.value).length > 500 ) return;
-              handleChange(e, detail, 'description')
+              handleChange(e, detail, 'description');
               setValue(detail.name, detail.value);
               await trigger('description');
             }}
@@ -257,7 +255,7 @@ const ProjectDrawer = (props: IProps) => {
         </div>
       </Form>
     </div>
-	)
-}
+	);
+};
 
 export default ProjectDrawer;

@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
-import { IMember, IUserInfo } from 'interfaces/member';
+import { IMember, IUser } from 'interfaces/member';
 import { deleteMember } from 'services/member';
 import message from 'components/MessageBox';
 import styles from './index.module.scss';
@@ -13,10 +13,9 @@ import { HeaderContainer } from 'layout/hooks';
 
 interface IProps {
   member?: IMember;
-  userInfo?: IUserInfo;
   setDrawerVisible(visible: boolean): void;
   setIsAdd(isAdd: boolean): void;
-  setEditUser(member?: IUserInfo): void;
+  setEditUser(member?: IUser): void;
   refreshMemberList(pageIndex: number): void;
 }
 
@@ -114,7 +113,7 @@ const MemberItem = (props: IProps) => {
         </div>
       </Modal>
     </Table.Row>
-	)
-}
+	);
+};
 
 export default MemberItem;

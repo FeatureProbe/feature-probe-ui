@@ -12,7 +12,7 @@ interface IProps {
   showPopup?: boolean;
   popupText?: string;
   className?: string;
-  size?: "big" | "small" | "mini" | "large" | "huge" | "massive" | undefined;
+  size?: 'big' | 'small' | 'mini' | 'large' | 'huge' | 'massive' | undefined;
   register: UseFormRegister<FieldValues>;
   onChange(e: SyntheticEvent, detail: InputOnChangeData): void;
 }
@@ -74,7 +74,7 @@ const FormItemKey = (props: IProps) => {
         <FormattedMessage id='common.key.tips' />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default FormItemKey;

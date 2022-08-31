@@ -87,7 +87,7 @@ const ToggleItem = (props: IProps) => {
   }, [projectKey, environmentKey, saveToggleInfo, saveOriginToggleInfo, saveVariations, setIsAdd, setDrawerVisible]);
 
   const confirmArchiveToggle = useCallback(async () => {
-    let res = await editToggle(projectKey, toggle.key, {
+    const res = await editToggle(projectKey, toggle.key, {
       archived: true,
     });
 
@@ -100,7 +100,7 @@ const ToggleItem = (props: IProps) => {
   }, [toggle.key, projectKey, intl, refreshToggleList]);
 
   const confirmRestoreToggle = useCallback(async () => {
-    let res = await editToggle(projectKey, toggle.key, {
+    const res = await editToggle(projectKey, toggle.key, {
       archived: false,
     });
 
@@ -126,7 +126,7 @@ const ToggleItem = (props: IProps) => {
           </div>
           <div className={styles['toggle-info-key']}>
             <CopyToClipboardPopup text={toggle.key}>
-              <div onClick={(e) => {e.stopPropagation()}} className={styles['toggle-info-key-label']}>
+              <div onClick={(e) => {e.stopPropagation();}} className={styles['toggle-info-key-label']}>
                 {toggle.key}
               </div>
             </CopyToClipboardPopup>
@@ -306,7 +306,7 @@ const ToggleItem = (props: IProps) => {
         </div>
       </Modal>
     </Table.Row>
-	)
-}
+	);
+};
 
 export default ToggleItem;

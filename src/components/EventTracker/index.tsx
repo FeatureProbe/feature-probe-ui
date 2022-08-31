@@ -1,10 +1,10 @@
-import React, { SyntheticEvent } from 'react';
+import React, { ReactElement, SyntheticEvent } from 'react';
 import { EventTrack } from 'utils/track';
 
 interface IProps {
   category: string;
   action: string;
-  children: any;
+  children: ReactElement;
 }
 
 const EventTracker = (props: IProps) => {
@@ -15,7 +15,7 @@ const EventTracker = (props: IProps) => {
     if (typeof children.props.onClick === 'function') {
       children.props.onClick(e);
     }
-  }
+  };
 
   const onlychildren = React.Children.only(children);
   
@@ -27,6 +27,6 @@ const EventTracker = (props: IProps) => {
     },
     children.props.children
   );
-}
+};
 
 export default EventTracker;

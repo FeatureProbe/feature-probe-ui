@@ -262,7 +262,7 @@ const Targeting = () => {
     saveHistoryPageIndex(0);
     saveRememberVersion(false);
     getVersionsList();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {
@@ -317,7 +317,7 @@ const Targeting = () => {
                   <Button 
                     primary
                     type='button'
-                    onClick={(e: SyntheticEvent) => {
+                    onClick={() => {
                       setHistoryOpen(!historyOpen);
                       if (!versions.length) {
                         getVersionsList();
@@ -399,7 +399,7 @@ const Targeting = () => {
           <Modal 
             open={open}
             width={400}
-            handleCancel={() => {setPageLeaveOpen(false)}}
+            handleCancel={() => {setPageLeaveOpen(false);}}
             handleConfirm={confirmReviewHistory}
           >
             <div>
@@ -417,7 +417,7 @@ const Targeting = () => {
         </div>
       </Provider>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default Targeting;

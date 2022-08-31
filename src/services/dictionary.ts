@@ -16,6 +16,7 @@ export const getFromDictionary = async<T> (key: string) => {
   });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const saveDictionary = async (key: string, data: any) => {
   const url = `${
     API.dictionaryURI

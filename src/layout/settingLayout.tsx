@@ -17,7 +17,7 @@ const SettingLayout = (props: IProps) => {
         { props.children }
       </div>
     </div>
-	)
-}
+	);
+};
 
 export default SettingLayout;

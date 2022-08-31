@@ -76,7 +76,7 @@ const Toggle = () => {
       if (archiveOpen) {
         setArchiveOpen(false);
       }
-    }
+    };
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
@@ -126,7 +126,7 @@ const Toggle = () => {
           key: item.name,
           text: item.name,
           value: item.name,
-        }
+        };
       });
 
       setTagsOptions(tags);
@@ -198,7 +198,7 @@ const Toggle = () => {
   const handleEvaluationChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore
+      // @ts-ignore detail value
       visitFilter: data.value
     });
   }, [searchParams]);
@@ -206,7 +206,7 @@ const Toggle = () => {
   const handleStatusChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore
+      // @ts-ignore detail value
       disabled: data.value
     });
   }, [searchParams]);
@@ -221,7 +221,7 @@ const Toggle = () => {
   const handleTagsChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore
+      // @ts-ignore detail value
       tags: data.value,
     });
   }, [searchParams]);
@@ -229,7 +229,7 @@ const Toggle = () => {
   const handleSearch = debounce(useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore
+      // @ts-ignore detail value
       keyword: data.value,
     });
   }, [searchParams]), 300);
@@ -247,7 +247,7 @@ const Toggle = () => {
       pageIndex: 0,
       archived,
     });
-  }, [searchParams])
+  }, [searchParams]);
 
 	return (
     <ProjectLayout>
@@ -446,7 +446,7 @@ const Toggle = () => {
                     toggleList.length !== 0 && (
                       <Table.Body>
                         {
-                          toggleList?.map((toggle: IToggle, index: number) => {
+                          toggleList?.map((toggle: IToggle) => {
                             return (
                               <ToggleItem 
                                 key={toggle.key}
@@ -456,7 +456,7 @@ const Toggle = () => {
                                 refreshToggleList={refreshToggleList}
                                 setDrawerVisible={setDrawerVisible}
                               />
-                            )
+                            );
                           })
                         }
                       </Table.Body>
@@ -514,7 +514,7 @@ const Toggle = () => {
         </Provider>
       </div>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default Toggle;

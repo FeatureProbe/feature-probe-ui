@@ -98,7 +98,7 @@ const Segment = () => {
   const handleSearch = debounce(useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore
+      // @ts-ignore detail value
       keyword: data.value,
     });
   }, [searchParams]), 300);
@@ -156,7 +156,7 @@ const Segment = () => {
                             segment={segment}
                             fetchSegmentLists={fetchSegmentLists}
                           />
-                        )
+                        );
                       })
                     }
                   </Table.Body>
@@ -206,7 +206,7 @@ const Segment = () => {
         </div>
       </div>
     </ProjectLayout>
-	)
-}
+	);
+};
 
 export default Segment;

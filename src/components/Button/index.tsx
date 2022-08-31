@@ -1,12 +1,12 @@
-import { useRef, MouseEvent, useCallback } from 'react'
-import { Button, ButtonProps } from 'semantic-ui-react'
+import { useRef, MouseEvent, useCallback } from 'react';
+import { Button, ButtonProps } from 'semantic-ui-react';
 
 const CustomButton = ({children, ...props}: ButtonProps) => {
   const { onClick } = props;
   const buttonRef = useRef(null);
   
   const handleOnClick = useCallback((e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>, {...props}) => {
-    // @ts-ignore
+    // @ts-ignore object null compatibility
     buttonRef.current.ref?.current.blur();
 
     if (onClick) {
@@ -18,7 +18,7 @@ const CustomButton = ({children, ...props}: ButtonProps) => {
     <Button {...props} ref={buttonRef} onClick={handleOnClick}>
       { children }
     </Button>
-  )
-}
+  );
+};
 
 export default CustomButton;

@@ -26,7 +26,7 @@ const NotFound = () => {
   
   useEffect(() => {
     init();
-  }, [init])
+  }, [init]);
 
 	return (
 		<div className={styles['not-found']}>
@@ -47,7 +47,7 @@ const NotFound = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default NotFound;

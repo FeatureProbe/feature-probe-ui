@@ -40,10 +40,10 @@ export const getRedirectUrl = async (defaultRedirectUrl: string) => {
           redirectUrl = `/${key}/${envKey}/toggles`;
         }
       } else {
-        redirectUrl = `/projects`;
+        redirectUrl = '/projects';
       }
     }
   }
 
   return redirectUrl;
-}
+};

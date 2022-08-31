@@ -27,7 +27,7 @@ const Project = () => {
     if (res.success && data) {
       saveProjectList(data);
     } else {
-      message.error(res.message || intl.formatMessage({id: 'projects.list.error.text'}))
+      message.error(res.message || intl.formatMessage({id: 'projects.list.error.text'}));
     }
   }, [intl]);
 
@@ -80,7 +80,7 @@ const Project = () => {
                     handleEditProject={handleEditProject}
                     refreshProjectsList={init}
                   />
-                )
+                );
               })
             }
           </div>
@@ -94,7 +94,7 @@ const Project = () => {
         </>
       </Provider>
     </div>
-	)
-}
+	);
+};
 
 export default Project;

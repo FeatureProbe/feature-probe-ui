@@ -17,18 +17,18 @@ const Intl = (props: IProps) => {
   } = I18NContainer.useContainer();
 
   const chooseLocale = (val: string) => {
-    let _val = val || navigator.language;
+    const _val = val || navigator.language;
     switch (_val) {
       case 'en-US':
-        dayjs.locale('en')
+        dayjs.locale('en');
         return en_US;
       case 'zh-CN':
-        dayjs.locale('zh-CN')
+        dayjs.locale('zh-CN');
         return zh_CN;
       default:
         return en_US;
     }
-  }
+  };
   
   return (
     <IntlProvider
@@ -37,7 +37,7 @@ const Intl = (props: IProps) => {
     >
       {children}
     </IntlProvider>
-  )
-}
+  );
+};
 
 export default Intl;
