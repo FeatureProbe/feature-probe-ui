@@ -19,7 +19,7 @@ function checkStatus(response: Response) {
     return response;
   } 
   else {
-    const error: Error = new Error(response.statusText)
+    const error: Error = new Error(response.statusText);
     throw error;
   }
 }

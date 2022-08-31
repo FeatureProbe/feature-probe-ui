@@ -262,7 +262,6 @@ const Targeting = () => {
     saveHistoryPageIndex(0);
     saveRememberVersion(false);
     getVersionsList();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {
