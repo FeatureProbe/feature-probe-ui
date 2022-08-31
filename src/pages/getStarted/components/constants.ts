@@ -42,12 +42,12 @@ private static final FeatureProbe fpClient = new FeatureProbe("${serverSdkKey}",
     {
       title: intl.formatMessage({id: 'getstarted.java.third.step'}),
       code: 
-`FPUser user = new FPUser(/* User id in your business context */)${userWithCode};
+`FPUser user = new FPUser()${userWithCode};
 ${returnType === 'boolean' ? `boolean boolValue = fpClient.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = fpClient.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = fpClient.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = fpClient.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
 `
     },
     {
-      title: intl.formatMessage({id: 'getstarted.java.fourth.step'}),
+      title: intl.formatMessage({id: 'getstarted.fourth.step'}),
       code:
 `fpClient.close();
 `
@@ -80,10 +80,15 @@ let fp = match FeatureProbe::new(config).unwrap(); //should check result in prod
     {
       title: intl.formatMessage({id: 'getstarted.rust.third.step'}),
       code: 
-`let user_id = /* User id in your business context */;
-let user = FPUser::new(user_id);
+`let user = FPUser::new();
 ${userWithCode}
 ${returnType === 'boolean' ? `let value = fp.bool_value("${toggleKey}", &user, false);` : ''}${returnType === 'number' ? `let value = fp.number_value("${toggleKey}", &user, 20.0), 12.5);` : ''}${returnType === 'string' ? `let value = fp.string_value("${toggleKey}", &user, "val".to_owned()), "value");` : ''}${returnType === 'json' ? `let value = fp.json_value("${toggleKey}", &user, json!("v"));` : ''}
+`
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.fourth.step'}),
+      code:
+          `fp.close();
 `
     }
   ];
@@ -118,10 +123,15 @@ fp, err := featureprobe.NewFeatureProbe(config)
       title: intl.formatMessage({id: 'getstarted.go.third.step.title'}),
       name: intl.formatMessage({id: 'getstarted.go.third.step.name.one'}),
       code: 
-`userId := /* User id in your business context */
-user := featureprobe.NewUser(userId)
+`user := featureprobe.NewUser()
 ${userWithCode}
 ${returnType === 'boolean' ? `val := fp.BoolValue("${toggleKey}", user, true)` : ''}${returnType === 'string' ? `val := fp.StrValue("${toggleKey}", user, "1")` : ''}${returnType === 'number' ? `val := fp.NumberValue("${toggleKey}", user, 1.0)` : ''}${returnType === 'json' ? `val := fp.JsonValue("${toggleKey}", user, nil)` : ''}
+`
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.fourth.step'}),
+      code:
+          `fp.Close();
 `
     }
   ];
@@ -144,7 +154,7 @@ import featureprobe as fp
 if __name__ == '__main__':
   config = fp.Config(remote_uri='${remoteUrl}', sync_mode='pooling')
   with fp.Client('${serverSdkKey}', config) as client:
-    user = fp.User(stable_rollout_key='unique user id in your business logic')
+    user = fp.User()
     ${userWithCode}
     val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? 'False' : ''}${returnType === 'string' ? 'not connected' : ''}${returnType === 'number' ? '-1' : ''}${returnType === 'json' ? '{}' : ''})  
 `
@@ -166,10 +176,10 @@ implementation "net.java.dev.jna:jna:5.7.0@aar"
     {
       title: intl.formatMessage({id: 'getstarted.android.second.step'}),
       code: 
-`import com.featureprobe.mobile.*;
-val url = FpUrlBuilder("${remoteUrl}").build();
-val userId = /* User id in your business context */
-val user = FpUser(userId)
+`import com.featureprobe.mobile.*
+
+val url = FpUrlBuilder("${remoteUrl}").build()
+val user = FpUser()
 ${userWithCode}
 val config = FpConfig(url!!, "${clientSdkKey}", 10u, true)
 val fp = FeatureProbe(config, user)
@@ -208,8 +218,7 @@ export const getSwiftCode = (options: IOption) => {
       code: 
 `import featureprobe
 let url = FpUrlBuilder(remoteUrl: "${remoteUrl}").build()
-let userId = /* User id in your business context */
-let user = FpUser(key: userId)
+let user = FpUser()
 ${userWithCode}
 let config = FpConfig(
     remoteUrl: url!,
@@ -248,7 +257,7 @@ export const getObjCCode = (options: IOption) => {
 NSString *urlStr = @"${remoteUrl}";
 NSString *userId = /* User id in your business context */;
 FpUrl *url = [[[FpUrlBuilder alloc] initWithRemoteUrl: urlStr] build];
-FpUser *user = [[FpUser alloc] initWithKey: userId];
+FpUser *user = [[FpUser alloc] init];
 ${userWithCode}
 FpConfig *config = [[FpConfig alloc] initWithRemoteUrl: url
                                           clientSdkKey:@"${clientSdkKey}"
@@ -282,8 +291,7 @@ export const getJSCode = (options: IOption) => {
       code: 
 `import { FeatureProbe, FPUser } from "featureprobe-client-sdk-js";
 
-const userId = /* User id in your business context */;
-const user = new FPUser(userId);
+const user = new FPUser();
 ${userWithCode}
 const fp = new FeatureProbe({
     remoteUrl: "${remoteUrl}",
@@ -297,8 +305,7 @@ fp.start();
     {
       name: intl.formatMessage({id: 'getstarted.js.second.step.or'}) + 'CDN',
       code: 
-`const userId = /* User id in your business context */;
-const user = new featureProbe.FPUser(userId);
+`const user = new featureProbe.FPUser();
 ${userWithCode}
 const fp = new featureProbe.FeatureProbe({
     remoteUrl: "${remoteUrl}",
