@@ -1,0 +1,28 @@
+.approvals {
+  margin: 20px 20px 0;
+  background: #FFFFFF;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
+  border-radius: 12px 12px 0 0;
+  height: calc(100vh - 68px);
+  padding: 24px;
+}
+
+.navs {
+  display: flex;
+  font-size: 16px;
+  color: #6D6F72;
+}
+
+.navs-item {
+  margin-right: 24px;
+  font-weight: 400;
+  line-height: 31px;
+  cursor: pointer;
+}
+
+.navs-item-selected {
+  color: #556EE6;
+  font-weight: 500;
+  border-bottom: 3px solid #556EE6;
+  line-height: 31px;
+}

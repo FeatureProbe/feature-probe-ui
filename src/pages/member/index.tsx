@@ -110,7 +110,7 @@ const Member = () => {
                       memberList?.map((member: IMember) => {
                         return (
                           <MemberItem 
-                            key={member.account}
+                            key={member?.account}
                             member={member} 
                             setIsAdd={setIsAdd}
                             setEditUser={setEditUser}

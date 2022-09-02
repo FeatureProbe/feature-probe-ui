@@ -9,7 +9,7 @@ import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo } from 'services/user';
 import { IUser } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
-import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
+import { APPROVAL_ROUTE_LIST, PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
@@ -18,6 +18,7 @@ import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
+const APPROVAL_NAV = 'approvals';
 const isDemo = localStorage.getItem('isDemo') === 'true';
 const isMainColorHeader = false;
 
@@ -37,6 +38,34 @@ const PageHeader = () => {
     i18n,
     setI18n
   } = I18NContainer.useContainer();
+
+  const headerCls = classNames(
+    styles['header'],
+    {
+      [styles['header-main']]: isMainColorHeader
+    }
+  );
+
+  const projectCls = classNames(
+    'navs-item',
+    {
+      'navs-item-selected': selectedNav === PROJECT_NAV
+    }
+  );
+
+  const settingCls = classNames(
+    'navs-item',
+    {
+      'navs-item-selected': selectedNav === SETTING_NAV
+    }
+  );
+
+  const approvalCls = classNames(
+    'navs-item',
+    {
+      'navs-item-selected': selectedNav === APPROVAL_NAV
+    }
+  );
 
   useEffect(() => {
     const handler = () => {
@@ -78,9 +107,14 @@ const PageHeader = () => {
     if (res && res[0]) {
       if (PROJECT_ROUTE_LIST.includes(res[0])) {
         setSelectedNav(PROJECT_NAV);
-      } else if (SETTING_ROUTE_LIST.includes(res[0])) {
+      }
+      else if (SETTING_ROUTE_LIST.includes(res?.input)) {
         setSelectedNav(SETTING_NAV);
-      } else {
+      }
+      else if (APPROVAL_ROUTE_LIST.includes(res?.input)) {
+        setSelectedNav(APPROVAL_NAV);
+      }
+      else {
         setSelectedNav(PROJECT_NAV);
       }
     }
@@ -94,27 +128,6 @@ const PageHeader = () => {
     history.push('/settings/members');
   }, [history]);
 
-  const headerCls = classNames(
-    styles['header'],
-    {
-      [styles['header-main']]: isMainColorHeader
-    }
-  );
-
-  const projectCls = classNames(
-    'navs-item',
-    {
-      'navs-item-selected': selectedNav === PROJECT_NAV
-    }
-  );
-
-  const settingCls = classNames(
-    'navs-item',
-    {
-      'navs-item-selected': selectedNav === SETTING_NAV
-    }
-  );
-
   const handleLogout = useCallback(async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('organizeId');
@@ -126,8 +139,12 @@ const PageHeader = () => {
   }, []);
 
   const handleGotoDocument = useCallback(() => {
-    window.open('http://doc.featureprobe.io/');
+    window.open('https://docs.featureprobe.io/');
   }, []);
+
+  const handleGotoApproval = useCallback(() => {
+    history.push('/approvals/list');
+  }, [history]);
 
   return (
     <div className={headerCls}>
@@ -146,6 +163,13 @@ const PageHeader = () => {
           isDemo ? null : (
             <div className={settingCls} onClick={handleGotoAccount}>
               <FormattedMessage id='common.settings.text' />
+            </div>
+          )
+        }
+        {
+          isDemo ? null : (
+            <div className={approvalCls} onClick={handleGotoApproval}>
+              <FormattedMessage id='approvals.center' />
             </div>
           )
         }

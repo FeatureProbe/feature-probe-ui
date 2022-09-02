@@ -7,7 +7,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import PutAwayMemu from 'components/PutAwayMenu';
 import { IRouterParams, IProject, IEnvironment } from 'interfaces/project';
-import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH, GET_STARTED_PATH } from 'router/routes';
+import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH, GET_STARTED_PATH, SETTING_PATH } from 'router/routes';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
@@ -55,6 +55,8 @@ const ProjectSiderbar = (props: IProps) => {
       setSelectedItem('toggle');
     } else if (path === SEGMENT_PATH || path === SEGMENT_ADD_PATH || path === SEGMENT_EDIT_PATH) {
       setSelectedItem('segments');
+    } else if (path === SETTING_PATH) {
+      setSelectedItem('settings');
     }
   }, [match]);
 
@@ -94,6 +96,10 @@ const ProjectSiderbar = (props: IProps) => {
     history.push(`/${projectKey}/${environmentKey}/segments`);
   }, [projectKey, environmentKey, history]);
 
+  const gotoSettings = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/settings`);
+  }, [projectKey, environmentKey, history]);
+
   return (
     <div className={sidebarCls}>
       <div className={styles['project-name']}>
@@ -128,6 +134,14 @@ const ProjectSiderbar = (props: IProps) => {
           type='member'
           isPutAway={isPutAway}
           title={intl.formatMessage({id: 'common.segments.text'})}
+        />
+      </div>
+
+      <div className={`${selectedItem ==='settings' && styles.selected} ${menuCls}`} onClick={gotoSettings}>
+        <PutAwayMemu
+          type='setting'
+          isPutAway={isPutAway}
+          title={intl.formatMessage({id: 'common.toggle.settings.text'})}
         />
       </div>
       

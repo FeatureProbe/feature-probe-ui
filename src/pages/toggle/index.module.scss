@@ -7,36 +7,23 @@
 
 .column-brief {
   min-width: 380px;
-  padding-bottom: 0 !important;
   padding-left: 24px !important;
 }
 
 .column-status {
   min-width: 80px;
-  padding-bottom: 0 !important;
-}
-
-.column-type {
-  padding-bottom: 0 !important;
-}
-
-.column-tags {
-  padding-bottom: 0 !important;
 }
 
 .column-evaluated {
   min-width: 200px;
-  padding-bottom: 0 !important;
 }
 
 .column-modify {
   min-width: 240px;
-  padding-bottom: 0 !important;
 }
 
 .column-operation {
   min-width: 110px;
-  padding-bottom: 0 !important;
 }
 
 .card {
@@ -184,8 +171,12 @@
   font-size: 13px;
 }
 
-.table-header > .ui.table thead th {
-  padding: 0 !important
+.table-header {
+  :global {
+    th {
+      padding-bottom: 0 !important
+    }
+  }
 }
 
 .pagination {

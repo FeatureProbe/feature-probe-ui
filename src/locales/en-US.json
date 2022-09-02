@@ -43,6 +43,7 @@
   "common.nodata.text": "No Data",
   "common.cancel.text": "Cancel",
   "common.confirm.text": "Confirm",
+  "common.clear.text": "Clear",
   "common.save.text": "Save",
   "common.add.text": "Add",
   "common.create.text": "Create",
@@ -84,6 +85,7 @@
   "common.copy.uppercase.text": "Copy",
   "common.email.text": "Email",
   "common.email.placeholder.text": "Please input email address",
+  "common.toggle.settings.text": "Settings",
 
   "header.getuser.error.text": "Get user info error!",
 
@@ -223,6 +225,10 @@
   "toggles.restore.success": "Restore toggle successfully",
   "toggles.restore.error": "Error restoring toggle",
 
+  "toggles.settings.tips": "支持统一对该项目下的开关配置变更进行审批设置，设置完成后，将对该环境内的所有开关生效",
+  "toggles.settings.pulbish.approval": "发布审批",
+  "toggles.settings.approver": "审批人",
+
   "targeting.default.rule": "Default Rule",
   "targeting.default.rule.tips": "Define the return value when no rule is matched.",
   "targeting.disabled.return.value": "Disabled toggle return value",
@@ -270,6 +276,21 @@
   "targeting.get.versions.error": "Error getting toggle versions!!",
   "targeting.view.versions": "Reviewing ",
   "targeting.view.more": "Load more",
+
+  "targeting.approval.tips": "支持为该项目统一设置审批人",
+  "targeting.approval.operation.skip.approval": "跳过审批",
+  "targeting.approval.operation.view.changes": "查看变更",
+  "targeting.approval.operation.publish": "发布",
+  "targeting.approval.operation.cancel.publish": "取消发布",
+  "targeting.approval.operation.abandon": "放弃变更",
+  "targeting.approval.operation.re-edit": "继续编辑",
+  "targeting.approval.operation.pass": "同意",
+  "targeting.approval.operation.reject": "拒绝",
+  "targeting.approval.operation.withdraw": "撤回审批",
+  "targeting.approval.modal.pass": "通过审批",
+  "targeting.approval.modal.withdraw": "撤回审批",
+  "targeting.approval.modal.refuse": "拒绝审批",
+  "targeting.approval.modal.re-edit.text": "是否继续编辑",
 
   "variations.add.text": "Add Variation",
   "variations.dulpicated.error.text": "Variation names are duplicated, please change!",
@@ -344,5 +365,29 @@
   "getstarted.js.third.step.title": "Step 3: Use the instance to get your setting value",
   "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle",
 
-  "platform.warning.text": "According to the Cybersecurity Law, it is prohibited to use FeatureProbe for illegal financial lending, cryptocurrency, gambling and any applications containing Telemarketing Scams functions, once discovered, you will be immediately stopped from using FeatureProbe and reported to the Cyber Security Department."
+  "platform.warning.text": "According to the Cybersecurity Law, it is prohibited to use FeatureProbe for illegal financial lending, cryptocurrency, gambling and any applications containing Telemarketing Scams functions, once discovered, you will be immediately stopped from using FeatureProbe and reported to the Cyber Security Department.",
+
+  "approvals.center": "审批中心",
+  "approvals.lists": "审批列表",
+  "approvals.application.lists": "申请列表",
+  "approvals.status.todo": "待审批",
+  "approvals.status.passed": "已通过",
+  "approvals.status.rejected": "已拒绝",
+  "approvals.status.skipped": "已跳过",
+  "approvals.status.withdrawed": "已撤回",
+  "approvals.table.header.title": "标题",
+  "approvals.table.header.application": "申请",
+  "approvals.table.header.status": "发布状态",
+  "approvals.table.header.status.published": "已发布",
+  "approvals.table.header.status.unpublished": "待发布",
+  "approvals.table.header.status.cancelled": "已取消",
+  "approvals.table.header.approval": "审批",
+  "approvals.table.header.pass.reason": "通过理由",
+  "approvals.table.header.publish.time": "发布时间",
+  "approvals.table.header.reject.reason": "拒绝理由",
+  "approvals.table.header.skip.time": "跳过时间",
+  "approvals.table.header.skip.reason": "跳过理由",
+  "approvals.table.header.withdraw.time": "撤回时间",
+  "approvals.table.header.withdraw.reason": "撤回理由",
+  "approvals.search.placeholder": "搜索标题"
 }

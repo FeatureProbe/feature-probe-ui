@@ -21,6 +21,7 @@ import {
   SEGMENT_ADD_PATH, 
   GET_STARTED_PATH,
   SEGMENT_EDIT_PATH,
+  SETTING_PATH,
 } from 'router/routes';
 
 import styles from './layout.module.scss';
@@ -172,6 +173,13 @@ const ProjectLayout = (props: IProps) => {
           {
             match.path === TOGGLE_PATH && (
               <Breadcrumb.Section active>{ projectInfo?.name }</Breadcrumb.Section>
+            )
+          }
+          {
+            match.path === SETTING_PATH && (
+              <Breadcrumb.Section active>
+                <FormattedMessage id='common.toggle.settings.text' />
+              </Breadcrumb.Section>
             )
           }
           {

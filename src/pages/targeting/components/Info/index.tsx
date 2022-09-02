@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Grid } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import dayjs from 'dayjs';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import Button from 'components/Button';
-import TagsList  from 'components/TagsList';
+import Icon from 'components/Icon';
+import Modal from 'components/Modal';
 import { IToggleInfo, IModifyInfo } from 'interfaces/targeting';
 import styles from './index.module.scss';
 
@@ -15,18 +17,70 @@ interface IProps {
 
 const Info = (props: IProps) => {
   const { toggleInfo, modifyInfo, gotoGetStarted } = props;
+  const [ open, saveOpen ] = useState<boolean>(false);
+  const [ status, saveStatus ] = useState<string>('www');
 
 	return (
     <div className={styles.info}>
       <div className={styles['info-title']}>
-        <div className={styles['info-toggle-name']}>
-          {toggleInfo?.name}
+        <div className={styles['info-title-left']}>
+          <div className={styles['info-toggle-name']}>
+            {toggleInfo?.name}
+          </div>
+          <div className={`${styles['status-pending']} ${styles.status}`}>
+            <Icon type='pending' customClass={styles['status-icon']} />
+            <FormattedMessage id='approvals.status.todo' />
+          </div>
+          <div className={`${styles['status-publish']} ${styles.status}`}>
+            <Icon type='wait' customClass={styles['status-icon']} />
+            <FormattedMessage id='approvals.table.header.status.unpublished' />
+          </div>
+          <div className={`${styles['status-reject']} ${styles.status}`}>
+            <Icon type='reject' customClass={styles['status-icon']} />
+            <FormattedMessage id='approvals.status.rejected' />
+          </div>
         </div>
-        <div className={styles['info-toggle-tags']}>
-          <TagsList 
-            tags={toggleInfo?.tags || []}
-            showCount={5}
-          />
+        <div className={styles['info-title-right']}>
+          <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
+            <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
+            <FormattedMessage id='toggle.connect' />
+          </div>
+          <div>
+            {/* view change */}
+            <Button secondary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.view.changes' />
+            </Button>
+
+            <Button secondary className={styles.btn} onClick={() => { saveOpen(true); }}>
+              <FormattedMessage id='targeting.approval.operation.skip.approval' />
+            </Button>
+            <Button secondary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.withdraw' />
+            </Button>
+            
+            <Button secondary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.reject' />
+            </Button>
+            <Button primary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.pass' />
+            </Button>
+            
+
+            <Button secondary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.cancel.publish' />
+            </Button>
+            <Button primary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.publish' />
+            </Button>
+            
+            
+            <Button secondary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.abandon' />
+            </Button>
+            <Button primary className={styles.btn}>
+              <FormattedMessage id='targeting.approval.operation.re-edit' />
+            </Button>
+          </div>
         </div>
       </div>
       <div className={styles['info-content']}>
@@ -75,15 +129,34 @@ const Info = (props: IProps) => {
               }
             </Grid.Column>
             <Grid.Column>
+              <div className={styles.label}>
+                <FormattedMessage id='common.tags.text' />:
+              </div>
+              <div>
+                { toggleInfo?.tags.join(',')}
+              </div>
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </div>
-      <div className={styles['link-sdk']} onClick={gotoGetStarted}>
-        <Button secondary className={styles['link-sdk-btn']}>
-          <FormattedMessage id='toggle.connect' />
-        </Button>
-      </div>
+      <Modal 
+        open={open}
+        width={400}
+        handleCancel={() => { console.log(1); }}
+        handleConfirm={() => { console.log(2); }}
+      >
+        <div>
+          <div className={styles['modal-header']}>
+            <span className={styles['modal-header-text']}>
+              <FormattedMessage id='sidebar.modal.title' />
+            </span>
+            <Icon customClass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
+          </div>
+          <div className={styles['modal-content']}>
+            <FormattedMessage id='targeting.page.leave.text' />
+          </div>
+        </div>
+      </Modal>
     </div>
 	);
 };
