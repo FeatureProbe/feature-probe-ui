@@ -38,7 +38,10 @@ const DemoLogin = () => {
   }, [history]);
 
   const onSubmit = useCallback(async (params) => {
-    const res = await demoLogin<IUserInfo>(params);
+    const res = await demoLogin<IUserInfo>({
+      source: 'platform',
+      ...params
+    });
     const { success, data } = res;
     if (success && data) {
       localStorage.setItem('token', data.token);

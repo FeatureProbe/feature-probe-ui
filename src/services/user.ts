@@ -5,6 +5,7 @@ import { ApplicationJson } from 'constants/api/contentType';
 interface ILoginParams {
   account: string;
   password: string;
+  source?: string;
 }
 
 export const getUserInfo = async<T> () => {

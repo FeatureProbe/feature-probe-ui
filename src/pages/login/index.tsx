@@ -38,7 +38,10 @@ const Login = () => {
   }, [history]);
 
   const onSubmit = useCallback(async (params) => {
-    const res = await login<IUserInfo>(params);
+    const res = await login<IUserInfo>({
+      source: 'platform',
+      ...params
+    });
     const { success, data } = res;
     if (success && data) {
       localStorage.setItem('token', data.token);
