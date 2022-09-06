@@ -98,7 +98,7 @@ const Lists = () => {
               saveStatus('REVOKE');
             }}
 					>
-						<FormattedMessage id='approvals.status.withdrawed' />
+						<FormattedMessage id='approvals.status.withdrawn' />
 					</div>
 				</div>
 				<Form className={styles.form}>

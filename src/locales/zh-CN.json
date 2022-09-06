@@ -226,8 +226,8 @@
   "toggles.restore.error": "开关恢复失败",
 
   "toggles.settings.tips": "支持统一对该项目下的开关配置变更进行审批设置，设置完成后，将对该环境内的所有开关生效",
-  "toggles.settings.pulbish.approval": "发起审批",
-  "toggles.settings.approver": "审批人",
+  "toggles.settings.approval": "发起审批",
+  "toggles.settings.approval.reviewers": "审批人",
   "toggles.settings.save.success": "保存成功",
 
   "targeting.default.rule": "默认规则",
@@ -296,7 +296,7 @@
   "targeting.approval.modal.reason.placeholder": "请输入原因",
 
   "variations.add.text": "添加分组",
-  "variations.dulpicated.error.text": "分组名称已存在!",
+  "variations.duplicated.error.text": "分组名称已存在!",
 
   "tags.add.error": "添加标签失败",
   "tags.list.error": "获取标签列表失败",
@@ -377,7 +377,7 @@
   "approvals.status.passed": "已通过",
   "approvals.status.rejected": "已拒绝",
   "approvals.status.skipped": "已跳过",
-  "approvals.status.withdrawed": "已撤回",
+  "approvals.status.withdrawn": "已撤回",
   "approvals.table.header.title": "标题",
   "approvals.table.header.application": "申请",
   "approvals.table.header.status": "发布状态",
