@@ -7,6 +7,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import message from 'components/MessageBox';
 import styles from './index.module.scss';
+import { IApproval } from 'interfaces/approval';
 
 interface ILocationParams {
   projectKey: string;
@@ -14,12 +15,13 @@ interface ILocationParams {
 }
 
 interface IProps {
-  index: number;
+  status: string;
+  approval: IApproval
 }
 
 const ListItem = (props: IProps) => {
-  const { index } = props;
-  const [ status, saveStatus ] = useState<number>(2);
+  const { status, approval } = props;
+  const [ toggleStatus, saveToggleStatus ] = useState<number>(2);
 
 	return (
     <Table.Row
@@ -36,10 +38,10 @@ const ListItem = (props: IProps) => {
         </div>
       </Table.Cell>
       {
-        (index === 2 || index === 4) && (
+        (status === 'PASS' || status === 'JUMP') && (
           <Table.Cell>
             {
-              status === 0 && (
+              toggleStatus === 0 && (
                 <div className={styles['list-status']}>
                   <span className={`${styles['list-status-icon']} ${styles['list-status-icon-published']}`}></span>
                   <span>已发布</span>
@@ -47,7 +49,7 @@ const ListItem = (props: IProps) => {
               )
             }
             {
-              status === 1 && (
+              toggleStatus === 1 && (
                 <div className={styles['list-status']}>
                   <span className={`${styles['list-status-icon']} ${styles['list-status-icon-unpublished']}`}></span>
                   <span>未发布</span>
@@ -55,7 +57,7 @@ const ListItem = (props: IProps) => {
               )
             }
             {
-              status === 2 && (
+              toggleStatus === 2 && (
                 <div className={styles['list-status']}>
                   <span className={`${styles['list-status-icon']} ${styles['list-status-icon-canceled']}`}></span>
                   <span className={styles['list-status-canceled-text']}>已取消</span>
@@ -91,14 +93,14 @@ const ListItem = (props: IProps) => {
         </div>
       </Table.Cell>
       {
-        index === 4 && (
+        status === 'JUMP' && (
           <Table.Cell>
             <div>跳过时间</div>
           </Table.Cell>
         )
       }
       {
-        index === 4 && (
+        status === 'JUMP' && (
           <Table.Cell >
             <div className={styles['list-item-reason']}>
               跳过理由跳过理由跳过理由跳过理由跳过理由跳过理由跳过理由
@@ -107,7 +109,7 @@ const ListItem = (props: IProps) => {
         )
       }
       {
-        (index === 2 || index === 3) && (
+        (status === 'PASS' || status === 'REJECT') && (
           <Table.Cell>
             <div>审批人</div>
             <div className={styles['list-item-time']}>审批时间</div>
@@ -115,7 +117,7 @@ const ListItem = (props: IProps) => {
         )
       }
       {
-        index === 2 && (
+        status === 'PASS' && (
           <Table.Cell>
             <div className={styles['list-item-reason']}>
               通过理由通过理由通过理由通过理由通过理由通过理由通过理由
@@ -124,7 +126,7 @@ const ListItem = (props: IProps) => {
         )
       }
       {
-        index === 3 && (
+        status === 'REJECT' && (
           <Table.Cell>
             <div className={styles['list-item-reason']}>
               拒绝理由拒绝理由拒绝理由拒绝理由拒绝理由拒绝理由拒绝理由
@@ -133,14 +135,14 @@ const ListItem = (props: IProps) => {
         )
       }
       {
-        index === 5 && (
+        status === 'REVOKE' && (
           <Table.Cell>
             撤回时间
           </Table.Cell>
         )
       }
       {
-        index === 5 && (
+        status === 'REVOKE' && (
           <Table.Cell>
             <div className={styles['list-item-reason']}>
               撤回理由撤回理由撤回理由撤回理由撤回理由撤回理由撤回理由撤回理由
@@ -149,14 +151,14 @@ const ListItem = (props: IProps) => {
         )
       }
       {
-        (index === 2 || index === 4) && (
+        (status === 'PASS' || status === 'JUMP') && (
           <Table.Cell>
             发布时间
           </Table.Cell>
         )
       }
       {
-        index === 1 && (
+        status === 'PENDING' && (
           <Table.Cell className={styles['list-operation']}>
             <div>
               <span 

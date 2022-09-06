@@ -1,49 +1,99 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Form, Table, Popup, Checkbox, Pagination } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import ListItem from '../ListItem';
+import { IApproval, IApprovalList } from 'interfaces/approval';
+import { getApprovalList } from 'services/approval';
 import styles from './index.module.scss';
+
+const LIST = '/approvals/list';
+const MINE = '/approvals/mine';
 
 const Lists = () => {
 	const intl = useIntl();
-	const [ index, saveIndex ] = useState<number>(1);
+	const [ status, saveStatus ] = useState<string>('PENDING');
+  const [ type, saveType ] = useState<string>('APPROVAL');
 	const [ pagination, setPagination ] = useState({
     pageIndex: 1,
     totalPages: 5,
   });
+  const [ approvalList, saveApprovalList ] = useState<IApproval[]>([]);
+  const [ total, setTotal ] = useState<number>(0);
+
+  useEffect(() => {
+    if (location.pathname === LIST) {
+      saveType('APPROVAL');
+    } else if (location.pathname === MINE) {
+      saveType('APPLY');
+    }
+    saveStatus('PENDING');
+  }, [location.pathname]);
+
+  const init = useCallback(() => {
+    getApprovalList<IApprovalList>({
+      pageIndex: 0,
+      status,
+      type,
+    }).then(res => {
+      const { success, data } = res;
+      if (success && data) {
+        const { content, pageable, totalPages, totalElements } = data;
+        saveApprovalList(content);
+        setPagination({
+          pageIndex: pageable.pageNumber + 1,
+          totalPages,
+        });
+        setTotal(totalElements);
+      } 
+    });
+  }, [type, status]);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
 	return (
 		<div className={styles.lists}>
 			<div className={styles.header}>
 				<div className={styles.tabs}>
 					<div 
-						className={`${styles['tabs-item']} ${index === 1 && styles['tabs-item-selected']}`} 
-						onClick={() => { saveIndex(1); }}
+						className={`${styles['tabs-item']} ${status === 'PENDING' && styles['tabs-item-selected']}`} 
+						onClick={() => { 
+              saveStatus('PENDING');
+            }}
 					>
 						<FormattedMessage id='approvals.status.todo' />
 					</div>
 					<div 
-						className={`${styles['tabs-item']} ${index === 2 && styles['tabs-item-selected']}`} 
-						onClick={() => { saveIndex(2); }}
+						className={`${styles['tabs-item']} ${status === 'PASS' && styles['tabs-item-selected']}`} 
+						onClick={() => { 
+              saveStatus('PASS');
+            }}
 					>
 						<FormattedMessage id='approvals.status.passed' />
 					</div>
 					<div 
-						className={`${styles['tabs-item']} ${index === 3 && styles['tabs-item-selected']}`} 
-						onClick={() => { saveIndex(3); }}
+						className={`${styles['tabs-item']} ${status === 'REJECT' && styles['tabs-item-selected']}`} 
+						onClick={() => { 
+              saveStatus('REJECT');
+            }}
 					>
 						<FormattedMessage id='approvals.status.rejected' />
 					</div>
 					<div 
-						className={`${styles['tabs-item']} ${index === 4 && styles['tabs-item-selected']}`} 
-						onClick={() => { saveIndex(4); }}
+						className={`${styles['tabs-item']} ${status === 'JUMP' && styles['tabs-item-selected']}`} 
+						onClick={() => { 
+              saveStatus('JUMP');
+            }}
 					>
 						<FormattedMessage id='approvals.status.skipped' />
 					</div>
 					<div 
-						className={`${styles['tabs-item']} ${index === 5 && styles['tabs-item-selected']}`} 
-						onClick={() => { saveIndex(5); }}
+						className={`${styles['tabs-item']} ${status === 'REVOKE' && styles['tabs-item-selected']}`} 
+						onClick={() => { 
+              saveStatus('REVOKE');
+            }}
 					>
 						<FormattedMessage id='approvals.status.withdrawed' />
 					</div>
@@ -51,7 +101,7 @@ const Lists = () => {
 				<Form className={styles.form}>
 					<Form.Field className={styles['keywords-field']}>
 						<Form.Input 
-							placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
+							placeholder={intl.formatMessage({id: '关键字搜索'})} 
 							icon={<Icon customClass={styles['icon-search']} type='search' />}
 							onChange={() => { console.log(1); }}
 						/>
@@ -69,7 +119,7 @@ const Lists = () => {
 								<FormattedMessage id='common.toggle.text' />
 							</Table.HeaderCell>
 							{
-								(index === 2 || index === 4) && (
+								(status === 'PASS' || status === 'JUMP') && (
 									<Table.HeaderCell className={styles['column-publish-status']}>
 										<span>
 											<FormattedMessage id='approvals.table.header.status' />
@@ -133,63 +183,63 @@ const Lists = () => {
 								<FormattedMessage id='approvals.table.header.application' />
 							</Table.HeaderCell>
 							{
-								index === 4 && (
+								status === 'JUMP' && (
 									<Table.HeaderCell className={styles['column-skip-time']}>
 										<FormattedMessage id='approvals.table.header.skip.time' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								index === 4 && (
+								status === 'JUMP' && (
 									<Table.HeaderCell className={styles['column-skip-reason']}>
 										<FormattedMessage id='approvals.table.header.skip.reason' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								(index === 2 || index === 3) && (
+								(status === 'PASS' || status === 'REJECT') && (
 									<Table.HeaderCell className={styles['column-approver']}>
 										<FormattedMessage id='approvals.table.header.approval' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								index === 2 && (
+								status === 'PASS' && (
 									<Table.HeaderCell className={styles['column-approve-reason']}>
 										<FormattedMessage id='approvals.table.header.pass.reason' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								index === 3 && (
+								status === 'REJECT' && (
 									<Table.HeaderCell className={styles['column-refuse-reason']}>
 										<FormattedMessage id='approvals.table.header.reject.reason' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								index === 5 && (
+								status === 'REVOKE' && (
 									<Table.HeaderCell className={styles['column-withdraw-time']}>
 										<FormattedMessage id='approvals.table.header.withdraw.time' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								index === 5 && (
+								status === 'REVOKE' && (
 									<Table.HeaderCell className={styles['column-withdraw-reasson']}>
 										<FormattedMessage id='approvals.table.header.withdraw.reason' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								(index === 2 || index === 4) && (
+								(status === 'PASS' || status === 'JUMP') && (
 									<Table.HeaderCell className={styles['column-publish-time']}>
 										<FormattedMessage id='approvals.table.header.publish.time' />
 									</Table.HeaderCell>
 								)
 							}
 							{
-								index === 1 && (
+								status === 'PENDING' && (
 									<Table.HeaderCell className={styles['column-operation']}>
 										<FormattedMessage id='common.operation.text' />
 									</Table.HeaderCell>
@@ -199,21 +249,35 @@ const Lists = () => {
 					</Table.Header>
 					<Table.Body>
 						{
-							[1, 2, 3]?.map(() => {
+							approvalList?.map((approval: IApproval) => {
 								return (
 									<ListItem 
-										index={index}
+										status={status}
+                    approval={approval}
 									/>
 								);
 							})
 						}
 					</Table.Body>
 				</Table>
+        {
+          approvalList.length === 0 && (
+            <div className={styles['no-data']}>
+              <div>
+                <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+              </div>
+              <div>
+                <FormattedMessage id='common.nodata.text' />
+              </div>
+            </div>
+          )
+        }
+
 				{
-					[1, 2, 3].length !== 0 && (
+					approvalList.length !== 0 && (
 						<div className={styles.pagination}>
 							<div className={styles['total']}>
-								<span className={styles['total-count']}>111 </span>
+								<span className={styles['total-count']}>{total} </span>
 								个审批
 							</div>
 							{

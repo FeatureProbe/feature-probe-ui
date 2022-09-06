@@ -134,3 +134,54 @@
   cursor: pointer;
   color: #495057;
 }
+
+.modal-content {
+  margin-top: 15px;
+}
+
+.modal-continue-edit {
+  font-family: PingFangSC-Regular;
+  font-size: 13px;
+  color: #74788D;
+}
+
+.radio-group {
+  display: flex;
+  margin-top: 8px;
+}
+
+.radio-group-item {
+  margin-right: 80px !important;
+}
+
+.input {
+  margin-top: 8px !important;
+}
+
+.label-required {
+  color: #FF5F57;
+  font-size: 20px;
+  margin-right: 4px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  top: 5px;
+}
+
+.error-text {
+  color: #F46A6A;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  transform: scale(0.83);
+  transform-origin: left;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.btn {
+  margin-left: 8px !important;
+}

@@ -5,6 +5,7 @@ import member from './member';
 import misc from './misc';
 import segment from './segment';
 import dictionary from './dictionary';
+import approvals from './approval';
 
 const APIS = {
   ...project,
@@ -14,6 +15,7 @@ const APIS = {
   ...segment,
   ...dictionary,
   ...misc,
+  ...approvals
 };
 
 export default APIS;

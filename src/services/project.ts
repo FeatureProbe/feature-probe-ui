@@ -3,6 +3,7 @@ import qs from 'qs';
 import API from '../constants/api';
 import { IEnvironmentParams, IProject, IProjectParams, IExistParams, IArchivedParams } from 'interfaces/project';
 import { ApplicationJson } from 'constants/api/contentType';
+import { ISettings } from 'interfaces/approval';
 
 export const getProjectList = async<T> () => {
   const url = API.getProjectListURI;
@@ -121,5 +122,34 @@ export const checkProjectExist = async<T> (params: IExistParams) => {
     headers: {
       ...ApplicationJson()
     },
+  });
+};
+
+export const getProjectApprovalSettings = async<T> (projectKey: string) => {
+  const url = `${
+    API.projectApprovalSetting
+      .replace(':projectKey', projectKey)
+  }`;
+  
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
+export const saveSettings = async<T> (projectKey: string, data: ISettings) => {
+  const url = `${
+    API.projectSetting
+      .replace(':projectKey', projectKey)
+  }`;
+  
+  return request<T>(url, {
+    method: 'POST',
+    headers: {
+      ...ApplicationJson()
+    },
+    body: JSON.stringify(data),
   });
 };

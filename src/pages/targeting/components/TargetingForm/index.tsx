@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData, Loader } from 'semantic-ui-react';
+import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData, Loader, Dropdown, DropdownItemProps, Popup } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
@@ -277,6 +277,19 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     setComment(data.value);
   }, []);
 
+  const options = [
+    { key: 'angular', text: 'Angular', value: 'angular' },
+    { key: 'css', text: 'CSS', value: 'css' },
+    { key: 'ux', text: 'User Experience', value: 'ux' },
+  ];
+
+  const renderLabel = useCallback((label: DropdownItemProps) => {
+    return ({
+      content: label.text,
+      removeIcon: null
+    });
+  }, []);
+
 	return (
     <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off' ref={formRef}>
       <div className={styles.status}>
@@ -367,20 +380,50 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
           </div>
           <div className={styles['modal-content']}>
             <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
-            <div className={styles['comment']}>
-              <div className={styles['comment-title']}>
-                <FormattedMessage id='targeting.publish.modal.comment' />
+            <Form>
+              <div className={styles['approval']}>
+                <div className={styles['approval-title']}>
+                  <FormattedMessage id='approvals.table.header.approval' />:
+                  <Popup
+                    inverted
+                    trigger={
+                      <Icon type='info' customClass={styles['icon-info']} />
+                    }
+                    content={intl.formatMessage({id: 'targeting.approval.tips'})}
+                    position='top center'
+                    className={styles.popup}
+                  />
+                </div>
+                <div className={styles['approval-content']}>
+                  <Dropdown 
+                    fluid 
+                    multiple 
+                    selection 
+                    value={['angular']}
+                    options={options} 
+                    renderLabel={renderLabel}
+                    icon={null}
+                    disabled={true}
+                    className={styles['approval-dropdown']}
+                  />
+                  <div className={styles['approval-btn']}>
+                    设置审批
+                  </div>
+                </div>
               </div>
-              <div className={styles['comment-content']}>
-                <Form>
+              <div className={styles['comment']}>
+                <div className={styles['comment-title']}>
+                  <FormattedMessage id='targeting.publish.modal.comment' />
+                </div>
+                <div className={styles['comment-content']}>
                   <TextArea
                     className={styles['comment-input']} 
                     placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
                     onChange={handleInputComment}
                   />
-                </Form>
+                </div>
               </div>
-            </div>
+            </Form>
           </div>
         </div>
       </Modal>

@@ -181,3 +181,34 @@
     }
   }
 }
+
+.approval {
+  padding: 0 24px;
+  margin-bottom: 24px;
+}
+
+.approval-content {
+  display: flex;
+  align-items: center;
+}
+
+.approval-dropdown {
+  flex: 1;
+}
+
+.approval-btn {
+  margin-left: 8px;
+  color: #556ee6;
+  cursor: pointer;
+}
+
+.icon-info {
+  font-size: 14px !important;
+  color: #74788D;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.popup {
+  opacity: 0.8;
+}

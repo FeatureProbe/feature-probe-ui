@@ -228,6 +228,7 @@
   "toggles.settings.tips": "支持统一对该项目下的开关配置变更进行审批设置，设置完成后，将对该环境内的所有开关生效",
   "toggles.settings.pulbish.approval": "发起审批",
   "toggles.settings.approver": "审批人",
+  "toggles.settings.save.success": "保存成功",
 
   "targeting.default.rule": "默认规则",
   "targeting.default.rule.tips": "指定上面所有规则都不命中时的返回分组",
@@ -289,8 +290,10 @@
   "targeting.approval.operation.withdraw": "撤回审批",
   "targeting.approval.modal.pass": "通过审批",
   "targeting.approval.modal.withdraw": "撤回审批",
-  "targeting.approval.modal.refuse": "拒绝审批",
+  "targeting.approval.modal.reject": "拒绝审批",
   "targeting.approval.modal.re-edit.text": "是否继续编辑",
+  "targeting.approval.modal.reason": "原因",
+  "targeting.approval.modal.reason.placeholder": "请输入原因",
 
   "variations.add.text": "添加分组",
   "variations.dulpicated.error.text": "分组名称已存在!",

@@ -57,7 +57,7 @@ const Approvals = () => {
           <FormattedMessage id='approvals.application.lists' />
         </div>
       </div>
-      <Lists></Lists>
+      <Lists />
     </div>
   );
 };
