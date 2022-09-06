@@ -20,7 +20,7 @@ import { getTargeting, getToggleInfo, getTargetingVersion, getTargetingVersionsB
 import { saveDictionary } from 'services/dictionary';
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams, IVersionParams } from 'interfaces/project';
-import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion } from 'interfaces/targeting';
+import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion, IApprovalInfo, ITargeting } from 'interfaces/targeting';
 import { NOT_FOUND } from 'constants/httpCode';
 import { LAST_SEEN } from 'constants/dictionary_keys';
 import { I18NContainer } from 'hooks';
@@ -40,7 +40,7 @@ const Targeting = () => {
   const [ segmentList, saveSegmentList ] = useState<ISegmentList>();
   const [ toggleArchived, saveToggleArchived ] = useState<boolean>(false);
   const [ toggleDisabled, saveToggleDisable ] = useState<boolean>(false);
-  const [ initialTargeting, saveInitTargeting ] = useState<IContent>();
+  const [ initialTargeting, saveInitTargeting ] = useState<ITargeting>();
   const [ historyOpen, setHistoryOpen ] = useState<boolean>(false);
   const [ modifyInfo, saveModifyInfo ] = useState<IModifyInfo>();
   const [ versions, saveVersions ] = useState<IVersion[]>([]);
@@ -51,6 +51,7 @@ const Targeting = () => {
   const [ latestVersion, saveLatestVersion ] = useState<number>(0);
   const [ open, setPageLeaveOpen ] = useState<boolean>(false);
   const [ rememberVersion, saveRememberVersion ] = useState<boolean>(false);
+  const [ approvalInfo, saveApprovalInfo ] = useState<IApprovalInfo>();
   const [ pageInitCount, saveCount ] = useState<number>(0);
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
@@ -73,7 +74,7 @@ const Targeting = () => {
     getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
       const { data, success } = res;
       if (success && data) {
-        const { version, content, disabled, modifiedBy, modifiedTime } = data;
+        const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, owners, status } = data;
         saveTargeting(cloneDeep(content));
         saveToggleDisable(disabled || false);
         saveInitTargeting(cloneDeep({
@@ -83,6 +84,12 @@ const Targeting = () => {
         saveModifyInfo({
           modifiedBy,
           modifiedTime,
+        });
+
+        saveApprovalInfo({
+          status,
+          owners,
+          enableApproval,
         });
         saveLatestVersion(version || 0);
         saveSelectedVersion(version || 0);
@@ -236,13 +243,15 @@ const Targeting = () => {
   }, [versions, reviewHistory]);
   
   const confirmReviewHistory = useCallback(() => {
-    saveSelectedVersion(activeVersion?.version || 0);
-    saveTargeting(cloneDeep(activeVersion?.content));
-    saveInitTargeting(cloneDeep({
-      disabled: activeVersion?.disabled,
-      content: activeVersion?.content,
-    }));
-    saveToggleDisable(activeVersion?.disabled || false);
+    if (activeVersion) {
+      saveSelectedVersion(activeVersion?.version || 0);
+      saveTargeting(cloneDeep(activeVersion?.content));
+      saveInitTargeting(cloneDeep({
+        disabled: activeVersion?.disabled,
+        content: activeVersion?.content,
+      }));
+      saveToggleDisable(activeVersion?.disabled || false);
+    }
     saveTargetingDisabled(true);
     setPageLeaveOpen(false);
   }, [activeVersion]);
@@ -292,6 +301,7 @@ const Targeting = () => {
           <Info
             toggleInfo={toggleInfo}
             modifyInfo={modifyInfo}
+            approvalInfo={approvalInfo}
             gotoGetStarted={gotoGetStarted}
           />
           <div className={styles.menus}>

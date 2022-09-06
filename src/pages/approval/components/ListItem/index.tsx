@@ -1,10 +1,12 @@
 import { SyntheticEvent, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table, Popup } from 'semantic-ui-react';
+import { Table, Popup, Form, TextAreaProps } from 'semantic-ui-react';
+import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
+import Button from 'components/Button';
 import message from 'components/MessageBox';
 import styles from './index.module.scss';
 import { IApproval } from 'interfaces/approval';
@@ -24,6 +26,34 @@ const ListItem = (props: IProps) => {
   const { type, status, approval } = props;
   const [ toggleStatus, saveToggleStatus ] = useState<number>(2);
   const [ open, saveOpen ] = useState<boolean>(false);
+  const [ reason, saveReason ] = useState<string>('');
+  const intl = useIntl();
+  const history = useHistory();
+
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+    setValue,
+    trigger,
+  } = useForm();
+
+  const onSubmit = useCallback(() => {
+    saveOpen(false);
+  }, []);
+
+  const onCancel = useCallback(() => {
+    saveOpen(false);
+  }, []);
+
+  const handleChange = useCallback((e: SyntheticEvent, detail: TextAreaProps) => {
+    // @ts-ignore detail value
+    saveReason(detail.value);
+  }, []);
+
+  const gotoToggle = useCallback((projectKey, environmentKey, toggleKey) => {
+    history.push(`/${projectKey}/${environmentKey}/${toggleKey}/targeting`);
+  }, [history]);
 
 	return (
     <Table.Row
@@ -35,7 +65,9 @@ const ListItem = (props: IProps) => {
         </div>
       </Table.Cell>
       <Table.Cell>
-        <div className={styles['list-item-toggle']}>
+        <div className={styles['list-item-toggle']} onClick={() => {
+          gotoToggle(approval.projectKey, approval.environmentKey, approval.toggleKey);
+        }}>
           {approval.toggleName}
         </div>
       </Table.Cell>
@@ -172,6 +204,7 @@ const ListItem = (props: IProps) => {
                     onClick={(e) => { 
                       document.body.click();
                       e.stopPropagation();
+                      saveOpen(true);
                     }}
                   >
                     撤回
@@ -185,6 +218,7 @@ const ListItem = (props: IProps) => {
                     onClick={(e) => { 
                       document.body.click();
                       e.stopPropagation();
+                      saveOpen(true);
                     }}
                   >
                     通过
@@ -198,6 +232,7 @@ const ListItem = (props: IProps) => {
                     onClick={(e) => { 
                       document.body.click();
                       e.stopPropagation();
+                      saveOpen(true);
                     }}
                   >
                     拒绝
@@ -208,6 +243,88 @@ const ListItem = (props: IProps) => {
           </Table.Cell>
         )
       }
+
+      <Modal 
+        open={open}
+        width={400}
+        footer={null}
+      >
+        <div>
+          <div className={styles['modal-header']}>
+            <span className={styles['modal-header-text']}>
+              {
+                status === 'PASS' && (
+                  <FormattedMessage id='targeting.approval.modal.pass' />
+                )
+              }
+              {
+                status === 'withdraw' && (
+                  <FormattedMessage id='targeting.approval.modal.withdraw' />
+                )
+              }
+              {
+                status === 'reject' && (
+                  <FormattedMessage id='targeting.approval.modal.reject' />
+                )
+              }
+              {
+                status === 'skip' && (
+                  <FormattedMessage id='targeting.approval.operation.skip.approval' />
+                )
+              }
+              {
+                status === 'cancel' && (
+                  <FormattedMessage id='targeting.approval.operation.cancel.publish' />
+                )
+              }
+            </span>
+            <Icon customClass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
+          </div>
+          <div className={styles['modal-content']}>
+            <Form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+              <Form.Field>
+                <label>
+                  {
+                    status !== 'pass' && <span className={styles['label-required']}>*</span>
+                  }
+                  <FormattedMessage id='targeting.approval.modal.reason' />:
+                </label>
+                
+                <Form.TextArea 
+                  {
+                    ...register('reason', { 
+                      required: status !== 'pass', 
+                    })
+                  }
+                  error={ errors.reason ? true : false }
+                  value={reason} 
+                  placeholder={intl.formatMessage({id: 'targeting.approval.modal.reason.placeholder'})}
+                  onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+                    handleChange(e, detail);
+                    setValue(detail.name, detail.value);
+                    await trigger('reason');
+                  }}
+                />
+              </Form.Field>
+              { 
+                errors.reason && (
+                  <div className={styles['error-text']}>
+                    <FormattedMessage id='targeting.approval.modal.reason.placeholder' />
+                  </div> 
+                )
+              }
+              <div className={styles['footer']} onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
+                <Button size='mini' className={styles['btn']} basic type='reset' onClick={onCancel}>
+                  <FormattedMessage id='common.cancel.text' />
+                </Button>
+                <Button size='mini' type='submit' primary>
+                  <FormattedMessage id='common.confirm.text' />
+                </Button>
+              </div>
+            </Form>
+          </div>
+        </div>
+      </Modal>
     </Table.Row>
 	);
 };

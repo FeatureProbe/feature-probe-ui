@@ -3,7 +3,7 @@ import request from '../utils/request';
 import API from '../constants/api';
 import { IEditToggleParams, IToggle } from 'interfaces/toggle';
 import { ITag, IToggleParams, IExistParams, IVersionParams } from 'interfaces/project';
-import { IContent, IMetricParams } from 'interfaces/targeting';
+import { ITargetingParams, IMetricParams } from 'interfaces/targeting';
 import { ApplicationJson } from 'constants/api/contentType';
 
 export const getToggleList = async<T> (projectKey: string, params: IToggleParams) => {
@@ -52,7 +52,7 @@ export const getTargeting = async<T> (projectKey: string, environmentKey: string
   });
 };
 
-export const saveToggle = async (projectKey: string, environmentKey: string, toggleKey: string, data: IContent) => {
+export const saveToggle = async (projectKey: string, environmentKey: string, toggleKey: string, data: ITargetingParams) => {
   const url = `${
     API.targetingURI
       .replace(':projectKey', projectKey)

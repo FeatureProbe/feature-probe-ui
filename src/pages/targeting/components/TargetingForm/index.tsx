@@ -31,7 +31,7 @@ import {
   segmentContainer
 } from '../../provider';
 import { VariationColors } from 'constants/colors';
-import { ICondition, IContent, IRule, ITarget, IToggleInfo, IVariation } from 'interfaces/targeting';
+import { ICondition, IRule, ITarget, ITargeting, IToggleInfo, IVariation } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import { ISegmentList } from 'interfaces/segment';
 import 'diff2html/bundles/css/diff2html.min.css';
@@ -43,7 +43,7 @@ interface IProps {
   targeting?: ITarget;
   toggleInfo?: IToggleInfo;
   toggleDisabled: boolean;
-  initialTargeting?: IContent;
+  initialTargeting?: ITargeting;
   segmentList?: ISegmentList
   initTargeting(): void;
   saveToggleDisable(status: boolean): void;
@@ -59,7 +59,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const [ open, setOpen ] = useState<boolean>(false);
   const [ publishDisabled, setPublishDisabled ] = useState<boolean>(true);
-  const [ publishTargeting, setPublishTargeting ] = useState<IContent>();
+  const [ publishTargeting, setPublishTargeting ] = useState<ITargeting>();
   const [ diffContent, setDiffContent ] = useState<string>('');
   const [ comment, setComment ] = useState<string>('');
   const [ isLoading, setLoading ] = useState<boolean>(false);

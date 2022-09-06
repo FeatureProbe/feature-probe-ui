@@ -7,23 +7,25 @@ import CopyToClipboardPopup from 'components/CopyToClipboard';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
-import { IToggleInfo, IModifyInfo } from 'interfaces/targeting';
+import { IToggleInfo, IModifyInfo, IApprovalInfo } from 'interfaces/targeting';
 import { HeaderContainer } from 'layout/hooks';
 import styles from './index.module.scss';
 
 interface IProps {
   toggleInfo?: IToggleInfo;
   modifyInfo?: IModifyInfo;
+  approvalInfo?: IApprovalInfo;
   gotoGetStarted(): void;
 }
 
 const Info = (props: IProps) => {
-  const { toggleInfo, modifyInfo, gotoGetStarted } = props;
+  const { toggleInfo, modifyInfo, approvalInfo, gotoGetStarted } = props;
+  const [ enableApproval, saveEnableApproval ] = useState<boolean>(false);
   const [ open, saveOpen ] = useState<boolean>(false);
   const [ status, saveStatus ] = useState<string>('');
   const [ isReEdit, saveIsREdit ] = useState<boolean>(true);
   const [ reason, saveReason ] = useState<string>('');
-  const [ toggleStatus, saveToggleStatus ] = useState<string>('PENDING');
+  const [ toggleStatus, saveToggleStatus ] = useState<string>(approvalInfo?.status || '');
   const { userInfo } = HeaderContainer.useContainer();
   const intl = useIntl();
 
@@ -35,6 +37,13 @@ const Info = (props: IProps) => {
     trigger,
     clearErrors,
   } = useForm();
+
+  useEffect(() => {
+    if (approvalInfo?.status) {
+      saveToggleStatus(approvalInfo.status);
+      saveEnableApproval(approvalInfo.enableApproval);
+    }
+  }, [approvalInfo]);
 
   useEffect(() => {
     if (!open) {
@@ -64,7 +73,7 @@ const Info = (props: IProps) => {
             {toggleInfo?.name}
           </div>
           {
-            toggleStatus === 'PENDING' && (
+            enableApproval && toggleStatus === 'PENDING' && (
               <div className={`${styles['status-pending']} ${styles.status}`}>
                 <Icon type='pending' customClass={styles['status-icon']} />
                 <FormattedMessage id='approvals.status.todo' />
@@ -72,7 +81,7 @@ const Info = (props: IProps) => {
             )
           }
           {
-            (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
+            (enableApproval && toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
               <div className={`${styles['status-publish']} ${styles.status}`}>
                 <Icon type='wait' customClass={styles['status-icon']} />
                 <FormattedMessage id='approvals.table.header.status.unpublished' />
@@ -80,7 +89,7 @@ const Info = (props: IProps) => {
             )
           }
           {
-            toggleStatus === 'REJECT' && (
+            enableApproval && toggleStatus === 'REJECT' && (
               <div className={`${styles['status-reject']} ${styles.status}`}>
                 <Icon type='reject' customClass={styles['status-icon']} />
                 <FormattedMessage id='approvals.status.rejected' />
@@ -99,54 +108,62 @@ const Info = (props: IProps) => {
             </Button>
 
             {
-              toggleStatus === 'PENDING' && (
+              enableApproval && toggleStatus === 'PENDING' && (
                 <>
-                  <Button 
-                    secondary 
-                    className={styles.btn} 
-                    onClick={() => { 
-                      saveOpen(true);
-                      saveStatus('skip');
-                    }}
-                  >
-                    <FormattedMessage id='targeting.approval.operation.skip.approval' />
-                  </Button>
-                  <Button 
-                    secondary 
-                    className={styles.btn}
-                    onClick={() => { 
-                      saveOpen(true);
-                      saveStatus('withdraw');
-                    }}
-                  >
-                    <FormattedMessage id='targeting.approval.operation.withdraw' />
-                  </Button>
-                  <Button 
-                    secondary 
-                    className={styles.btn}
-                    onClick={() => { 
-                      saveOpen(true);
-                      saveStatus('reject');
-                    }}
-                  >
-                    <FormattedMessage id='targeting.approval.operation.reject' />
-                  </Button>
-                  <Button 
-                    primary 
-                    className={styles.btn}
-                    onClick={() => { 
-                      saveOpen(true);
-                      saveStatus('pass');
-                    }}
-                  >
-                    <FormattedMessage id='targeting.approval.operation.pass' />
-                  </Button>
+                  <>
+                    <Button 
+                      secondary 
+                      className={styles.btn} 
+                      onClick={() => { 
+                        saveOpen(true);
+                        saveStatus('skip');
+                      }}
+                    >
+                      <FormattedMessage id='targeting.approval.operation.skip.approval' />
+                    </Button>
+                    <Button 
+                      secondary 
+                      className={styles.btn}
+                      onClick={() => { 
+                        saveOpen(true);
+                        saveStatus('withdraw');
+                      }}
+                    >
+                      <FormattedMessage id='targeting.approval.operation.withdraw' />
+                    </Button>
+                  </>
+                  {
+                    approvalInfo?.owners.includes(userInfo.account) && (
+                      <>
+                        <Button 
+                          secondary 
+                          className={styles.btn}
+                          onClick={() => { 
+                            saveOpen(true);
+                            saveStatus('reject');
+                          }}
+                        >
+                          <FormattedMessage id='targeting.approval.operation.reject' />
+                        </Button>
+                        <Button 
+                          primary 
+                          className={styles.btn}
+                          onClick={() => { 
+                            saveOpen(true);
+                            saveStatus('pass');
+                          }}
+                        >
+                          <FormattedMessage id='targeting.approval.operation.pass' />
+                        </Button>
+                      </>
+                    )
+                  }
                 </>
               )
             }
 
             {
-              (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
+              (enableApproval && toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
                 <>
                   <Button 
                     secondary 
@@ -166,7 +183,7 @@ const Info = (props: IProps) => {
             }
 
             {
-              toggleStatus === 'REJECT' && (
+              enableApproval && toggleStatus === 'REJECT' && (
                 <>
                   <Button secondary className={styles.btn}>
                     <FormattedMessage id='targeting.approval.operation.abandon' />

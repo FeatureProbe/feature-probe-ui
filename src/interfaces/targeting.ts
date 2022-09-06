@@ -63,12 +63,15 @@ export interface ITarget {
 }
 
 export interface IContent {
-  version?: number;
-  disabled?: boolean;
-  comment?: string;
-  content?: ITarget;
-  modifiedBy?: string;
-  modifiedTime?: string;
+  version: number;
+  disabled: boolean;
+  comment: string;
+  content: ITarget;
+  modifiedBy: string;
+  modifiedTime: string;
+  enableApproval: boolean;
+  status: string;
+  owners: string[];
 }
 
 export interface IModifyInfo {
@@ -141,4 +144,21 @@ export interface IDictionary {
   createdTime: string;
   value: string;
   updatedTime: string;
+}
+
+export interface IApprovalInfo {
+  enableApproval: boolean;
+  status: string;
+  owners: string[];
+}
+
+export interface ITargeting {
+  disabled: boolean;
+  content: ITarget;
+}
+
+export interface ITargetingParams {
+  disabled: boolean;
+  comment?: string;
+  content: ITarget;
 }
