@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Form, Table, Popup, Checkbox, Pagination } from 'semantic-ui-react';
+import { Form, Table, Popup, Checkbox, Pagination, Dimmer, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import ListItem from '../ListItem';
@@ -14,6 +14,7 @@ const Lists = () => {
 	const intl = useIntl();
 	const [ status, saveStatus ] = useState<string>('PENDING');
   const [ type, saveType ] = useState<string>('APPROVAL');
+  const [ isLoading, saveLoading ] = useState<boolean>(false);
 	const [ pagination, setPagination ] = useState({
     pageIndex: 1,
     totalPages: 5,
@@ -31,6 +32,7 @@ const Lists = () => {
   }, [location.pathname]);
 
   const init = useCallback(() => {
+    saveLoading(true);
     getApprovalList<IApprovalList>({
       pageIndex: 0,
       status,
@@ -46,6 +48,7 @@ const Lists = () => {
         });
         setTotal(totalElements);
       } 
+      saveLoading(false);
     });
   }, [type, status]);
 
@@ -109,6 +112,14 @@ const Lists = () => {
 				</Form>
 			</div>
 			<div className={styles.content}>
+        {
+          isLoading && (
+            <Dimmer active inverted>
+              <Loader size='medium'>Loading</Loader>
+            </Dimmer>
+          )
+        }
+
 				<Table basic='very' unstackable>
 					<Table.Header className={styles['table-header']}>
 						<Table.Row>
@@ -254,6 +265,7 @@ const Lists = () => {
 									<ListItem 
 										status={status}
                     approval={approval}
+                    type={type}
 									/>
 								);
 							})

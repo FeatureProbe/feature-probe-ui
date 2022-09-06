@@ -15,13 +15,15 @@ interface ILocationParams {
 }
 
 interface IProps {
+  type: string;
   status: string;
   approval: IApproval
 }
 
 const ListItem = (props: IProps) => {
-  const { status, approval } = props;
+  const { type, status, approval } = props;
   const [ toggleStatus, saveToggleStatus ] = useState<number>(2);
+  const [ open, saveOpen ] = useState<boolean>(false);
 
 	return (
     <Table.Row
@@ -29,12 +31,12 @@ const ListItem = (props: IProps) => {
     >
       <Table.Cell>
         <div className={styles['list-item-title']}>
-          标题标题标题标题标题标题标题标题标题标题标题标题标题标题
+          {approval.title}
         </div>
       </Table.Cell>
       <Table.Cell>
         <div className={styles['list-item-toggle']}>
-          开关
+          {approval.toggleName}
         </div>
       </Table.Cell>
       {
@@ -78,18 +80,20 @@ const ListItem = (props: IProps) => {
       }
       <Table.Cell>
         <div className={styles['list-item-project']}>
-          项目
+          {approval.projectName}
         </div>
       </Table.Cell>
       <Table.Cell>
         <div>
-          环境
+          {approval.environmentName}
         </div>
       </Table.Cell>
       <Table.Cell>
         <div>
-          <div>申请人</div>
-          <div className={styles['list-item-time']}>申请时间</div>
+          <div>{approval.submitBy}</div>
+          <div className={styles['list-item-time']}>
+            {dayjs(approval.createdTime).fromNow()}
+          </div>
         </div>
       </Table.Cell>
       {
@@ -161,35 +165,46 @@ const ListItem = (props: IProps) => {
         status === 'PENDING' && (
           <Table.Cell className={styles['list-operation']}>
             <div>
-              <span 
-                className={styles['list-operation-btn']} 
-                onClick={(e) => { 
-                  document.body.click();
-                  e.stopPropagation();
-                }}
-              >
-                通过
-              </span>
-              <span 
-                className={styles['list-operation-btn']} 
-                onClick={(e) => { 
-                  document.body.click();
-                  e.stopPropagation();
-                }}
-              >
-                拒绝
-              </span>
-              <span 
-                className={styles['list-operation-btn']} 
-                onClick={(e) => { 
-                  document.body.click();
-                  e.stopPropagation();
-                }}
-              >
-                撤回
-              </span>
+              {
+                type === 'APPLY' && (
+                  <span 
+                    className={styles['list-operation-btn']} 
+                    onClick={(e) => { 
+                      document.body.click();
+                      e.stopPropagation();
+                    }}
+                  >
+                    撤回
+                  </span>
+                )
+              }
+              {
+                type === 'APPROVAL' && (
+                  <span 
+                    className={styles['list-operation-btn']} 
+                    onClick={(e) => { 
+                      document.body.click();
+                      e.stopPropagation();
+                    }}
+                  >
+                    通过
+                  </span>
+                )
+              }
+              {
+                type === 'APPROVAL' && (
+                  <span 
+                    className={styles['list-operation-btn']} 
+                    onClick={(e) => { 
+                      document.body.click();
+                      e.stopPropagation();
+                    }}
+                  >
+                    拒绝
+                  </span>
+                )
+              }
             </div>
-                  
           </Table.Cell>
         )
       }

@@ -1,7 +1,18 @@
 import { IPageable, ISort } from './toggle';
 
 export interface IApproval {
-  name: string;
+  approvedBy: string;
+  createdTime: string;
+  environmentKey: string;
+  environmentName: string;
+  owners: string[];
+  projectKey: string;
+  projectName: string;
+  status: string;
+  submitBy: string;
+  title: string;
+  toggleKey: string;
+  toggleName: string;
 }
 
 export interface IApprovalList {
