@@ -106,7 +106,7 @@ const ProjectSetting = () => {
             <FormattedMessage id='toggles.settings.tips' />
           </div>
           <div className={styles.approval}>
-            <FormattedMessage id='toggles.settings.pulbish.approval' />
+            <FormattedMessage id='toggles.settings.approval' />
           </div>
           <div>
             <Form className={styles['approval-form']}>
@@ -122,7 +122,7 @@ const ProjectSetting = () => {
                       </Form.Field>
                       <Form.Field width={12}>
                         <label className={styles.label}>
-                          <FormattedMessage id='toggles.settings.approver' />:
+                          <FormattedMessage id='toggles.settings.approval.reviewers' />:
                         </label>
                         <Dropdown
                           placeholder={intl.formatMessage({id: '请选择审批人'})}
