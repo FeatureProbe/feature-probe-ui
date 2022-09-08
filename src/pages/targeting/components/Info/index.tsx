@@ -469,6 +469,7 @@ const Info = (props: IProps) => {
         width={800}
         handleCancel={() => { saveDiffOpen(false); }}
         handleConfirm={() => { saveDiffOpen(false); }}
+        footer={null}
       >
         <div>
           <div className={styles['diff-modal-header']}>

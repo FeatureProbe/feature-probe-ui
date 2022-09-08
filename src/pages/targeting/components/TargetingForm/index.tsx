@@ -81,7 +81,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   } = useForm();
 
   const {
-    formState: {errors},
     setValue,
     setError,
     handleSubmit,
