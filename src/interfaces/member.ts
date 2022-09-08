@@ -36,6 +36,7 @@ export interface IUserInfo {
 export interface IUser {
   account: string;
   role: string;
+  approvalCount?: number;
 }
 
 export interface IPassword {

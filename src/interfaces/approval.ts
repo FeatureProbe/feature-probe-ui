@@ -41,7 +41,7 @@ export interface IApprovalParams {
 }
 
 export interface IApprovalSetting {
-  approvals: string[];
+  reviewers: string[];
   enable: boolean;
   environmentKey: string;
 }

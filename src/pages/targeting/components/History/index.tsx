@@ -102,22 +102,54 @@ const History = (props: IProps) => {
                     </div>
                     <div className={styles.modifyBy}>
                       <span className={styles['version-title']}>
-                        <FormattedMessage id='common.modified.by.text' />
+                        <FormattedMessage id='common.publish.text' />
                       </span>
                       :
-                      { item.createdBy }
+                      <Popup
+                        inverted
+                        className={styles.popup}
+                        trigger={
+                          <span>{ item.createdBy }</span>
+                        }
+                        content={
+                          <span>
+                            { item.createdBy }
+                            <span className={styles['version-popup']}>{ dayjs(item.createdTime).format('YYYY-MM-DD HH:mm:ss') }</span>
+                          </span>
+                        }
+                        position='top center'
+                      />
                     </div>
-                    <div className={styles.modifyTime}>
-                      <span className={styles['version-title']}>
-                        <FormattedMessage id='common.modified.time.text' />:
-                      </span>
-                      { dayjs(item?.createdTime).fromNow() }  
-                    </div>
+                    {
+                      item.approvalStatus === 'PASS' && (
+                        <div className={styles.modifyBy}>
+                          <span className={styles['version-title']}>
+                            <FormattedMessage id='approvals.table.header.approval' />
+                          </span>
+                          :
+                          <Popup
+                            inverted
+                            className={styles.popup}
+                            trigger={
+                              <span>{ item.approvalBy }</span>
+                            }
+                            content={
+                              <span>
+                                { item.approvalBy }
+                                <span className={styles['version-popup']}>{ dayjs(item.approvalTime).format('YYYY-MM-DD HH:mm:ss') }</span>
+                              </span>
+                            }
+                            position='top center'
+                          />
+                        </div>
+                      )
+                    }
                     {
                       item.comment && <div className={styles.comment}>
                         <span className={styles['version-title']}>
-                          <FormattedMessage id='targeting.publish.modal.comment' />
+                          <FormattedMessage id='approvals.table.header.reason' />
                         </span>
+                        :
                         <Popup
                           inverted
                           style={{opacity: '0.8'}}

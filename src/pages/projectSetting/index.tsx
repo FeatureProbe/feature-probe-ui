@@ -65,11 +65,11 @@ const ProjectSetting = () => {
     });
   }, []);
 
-  const handleChangeApproval = useCallback((environmentKey: string, approvals: string[]) => {
+  const handleChangeApproval = useCallback((environmentKey: string, reviewers: string[]) => {
     const settings = cloneDeep(approvalSetting);
     settings.forEach((setting: IApprovalSetting) => {
       if (setting.environmentKey === environmentKey) {
-        setting.approvals = approvals;
+        setting.reviewers = reviewers;
       }
     });
 
@@ -144,7 +144,7 @@ const ProjectSetting = () => {
                           multiple
                           floating
                           options={options}
-                          value={setting.approvals}
+                          value={setting.reviewers}
                           openOnFocus={false}
                           renderLabel={renderLabel}
                           icon={<Icon customClass={styles['angle-down']} type='angle-down' />}

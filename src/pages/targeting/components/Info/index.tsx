@@ -184,6 +184,9 @@ const Info = (props: IProps) => {
     saveComment(detail.value);
   }, []);
 
+  console.log(approvalInfo?.reviewers);
+  console.log(userInfo?.account);
+
 	return (
     <div className={styles.info}>
       <div className={styles['info-title']}>

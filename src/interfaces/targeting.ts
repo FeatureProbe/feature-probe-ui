@@ -112,6 +112,9 @@ export interface IVersion {
   createdTime: string;
   createdBy: string;
   disabled: boolean;
+  approvalBy: string;
+  approvalStatus: string;
+  approvalTime: string;
 }
 
 export interface ITargetingVersions {

@@ -7,6 +7,7 @@ import { IApproval, IApprovalList } from 'interfaces/approval';
 import { getApprovalList } from 'services/approval';
 import styles from './index.module.scss';
 import { debounce } from 'lodash';
+import { HeaderContainer } from 'layout/hooks';
 
 const LIST = '/approvals/list';
 const MINE = '/approvals/mine';
@@ -24,6 +25,7 @@ const Lists = () => {
 	});
 	const [ approvalList, saveApprovalList ] = useState<IApproval[]>([]);
 	const [ total, setTotal ] = useState<number>(0);
+  const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
 
 	useEffect(() => {
 		if (location.pathname === LIST) {
@@ -53,6 +55,13 @@ const Lists = () => {
 					totalPages,
 				});
 				setTotal(totalElements);
+
+        if (status === 'PENDING' && type === 'APPROVAL') {
+          saveUserInfo({
+            ...userInfo,
+            approvalCount: totalElements
+          });
+        }
 			} 
 			saveLoading(false);
 		});

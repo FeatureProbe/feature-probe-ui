@@ -28,14 +28,13 @@ const PageHeader = () => {
   const history = useHistory();
   const location = useLocation();
   const intl = useIntl();
-  const { saveUserInfo } = HeaderContainer.useContainer();
+  const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
 
   const [ selectedNav, setSelectedNav ] = useState<string>('');
   const [ account, setAccount ] = useState<string>('');
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
   const [ helpMenuOpen, setHelpMenuOpen ] = useState<boolean>(false);
   const [ i18nMenuOpen, setI18nMenuOpen ] = useState<boolean>(false);
-  const [ count, saveCount ] = useState<number>(0);
 
   const {
     i18n,
@@ -88,14 +87,20 @@ const PageHeader = () => {
   }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
 
   useEffect(() => {
+    let result: IUser;
+
     getUserInfo<IUser>().then(res => {
       const { success } = res;
       if (success) {
         const { data } = res;
         if (data) {
           setAccount(data?.account);
-          saveUserInfo(data);
+          saveUserInfo({
+            ...data,
+            approvalCount: userInfo.approvalCount,
+          });
           EventTrack.setUserId(data.account);
+          result = data;
         }
       } else {
         message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
@@ -111,7 +116,10 @@ const PageHeader = () => {
 			const { success, data } = res;
 			if (success && data) {
 				const { totalElements } = data;
-				saveCount(totalElements);
+        saveUserInfo({
+          ...result,
+          approvalCount: totalElements,
+        });
       }
 		});
   }, [intl, saveUserInfo]);
@@ -186,7 +194,7 @@ const PageHeader = () => {
           isDemo ? null : (
             <div className={approvalCls} onClick={handleGotoApproval}>
               <FormattedMessage id='approvals.center' />
-              { count !== 0 && <span className={styles.count}>{count > 99 ? '99+' : count}</span> }
+              { userInfo.approvalCount !== 0 && <span className={styles.count}>{userInfo.approvalCount > 99 ? '99+' : userInfo.approvalCount}</span> }
             </div>
           )
         }
