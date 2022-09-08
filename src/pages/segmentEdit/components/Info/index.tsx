@@ -223,10 +223,6 @@ const Info = () => {
     }
   }, [match.path, publishSegment, projectKey, segmentKey, searchParams, intl, handleGoBack, confirmEditSegment]);
 
-  const onError = useCallback(() => {
-    console.log(errors);
-  }, [errors]);
-
   const creatRequestTimeCheck = useRequestTimeCheck();
   
   const debounceNameExist = useMemo(() => {
@@ -286,7 +282,7 @@ const Info = () => {
   }, [searchParams]);
 
 	return (
-    <Form className={styles['filter-form']} autoComplete='off' onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form className={styles['filter-form']} autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
       <div className={styles['form-item']}>
         <FormItemName
           className={styles['form-item-name']}

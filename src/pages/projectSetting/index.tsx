@@ -5,6 +5,7 @@ import  { Radio, CheckboxProps, Form, Input, Dropdown, DropdownProps, DropdownIt
 import { useHistory, useParams } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import ProjectLayout from 'layout/projectLayout';
+import { HeaderContainer } from 'layout/hooks';
 import Icon from 'components/Icon';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
@@ -13,6 +14,7 @@ import { getProjectApprovalSettings, saveSettings } from 'services/project';
 import { IApprovalSetting } from 'interfaces/approval';
 import { IMember, IMemberList } from 'interfaces/member';
 import { IOption } from 'interfaces/targeting';
+import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
 
 interface IParams {
@@ -26,6 +28,7 @@ const ProjectSetting = () => {
   const [ options, saveOptions ] = useState<IOption[]>([]);
   const intl = useIntl();
   const history = useHistory();
+  const { userInfo } = HeaderContainer.useContainer();
 
   const init = useCallback(async () => {
     getProjectApprovalSettings<IApprovalSetting[]>(projectKey).then(res => {
@@ -147,6 +150,7 @@ const ProjectSetting = () => {
                           value={setting.reviewers}
                           openOnFocus={false}
                           renderLabel={renderLabel}
+                          disabled={!OWNER.includes(userInfo.role)}
                           icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
                           noResultsMessage={null}
                           onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
@@ -162,6 +166,7 @@ const ProjectSetting = () => {
                           checked={setting.enable}
                           onChange={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(setting.environmentKey, !!data.checked)} 
                           className={styles['approval-status']} 
+                          disabled={!OWNER.includes(userInfo.role)}
                         />
                       </Form.Field>
                     </Form.Group>
@@ -172,7 +177,13 @@ const ProjectSetting = () => {
           </div>
         </div>
         <div className={styles.footer}>
-          <Button className={styles['publish-btn']} primary type="submit" onClick={handleSubmit}>
+          <Button 
+            primary 
+            type='submit' 
+            className={styles['publish-btn']} 
+            onClick={handleSubmit}
+            disabled={!OWNER.includes(userInfo.role)}
+          >
             <span className={styles['publish-btn-text']}>
               <FormattedMessage id='common.save.text' />
             </span>
