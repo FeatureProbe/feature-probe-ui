@@ -1,6 +1,7 @@
 
 export const PROJECT_ROUTE_LIST = ['projects', 'toggles', 'targeting', 'metrics', 'segments'];
-export const SETTING_ROUTE_LIST = ['members', 'profile'];
+export const SETTING_ROUTE_LIST = ['/settings/members', '/settings/profile'];
+export const APPROVAL_ROUTE_LIST = ['/approvals/list', '/approvals/mine'];
 
 export const TARGETING_ROUTE_LIST = ['targeting', 'metrics'];
 export const TOGGLE_ROUTE_LIST = ['toggles'];

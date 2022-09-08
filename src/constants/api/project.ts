@@ -7,7 +7,9 @@ const ProjectURI = {
   editEnvironmentURI: `${origin}/projects/:projectKey/environments/:environmentKey`,
   getProjectListURI: `${origin}/projects`,
   getProjectInfoURI: `${origin}/projects/:projectKey`,
-  projectExistURI: `${origin}/projects/exists`
+  projectExistURI: `${origin}/projects/exists`,
+  projectApprovalSetting: `${origin}/projects/:projectKey/approvalSettings`,
+  projectSetting: `${origin}/projects/:projectKey`,
 };
 
 export default ProjectURI;

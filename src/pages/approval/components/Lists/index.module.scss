@@ -1,0 +1,154 @@
+.lists {
+  margin-top: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tabs {
+  display: flex;
+  height: 32px;
+  background: #F6F6F7;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #6D6F72;
+  padding: 0 2px;
+}
+
+.tabs-item {
+  text-align: center;
+  padding: 0 12px;
+  height: 28px;
+  margin: 2px 0;
+  line-height: 28px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.tabs-item-selected {
+  background: #FFFFFF;
+  border-radius: 4px;
+  color: #556EE6;
+  font-weight: 500;
+}
+
+.keywords-field {
+  width: 280px !important;
+}
+
+.icon-search {
+  position: absolute;
+  right: 10px;
+  color: #74788D;
+  top: 8px;
+}
+
+.content {
+  margin-top: 14px;
+}
+
+.table-header {
+  background: #F8F9FA;
+  height: 42px;
+  line-height: 42px;
+  font-size: 13px;
+}
+
+.table-header {
+  :global {
+    th {
+      padding-bottom: 0 !important
+    }
+
+    th:first-child {
+      padding-left: 24px !important;
+      padding-bottom: 0 !important;
+    }
+  }
+}
+
+.column-title {
+  width: 200px !important;
+}
+
+.pagination {
+  margin: 16px 0;
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 24px;
+}
+
+.total {
+  color: #74788D;
+  font-size: 12px;
+}
+
+.total-count {
+  font-size: 14px;
+}
+
+.icon-filter {
+  font-weight: normal !important;
+  color: #919AAC !important;
+  margin-left: 4px;
+  position: relative;
+  top: 2px;
+  cursor: pointer;
+}
+
+.filter-menu {
+  width: 150px;
+}
+
+.filter-menu-content {
+  margin-bottom: 8px;
+}
+
+.filter-item {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter-item:hover {
+  background: #F8F9FA;
+}
+
+.filter-item-text {
+  margin-left: 8px;
+}
+
+.filter-menu-footer {
+  text-align: right;
+  border-top: 1px solid #E2E5E9;
+  padding-top: 8px;
+}
+
+.filter-btn-confirm {
+  font-size: 13px;
+  color: #556EE6;
+  cursor: pointer;
+}
+
+.filter-btn-clear {
+  font-size: 13px;
+  color: #353A40;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.no-data {
+  text-align: center;
+  font-family: PingFangSC-Medium;
+  font-size: 18px;
+  color: #7D7D7D;
+}
+
+.no-data-image {
+  width: 165px;
+  margin: 150px 0 8px;
+}

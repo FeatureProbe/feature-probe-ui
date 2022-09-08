@@ -38,7 +38,7 @@ const Router = () => {
         eventsUrl:  window.location.origin + '/server/api/events',
         clientSdkKey: 'client-29765c7e03e9cb49c0e96357b797b1e47e7f2dee',
         user: USER,
-        refreshInterval: 5000,
+        refreshInterval: 500000,
       });
 
       window.FP = FP;

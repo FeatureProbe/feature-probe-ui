@@ -1,0 +1,83 @@
+
+.setting {
+  background-color: #ffffff;
+  margin: 0 20px;
+  height: calc(100vh - 94px);
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}
+
+.title {
+  padding: 12px 24px 0;
+  font-family: PingFangSC-Medium;
+  font-size: 20px;
+  color: #212529;
+}
+
+.tips {
+  margin: 15px 24px 0;
+  height: 36px;
+  background: #FFFAE0;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #592D00;
+  line-height: 36px;
+}
+
+.warning-circle {
+  color: #FFC300;
+  margin-left: 14px;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+  font-size: 17px !important;
+}
+
+.approval {
+  margin: 24px 24px 0;
+  font-family: PingFangSC-Medium;
+  font-size: 14px;
+  color: #212529;
+}
+
+.approval-status {
+  margin-left: 8px;
+  top: 8px;
+  position: relative;
+  vertical-align: middle;
+}
+
+.approval-form {
+  margin: 16px 24px 0;
+}
+
+.angle-down {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.footer {
+  height: 56px;
+  border-top: 1px solid #EBEDEF;
+  padding: 0 24px;
+  padding-top: 12px;
+}
+
+.publish-btn {
+  margin-right: 8px !important;
+}
+
+.group {
+  margin-bottom: 16px !important;
+}
+
+.dropdown-remove-icon {
+  font-size: 12px !important;
+  margin-left: 12px;
+  color: #74788D;
+}

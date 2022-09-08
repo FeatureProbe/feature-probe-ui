@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState, SyntheticEvent, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import { Form, Radio, TextArea, CheckboxProps, TextAreaProps, InputOnChangeData, Loader } from 'semantic-ui-react';
+import { Form, Radio, CheckboxProps, TextAreaProps, InputOnChangeData, Loader, Dropdown, DropdownItemProps, Popup } from 'semantic-ui-react';
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
+import { useForm } from 'react-hook-form';
 import JSONbig from 'json-bigint';
 import { createPatch } from 'diff';
 import { html } from 'diff2html/lib/diff2html';
@@ -31,19 +32,20 @@ import {
   segmentContainer
 } from '../../provider';
 import { VariationColors } from 'constants/colors';
-import { ICondition, IContent, IRule, ITarget, IToggleInfo, IVariation } from 'interfaces/targeting';
+import { IApprovalInfo, ICondition, IOption, IRule, ITarget, ITargeting, IToggleInfo, IVariation } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import { ISegmentList } from 'interfaces/segment';
 import 'diff2html/bundles/css/diff2html.min.css';
-import styles from './index.module.scss';
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
+import styles from './index.module.scss';
 
 interface IProps {
   disabled?: boolean;
   targeting?: ITarget;
   toggleInfo?: IToggleInfo;
+  approvalInfo?: IApprovalInfo;
   toggleDisabled: boolean;
-  initialTargeting?: IContent;
+  initialTargeting?: ITargeting;
   segmentList?: ISegmentList
   initTargeting(): void;
   saveToggleDisable(status: boolean): void;
@@ -51,7 +53,7 @@ interface IProps {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Targeting = forwardRef((props: IProps, ref: any) => {
-  const { disabled, toggleInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
+  const { disabled, toggleInfo, approvalInfo, targeting, toggleDisabled, initialTargeting, segmentList, initTargeting, saveToggleDisable } = props;
   const { rules, saveRules } = ruleContainer.useContainer();
   const { variations, saveVariations } = variationContainer.useContainer();
   const { defaultServe, saveDefaultServe } = defaultServeContainer.useContainer();
@@ -59,16 +61,24 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const [ open, setOpen ] = useState<boolean>(false);
   const [ publishDisabled, setPublishDisabled ] = useState<boolean>(true);
-  const [ publishTargeting, setPublishTargeting ] = useState<IContent>();
+  const [ publishTargeting, setPublishTargeting ] = useState<ITargeting>();
   const [ diffContent, setDiffContent ] = useState<string>('');
   const [ comment, setComment ] = useState<string>('');
   const [ isLoading, setLoading ] = useState<boolean>(false);
+  const [ options, saveOptions ] = useState<IOption[]>();
   const history = useHistory();
   const intl = useIntl();
   const formRef = useRef();
 
   useBeforeUnload(!publishDisabled, intl.formatMessage({id: 'targeting.page.leave.text'}));
   useImperativeHandle(ref, () => publishDisabled, [publishDisabled]);
+
+  const {
+    formState: newFormState,
+    trigger: newTrigger,
+    register: newRegister,
+    setValue: newSetValue,
+  } = useForm();
 
   const {
     formState: {errors},
@@ -207,6 +217,18 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     }
   }, [publishTargeting, initialTargeting]);
 
+  useEffect(() => {
+    const options = approvalInfo?.reviewers?.map((name: string) => {
+      return {
+        key: name,
+        value: name,
+        text: name,
+      };
+    });
+
+    saveOptions(options);
+  }, [approvalInfo]);
+
   const onSubmit = useCallback(() => {
     let isError = false;
     const clonevariations: IVariation[] = cloneDeep(variations);
@@ -245,6 +267,10 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, []);
 
   const handlePublishConfirm = useCallback(async () => {
+    if (approvalInfo?.enableApproval && comment === '') {
+      await newTrigger('reason');
+      return;
+    }
     setOpen(false);
     setLoading(true);
     if (publishTargeting) {
@@ -276,6 +302,17 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     // @ts-ignore detail value
     setComment(data.value);
   }, []);
+
+  const renderLabel = useCallback((label: DropdownItemProps) => {
+    return ({
+      content: label.text,
+      removeIcon: null
+    });
+  }, []);
+
+  const handleGotoSetting = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/settings`);
+  }, [history, projectKey, environmentKey]);
 
 	return (
     <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off' ref={formRef}>
@@ -367,20 +404,72 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
           </div>
           <div className={styles['modal-content']}>
             <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
-            <div className={styles['comment']}>
-              <div className={styles['comment-title']}>
-                <FormattedMessage id='targeting.publish.modal.comment' />
-              </div>
-              <div className={styles['comment-content']}>
-                <Form>
-                  <TextArea
+            <Form>
+              {
+                approvalInfo?.enableApproval && (
+                  <div className={styles['approval']}>
+                    <div className={styles['approval-title']}>
+                      <FormattedMessage id='toggles.settings.approval.reviewers' />:
+                      <Popup
+                        inverted
+                        trigger={
+                          <Icon type='info' customClass={styles['icon-info']} />
+                        }
+                        content={intl.formatMessage({id: 'targeting.approval.tips'})}
+                        position='top center'
+                        className={styles.popup}
+                      />
+                    </div>
+                    <div className={styles['approval-content']}>
+                      <Dropdown 
+                        fluid 
+                        multiple 
+                        selection 
+                        value={approvalInfo?.reviewers}
+                        options={options} 
+                        renderLabel={renderLabel}
+                        icon={null}
+                        disabled={true}
+                        className={styles['approval-dropdown']}
+                      />
+                      <div className={styles['approval-btn']} onClick={handleGotoSetting}>
+                        <FormattedMessage id='common.toggle.appoval.settings.text' />
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
+              <div className={styles['comment']}>
+                <div className={styles['comment-title']}>
+                  { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
+                  <FormattedMessage id='targeting.publish.modal.comment' />
+                </div>
+                <div className={styles['comment-content']}>
+                  <Form.TextArea
+                    {
+                      ...newRegister('reason', { 
+                        required: approvalInfo?.enableApproval, 
+                      })
+                    }
+                    error={ newFormState.errors.reason ? true : false }
                     className={styles['comment-input']} 
                     placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
-                    onChange={handleInputComment}
+                    onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+                      handleInputComment(e, detail);
+                      newSetValue(detail.name, detail.value);
+                      await newTrigger('reason');
+                    }}
                   />
-                </Form>
+                  { 
+                    newFormState.errors.reason && (
+                      <div className={styles['error-text']}>
+                        <FormattedMessage id='targeting.approval.modal.reason.placeholder' />
+                      </div> 
+                    )
+                  }
+                </div>
               </div>
-            </div>
+            </Form>
           </div>
         </div>
       </Modal>

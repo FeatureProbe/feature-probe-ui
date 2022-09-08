@@ -1,0 +1,131 @@
+.list-item {
+  color: #495057;
+  font-size: 15px;
+}
+
+.list-item-title {
+  width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 24px;
+}
+
+.list-item-toggle {
+  font-size: 15px;
+  color: #556EE6;
+  cursor: pointer;
+}
+
+.list-item-time {
+  font-size: 12px;
+  color: #74788D;
+}
+
+.list-item-reason {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list-operation {
+  width: 200px;
+}
+
+.list-operation-btn {
+  margin-right: 8px;
+  color: #556EE6;
+  cursor: pointer;
+}
+
+.list-status {
+  display: flex;
+  align-items: center;
+}
+
+.list-status-icon {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.list-status-icon-published {
+  background-color: #ADB5BC;
+}
+
+.list-status-icon-unpublished {
+  background-color: #556EE6;
+}
+
+.list-status-icon-canceled {
+  background-color: #FF5E1A;
+}
+
+.list-status-canceled-text {
+  color: #FF5E1A;
+}
+
+.icon-info {
+  margin-left: 4px;
+}
+
+.popup {
+  opacity: 0.7;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #212529;
+}
+
+.modal-header-icon {
+  font-size: 16px !important;
+  cursor: pointer;
+  color: #495057;
+}
+
+.modal-content {
+  margin-top: 15px;
+}
+
+.input {
+  margin-top: 8px !important;
+}
+
+.label {
+  margin-bottom: 8px !important;
+}
+
+.label-required {
+  color: #FF5F57;
+  font-size: 20px;
+  margin-right: 4px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  top: 5px;
+}
+
+.error-text {
+  color: #F46A6A;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  transform: scale(0.83);
+  transform-origin: left;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.btn {
+  margin-right: 8px !important;
+}

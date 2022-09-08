@@ -20,7 +20,7 @@ import { getTargeting, getToggleInfo, getTargetingVersion, getTargetingVersionsB
 import { saveDictionary } from 'services/dictionary';
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams, IVersionParams } from 'interfaces/project';
-import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion } from 'interfaces/targeting';
+import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion, IApprovalInfo, ITargeting } from 'interfaces/targeting';
 import { NOT_FOUND } from 'constants/httpCode';
 import { LAST_SEEN } from 'constants/dictionary_keys';
 import { I18NContainer } from 'hooks';
@@ -40,7 +40,7 @@ const Targeting = () => {
   const [ segmentList, saveSegmentList ] = useState<ISegmentList>();
   const [ toggleArchived, saveToggleArchived ] = useState<boolean>(false);
   const [ toggleDisabled, saveToggleDisable ] = useState<boolean>(false);
-  const [ initialTargeting, saveInitTargeting ] = useState<IContent>();
+  const [ initialTargeting, saveInitTargeting ] = useState<ITargeting>();
   const [ historyOpen, setHistoryOpen ] = useState<boolean>(false);
   const [ modifyInfo, saveModifyInfo ] = useState<IModifyInfo>();
   const [ versions, saveVersions ] = useState<IVersion[]>([]);
@@ -51,6 +51,7 @@ const Targeting = () => {
   const [ latestVersion, saveLatestVersion ] = useState<number>(0);
   const [ open, setPageLeaveOpen ] = useState<boolean>(false);
   const [ rememberVersion, saveRememberVersion ] = useState<boolean>(false);
+  const [ approvalInfo, saveApprovalInfo ] = useState<IApprovalInfo>();
   const [ pageInitCount, saveCount ] = useState<number>(0);
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
@@ -69,29 +70,7 @@ const Targeting = () => {
     saveActiveItem(navigation);
   }, [navigation]);
 
-  const initTargeting = useCallback(() => {
-    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
-      const { data, success } = res;
-      if (success && data) {
-        const { version, content, disabled, modifiedBy, modifiedTime } = data;
-        saveTargeting(cloneDeep(content));
-        saveToggleDisable(disabled || false);
-        saveInitTargeting(cloneDeep({
-          disabled,
-          content,
-        }));
-        saveModifyInfo({
-          modifiedBy,
-          modifiedTime,
-        });
-        saveLatestVersion(version || 0);
-        saveSelectedVersion(version || 0);
-      } else {
-        message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
-      }
-    });
-  }, [intl, projectKey, environmentKey, toggleKey]);
-
+  // get toggle basic info
   const initToggleInfo = useCallback(() => {
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(async(res) => {
       const { data, success, code } = res;
@@ -110,6 +89,7 @@ const Targeting = () => {
     });
   }, [intl, projectKey, environmentKey, toggleKey, history]);
 
+  // get segment list info
   const initSegmentList = useCallback(() => {
     getSegmentList<ISegmentList>(projectKey, {
       pageIndex: 0,
@@ -124,10 +104,40 @@ const Targeting = () => {
 
   useEffect(() => {
     initToggleInfo();
-    initTargeting();
     initSegmentList();
-  }, [initToggleInfo, initTargeting, initSegmentList]);
+  }, [initToggleInfo, initSegmentList]);
 
+  // get toggle targeting info
+  const initTargeting = useCallback(() => {
+    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, reviewers, status, submitBy } = data;
+        saveTargeting(cloneDeep(content));
+        saveToggleDisable(disabled || false);
+        saveInitTargeting(cloneDeep({
+          disabled,
+          content,
+        }));
+        saveModifyInfo({
+          modifiedBy,
+          modifiedTime,
+        });
+        saveApprovalInfo({
+          status,
+          reviewers,
+          enableApproval,
+          submitBy
+        });
+        saveLatestVersion(version || 0);
+        saveSelectedVersion(version || 0);
+      } else {
+        message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
+      }
+    });
+  }, [intl, projectKey, environmentKey, toggleKey]);
+
+  // get specific history versions
   const getVersionsByVersion = useCallback(async () => {
     const res = await getTargetingVersionsByVersion<ITargetingVersionsByVersion>(
       projectKey, 
@@ -175,9 +185,12 @@ const Targeting = () => {
       setHistoryOpen(true);
       getVersionsByVersion();
       saveRememberVersion(true);
+    } else {
+      initTargeting();
     }
-  }, [currentVersion, getVersionsByVersion]);
+  }, [currentVersion, initTargeting, getVersionsByVersion]);
 
+  // get normal history versions
   const getVersionsList = useCallback(() => {
     const params: IVersionParams = {
       pageIndex: historyPageIndex,
@@ -204,6 +217,7 @@ const Targeting = () => {
     });
   }, [versions, currentVersion, rememberVersion, historyPageIndex, projectKey, environmentKey, toggleKey, intl]);
 
+  // click to view history detail
   const reviewHistory = useCallback((version: IVersion) => {
     saveActiveVersion(version);
     if (pageInitCount === 0 && !formRef.current) {
@@ -226,23 +240,23 @@ const Targeting = () => {
     }
   }, [pageInitCount, latestVersion]);
 
+  // click to quit viewing history
   const quiteReviewHistory = useCallback(() => {
     saveCount(0);
+    initTargeting();
     saveTargetingDisabled(false);
-    const current = versions[0];
-    if (current) {
-      reviewHistory(current);
-    }
-  }, [versions, reviewHistory]);
+  }, [initTargeting, reviewHistory]);
   
   const confirmReviewHistory = useCallback(() => {
-    saveSelectedVersion(activeVersion?.version || 0);
-    saveTargeting(cloneDeep(activeVersion?.content));
-    saveInitTargeting(cloneDeep({
-      disabled: activeVersion?.disabled,
-      content: activeVersion?.content,
-    }));
-    saveToggleDisable(activeVersion?.disabled || false);
+    if (activeVersion) {
+      saveSelectedVersion(activeVersion?.version || 0);
+      saveTargeting(cloneDeep(activeVersion?.content));
+      saveInitTargeting(cloneDeep({
+        disabled: activeVersion?.disabled,
+        content: activeVersion?.content,
+      }));
+      saveToggleDisable(activeVersion?.disabled || false);
+    }
     saveTargetingDisabled(true);
     setPageLeaveOpen(false);
   }, [activeVersion]);
@@ -292,7 +306,11 @@ const Targeting = () => {
           <Info
             toggleInfo={toggleInfo}
             modifyInfo={modifyInfo}
+            approvalInfo={approvalInfo}
             gotoGetStarted={gotoGetStarted}
+            initTargeting={initTargeting}
+            saveApprovalInfo={saveApprovalInfo}
+            saveInitTargeting={saveInitTargeting}
           />
           <div className={styles.menus}>
             <Menu pointing secondary className={styles.menu}>
@@ -356,10 +374,12 @@ const Targeting = () => {
                       )
                     }
                     <TargetingForm
-                      disabled={targetingDisabled || toggleArchived}
+                      ref={formRef}
+                      disabled={targetingDisabled || toggleArchived || (approvalInfo?.enableApproval && approvalInfo.status !== 'RELEASE')}
                       targeting={targeting}
                       toggleInfo={toggleInfo}
                       segmentList={segmentList}
+                      approvalInfo={approvalInfo}
                       toggleDisabled={toggleDisabled}
                       initialTargeting={initialTargeting}
                       initTargeting={() => {
@@ -367,7 +387,6 @@ const Targeting = () => {
                         initHistory();
                       }}
                       saveToggleDisable={saveToggleDisable}
-                      ref={formRef}
                     />
                   </div>
                 )

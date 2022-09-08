@@ -157,7 +157,7 @@
       overflow-y: auto;
       z-index: 1;
       position: relative;
-  }
+    }
   }
 }
 
@@ -180,4 +180,54 @@
       height: 32px;
     }
   }
+}
+
+.approval {
+  padding: 0 24px;
+  margin-bottom: 24px;
+}
+
+.approval-content {
+  display: flex;
+  align-items: center;
+}
+
+.approval-dropdown {
+  flex: 1;
+}
+
+.approval-btn {
+  margin-left: 8px;
+  color: #556ee6;
+  cursor: pointer;
+}
+
+.icon-info {
+  font-size: 14px !important;
+  color: #74788D;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+
+.popup {
+  opacity: 0.8;
+}
+
+.label-required {
+  color: #FF5F57;
+  font-size: 20px;
+  margin-right: 4px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  top: 5px;
+}
+
+.error-text {
+  color: #F46A6A;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  transform: scale(0.83);
+  transform-origin: left;
 }
