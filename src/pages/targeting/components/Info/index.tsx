@@ -184,9 +184,6 @@ const Info = (props: IProps) => {
     saveComment(detail.value);
   }, []);
 
-  console.log(approvalInfo?.reviewers);
-  console.log(userInfo?.account);
-
 	return (
     <div className={styles.info}>
       <div className={styles['info-title']}>
@@ -294,7 +291,7 @@ const Info = (props: IProps) => {
             }
 
             {
-              (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP')) && (
+              (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && approvalInfo?.submitBy === userInfo.account) && (
                 <>
                   <Button 
                     secondary 
@@ -314,7 +311,7 @@ const Info = (props: IProps) => {
             }
 
             {
-              enableApproval && toggleStatus === 'REJECT' && (
+              enableApproval && toggleStatus === 'REJECT' && approvalInfo?.submitBy === userInfo.account && (
                 <>
                   <Button secondary className={styles['dangerous-btn']} onClick={() => { handleAbandon(); }}>
                     <FormattedMessage id='targeting.approval.operation.abandon' />

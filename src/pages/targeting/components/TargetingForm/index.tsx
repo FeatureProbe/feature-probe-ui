@@ -257,10 +257,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     setOpen(true);
   }, [intl, publishTargeting, initialTargeting, variations, setError]);
 
-  const onError = useCallback(() => {
-    console.log(errors);
-  }, [errors]);
-
   const handlePublishCancel = useCallback(() => {
     setOpen(false);
     setComment('');
@@ -319,7 +315,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, [history, projectKey, environmentKey]);
 
 	return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off' ref={formRef}>
+    <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' ref={formRef}>
       <div className={styles.status}>
         <SectionTitle title={intl.formatMessage({id: 'targeting.status.text'})} />
         <div className={styles['toggle-status']}>
