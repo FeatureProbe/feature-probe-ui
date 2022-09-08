@@ -1,9 +1,8 @@
 import classNames from 'classnames';
-import { IApprovalList } from 'interfaces/approval';
+import { HeaderContainer } from 'layout/hooks';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory, useLocation } from 'react-router-dom';
-import { getApprovalList } from 'services/approval';
 import Lists from './components/Lists';
 import styles from './index.module.scss';
 
@@ -12,9 +11,9 @@ const MINE = '/approvals/mine';
 
 const Approvals = () => {
   const [ selectedNav, saveSelectedNav ] = useState<string>(LIST);
-  const [ count, saveCount ] = useState<number>(0);
   const location = useLocation();
   const history = useHistory();
+  const { userInfo } = HeaderContainer.useContainer();
   
   const listCls = classNames(
     styles['navs-item'],
@@ -39,21 +38,6 @@ const Approvals = () => {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    getApprovalList<IApprovalList>({
-			pageIndex: 0,
-			status: 'PENDING',
-			type: 'APPROVAL',
-			keyword: '',
-		}).then(res => {
-			const { success, data } = res;
-			if (success && data) {
-				const { totalElements } = data;
-				saveCount(totalElements);
-      }
-		});
-  }, []);
-
   return (
     <div className={styles.approvals}>
       <div className={styles.navs}>
@@ -64,7 +48,7 @@ const Approvals = () => {
           }}
         >
           <FormattedMessage id='approvals.lists' />
-          { count !== 0 && <span className={styles.count}>{count > 99 ? '99+' : count}</span> }
+          { userInfo.approvalCount !== 0 && <span className={styles.count}>{userInfo.approvalCount > 99 ? '99+' : userInfo.approvalCount}</span> }
         </div>
         <div 
           className={mineCls} 

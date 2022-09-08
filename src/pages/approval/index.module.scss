@@ -29,6 +29,7 @@
 }
 
 .count {
+  min-width: 20px;
   height: 20px;
   background: #F5483B;
   border: 1px solid #FFFFFF;
@@ -42,4 +43,5 @@
   position: absolute;
   top: -2px;
   right: -10px;
+  text-align: center;
 }

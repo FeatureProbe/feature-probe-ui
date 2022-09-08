@@ -402,6 +402,6 @@
   "approvals.table.header.cancel.time": "Cancelled time",
   "approvals.table.header.skip.time": "Skipped time",
   "approvals.table.header.withdraw.time": "Withdrawn time",
-  "approvals.search.placeholder": "Please input title",
+  "approvals.search.placeholder": "Please input keywords",
   "approvals.total": " approvals in total"
 }

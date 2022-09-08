@@ -112,6 +112,7 @@
 
 .count {
   height: 20px;
+  min-width: 20px;
   background: #F5483B;
   border: 1px solid #FFFFFF;
   border-radius: 10px;
@@ -124,6 +125,7 @@
   position: absolute;
   top: 5px;
   right: -10px;
+  text-align: center;
 }
 
 .header-main {
