@@ -279,7 +279,11 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         ...publishTargeting
       });
       if (res.success) {
-        message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
+        if (approvalInfo?.enableApproval) {
+          message.success(intl.formatMessage({id: 'targeting.approval.request.success'}));
+        } else {
+          message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
+        }
         initTargeting();
         setComment('');
       }
@@ -381,7 +385,9 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
               isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
             }
             <span className={styles['publish-btn-text']}>
-              <FormattedMessage id='common.publish.text' />
+              {
+                approvalInfo?.enableApproval ? <FormattedMessage id='common.request.approval.text' /> : <FormattedMessage id='common.publish.text' />
+              }
             </span>
           </Button>
         </EventTracker>

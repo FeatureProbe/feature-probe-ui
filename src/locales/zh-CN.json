@@ -89,6 +89,7 @@
   "common.toggle.appoval.settings.text": "审批设置",
   "common.yes.text": "是",
   "common.no.text": "否",
+  "common.request.approval.text": "发起审批",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -306,6 +307,7 @@
   "targeting.approval.cancel.error": "取消发布失败",
   "targeting.approval.operate.success": "操作成功",
   "targeting.approval.operate.error": "操作失败",
+  "targeting.approval.request.success": "发起审批成功",
 
   "variations.add.text": "添加分组",
   "variations.duplicated.error.text": "分组名称已存在!",
