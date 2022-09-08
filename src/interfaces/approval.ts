@@ -5,7 +5,7 @@ export interface IApproval {
   createdTime: string;
   environmentKey: string;
   environmentName: string;
-  owners: string[];
+  reviewers: string[];
   projectKey: string;
   projectName: string;
   status: string;
@@ -13,6 +13,9 @@ export interface IApproval {
   title: string;
   toggleKey: string;
   toggleName: string;
+  comment?: string;
+  approvalTime?: string;
+  sketchTime?: string;
 }
 
 export interface IApprovalList {

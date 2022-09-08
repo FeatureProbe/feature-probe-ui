@@ -14,3 +14,54 @@ export const getApprovalList = async<T> (params: IApprovalParams) => {
     },
   });
 };
+
+interface IApprovalStatus {
+  status: string;
+  comment: string;
+}
+
+export const updateApprovalStatus = async<T> (projectKey: string, environmentKey: string, toggleKey: string, data: IApprovalStatus) => {
+  const url = `${API.approvalStatus
+    .replace(':projectKey', projectKey)
+    .replace(':environmentKey', environmentKey)
+    .replace(':toggleKey', toggleKey)
+  }`;
+  
+  return request<T>(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
+    body: JSON.stringify(data),
+  });
+};
+
+export const publishTargetingDraft = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
+  const url = `${API.publishTargetingSketch
+    .replace(':projectKey', projectKey)
+    .replace(':environmentKey', environmentKey)
+    .replace(':toggleKey', toggleKey)
+  }`;
+  
+  return request<T>(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    }
+  });
+};
+
+export const cancelTargetingDraft = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
+  const url = `${API.cancelTargetingSketch
+    .replace(':projectKey', projectKey)
+    .replace(':environmentKey', environmentKey)
+    .replace(':toggleKey', toggleKey)
+  }`;
+  
+  return request<T>(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    }
+  });
+};

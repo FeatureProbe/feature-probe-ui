@@ -2,7 +2,7 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import  { Radio, CheckboxProps, Form, Input, Dropdown, DropdownProps, DropdownItemProps } from 'semantic-ui-react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import ProjectLayout from 'layout/projectLayout';
 import Icon from 'components/Icon';
@@ -21,10 +21,11 @@ interface IParams {
 }
 
 const ProjectSetting = () => {
-  const intl = useIntl();
   const { projectKey } = useParams<IParams>();
   const [ approvalSetting, saveApprovalSetting ] = useState<IApprovalSetting[]>([]);
   const [ options, saveOptions ] = useState<IOption[]>([]);
+  const intl = useIntl();
+  const history = useHistory();
 
   const init = useCallback(async () => {
     getProjectApprovalSettings<IApprovalSetting[]>(projectKey).then(res => {
@@ -94,38 +95,50 @@ const ProjectSetting = () => {
     });
   }, [intl, approvalSetting]);
 
+  const handleCancel = useCallback(() => {
+    history.push('/projects');
+  }, [history]);
+
   return (
     <ProjectLayout>
       <div className={styles.setting}>
         <div className={styles.content}>
           <div className={styles.title}>
-            <FormattedMessage id='common.toggle.settings.text' />
+            <FormattedMessage id='common.toggle.appoval.settings.text' />
           </div>
           <div className={styles.tips}>
             <Icon type='warning-circle' customClass={styles['warning-circle']}></Icon>
             <FormattedMessage id='toggles.settings.tips' />
           </div>
-          <div className={styles.approval}>
-            <FormattedMessage id='toggles.settings.approval' />
-          </div>
           <div>
             <Form className={styles['approval-form']}>
+              <Form.Group>
+                <Form.Field width={4}>
+                  <label className={styles.label}>
+                    <FormattedMessage id='common.environment.text' />:
+                  </label>
+                </Form.Field>
+                <Form.Field width={12}>
+                  <label className={styles.label}>
+                    <FormattedMessage id='toggles.settings.approval.reviewers' />:
+                  </label>
+                </Form.Field>
+                <Form.Field width={2}>
+                  <label className={styles.label}>
+                    <FormattedMessage id='toggles.settings.approval.enable' />:
+                  </label>
+                </Form.Field>
+              </Form.Group>
               {
                 approvalSetting.map((setting: IApprovalSetting) => {
                   return (
                     <Form.Group className={styles.group}>
                       <Form.Field width={4}>
-                        <label className={styles.label}>
-                          <FormattedMessage id='common.environment.text' />:
-                        </label>
                         <Input value={setting.environmentKey} />
                       </Form.Field>
                       <Form.Field width={12}>
-                        <label className={styles.label}>
-                          <FormattedMessage id='toggles.settings.approval.reviewers' />:
-                        </label>
                         <Dropdown
-                          placeholder={intl.formatMessage({id: '请选择审批人'})}
+                          placeholder={intl.formatMessage({id: 'toggles.settings.approval.reviewers.placeholder'})}
                           search
                           selection
                           multiple
@@ -143,9 +156,6 @@ const ProjectSetting = () => {
                         />
                       </Form.Field>
                       <Form.Field width={2}>
-                        <label className={styles.label}>
-                          <FormattedMessage id='开启审批' />:
-                        </label>
                         <Radio
                           size='mini'
                           toggle 
@@ -162,13 +172,13 @@ const ProjectSetting = () => {
           </div>
         </div>
         <div className={styles.footer}>
-          <Button basic type='reset'>
-            <FormattedMessage id='common.cancel.text' />
-          </Button>
           <Button className={styles['publish-btn']} primary type="submit" onClick={handleSubmit}>
             <span className={styles['publish-btn-text']}>
               <FormattedMessage id='common.save.text' />
             </span>
+          </Button>
+          <Button basic type='reset' onClick={handleCancel}>
+            <FormattedMessage id='common.cancel.text' />
           </Button>
         </div>
       </div>

@@ -70,35 +70,7 @@ const Targeting = () => {
     saveActiveItem(navigation);
   }, [navigation]);
 
-  const initTargeting = useCallback(() => {
-    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
-      const { data, success } = res;
-      if (success && data) {
-        const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, owners, status } = data;
-        saveTargeting(cloneDeep(content));
-        saveToggleDisable(disabled || false);
-        saveInitTargeting(cloneDeep({
-          disabled,
-          content,
-        }));
-        saveModifyInfo({
-          modifiedBy,
-          modifiedTime,
-        });
-
-        saveApprovalInfo({
-          status,
-          owners,
-          enableApproval,
-        });
-        saveLatestVersion(version || 0);
-        saveSelectedVersion(version || 0);
-      } else {
-        message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
-      }
-    });
-  }, [intl, projectKey, environmentKey, toggleKey]);
-
+  // get toggle basic info
   const initToggleInfo = useCallback(() => {
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(async(res) => {
       const { data, success, code } = res;
@@ -117,6 +89,7 @@ const Targeting = () => {
     });
   }, [intl, projectKey, environmentKey, toggleKey, history]);
 
+  // get segment list info
   const initSegmentList = useCallback(() => {
     getSegmentList<ISegmentList>(projectKey, {
       pageIndex: 0,
@@ -131,10 +104,40 @@ const Targeting = () => {
 
   useEffect(() => {
     initToggleInfo();
-    initTargeting();
     initSegmentList();
-  }, [initToggleInfo, initTargeting, initSegmentList]);
+  }, [initToggleInfo, initSegmentList]);
 
+  // get toggle targeting info
+  const initTargeting = useCallback(() => {
+    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
+      const { data, success } = res;
+      if (success && data) {
+        const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, reviewers, status, submitBy } = data;
+        saveTargeting(cloneDeep(content));
+        saveToggleDisable(disabled || false);
+        saveInitTargeting(cloneDeep({
+          disabled,
+          content,
+        }));
+        saveModifyInfo({
+          modifiedBy,
+          modifiedTime,
+        });
+        saveApprovalInfo({
+          status,
+          reviewers,
+          enableApproval,
+          submitBy
+        });
+        saveLatestVersion(version || 0);
+        saveSelectedVersion(version || 0);
+      } else {
+        message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
+      }
+    });
+  }, [intl, projectKey, environmentKey, toggleKey]);
+
+  // get specific history versions
   const getVersionsByVersion = useCallback(async () => {
     const res = await getTargetingVersionsByVersion<ITargetingVersionsByVersion>(
       projectKey, 
@@ -182,9 +185,12 @@ const Targeting = () => {
       setHistoryOpen(true);
       getVersionsByVersion();
       saveRememberVersion(true);
+    } else {
+      initTargeting();
     }
-  }, [currentVersion, getVersionsByVersion]);
+  }, [currentVersion, initTargeting, getVersionsByVersion]);
 
+  // get normal history versions
   const getVersionsList = useCallback(() => {
     const params: IVersionParams = {
       pageIndex: historyPageIndex,
@@ -211,6 +217,7 @@ const Targeting = () => {
     });
   }, [versions, currentVersion, rememberVersion, historyPageIndex, projectKey, environmentKey, toggleKey, intl]);
 
+  // click to view history detail
   const reviewHistory = useCallback((version: IVersion) => {
     saveActiveVersion(version);
     if (pageInitCount === 0 && !formRef.current) {
@@ -233,14 +240,12 @@ const Targeting = () => {
     }
   }, [pageInitCount, latestVersion]);
 
+  // click to quit viewing history
   const quiteReviewHistory = useCallback(() => {
     saveCount(0);
+    initTargeting();
     saveTargetingDisabled(false);
-    const current = versions[0];
-    if (current) {
-      reviewHistory(current);
-    }
-  }, [versions, reviewHistory]);
+  }, [initTargeting, reviewHistory]);
   
   const confirmReviewHistory = useCallback(() => {
     if (activeVersion) {
@@ -303,6 +308,9 @@ const Targeting = () => {
             modifyInfo={modifyInfo}
             approvalInfo={approvalInfo}
             gotoGetStarted={gotoGetStarted}
+            initTargeting={initTargeting}
+            saveApprovalInfo={saveApprovalInfo}
+            saveInitTargeting={saveInitTargeting}
           />
           <div className={styles.menus}>
             <Menu pointing secondary className={styles.menu}>
@@ -366,10 +374,12 @@ const Targeting = () => {
                       )
                     }
                     <TargetingForm
-                      disabled={targetingDisabled || toggleArchived}
+                      ref={formRef}
+                      disabled={targetingDisabled || toggleArchived || (approvalInfo?.enableApproval && approvalInfo.status !== 'RELEASE')}
                       targeting={targeting}
                       toggleInfo={toggleInfo}
                       segmentList={segmentList}
+                      approvalInfo={approvalInfo}
                       toggleDisabled={toggleDisabled}
                       initialTargeting={initialTargeting}
                       initTargeting={() => {
@@ -377,7 +387,6 @@ const Targeting = () => {
                         initHistory();
                       }}
                       saveToggleDisable={saveToggleDisable}
-                      ref={formRef}
                     />
                   </div>
                 )

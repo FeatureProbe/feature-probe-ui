@@ -71,7 +71,8 @@ export interface IContent {
   modifiedTime: string;
   enableApproval: boolean;
   status: string;
-  owners: string[];
+  reviewers: string[];
+  submitBy?: string;
 }
 
 export interface IModifyInfo {
@@ -149,7 +150,8 @@ export interface IDictionary {
 export interface IApprovalInfo {
   enableApproval: boolean;
   status: string;
-  owners: string[];
+  reviewers: string[];
+  submitBy?: string;
 }
 
 export interface ITargeting {
@@ -161,4 +163,11 @@ export interface ITargetingParams {
   disabled: boolean;
   comment?: string;
   content: ITarget;
+}
+
+export interface ITargetingDiff {
+  currentDisabled: boolean;
+  oldDisabled: boolean;
+  currentContent: ITarget;
+  oldContent: ITarget;
 }

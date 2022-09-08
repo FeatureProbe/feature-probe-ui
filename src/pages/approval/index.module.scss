@@ -18,6 +18,7 @@
   font-weight: 400;
   line-height: 31px;
   cursor: pointer;
+  position: relative;
 }
 
 .navs-item-selected {
@@ -25,4 +26,20 @@
   font-weight: 500;
   border-bottom: 3px solid #556EE6;
   line-height: 31px;
+}
+
+.count {
+  height: 20px;
+  background: #F5483B;
+  border: 1px solid #FFFFFF;
+  border-radius: 10px;
+  display: inline-block;
+  font-family: PingFangSC-Medium;
+  font-size: 12px;
+  color: #FFFFFF;
+  line-height: 20px;
+  padding: 0 5px;
+  position: absolute;
+  top: -2px;
+  right: -10px;
 }

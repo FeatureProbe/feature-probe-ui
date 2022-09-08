@@ -1,14 +1,23 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { Grid, Form, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { cloneDeep } from 'lodash';
 import { useForm } from 'react-hook-form';
+import JSONbig from 'json-bigint';
+import { createPatch } from 'diff';
+import { html } from 'diff2html/lib/diff2html';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
-import { IToggleInfo, IModifyInfo, IApprovalInfo } from 'interfaces/targeting';
+import message from 'components/MessageBox';
 import { HeaderContainer } from 'layout/hooks';
+import { updateApprovalStatus, publishTargetingDraft, cancelTargetingDraft } from 'services/approval';
+import { getTargeting, getTargetingDiff } from 'services/toggle';
+import { IToggleInfo, IModifyInfo, IApprovalInfo, ITargetingDiff, ITargeting, IContent } from 'interfaces/targeting';
+import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -16,17 +25,25 @@ interface IProps {
   modifyInfo?: IModifyInfo;
   approvalInfo?: IApprovalInfo;
   gotoGetStarted(): void;
+  initTargeting(): void;
+  saveApprovalInfo(approvalInfo: IApprovalInfo): void;
+  saveInitTargeting(targeting: ITargeting): void;
 }
 
 const Info = (props: IProps) => {
-  const { toggleInfo, modifyInfo, approvalInfo, gotoGetStarted } = props;
+  const { toggleInfo, modifyInfo, approvalInfo, gotoGetStarted, initTargeting, saveApprovalInfo, saveInitTargeting } = props;
   const [ enableApproval, saveEnableApproval ] = useState<boolean>(false);
   const [ open, saveOpen ] = useState<boolean>(false);
+  const [ diffOpen, saveDiffOpen ] = useState<boolean>(false);
   const [ status, saveStatus ] = useState<string>('');
   const [ isReEdit, saveIsREdit ] = useState<boolean>(true);
-  const [ reason, saveReason ] = useState<string>('');
+  const [ comment, saveComment ] = useState<string>('');
   const [ toggleStatus, saveToggleStatus ] = useState<string>(approvalInfo?.status || '');
+  const [ targetingDiff, saveTargetingDiff ] = useState<ITargetingDiff>();
+  const [ diffContent, setDiffContent ] = useState<string>('');
+
   const { userInfo } = HeaderContainer.useContainer();
+  const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
 
   const {
@@ -39,6 +56,14 @@ const Info = (props: IProps) => {
   } = useForm();
 
   useEffect(() => {
+    getTargetingDiff<ITargetingDiff>(projectKey, environmentKey, toggleKey).then(res => {
+      if (res.success) {
+        saveTargetingDiff(res.data);
+      }
+    });
+  }, [projectKey, environmentKey, toggleKey]);
+
+  useEffect(() => {
     if (approvalInfo?.status) {
       saveToggleStatus(approvalInfo.status);
       saveEnableApproval(approvalInfo.enableApproval);
@@ -48,21 +73,115 @@ const Info = (props: IProps) => {
   useEffect(() => {
     if (!open) {
       clearErrors();
-      saveReason('');
+      saveComment('');
     }
   }, [open, clearErrors]);
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     saveOpen(false);
-  }, []);
 
-  const onCancel = useCallback(() => {
-    saveOpen(false);
-  }, []);
+    if (status === 'CANCEL') {
+      const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
+      if (res.success) {
+        message.success(intl.formatMessage({id: 'targeting.approval.cancel.success'}));
+        initTargeting();
+      } else {
+        message.success(intl.formatMessage({id: 'targeting.approval.cancel.error'}));
+      }
+    } else {
+      const res = await updateApprovalStatus(projectKey, environmentKey, toggleKey, {
+        status,
+        comment,
+      });
 
-  const handleChange = useCallback((e: SyntheticEvent, detail: TextAreaProps) => {
+      if (res.success) {
+        message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
+        if (status === 'REVOKE' && isReEdit) {
+          if (approvalInfo) {
+            saveApprovalInfo({
+              ...approvalInfo,
+              status: 'RELEASE',
+            });
+          }
+        } else {
+          initTargeting();
+        }
+      } else {
+        message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+      }
+    }
+  }, [status, comment, approvalInfo, projectKey, environmentKey, toggleKey]);
+
+  const handleAbandon = useCallback(async () => {
+    const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
+    if (res.success) {
+      initTargeting();
+      message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
+    } else {
+      message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+    }
+  }, [projectKey, environmentKey, toggleKey]);
+
+  const handleReEdit = useCallback(async () => {
+    const result = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
+    if (result.success) {
+      const res = await getTargeting<IContent>(projectKey, environmentKey, toggleKey);
+      const { data, success } = res;
+      if (success && data) {
+        const { content, disabled } = data;
+        saveInitTargeting(cloneDeep({
+          disabled,
+          content,
+        }));
+      }
+      if (approvalInfo) {
+          saveApprovalInfo({
+          ...approvalInfo,
+          status: 'RELEASE',
+        });
+      }
+    }
+    
+  }, [projectKey, environmentKey, toggleKey, approvalInfo]);
+
+  const handlePublish = useCallback(() => {
+    publishTargetingDraft(projectKey, environmentKey, toggleKey).then(res => {
+      if (res.success) {
+        message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
+        initTargeting();
+      } else {
+        message.success(intl.formatMessage({id: 'targeting.publish.error.text'}));
+      }
+    });
+  }, [projectKey, environmentKey, toggleKey]);
+
+  const handleShowDiff = useCallback(() => {
+    if (targetingDiff) {
+      const { currentContent, oldContent, oldDisabled, currentDisabled } = targetingDiff;
+      const before = JSONbig.stringify({
+        disabled: oldDisabled,
+        content: oldContent
+      }, null, 2);
+      const after = JSONbig.stringify({
+        disabled: currentDisabled,
+        content: currentContent
+      }, null, 2);
+      const result = createPatch('content', before.replace(/\\n/g, '\n'), after.replace(/\\n/g, '\n'));
+
+      const content = html(result, {
+        matching: 'lines',
+        outputFormat: 'side-by-side',
+        diffStyle: 'word',
+        drawFileList: false,
+      });
+      setDiffContent(content);
+      saveDiffOpen(true);
+    }
+  }, [targetingDiff]);
+
+  const handleChangeComment = useCallback((e: SyntheticEvent, detail: TextAreaProps) => {
     // @ts-ignore detail value
-    saveReason(detail.value);
+    saveComment(detail.value);
   }, []);
 
 	return (
@@ -84,7 +203,7 @@ const Info = (props: IProps) => {
             (enableApproval && toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
               <div className={`${styles['status-publish']} ${styles.status}`}>
                 <Icon type='wait' customClass={styles['status-icon']} />
-                <FormattedMessage id='approvals.table.header.status.unpublished' />
+                <FormattedMessage id='approvals.status.unpublished' />
               </div>
             )
           }
@@ -103,44 +222,53 @@ const Info = (props: IProps) => {
             <FormattedMessage id='toggle.connect' />
           </div>
           <div>
-            <Button secondary className={styles.btn}>
-              <FormattedMessage id='targeting.approval.operation.view.changes' />
-            </Button>
+            {
+              enableApproval && toggleStatus !== 'RELEASE' && (
+                <Button secondary className={styles.btn} onClick={handleShowDiff}>
+                  <FormattedMessage id='targeting.approval.operation.view.changes' />
+                </Button>
+              )
+            }
 
             {
               enableApproval && toggleStatus === 'PENDING' && (
                 <>
-                  <>
-                    <Button 
-                      secondary 
-                      className={styles.btn} 
-                      onClick={() => { 
-                        saveOpen(true);
-                        saveStatus('skip');
-                      }}
-                    >
-                      <FormattedMessage id='targeting.approval.operation.skip.approval' />
-                    </Button>
-                    <Button 
-                      secondary 
-                      className={styles.btn}
-                      onClick={() => { 
-                        saveOpen(true);
-                        saveStatus('withdraw');
-                      }}
-                    >
-                      <FormattedMessage id='targeting.approval.operation.withdraw' />
-                    </Button>
-                  </>
                   {
-                    approvalInfo?.owners.includes(userInfo.account) && (
+                    approvalInfo?.submitBy === userInfo.account && (
+                      <>
+                        <Button 
+                          secondary 
+                          className={styles.btn} 
+                          onClick={() => { 
+                            saveOpen(true);
+                            saveStatus('JUMP');
+                          }}
+                        >
+                          <FormattedMessage id='targeting.approval.operation.skip.approval' />
+                        </Button>
+                        <Button 
+                          secondary 
+                          className={styles['dangerous-btn']}
+                          onClick={() => { 
+                            saveOpen(true);
+                            saveStatus('REVOKE');
+                          }}
+                        >
+                          <FormattedMessage id='targeting.approval.operation.withdraw' />
+                        </Button>
+                      </>
+                    )
+                  }
+                  
+                  {
+                    approvalInfo?.reviewers?.includes(userInfo.account) && (
                       <>
                         <Button 
                           secondary 
                           className={styles.btn}
                           onClick={() => { 
                             saveOpen(true);
-                            saveStatus('reject');
+                            saveStatus('REJECT');
                           }}
                         >
                           <FormattedMessage id='targeting.approval.operation.reject' />
@@ -150,7 +278,7 @@ const Info = (props: IProps) => {
                           className={styles.btn}
                           onClick={() => { 
                             saveOpen(true);
-                            saveStatus('pass');
+                            saveStatus('PASS');
                           }}
                         >
                           <FormattedMessage id='targeting.approval.operation.pass' />
@@ -163,19 +291,19 @@ const Info = (props: IProps) => {
             }
 
             {
-              (enableApproval && toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
+              (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP')) && (
                 <>
                   <Button 
                     secondary 
                     className={styles.btn}
                     onClick={() => { 
                       saveOpen(true);
-                      saveStatus('cancel');
+                      saveStatus('CANCEL');
                     }}
                   >
                     <FormattedMessage id='targeting.approval.operation.cancel.publish' />
                   </Button>
-                  <Button primary className={styles.btn}>
+                  <Button primary className={styles.btn} onClick={handlePublish}>
                     <FormattedMessage id='targeting.approval.operation.publish' />
                   </Button>
                 </>
@@ -185,10 +313,10 @@ const Info = (props: IProps) => {
             {
               enableApproval && toggleStatus === 'REJECT' && (
                 <>
-                  <Button secondary className={styles.btn}>
+                  <Button secondary className={styles['dangerous-btn']} onClick={() => { handleAbandon(); }}>
                     <FormattedMessage id='targeting.approval.operation.abandon' />
                   </Button>
-                  <Button primary className={styles.btn}>
+                  <Button primary className={styles.btn} onClick={() => { handleReEdit(); }}>
                     <FormattedMessage id='targeting.approval.operation.re-edit' />
                   </Button>
                 </>
@@ -247,7 +375,7 @@ const Info = (props: IProps) => {
                 <FormattedMessage id='common.tags.text' />:
               </div>
               <div>
-                { toggleInfo?.tags.join(',')}
+                { toggleInfo?.tags.join(',') || '-'}
               </div>
             </Grid.Column>
           </Grid.Row>
@@ -255,58 +383,40 @@ const Info = (props: IProps) => {
       </div>
       <Modal 
         open={open}
-        width={400}
+        width={480}
         footer={null}
       >
         <div>
           <div className={styles['modal-header']}>
             <span className={styles['modal-header-text']}>
-              {
-                status === 'pass' && (
-                  <FormattedMessage id='targeting.approval.modal.pass' />
-                )
-              }
-              {
-                status === 'withdraw' && (
-                  <FormattedMessage id='targeting.approval.modal.withdraw' />
-                )
-              }
-              {
-                status === 'reject' && (
-                  <FormattedMessage id='targeting.approval.modal.reject' />
-                )
-              }
-              {
-                status === 'skip' && (
-                  <FormattedMessage id='targeting.approval.operation.skip.approval' />
-                )
-              }
-              {
-                status === 'cancel' && (
-                  <FormattedMessage id='targeting.approval.operation.cancel.publish' />
-                )
-              }
+              { status === 'PASS' && <FormattedMessage id='targeting.approval.modal.pass' /> }
+              { status === 'REVOKE' && <FormattedMessage id='targeting.approval.modal.withdraw' /> }
+              { status === 'REJECT' && <FormattedMessage id='targeting.approval.modal.reject' /> }
+              { status === 'JUMP' && <FormattedMessage id='targeting.approval.operation.skip.approval' /> }
+              { status === 'CANCEL' && <FormattedMessage id='targeting.approval.operation.cancel.publish' /> }
             </span>
             <Icon customClass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
           </div>
           <div className={styles['modal-content']}>
             <Form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
               {
-                (status === 'withdraw' || status === 'cancel') && (
+                (status === 'REVOKE' || status === 'CANCEL') && (
                   <div className={styles['modal-continue-edit']}>
                     <FormattedMessage id='targeting.approval.modal.re-edit.text' />
                     <div className={styles['radio-group']}>
                       <Form.Radio
                         name='yes'
-                        label={'是'}
+                        label={intl.formatMessage({id: 'common.yes.text'})}
                         className={styles['radio-group-item']}
                         checked={isReEdit}
+                        onChange={() => { saveIsREdit(!isReEdit); }}
                       />
                       <Form.Radio 
                         name='no'
-                        label={'否'}
+                        label={intl.formatMessage({id: 'common.no.text'})}
                         className={styles['radio-group-item']}
                         checked={!isReEdit}
+                        onChange={() => { saveIsREdit(!isReEdit); }}
                       />
                     </div>
                   </div>
@@ -314,24 +424,22 @@ const Info = (props: IProps) => {
               }
               <Form.Field>
                 <label>
-                  {
-                    status !== 'pass' && <span className={styles['label-required']}>*</span>
-                  }
+                  { status !== 'PASS' && <span className={styles['label-required']}>*</span> }
                   <FormattedMessage id='targeting.approval.modal.reason' />:
                 </label>
                 
                 <Form.TextArea 
                   {
                     ...register('reason', { 
-                      required: status !== 'pass', 
+                      required: status !== 'PASS', 
                     })
                   }
                   error={ errors.reason ? true : false }
-                  value={reason} 
+                  value={comment} 
                   placeholder={intl.formatMessage({id: 'targeting.approval.modal.reason.placeholder'})}
                   className={styles.input}
                   onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
-                    handleChange(e, detail);
+                    handleChangeComment(e, detail);
                     setValue(detail.name, detail.value);
                     await trigger('reason');
                   }}
@@ -345,14 +453,32 @@ const Info = (props: IProps) => {
                 )
               }
               <div className={styles['footer']} onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
-                <Button size='mini' className={styles['btn']} basic type='reset' onClick={onCancel}>
+                <Button size='mini' basic type='reset' onClick={() => { saveOpen(false); }}>
                   <FormattedMessage id='common.cancel.text' />
                 </Button>
-                <Button size='mini' type='submit' primary>
+                <Button size='mini' className={styles['btn']} type='submit' primary>
                   <FormattedMessage id='common.confirm.text' />
                 </Button>
               </div>
             </Form>
+          </div>
+        </div>
+      </Modal>
+      <Modal 
+        open={diffOpen}
+        width={800}
+        handleCancel={() => { saveDiffOpen(false); }}
+        handleConfirm={() => { saveDiffOpen(false); }}
+      >
+        <div>
+          <div className={styles['diff-modal-header']}>
+            <span className={styles['diff-modal-header-text']}>
+              Diff
+            </span>
+            <Icon customClass={styles['diff-modal-close-icon']} type='close' onClick={() => { saveDiffOpen(false); }} />
+          </div>
+          <div className={styles['diff-modal-content']}>
+            <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
           </div>
         </div>
       </Modal>

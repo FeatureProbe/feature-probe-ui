@@ -7,6 +7,7 @@ import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo } from 'services/user';
+import { getApprovalList } from 'services/approval';
 import { IUser } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
 import { APPROVAL_ROUTE_LIST, PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
@@ -15,6 +16,7 @@ import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
 import { EventTrack } from 'utils/track';
 import styles from './pageHeader.module.scss';
+import { IApprovalList } from 'interfaces/approval';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
@@ -33,6 +35,7 @@ const PageHeader = () => {
   const [ menuOpen, setMenuOpen ] = useState<boolean>(false);
   const [ helpMenuOpen, setHelpMenuOpen ] = useState<boolean>(false);
   const [ i18nMenuOpen, setI18nMenuOpen ] = useState<boolean>(false);
+  const [ count, saveCount ] = useState<number>(0);
 
   const {
     i18n,
@@ -85,7 +88,7 @@ const PageHeader = () => {
   }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
 
   useEffect(() => {
-    getUserInfo<IUser>().then((res) => {
+    getUserInfo<IUser>().then(res => {
       const { success } = res;
       if (success) {
         const { data } = res;
@@ -98,6 +101,19 @@ const PageHeader = () => {
         message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
       }
     });
+
+    getApprovalList<IApprovalList>({
+			pageIndex: 0,
+			status: 'PENDING',
+			type: 'APPROVAL',
+			keyword: '',
+		}).then(res => {
+			const { success, data } = res;
+			if (success && data) {
+				const { totalElements } = data;
+				saveCount(totalElements);
+      }
+		});
   }, [intl, saveUserInfo]);
 
   useEffect(() => {
@@ -170,6 +186,7 @@ const PageHeader = () => {
           isDemo ? null : (
             <div className={approvalCls} onClick={handleGotoApproval}>
               <FormattedMessage id='approvals.center' />
+              { count !== 0 && <span className={styles.count}>{count > 99 ? '99+' : count}</span> }
             </div>
           )
         }

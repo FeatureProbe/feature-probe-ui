@@ -13,6 +13,7 @@
       font-size: 16px;
       color: #495057;
       margin-right: 35px;
+      position: relative;
     }
     
     .navs-item-selected {
@@ -107,6 +108,22 @@
   height: 24px;
   margin-right: 25px;
   vertical-align: middle;
+}
+
+.count {
+  height: 20px;
+  background: #F5483B;
+  border: 1px solid #FFFFFF;
+  border-radius: 10px;
+  display: inline-block;
+  font-family: PingFangSC-Medium;
+  font-size: 12px;
+  color: #FFFFFF;
+  line-height: 20px;
+  padding: 0 5px;
+  position: absolute;
+  top: 5px;
+  right: -10px;
 }
 
 .header-main {
