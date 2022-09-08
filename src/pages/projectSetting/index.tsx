@@ -2,8 +2,8 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import  { Radio, CheckboxProps, Form, Input, Dropdown, DropdownProps, DropdownItemProps } from 'semantic-ui-react';
-import { useHistory, useParams } from 'react-router-dom';
-import { cloneDeep } from 'lodash';
+import { useParams } from 'react-router-dom';
+import { cloneDeep, isEqual } from 'lodash';
 import ProjectLayout from 'layout/projectLayout';
 import { HeaderContainer } from 'layout/hooks';
 import Icon from 'components/Icon';
@@ -23,11 +23,13 @@ interface IParams {
 }
 
 const ProjectSetting = () => {
-  const { projectKey } = useParams<IParams>();
   const [ approvalSetting, saveApprovalSetting ] = useState<IApprovalSetting[]>([]);
+  const [ originSetting, saveOriginSetting ] = useState<IApprovalSetting[]>([]);
+  const [ isSame, saveIsSame ] = useState<boolean>(false);
   const [ options, saveOptions ] = useState<IOption[]>([]);
+
   const intl = useIntl();
-  const history = useHistory();
+  const { projectKey } = useParams<IParams>();
   const { userInfo } = HeaderContainer.useContainer();
 
   const init = useCallback(async () => {
@@ -35,6 +37,7 @@ const ProjectSetting = () => {
       const { success, data } = res;
       if (success && data) {
         saveApprovalSetting(data);
+        saveOriginSetting(cloneDeep(data));
       }
     });
 
@@ -56,6 +59,11 @@ const ProjectSetting = () => {
       saveOptions(options);
     }
   }, [projectKey]);
+
+  useEffect(() => {
+    const isSame = isEqual(approvalSetting, originSetting);
+    saveIsSame(isSame);
+  }, [approvalSetting, originSetting]);
 
   useEffect(() => {
     init();
@@ -97,10 +105,6 @@ const ProjectSetting = () => {
       message.success(intl.formatMessage({id: 'toggles.settings.save.success'}));
     });
   }, [intl, approvalSetting]);
-
-  const handleCancel = useCallback(() => {
-    history.push('/projects');
-  }, [history]);
 
   return (
     <ProjectLayout>
@@ -182,19 +186,15 @@ const ProjectSetting = () => {
             type='submit' 
             className={styles['publish-btn']} 
             onClick={handleSubmit}
-            disabled={!OWNER.includes(userInfo.role)}
+            disabled={!OWNER.includes(userInfo.role) || isSame}
           >
             <span className={styles['publish-btn-text']}>
               <FormattedMessage id='common.save.text' />
             </span>
           </Button>
-          <Button basic type='reset' onClick={handleCancel}>
-            <FormattedMessage id='common.cancel.text' />
-          </Button>
         </div>
       </div>
     </ProjectLayout>
-
   );
 };
 
