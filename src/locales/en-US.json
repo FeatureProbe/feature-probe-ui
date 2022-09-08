@@ -89,6 +89,7 @@
   "common.toggle.appoval.settings.text": "Approval Settings",
   "common.yes.text": "Yes",
   "common.no.text": "No",
+  "common.request.approval.text": "Request approval",
 
   "header.getuser.error.text": "Get user info error!",
 
@@ -306,6 +307,7 @@
   "targeting.approval.cancel.error": "Error cancelling",
   "targeting.approval.operate.success": "Successfully operated",
   "targeting.approval.operate.error": "Error operating",
+  "targeting.approval.request.success": "Successfully requested",
 
   "variations.add.text": "Add Variation",
   "variations.duplicated.error.text": "Variation names are duplicated, please change!",
