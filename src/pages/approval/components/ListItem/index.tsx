@@ -49,7 +49,7 @@ const ListItem = (props: IProps) => {
     } else {
       message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
     }
-  }, [operationStatus, refreshList]);
+  }, [comment, operationStatus, refreshList]);
 
   const onCancel = useCallback(() => {
     saveOpen(false);

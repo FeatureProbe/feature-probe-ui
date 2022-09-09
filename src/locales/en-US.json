@@ -306,7 +306,7 @@
   "targeting.approval.reject.error": "Error declining",
   "targeting.approval.cancel.success": "Successfully cancelled",
   "targeting.approval.cancel.error": "Error cancelling",
-  "targeting.approval.operate.success": "Successfully operated",
+  "targeting.approval.operate.success": "Successfully updated",
   "targeting.approval.operate.error": "Error operating",
   "targeting.approval.request.success": "Successfully requested",
 
