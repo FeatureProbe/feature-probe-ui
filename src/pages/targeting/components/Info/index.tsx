@@ -1,5 +1,5 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Grid, Form, TextAreaProps } from 'semantic-ui-react';
+import { Grid, Form, TextAreaProps, Popup } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -217,10 +217,22 @@ const Info = (props: IProps) => {
           </div>
           {
             enableApproval && toggleStatus === 'PENDING' && (
-              <div className={`${styles['status-pending']} ${styles.status}`}>
-                <Icon type='pending' customClass={styles['status-icon']} />
-                <FormattedMessage id='approvals.status.pending' />
-              </div>
+              <Popup
+                inverted
+                className={styles.popup}
+                trigger={
+                  <div className={`${styles['status-pending']} ${styles.status}`}>
+                    <Icon type='pending' customClass={styles['status-icon']} />
+                    <FormattedMessage id='approvals.status.pending' />
+                  </div>
+                }
+                content={
+                  <span>
+                    {approvalInfo?.reviewers.join(', ')}
+                  </span>
+                }
+                position='top center'
+              />
             )
           }
           {
@@ -233,10 +245,22 @@ const Info = (props: IProps) => {
           }
           {
             enableApproval && toggleStatus === 'REJECT' && (
-              <div className={`${styles['status-reject']} ${styles.status}`}>
-                <Icon type='reject' customClass={styles['status-icon']} />
-                <FormattedMessage id='approvals.status.declined' />
-              </div>
+              <Popup
+                inverted
+                className={styles.popup}
+                trigger={
+                  <div className={`${styles['status-reject']} ${styles.status}`}>
+                    <Icon type='reject' customClass={styles['status-icon']} />
+                    <FormattedMessage id='approvals.status.declined' />
+                  </div>
+                }
+                content={
+                  <span>
+                    {approvalInfo?.approvalBy}: {approvalInfo?.approvalComment}
+                  </span>
+                }
+                position='top center'
+              />
             )
           }
         </div>

@@ -73,6 +73,8 @@ export interface IContent {
   status: string;
   reviewers: string[];
   submitBy?: string;
+  approvalBy?: string;
+  approvalComment?: string;
 }
 
 export interface IModifyInfo {
@@ -115,6 +117,7 @@ export interface IVersion {
   approvalBy: string;
   approvalStatus: string;
   approvalTime: string;
+  approvalComment?: string;
 }
 
 export interface ITargetingVersions {
@@ -155,6 +158,8 @@ export interface IApprovalInfo {
   status: string;
   reviewers: string[];
   submitBy?: string;
+  approvalBy?: string;
+  approvalComment?: string;
 }
 
 export interface ITargeting {

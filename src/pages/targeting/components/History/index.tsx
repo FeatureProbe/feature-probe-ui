@@ -102,7 +102,7 @@ const History = (props: IProps) => {
                     </div>
                     <div className={styles.modifyBy}>
                       <span className={styles['version-title']}>
-                        <FormattedMessage id='common.publish.text' />
+                        { item.approvalStatus === 'JUMP' ? <FormattedMessage id='approvals.skipped.by' /> : <FormattedMessage id='approvals.published.by' /> }
                       </span>
                       :
                       <Popup
@@ -124,7 +124,7 @@ const History = (props: IProps) => {
                       item.approvalStatus === 'PASS' && (
                         <div className={styles.modifyBy}>
                           <span className={styles['version-title']}>
-                            <FormattedMessage id='approvals.table.header.review' />
+                            <FormattedMessage id='approvals.reviewed.by' />
                           </span>
                           :
                           <Popup
@@ -140,6 +140,30 @@ const History = (props: IProps) => {
                               </span>
                             }
                             position='top center'
+                          />
+                        </div>
+                      )
+                    }
+                    {
+                      item.approvalStatus === 'JUMP' && (
+                        <div className={styles.comment}>
+                          <span className={styles['version-title']}>
+                            <FormattedMessage id='approvals.table.header.comment' />
+                          </span>
+                          :
+                          <Popup
+                            inverted
+                            style={{opacity: '0.8'}}
+                            className={styles.popup}
+                            trigger={
+                              <span className={styles['tooltip-text']}>{ item.approvalComment }</span>
+                            }
+                            content={
+                              <div className={styles.tooltip}>
+                                {item.approvalComment}
+                              </div>
+                            }
+                            position='top left'
                           />
                         </div>
                       )

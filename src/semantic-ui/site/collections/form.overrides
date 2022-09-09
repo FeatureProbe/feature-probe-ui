@@ -79,3 +79,7 @@
   border-color: #74788D !important;
   transition: background-color 50000s ease-in-out 0s !important;
 }
+
+.ui.form ::-webkit-input-placeholder {
+  font-size: 12px;
+}

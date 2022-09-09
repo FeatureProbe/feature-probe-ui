@@ -88,3 +88,8 @@
   font-weight: normal;
   text-transform: none;
 }
+
+.ui.dropdown:not(.button) > .default.text, .ui.default.dropdown:not(.button) > .text {
+  font-size: 12px;
+  line-height: 25px;
+}

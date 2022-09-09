@@ -112,7 +112,7 @@ const Targeting = () => {
     getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
       const { data, success } = res;
       if (success && data) {
-        const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, reviewers, status, submitBy } = data;
+        const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, reviewers, status, submitBy, approvalBy, approvalComment } = data;
         saveTargeting(cloneDeep(content));
         saveToggleDisable(disabled || false);
         saveInitTargeting(cloneDeep({
@@ -127,7 +127,9 @@ const Targeting = () => {
           status,
           reviewers,
           enableApproval,
-          submitBy
+          submitBy,
+          approvalBy,
+          approvalComment,
         });
         saveLatestVersion(version || 0);
         saveSelectedVersion(version || 0);
