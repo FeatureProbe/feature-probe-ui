@@ -55,12 +55,12 @@
 
 .rule-item-prefix {
   display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 100%;
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
-  line-height: 24px;
+  line-height: 26px;
   color: #ffffff;
   position: relative;
   top: 4px;
@@ -73,7 +73,7 @@
 }
 
 .rule-item-text {
-  transform: scale(0.8);
+  // transform: scale(0.8);
   display: inline-block;
 }
 

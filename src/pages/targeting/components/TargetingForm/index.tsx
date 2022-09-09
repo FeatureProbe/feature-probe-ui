@@ -216,6 +216,9 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     }
   }, [publishTargeting, initialTargeting]);
 
+  console.log('initialTargeting-----', initialTargeting);
+  console.log('publishTargeting-----', publishTargeting);
+
   useEffect(() => {
     const options = approvalInfo?.reviewers?.map((name: string) => {
       return {

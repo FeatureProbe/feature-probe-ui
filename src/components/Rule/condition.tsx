@@ -140,7 +140,7 @@ const RuleContent = (props: IProps) => {
       {
         conditionIndex === 0 ? (
           <span className={`${styles['rule-item-prefix']} ${styles['rule-item-first']}`}>
-            <span className={styles['rule-item-text']}>if</span>
+            <span className={styles['rule-item-text']}>If</span>
           </span>
         ) : (
           <span className={styles['rule-item-prefix']}>

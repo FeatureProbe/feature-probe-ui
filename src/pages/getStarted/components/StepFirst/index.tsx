@@ -71,6 +71,7 @@ interface IOption {
 interface IProps {
   currentStep: number;
   currentSDK: string;
+  clientAvailability: boolean;
   saveStep(sdk: string): void;
   goBackToStep(step: number): void;
   saveCurrentSDK(sdk: string): void;
@@ -79,7 +80,7 @@ interface IProps {
 const CURRENT = 1;
 
 const StepFirst = (props: IProps) => {
-  const { currentStep, currentSDK, saveStep, goBackToStep, saveCurrentSDK } = props;
+  const { currentStep, currentSDK, clientAvailability, saveStep, goBackToStep, saveCurrentSDK } = props;
   const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
   const intl = useIntl();
 
@@ -182,21 +183,27 @@ const StepFirst = (props: IProps) => {
                           );
                         })
                       }
-                      <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
-                      <Dropdown.Divider />
                       {
-                        CLIENT_SIDE_SDKS.map((sdk: IOption) => {
-                          return (
-                            <Dropdown.Item onClick={() => {
-                              saveCurrentSDK(sdk.name);
-                            }}>
-                              <div className={styles['sdk-item']}>
-                                { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }
-                                { sdk.name }
-                              </div>
-                            </Dropdown.Item>
-                          );
-                        })
+                        clientAvailability && (
+                          <>
+                            <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
+                              <Dropdown.Divider />
+                              {
+                                CLIENT_SIDE_SDKS.map((sdk: IOption) => {
+                                  return (
+                                    <Dropdown.Item onClick={() => {
+                                      saveCurrentSDK(sdk.name);
+                                    }}>
+                                      <div className={styles['sdk-item']}>
+                                        { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }
+                                        { sdk.name }
+                                      </div>
+                                    </Dropdown.Item>
+                                  );
+                                })
+                              }
+                          </>
+                        )
                       }
                     </Dropdown.Menu>
                   </Dropdown>
