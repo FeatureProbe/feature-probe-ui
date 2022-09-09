@@ -124,7 +124,7 @@ const History = (props: IProps) => {
                       item.approvalStatus === 'PASS' && (
                         <div className={styles.modifyBy}>
                           <span className={styles['version-title']}>
-                            <FormattedMessage id='approvals.table.header.approval' />
+                            <FormattedMessage id='approvals.table.header.review' />
                           </span>
                           :
                           <Popup
@@ -147,7 +147,7 @@ const History = (props: IProps) => {
                     {
                       item.comment && <div className={styles.comment}>
                         <span className={styles['version-title']}>
-                          <FormattedMessage id='approvals.table.header.reason' />
+                          <FormattedMessage id='targeting.publish.modal.comment' />:
                         </span>
                         :
                         <Popup

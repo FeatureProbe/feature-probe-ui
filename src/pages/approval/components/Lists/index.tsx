@@ -97,7 +97,7 @@ const Lists = () => {
                 savePageIndex(0);
 							}}
 						>
-								<FormattedMessage id='approvals.status.todo' />
+								<FormattedMessage id='approvals.status.pending' />
 						</div>
 						<div 
 							className={`${styles['tabs-item']} ${status === 'PASS' && styles['tabs-item-selected']}`} 
@@ -114,7 +114,7 @@ const Lists = () => {
 								saveStatus('REJECT');
 							}}
 						>
-							<FormattedMessage id='approvals.status.rejected' />
+							<FormattedMessage id='approvals.status.declined' />
 						</div>
 						<div 
 							className={`${styles['tabs-item']} ${status === 'JUMP' && styles['tabs-item-selected']}`} 
@@ -175,7 +175,7 @@ const Lists = () => {
 					<Table.Header className={styles['table-header']}>
 						<Table.Row>
 							<Table.HeaderCell className={styles['column-title']}>
-								<FormattedMessage id='approvals.table.header.title' />
+								<FormattedMessage id='targeting.publish.modal.comment' />
 							</Table.HeaderCell>
 							<Table.HeaderCell>
 								<FormattedMessage id='common.toggle.text' />
@@ -187,47 +187,47 @@ const Lists = () => {
 								<FormattedMessage id='common.environment.text' />
 							</Table.HeaderCell>
 							<Table.HeaderCell>
-								<FormattedMessage id='approvals.table.header.application' />
+								<FormattedMessage id='approvals.table.header.request' />
 							</Table.HeaderCell>
 							{
                 status === 'JUMP' && (
                   <Table.HeaderCell>
-										<FormattedMessage id='approvals.table.header.skip.time' />
+										<FormattedMessage id='approvals.table.header.skipped.time' />
 									</Table.HeaderCell>
 								)
 							}
               {
                 status === 'REVOKE' && (
                   <Table.HeaderCell>
-										<FormattedMessage id='approvals.table.header.withdraw.time' />
+										<FormattedMessage id='approvals.table.header.withdrawn.time' />
 									</Table.HeaderCell>
 								)
 							}
               {
 								(status === 'PASS' || status === 'REJECT' || status === 'RELEASE'|| status === 'CANCEL') && (
 									<Table.HeaderCell>
-										<FormattedMessage id='approvals.table.header.approval' />
+										<FormattedMessage id='approvals.table.header.review' />
 									</Table.HeaderCell>
 								)
 							}
 							{
 								status !== 'PENDING' && (
 									<Table.HeaderCell>
-										<FormattedMessage id='approvals.table.header.reason' />
+										<FormattedMessage id='approvals.table.header.comment' />
 									</Table.HeaderCell>
 								)
 							}
 							{
 								status === 'RELEASE' && (
 									<Table.HeaderCell>
-										<FormattedMessage id='approvals.table.header.publish.time' />
+										<FormattedMessage id='approvals.table.header.published.time' />
 									</Table.HeaderCell>
 								)
 							}
               {
 								status === 'CANCEL' && (
 									<Table.HeaderCell>
-										<FormattedMessage id='approvals.table.header.cancel.time' />
+										<FormattedMessage id='approvals.table.header.cancelled.time' />
 									</Table.HeaderCell>
 								)
 							}

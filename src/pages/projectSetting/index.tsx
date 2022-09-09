@@ -81,6 +81,9 @@ const ProjectSetting = () => {
     settings.forEach((setting: IApprovalSetting) => {
       if (setting.environmentKey === environmentKey) {
         setting.reviewers = reviewers;
+        if(reviewers.length === 0) {
+          setting.enable = false;
+        }
       }
     });
 

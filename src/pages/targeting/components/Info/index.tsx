@@ -77,6 +77,7 @@ const Info = (props: IProps) => {
     }
   }, [open, clearErrors]);
 
+  // Refresh initial targeting to make new diff
   const refreshInitialTargeting = useCallback(async () => {
     const res = await getTargeting<IContent>(projectKey, environmentKey, toggleKey);
     const { data, success } = res;
@@ -112,7 +113,7 @@ const Info = (props: IProps) => {
       } else {
         message.success(intl.formatMessage({id: 'targeting.approval.cancel.error'}));
       }
-    // Revoke
+    // Revoke approval
     } else if (status === 'REVOKE') {
       const res = await updateApprovalStatus(projectKey, environmentKey, toggleKey, {
         status,
@@ -145,6 +146,7 @@ const Info = (props: IProps) => {
     }
   }, [status, comment, approvalInfo, projectKey, environmentKey, toggleKey, refreshInitialTargeting]);
 
+  // Abandon this approval
   const handleAbandon = useCallback(async () => {
     const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
     if (res.success) {
@@ -155,6 +157,7 @@ const Info = (props: IProps) => {
     }
   }, [projectKey, environmentKey, toggleKey, initTargeting]);
 
+  // Continue to edit this approval
   const handleReEdit = useCallback(async () => {
     const result = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
     if (result.success) {
@@ -162,6 +165,7 @@ const Info = (props: IProps) => {
     }
   }, [projectKey, environmentKey, toggleKey, approvalInfo, refreshInitialTargeting]);
 
+  // Publish this approval
   const handlePublish = useCallback(() => {
     publishTargetingDraft(projectKey, environmentKey, toggleKey).then(res => {
       if (res.success) {
@@ -173,6 +177,7 @@ const Info = (props: IProps) => {
     });
   }, [projectKey, environmentKey, toggleKey]);
 
+  // Show diffs
   const handleShowDiff = useCallback(() => {
     if (targetingDiff) {
       const { currentContent, oldContent, oldDisabled, currentDisabled } = targetingDiff;
@@ -197,6 +202,7 @@ const Info = (props: IProps) => {
     }
   }, [targetingDiff]);
 
+  // Save comment info
   const handleChangeComment = useCallback((e: SyntheticEvent, detail: TextAreaProps) => {
     // @ts-ignore detail value
     saveComment(detail.value);
@@ -213,7 +219,7 @@ const Info = (props: IProps) => {
             enableApproval && toggleStatus === 'PENDING' && (
               <div className={`${styles['status-pending']} ${styles.status}`}>
                 <Icon type='pending' customClass={styles['status-icon']} />
-                <FormattedMessage id='approvals.status.todo' />
+                <FormattedMessage id='approvals.status.pending' />
               </div>
             )
           }
@@ -229,7 +235,7 @@ const Info = (props: IProps) => {
             enableApproval && toggleStatus === 'REJECT' && (
               <div className={`${styles['status-reject']} ${styles.status}`}>
                 <Icon type='reject' customClass={styles['status-icon']} />
-                <FormattedMessage id='approvals.status.rejected' />
+                <FormattedMessage id='approvals.status.declined' />
               </div>
             )
           }
@@ -289,7 +295,7 @@ const Info = (props: IProps) => {
                             saveStatus('REJECT');
                           }}
                         >
-                          <FormattedMessage id='targeting.approval.operation.reject' />
+                          <FormattedMessage id='targeting.approval.operation.decline' />
                         </Button>
                         <Button 
                           primary 
@@ -299,7 +305,7 @@ const Info = (props: IProps) => {
                             saveStatus('PASS');
                           }}
                         >
-                          <FormattedMessage id='targeting.approval.operation.pass' />
+                          <FormattedMessage id='targeting.approval.operation.accept' />
                         </Button>
                       </>
                     )
@@ -319,7 +325,7 @@ const Info = (props: IProps) => {
                       saveStatus('CANCEL');
                     }}
                   >
-                    <FormattedMessage id='targeting.approval.operation.cancel.publish' />
+                    <FormattedMessage id='targeting.approval.operation.discard' />
                   </Button>
                   <Button primary className={styles.btn} onClick={handlePublish}>
                     <FormattedMessage id='targeting.approval.operation.publish' />
@@ -335,7 +341,7 @@ const Info = (props: IProps) => {
                     <FormattedMessage id='targeting.approval.operation.abandon' />
                   </Button>
                   <Button primary className={styles.btn} onClick={() => { handleReEdit(); }}>
-                    <FormattedMessage id='targeting.approval.operation.re-edit' />
+                    <FormattedMessage id='targeting.approval.operation.modify' />
                   </Button>
                 </>
               )
@@ -407,11 +413,11 @@ const Info = (props: IProps) => {
         <div>
           <div className={styles['modal-header']}>
             <span className={styles['modal-header-text']}>
-              { status === 'PASS' && <FormattedMessage id='targeting.approval.modal.pass' /> }
+              { status === 'PASS' && <FormattedMessage id='targeting.approval.modal.accept' /> }
               { status === 'REVOKE' && <FormattedMessage id='targeting.approval.modal.withdraw' /> }
               { status === 'REJECT' && <FormattedMessage id='targeting.approval.modal.reject' /> }
               { status === 'JUMP' && <FormattedMessage id='targeting.approval.operation.skip.approval' /> }
-              { status === 'CANCEL' && <FormattedMessage id='targeting.approval.operation.cancel.publish' /> }
+              { status === 'CANCEL' && <FormattedMessage id='targeting.approval.operation.discard' /> }
             </span>
             <Icon customClass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
           </div>
@@ -420,7 +426,7 @@ const Info = (props: IProps) => {
               {
                 (status === 'REVOKE' || status === 'CANCEL') && (
                   <div className={styles['modal-continue-edit']}>
-                    <FormattedMessage id='targeting.approval.modal.re-edit.text' />
+                    <FormattedMessage id='targeting.approval.modal.modify.text' />
                     <div className={styles['radio-group']}>
                       <Form.Radio
                         name='yes'
@@ -492,7 +498,7 @@ const Info = (props: IProps) => {
         <div>
           <div className={styles['diff-modal-header']}>
             <span className={styles['diff-modal-header-text']}>
-              Diff
+              <FormattedMessage id='common.changes.text' />
             </span>
             <Icon customClass={styles['diff-modal-close-icon']} type='close' onClick={() => { saveDiffOpen(false); }} />
           </div>
