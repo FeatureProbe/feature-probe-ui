@@ -192,6 +192,19 @@
   color: #495057;
 }
 
+.subject-angle-down {
+  position: absolute;
+  right: 0;
+  color: #74788D;
+  top: 0;
+  width: 24px;
+  background: rgba(0,0,0,0.02);
+  height: 32px;
+  line-height: 32px;
+  cursor: pointer !important;
+  text-align: center;
+}
+
 .angle-down {
   position: absolute;
   right: 10px;

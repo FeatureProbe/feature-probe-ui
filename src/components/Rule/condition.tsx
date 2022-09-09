@@ -158,11 +158,11 @@ const RuleContent = (props: IProps) => {
             allowAdditions
             options={subjectOptions}
             value={condition.subject}
-            openOnFocus={false}
-            selectOnBlur={false}
+            openOnFocus={true}
+            selectOnBlur={true}
             closeOnChange={true}
             disabled={condition.type === SEGMENT_TYPE || disabled}
-            icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+            icon={<Icon customClass={styles['subject-angle-down']} type='angle-down' />}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false }
             {
               ...register(`rule_${rule.id}_condition_${condition.id}_subject`, { 

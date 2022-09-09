@@ -91,6 +91,7 @@
   "common.no.text": "否",
   "common.request.approval.text": "发起审批",
   "common.changes.text": "变更",
+  "common.skip.text": "跳过",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -407,5 +408,8 @@
   "approvals.table.header.withdrawn.time": "撤回时间",
   "approvals.search.placeholder": "搜索标题",
   "approvals.total": "审批总量",
-  "approvals.lists.error": "获取审批列表失败"
+  "approvals.lists.error": "获取审批列表失败",
+  "approvals.published.by": "发布人",
+  "approvals.reviewed.by": "审批人",
+  "approvals.skipped.by": "跳过人"
 }
