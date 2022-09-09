@@ -340,6 +340,9 @@
 
   "connect.first.toggle.view.left": "You are using toggle ",
   "connect.first.toggle.view.right": " with key",
+  "connect.first.client.sdk.tip": "Client-side SDKs are not used in this toggle, ",
+  "connect.first.client.sdk.enable": "click me to use",
+  "connect.first.client.sdk.enable.success": "Successfully updated",
   "connect.second.title": "Select SDK",
   "connect.second.sdk": "Select your SDK",
   "connect.second.server.sdks": "Server-side SDKs:",

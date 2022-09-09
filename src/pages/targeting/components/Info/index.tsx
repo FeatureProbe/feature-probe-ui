@@ -228,7 +228,7 @@ const Info = (props: IProps) => {
                 }
                 content={
                   <span>
-                    {approvalInfo?.reviewers.join(', ')}
+                    <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers.join(', ')}
                   </span>
                 }
                 position='top center'
@@ -256,7 +256,7 @@ const Info = (props: IProps) => {
                 }
                 content={
                   <span>
-                    {approvalInfo?.approvalBy}: {approvalInfo?.approvalComment}
+                    <FormattedMessage id='approvals.reviewed.by' /> {approvalInfo?.approvalBy}: {approvalInfo?.approvalComment}
                   </span>
                 }
                 position='top center'

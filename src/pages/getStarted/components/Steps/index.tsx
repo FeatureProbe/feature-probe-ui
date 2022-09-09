@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import Icon from 'components/Icon';
+import message from 'components/MessageBox';
 import StepFirst from '../StepFirst';
 import StepSecond from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { getSdkVersion } from 'services/misc';
-import { getToggleAccess, getToggleInfo, getTargeting } from 'services/toggle';
+import { getToggleAccess, getToggleInfo, getTargeting, editToggle } from 'services/toggle';
 import { getProjectInfo } from 'services/project';
 import { getEnvironment } from 'services/project';
 import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
@@ -64,6 +65,7 @@ const Steps = () => {
   const [ clientAvailability, saveClientAvailability ] = useState<boolean>(false);
   const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
+  const intl = useIntl();
 
   const init = useCallback(() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
@@ -191,6 +193,18 @@ const Steps = () => {
     }
   }, []);
 
+  const enableClientSideSDK = useCallback(async() => {
+    const res = await editToggle(projectKey, toggleKey, {
+      clientAvailability: true,
+    });
+
+    if (res.success) {
+      message.success(intl.formatMessage({id: 'connect.first.client.sdk.enable.success'}));
+      saveClientAvailability(true);
+    }
+
+  }, [projectKey, toggleKey]);
+
   return (
     <div className={styles.page}>
       <div className={styles.intro}>
@@ -241,6 +255,7 @@ const Steps = () => {
           saveStep={saveFirstStep}
           saveCurrentSDK={saveCurrentSDK}
           goBackToStep={goBackToStep}
+          enableClientSideSDK={enableClientSideSDK}
         />
         <StepSecond 
           rules={rules}
