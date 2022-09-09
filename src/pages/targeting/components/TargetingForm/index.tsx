@@ -216,9 +216,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     }
   }, [publishTargeting, initialTargeting]);
 
-  console.log('initialTargeting-----', initialTargeting);
-  console.log('publishTargeting-----', publishTargeting);
-
   useEffect(() => {
     const options = approvalInfo?.reviewers?.map((name: string) => {
       return {
@@ -446,7 +443,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
               <div className={styles['comment']}>
                 <div className={styles['comment-title']}>
                   { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
-                  <FormattedMessage id='targeting.publish.modal.comment' />
+                  <FormattedMessage id='targeting.publish.modal.comment' />:
                 </div>
                 <div className={styles['comment-content']}>
                   <Form.TextArea
@@ -467,7 +464,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                   { 
                     newFormState.errors.reason && (
                       <div className={styles['error-text']}>
-                        <FormattedMessage id='targeting.approval.modal.reason.placeholder' />
+                        <FormattedMessage id='common.input.placeholder' />
                       </div> 
                     )
                   }

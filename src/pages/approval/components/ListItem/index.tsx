@@ -163,7 +163,7 @@ const ListItem = (props: IProps) => {
                   saveOperationStatus('PASS');
                 }}
               >
-                <FormattedMessage id='targeting.approval.operation.pass' />
+                <FormattedMessage id='targeting.approval.operation.accept' />
               </span>
               <span 
                 className={styles['list-operation-btn']} 
@@ -174,7 +174,7 @@ const ListItem = (props: IProps) => {
                   saveOperationStatus('REJECT');
                 }}
               >
-                <FormattedMessage id='targeting.approval.operation.reject' />
+                <FormattedMessage id='targeting.approval.operation.decline' />
               </span>
             </div>
           </Table.Cell>
@@ -188,7 +188,7 @@ const ListItem = (props: IProps) => {
         <div>
           <div className={styles['modal-header']}>
             <span className={styles['modal-header-text']}>
-              { operationStatus === 'PASS' && <FormattedMessage id='targeting.approval.modal.pass' /> }
+              { operationStatus === 'PASS' && <FormattedMessage id='targeting.approval.modal.accept' /> }
               { operationStatus === 'REJECT' && <FormattedMessage id='targeting.approval.modal.reject' /> }
             </span>
             <Icon customClass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
