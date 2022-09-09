@@ -2,6 +2,7 @@ import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { Form, Table, Pagination, Dimmer, Loader, InputOnChangeData, PaginationProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
+import message from 'components/MessageBox';
 import ListItem from '../ListItem';
 import { IApproval, IApprovalList } from 'interfaces/approval';
 import { getApprovalList } from 'services/approval';
@@ -62,7 +63,9 @@ const Lists = () => {
             approvalCount: totalElements
           });
         }
-			} 
+			} else {
+        message.error(intl.formatMessage({id: 'approvals.lists.error'}));
+      }
 			saveLoading(false);
 		});
 		}, [type, status, keyword, pageIndex]);

@@ -73,7 +73,7 @@ const MemberItem = (props: IProps) => {
       <Table.Cell>
         <div className={styles['member-last-seen']}>
           <div className={styles['toggle-modified-time']}>
-            {member?.visitedTime ? dayjs(member.visitedTime).fromNow() : '-'}
+            {member?.visitedTime ? dayjs(member.visitedTime).format('YYYY-MM-DD HH:mm:ss') : '-'}
           </div>
         </div>
       </Table.Cell>

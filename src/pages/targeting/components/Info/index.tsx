@@ -77,17 +77,59 @@ const Info = (props: IProps) => {
     }
   }, [open, clearErrors]);
 
+  const refreshInitialTargeting = useCallback(async () => {
+    const res = await getTargeting<IContent>(projectKey, environmentKey, toggleKey);
+    const { data, success } = res;
+    if (success && data) {
+      const { content, disabled } = data;
+      saveInitTargeting(cloneDeep({
+        disabled,
+        content,
+      }));
+    }
+    if (approvalInfo) {
+        saveApprovalInfo({
+        ...approvalInfo,
+        status: 'RELEASE',
+      });
+    }
+  }, [projectKey, environmentKey, toggleKey, approvalInfo]);
+
   const onSubmit = useCallback(async () => {
     saveOpen(false);
 
+    // Cancel publish
     if (status === 'CANCEL') {
       const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.approval.cancel.success'}));
-        initTargeting();
+        
+        if (isReEdit) {
+          refreshInitialTargeting();
+        } else {
+          initTargeting();
+        }
       } else {
         message.success(intl.formatMessage({id: 'targeting.approval.cancel.error'}));
       }
+    // Revoke
+    } else if (status === 'REVOKE') {
+      const res = await updateApprovalStatus(projectKey, environmentKey, toggleKey, {
+        status,
+        comment,
+      });
+
+      if (res.success) {
+        message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
+        if (isReEdit) {
+          refreshInitialTargeting();
+        } else {
+          initTargeting();
+        }
+      } else {
+        message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+      }
+    // Other operation
     } else {
       const res = await updateApprovalStatus(projectKey, environmentKey, toggleKey, {
         status,
@@ -96,21 +138,12 @@ const Info = (props: IProps) => {
 
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
-        if (status === 'REVOKE' && isReEdit) {
-          if (approvalInfo) {
-            saveApprovalInfo({
-              ...approvalInfo,
-              status: 'RELEASE',
-            });
-          }
-        } else {
-          initTargeting();
-        }
+        initTargeting();
       } else {
         message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
       }
     }
-  }, [status, comment, approvalInfo, projectKey, environmentKey, toggleKey]);
+  }, [status, comment, approvalInfo, projectKey, environmentKey, toggleKey, refreshInitialTargeting]);
 
   const handleAbandon = useCallback(async () => {
     const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
@@ -120,29 +153,14 @@ const Info = (props: IProps) => {
     } else {
       message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
     }
-  }, [projectKey, environmentKey, toggleKey]);
+  }, [projectKey, environmentKey, toggleKey, initTargeting]);
 
   const handleReEdit = useCallback(async () => {
     const result = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
     if (result.success) {
-      const res = await getTargeting<IContent>(projectKey, environmentKey, toggleKey);
-      const { data, success } = res;
-      if (success && data) {
-        const { content, disabled } = data;
-        saveInitTargeting(cloneDeep({
-          disabled,
-          content,
-        }));
-      }
-      if (approvalInfo) {
-          saveApprovalInfo({
-          ...approvalInfo,
-          status: 'RELEASE',
-        });
-      }
+      refreshInitialTargeting();
     }
-    
-  }, [projectKey, environmentKey, toggleKey, approvalInfo]);
+  }, [projectKey, environmentKey, toggleKey, approvalInfo, refreshInitialTargeting]);
 
   const handlePublish = useCallback(() => {
     publishTargetingDraft(projectKey, environmentKey, toggleKey).then(res => {
@@ -365,7 +383,7 @@ const Info = (props: IProps) => {
               {
                 modifyInfo?.modifiedTime ? (
                   <div className={styles['label-value']}>
-                    <FormattedMessage id='toggles.updated.text'/> {dayjs(modifyInfo?.modifiedTime).fromNow()}
+                    <FormattedMessage id='toggles.updated.text'/> {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
                   </div>
                 ) : <>-</>
               }

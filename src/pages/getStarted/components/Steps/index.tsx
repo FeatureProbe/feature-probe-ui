@@ -61,6 +61,7 @@ const Steps = () => {
   const [ environmentName, saveEnvironmentName ] = useState<string>('');
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ clientAvailability, saveClientAvailability ] = useState<boolean>(false);
   const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
 
@@ -106,6 +107,7 @@ const Steps = () => {
 
       if (success && data) {
         saveReturnType(data.returnType);
+        saveClientAvailability(data.clientAvailability);
         saveToggleName(data.name);
       } 
     });
@@ -235,6 +237,7 @@ const Steps = () => {
         <StepFirst 
           currentStep={currentStep}
           currentSDK={currentSDK}
+          clientAvailability={clientAvailability}
           saveStep={saveFirstStep}
           saveCurrentSDK={saveCurrentSDK}
           goBackToStep={goBackToStep}

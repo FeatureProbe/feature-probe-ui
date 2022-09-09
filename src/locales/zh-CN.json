@@ -405,5 +405,6 @@
   "approvals.table.header.skip.time": "跳过时间",
   "approvals.table.header.withdraw.time": "撤回时间",
   "approvals.search.placeholder": "搜索标题",
-  "approvals.total": "审批总量"
+  "approvals.total": "审批总量",
+  "approvals.lists.error": "获取审批列表失败"
 }

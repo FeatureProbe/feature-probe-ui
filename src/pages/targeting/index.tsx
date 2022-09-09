@@ -308,7 +308,6 @@ const Targeting = () => {
             modifyInfo={modifyInfo}
             approvalInfo={approvalInfo}
             gotoGetStarted={gotoGetStarted}
-            // initTargeting={initTargeting}
             initTargeting={() => {
               initTargeting();
               initHistory();
