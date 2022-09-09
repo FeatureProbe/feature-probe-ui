@@ -310,6 +310,30 @@
   margin-right: 5px;
 }
 
+.client-sdk-usage {
+  height: 28px;
+  background: #FFFAE0;
+  border-radius: 6px;
+  color: #592D00;
+  margin: 6px 12px 32px;
+  line-height: 28px;
+  padding: 0 13px;
+  font-size: 12px;
+}
+
+.client-sdk-usage-link {
+  color: #556EE6;
+  cursor: pointer;
+}
+
+.warning-circle {
+  color: #FFC300;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+  font-size: 17px !important;
+}
+
 .toggle-name {
   color: #212529;
 }

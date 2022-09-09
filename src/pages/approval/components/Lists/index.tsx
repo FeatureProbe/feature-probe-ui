@@ -63,7 +63,8 @@ const Lists = () => {
             approvalCount: totalElements
           });
         }
-			} else {
+			}
+      else {
         message.error(intl.formatMessage({id: 'approvals.lists.error'}));
       }
 			saveLoading(false);

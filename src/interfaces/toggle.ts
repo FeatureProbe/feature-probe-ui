@@ -1,4 +1,4 @@
-import { IVariation } from "./targeting"
+import { IVariation } from './targeting';
 
 export interface ISort {
   sorted: boolean;
@@ -34,7 +34,8 @@ export interface IEditToggleParams {
   returnType?: string;
   desc?: string;
   tags?: string[];
-  disabled?: true;
+  disabled?: boolean;
+  clientAvailability?: boolean;
 }
 
 export interface IToggleList {

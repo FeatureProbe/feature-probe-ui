@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { Form, Dropdown } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
@@ -75,12 +75,13 @@ interface IProps {
   saveStep(sdk: string): void;
   goBackToStep(step: number): void;
   saveCurrentSDK(sdk: string): void;
+  enableClientSideSDK(): void;
 }
 
 const CURRENT = 1;
 
 const StepFirst = (props: IProps) => {
-  const { currentStep, currentSDK, clientAvailability, saveStep, goBackToStep, saveCurrentSDK } = props;
+  const { currentStep, currentSDK, clientAvailability, saveStep, goBackToStep, saveCurrentSDK, enableClientSideSDK } = props;
   const [ selectedSDKLogo, saveSelectedSDKLogo ] = useState<string>('');
   const intl = useIntl();
 
@@ -183,28 +184,36 @@ const StepFirst = (props: IProps) => {
                           );
                         })
                       }
-                      {
-                        clientAvailability && (
-                          <>
-                            <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
-                              <Dropdown.Divider />
-                              {
-                                CLIENT_SIDE_SDKS.map((sdk: IOption) => {
-                                  return (
-                                    <Dropdown.Item onClick={() => {
-                                      saveCurrentSDK(sdk.name);
-                                    }}>
-                                      <div className={styles['sdk-item']}>
-                                        { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }
-                                        { sdk.name }
-                                      </div>
-                                    </Dropdown.Item>
-                                  );
-                                })
-                              }
-                          </>
-                        )
-                      }
+                      <Dropdown.Header content={intl.formatMessage({id: 'connect.second.client.sdks'})} />
+                        <Dropdown.Divider />
+                        {
+                          clientAvailability && CLIENT_SIDE_SDKS.map((sdk: IOption) => {
+                            return (
+                              <Dropdown.Item onClick={() => {
+                                saveCurrentSDK(sdk.name);
+                              }}>
+                                <div className={styles['sdk-item']}>
+                                  { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }
+                                  { sdk.name }
+                                </div>
+                              </Dropdown.Item>
+                            );
+                          })
+                        }
+                        {
+                          !clientAvailability && (
+                            <div className={styles['client-sdk-usage']}>
+                              <Icon type='warning-circle' customClass={styles['warning-circle']}></Icon>
+                              <FormattedMessage id='connect.first.client.sdk.tip' />
+                              <span className={styles['client-sdk-usage-link']} onClick={(e: SyntheticEvent) => {
+                                e.stopPropagation();
+                                enableClientSideSDK(); 
+                              }}>
+                                <FormattedMessage id='connect.first.client.sdk.enable' />
+                              </span>
+                            </div>
+                          )
+                        }
                     </Dropdown.Menu>
                   </Dropdown>
                 </Form.Field>

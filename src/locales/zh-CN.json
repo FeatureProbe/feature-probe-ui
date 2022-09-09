@@ -340,6 +340,9 @@
 
   "connect.first.toggle.view.left": "您正在使用开关",
   "connect.first.toggle.view.right": "，标识为",
+  "connect.first.client.sdk.tip": "该开关未使用客户端SDK，",
+  "connect.first.client.sdk.enable": "点我使用",
+  "connect.first.client.sdk.enable.success": "操作成功",
   "connect.second.title": "选择SDK",
   "connect.second.sdk": "选择目标SDK",
   "connect.second.server.sdks": "服务端SDK：",
