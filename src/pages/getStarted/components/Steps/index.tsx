@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import StepFirst from '../StepFirst';
@@ -62,17 +63,21 @@ const Steps = () => {
   const [ environmentName, saveEnvironmentName ] = useState<string>('');
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ isInfoLoading, saveIsInfoLoading ] = useState<boolean>(true);
+  const [ isStepLoading, saveIsStepLoading ] = useState<boolean>(true);
   const [ clientAvailability, saveClientAvailability ] = useState<boolean>(false);
   const [ rules, saveRules ] = useState<IRule[]>([]);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
 
-  const init = useCallback(() => {
+  const init = useCallback(async() => {
     const key = PREFIX + projectKey + '_' + environmentKey + '_' + toggleKey;
-    getFromDictionary<IDictionary>(key).then(res => {
-      const { success, data } = res;
-      if (success && data) {
-        const savedData = JSON.parse(data.value);
+
+    Promise.all([getFromDictionary<IDictionary>(key), getTargeting<IContent>(projectKey, environmentKey, toggleKey)]).then(res => {
+      saveIsStepLoading(false);
+
+      if (res[0].success && res[0].data) {
+        const savedData = JSON.parse(res[0].data.value);
         if (savedData.step2.done) {
           saveCurrentStep(3);
           saveCurrentSDK(savedData.step1.sdk);
@@ -86,39 +91,34 @@ const Steps = () => {
       } else {
         saveCurrentStep(1);
       }
-    });
 
-    getProjectInfo<IProject>(projectKey).then(res => {
-      const { data, success } = res;
-      if (success && data) {
-        saveProjectName(data.name);
-      }
-    });
-
-    getEnvironment<IEnvironment>(projectKey, environmentKey).then( res=> {
-      const { success, data} = res;
-      if (success &&  data) {
-        saveServerSDKKey(data.serverSdkKey);
-        saveClientSdkKey(data.clientSdkKey);
-        saveEnvironmentName(data.name);
-      }
-    });
-
-    getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
-      const { data, success } = res;
-
-      if (success && data) {
-        saveReturnType(data.returnType);
-        saveClientAvailability(data.clientAvailability);
-        saveToggleName(data.name);
-      } 
-    });
-
-    getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
-      const { data, success } = res;
-      if (success && data) {
-        const { content } = data;
+      if (res[1].success && res[1].data) {
+        const { content } = res[1].data;
         saveRules(content?.rules || []);
+      }
+    });
+
+    Promise.all([
+      getProjectInfo<IProject>(projectKey), 
+      getEnvironment<IEnvironment>(projectKey, environmentKey), 
+      getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey)
+    ]).then(res => {
+      saveIsInfoLoading(false);
+      
+      if (res[0].success && res[0].data) {
+        saveProjectName(res[0].data.name);
+      }
+
+      if (res[1].success &&  res[1].data) {
+        saveServerSDKKey(res[1].data.serverSdkKey);
+        saveClientSdkKey(res[1].data.clientSdkKey);
+        saveEnvironmentName(res[1].data.name);
+      }
+
+      if (res[2].success && res[2].data) {
+        saveReturnType(res[2].data.returnType);
+        saveClientAvailability(res[2].data.clientAvailability);
+        saveToggleName(res[2].data.name);
       }
     });
   }, [projectKey, environmentKey, toggleKey]);
@@ -207,77 +207,102 @@ const Steps = () => {
 
   return (
     <div className={styles.page}>
+      
       <div className={styles.intro}>
-        <div className={styles['intro-header']}>
-          <span className={styles['intro-title']}>
-            <FormattedMessage id='common.get.started.text' />
-          </span>
-          <Icon type='info-circle' customClass={styles['intro-icon']} />
-          <span className={styles['intro-desc']}>
-            <FormattedMessage id='connect.description' />
-          </span>
-        </div>
-        <div className={styles['intro-info']}>
-          <div className={styles['card-item']}>
-            <div className={styles['card-title']}>
-              <FormattedMessage id='common.project.text' /> :
-            </div>
-            <div className={styles['card-value']}>
-              { projectName }
-            </div>
-          </div>
-          <div className={styles['card-item']}>
-            <div className={styles['card-title']}>
-              <FormattedMessage id='common.environment.text' /> :
-            </div>
-            <div className={styles['card-value']}>
-              { environmentName }
-            </div>
-          </div>
-          <div className={styles['card-item']}>
-            <div className={styles['card-title']}>
-              <FormattedMessage id='common.toggle.text' /> :
-            </div>
-            <div className={styles['card-value']}>
-              <FormattedMessage id='connect.first.toggle.view.left' />
-              <span className={styles['toggle-name']}>{ toggleName }</span>
-              <FormattedMessage id='connect.first.toggle.view.right' />
-              <span className={styles['toggle-key']}>{ toggleKey }</span>
-            </div>
-          </div>
-        </div>
+        {
+          isInfoLoading ? (
+            <Dimmer active inverted>
+              <Loader size='small'>
+                <FormattedMessage id='common.loading.text' />
+              </Loader>
+            </Dimmer>
+          ) : (
+            <>
+              <div className={styles['intro-header']}>
+                <span className={styles['intro-title']}>
+                  <FormattedMessage id='common.get.started.text' />
+                </span>
+                <Icon type='info-circle' customClass={styles['intro-icon']} />
+                <span className={styles['intro-desc']}>
+                  <FormattedMessage id='connect.description' />
+                </span>
+              </div>
+              <div className={styles['intro-info']}>
+                <div className={styles['card-item']}>
+                  <div className={styles['card-title']}>
+                    <FormattedMessage id='common.project.text' /> :
+                  </div>
+                  <div className={styles['card-value']}>
+                    { projectName }
+                  </div>
+                </div>
+                <div className={styles['card-item']}>
+                  <div className={styles['card-title']}>
+                    <FormattedMessage id='common.environment.text' /> :
+                  </div>
+                  <div className={styles['card-value']}>
+                    { environmentName }
+                  </div>
+                </div>
+                <div className={styles['card-item']}>
+                  <div className={styles['card-title']}>
+                    <FormattedMessage id='common.toggle.text' /> :
+                  </div>
+                  <div className={styles['card-value']}>
+                    <FormattedMessage id='connect.first.toggle.view.left' />
+                    <span className={styles['toggle-name']}>{ toggleName }</span>
+                    <FormattedMessage id='connect.first.toggle.view.right' />
+                    <span className={styles['toggle-key']}>{ toggleKey }</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        }
       </div>
       <div className={styles.steps}>
-        <StepFirst 
-          currentStep={currentStep}
-          currentSDK={currentSDK}
-          clientAvailability={clientAvailability}
-          saveStep={saveFirstStep}
-          saveCurrentSDK={saveCurrentSDK}
-          goBackToStep={goBackToStep}
-          enableClientSideSDK={enableClientSideSDK}
-        />
-        <StepSecond 
-          rules={rules}
-          currentStep={currentStep}
-          currentSDK={currentSDK}
-          returnType={returnType}
-          serverSdkKey={serverSdkKey}
-          clientSdkKey={clientSdkKey}
-          sdkVersion={sdkVersion}
-          saveStep={saveSecondStep}
-          goBackToStep={goBackToStep}
-        />
-        <StepThird 
-          isLoading={isLoading}
-          projectKey={projectKey}
-          environmentKey={environmentKey}
-          toggleKey={toggleKey}
-          currentStep={currentStep}
-          toggleAccess={toggleAccess}
-          saveIsLoading={saveIsLoading}
-          checkToggleStatus={checkToggleStatus}
-        />
+        {
+          isStepLoading ? (
+            <Dimmer active inverted>
+              <Loader size='small'>
+                <FormattedMessage id='common.loading.text' />
+              </Loader>
+            </Dimmer>
+          ) : (
+            <>
+              <StepFirst 
+                currentStep={currentStep}
+                currentSDK={currentSDK}
+                clientAvailability={clientAvailability}
+                saveStep={saveFirstStep}
+                saveCurrentSDK={saveCurrentSDK}
+                goBackToStep={goBackToStep}
+                enableClientSideSDK={enableClientSideSDK}
+              />
+              <StepSecond 
+                rules={rules}
+                currentStep={currentStep}
+                currentSDK={currentSDK}
+                returnType={returnType}
+                serverSdkKey={serverSdkKey}
+                clientSdkKey={clientSdkKey}
+                sdkVersion={sdkVersion}
+                saveStep={saveSecondStep}
+                goBackToStep={goBackToStep}
+              />
+              <StepThird 
+                isLoading={isLoading}
+                projectKey={projectKey}
+                environmentKey={environmentKey}
+                toggleKey={toggleKey}
+                currentStep={currentStep}
+                toggleAccess={toggleAccess}
+                saveIsLoading={saveIsLoading}
+                checkToggleStatus={checkToggleStatus}
+              />
+            </>
+          )
+        }
       </div>
     </div>
   );

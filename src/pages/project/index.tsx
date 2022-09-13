@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import { getProjectList } from 'services/project';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
@@ -10,20 +11,23 @@ import ProjectDrawer from './components/ProjectDrawer';
 import { Provider } from './provider';
 import { IProject } from 'interfaces/project';
 import { OWNER } from 'constants/auth';
-import styles from './index.module.scss';
 import EventTracker from 'components/EventTracker';
+import styles from './index.module.scss';
 
 const Project = () => {
   const [ projectList, saveProjectList ] = useState<IProject[]>([]);
   const [ isAdd, setIsAdd ] = useState<boolean>(true);
   const [ visible, setVisible ] = useState<boolean>(false);
   const [ projectKey, setProjectKey ] = useState<string>('');
+  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
   const intl = useIntl();
   const { userInfo } = HeaderContainer.useContainer();
 
   const init = useCallback(async () => {
+    saveIsLoading(true);
     const res = await getProjectList<IProject[]>();
     const { data } = res;
+    saveIsLoading(false);
     if (res.success && data) {
       saveProjectList(data);
     } else {
@@ -72,16 +76,28 @@ const Project = () => {
           </div>
           <div className={styles.content}>
             {
-              projectList.map((item: IProject) => {
-                return (
-                  <ProjectCard
-                    key={item.key}
-                    project={item}
-                    handleEditProject={handleEditProject}
-                    refreshProjectsList={init}
-                  />
-                );
-              })
+              isLoading ? (
+                <Dimmer active inverted style={{background: 'transparent'}}>
+                  <Loader size='small'>
+                    <FormattedMessage id='common.loading.text' />
+                  </Loader>
+                </Dimmer>
+              ) : (
+                <>
+                  {
+                    projectList.map((item: IProject) => {
+                      return (
+                        <ProjectCard
+                          key={item.key}
+                          project={item}
+                          handleEditProject={handleEditProject}
+                          refreshProjectsList={init}
+                        />
+                      );
+                    })
+                  }
+                </>
+              )
             }
           </div>
           <ProjectDrawer 

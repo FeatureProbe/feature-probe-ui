@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table, Form, TextAreaProps } from 'semantic-ui-react';
+import { Table, Form, TextAreaProps, Popup } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
@@ -78,7 +78,24 @@ const ListItem = (props: IProps) => {
             gotoToggle(approval.projectKey, approval.environmentKey, approval.toggleKey);
           }}
         >
-          {approval.toggleName}
+          <div>
+            <Popup
+              inverted
+              className={styles.popup}
+              trigger={
+                <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+              }
+              content={
+                <div>
+                  <div><FormattedMessage id='common.lock.text' /></div>
+                  <div><FormattedMessage id='common.lock.by' />: { '' }</div>
+                  <div><FormattedMessage id='common.lock.time' />: { dayjs().format('YYYY-MM-DD HH:mm:ss') }</div>
+                </div>
+              }
+              position='top center'
+            />
+            { approval.toggleName }
+          </div>
         </div>
       </Table.Cell>
       <Table.Cell>

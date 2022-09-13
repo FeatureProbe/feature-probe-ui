@@ -20,6 +20,8 @@
 
 .content {
   display: flex;
+  position: relative;
+  min-height: calc(100vh - 366px);
 }
 
 .content-left {

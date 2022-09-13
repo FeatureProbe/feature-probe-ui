@@ -1,5 +1,5 @@
 .page {
-  padding: 0 20px;
+  margin: 0 20px;
 }
 
 .intro {
@@ -7,6 +7,8 @@
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.01), 0 3px 6px 3px rgba(0,0,0,0.01), 0 2px 6px 0 rgba(0,0,0,0.03);
   border-radius: 0 0 12px 12px;
   padding: 12px 24px 0;
+  position: relative;
+  height: 116px;
 }
 
 .intro-header {
@@ -46,6 +48,7 @@
   margin-top: 16px;
   padding: 24px;
   min-height: calc(100vh - 226px);
+  position: relative;
 }
 
 .step {
@@ -316,21 +319,21 @@
   border-radius: 6px;
   color: #592D00;
   margin: 6px 12px 32px;
-  line-height: 28px;
   padding: 0 13px;
   font-size: 12px;
+  display: flex;
+  align-items: center;
 }
 
 .client-sdk-usage-link {
   color: #556EE6;
   cursor: pointer;
+  margin-left: 4px;
 }
 
 .warning-circle {
   color: #FFC300;
   margin-right: 10px;
-  position: relative;
-  top: 1px;
   font-size: 17px !important;
 }
 

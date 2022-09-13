@@ -92,6 +92,9 @@
   "common.request.approval.text": "发起审批",
   "common.changes.text": "变更",
   "common.skip.text": "跳过",
+  "common.lock.text": "开关已被锁定，不可编辑",
+  "common.lock.by": "锁定人",
+  "common.lock.time": "锁定时间",
 
   "header.getuser.error.text": "无法获取用户信息!",
 

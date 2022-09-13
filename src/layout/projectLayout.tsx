@@ -48,11 +48,13 @@ const ProjectLayout = (props: IProps) => {
   const [ envIndex, setEnvIndex ] = useState<number>(0);
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
   const history = useHistory();
   const match = useRouteMatch();
 
   useEffect(() => {
     getProjectInfo<IProject>(projectKey).then(res => {
+      saveIsLoading(false);
       if (res.success) {
         const { data } = res;
         if (data) {
@@ -124,7 +126,8 @@ const ProjectLayout = (props: IProps) => {
   return (
     <div className={styles.main}>
       <SideBar>
-        <ProjectSiderbar 
+        <ProjectSiderbar
+          isLoading={isLoading}
           projectInfo={projectInfo}
           backgroundColor={EnvironmentColors[envIndex]}
         />

@@ -163,8 +163,12 @@ const PageHeader = () => {
   }, []);
 
   const handleGotoDocument = useCallback(() => {
-    window.open('https://docs.featureprobe.io/');
-  }, []);
+    if (i18n === 'en-US') {
+      window.open('https://docs.featureprobe.io/');
+    } else {
+      window.open('https://docs.featureprobe.io/zh-CN');
+    }
+  }, [i18n]);
 
   const handleGotoApproval = useCallback(() => {
     history.push('/approvals/list');

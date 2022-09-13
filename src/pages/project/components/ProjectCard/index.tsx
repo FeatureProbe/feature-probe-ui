@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, SyntheticEvent } from 'react';
-import { Popup } from 'semantic-ui-react';
+import { Popup, Dimmer, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
@@ -30,10 +30,10 @@ const ProjectCard = (props: IProps) => {
   const [ deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [ cannotDeleteOpen, setCannotDeleteOpen] = useState<boolean>(false);
   const [ isArchived, setIsArchived ] = useState<boolean>(false);
-  const [ environments, saveEnvironments ] = useState<IEnvironment[]>(project.environments); 
+  const [ environments, saveEnvironments ] = useState<IEnvironment[]>(project.environments);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(false);
 
   const intl = useIntl();
-
   const { userInfo } = HeaderContainer.useContainer();
   const {
     saveProjectInfo,
@@ -78,12 +78,14 @@ const ProjectCard = (props: IProps) => {
   }, []);
 
   const refreshEnvironmentList = useCallback(async (archived: boolean) => {
+    saveIsLoading(true);
     const params: IArchivedParams = {};
     if (archived) {
       params.archived = archived;
     }
 
     const res = await getEnvironmentList<IEnvironment[]>(project.key, params);
+    saveIsLoading(false);
     if (res.success && res.data) {
       saveEnvironments(res.data);
     }
@@ -197,34 +199,44 @@ const ProjectCard = (props: IProps) => {
           { project.description }
         </div>
       </div>
-      <div className={styles.content}>
-        {
-          environments.length > 0 && environments.map((env: IEnvironment, index: number) => {
-            return (
-              <EnvironmentCard
-                key={env.key}
-                index={index}
-                item={env}
-                projectKey={project.key}
-                total={environments.length}
-                isArchived={isArchived}
-                handleEditEnvironment={handleEditEnvironment}
-                refreshEnvironmentList={refreshEnvironmentList}
-              />
-            );
-          })
-        }
-        {
-          environments.length === 0 && (
-            <div className={styles['no-data']}>
-              <img className={styles['no-data-img']} src={require('images/no-data-available.png')} alt='no-data' />
-              <div className={styles['no-data-text']}>
-                <FormattedMessage id='targeting.metrics.no.data.text' />
-              </div>
-            </div>
-          )
-        }
-      </div>
+      {
+        isLoading ? (
+          <Dimmer active inverted style={{background: 'transparent'}}>
+            <Loader size='small'>
+              <FormattedMessage id='common.loading.text' />
+            </Loader>
+          </Dimmer>
+        ) : (
+          <div className={styles.content}>
+            {
+              environments.length > 0 && environments.map((env: IEnvironment, index: number) => {
+                return (
+                  <EnvironmentCard
+                    key={env.key}
+                    index={index}
+                    item={env}
+                    projectKey={project.key}
+                    total={environments.length}
+                    isArchived={isArchived}
+                    handleEditEnvironment={handleEditEnvironment}
+                    refreshEnvironmentList={refreshEnvironmentList}
+                  />
+                );
+              })
+            }
+            {
+              environments.length === 0 && (
+                <div className={styles['no-data']}>
+                  <img className={styles['no-data-img']} src={require('images/no-data-available.png')} alt='no-data' />
+                  <div className={styles['no-data-text']}>
+                    <FormattedMessage id='targeting.metrics.no.data.text' />
+                  </div>
+                </div>
+              )
+            }
+          </div>
+        )
+      }
       <EnvironmentModal
         open={modalOpen}
         isAdd={isAddEnvironment}

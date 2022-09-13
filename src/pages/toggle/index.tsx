@@ -9,7 +9,9 @@ import {
   Dropdown, 
   DropdownItemProps, 
   DropdownProps, 
-  InputOnChangeData 
+  InputOnChangeData,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
@@ -67,6 +69,7 @@ const Toggle = () => {
   });
   const [ archiveOpen, setArchiveOpen ] = useState<boolean>(false);
   const [ isArchived, setArchived ] = useState<boolean>(search.indexOf('isArchived=true') > -1);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
   const history = useHistory();
   const intl = useIntl();
   const { i18n } = I18NContainer.useContainer();
@@ -84,9 +87,11 @@ const Toggle = () => {
 
   const getToggleLists = useCallback(() => {
     searchParams.environmentKey = environmentKey;
+    saveIsLoading(true);
     getToggleList<IToggleList>(projectKey, searchParams)
       .then(async (res) => {
         const { success, data, code } = res;
+        saveIsLoading(false);
         if (success && data) {
           const { content, pageable, totalPages, totalElements } = data;
           setToggleList(content);
@@ -251,268 +256,288 @@ const Toggle = () => {
 
 	return (
     <ProjectLayout>
-      <div className={styles.toggle}>
+      <>
         {
-          isArchived && (
-            <div className={styles.archive}>
+          isLoading ? (
+            <div className={styles.toggle}>
+              <div className={styles.card}>
               {
-                i18n === 'en-US' 
-                  ? <img className={styles['archived-img']} src={require('images/archived-en.png')} alt='archived' />
-                  : <img className={styles['archived-img']} src={require('images/archived-zh.png')} alt='archived' />
+                isLoading && (
+                  <Dimmer active inverted>
+                    <Loader size='small'>
+                      <FormattedMessage id='common.loading.text' />
+                    </Loader>
+                  </Dimmer>
+                )
               }
+              </div>
+            </div>
+          ) : (
+            <div className={styles.toggle}>
+              {
+                isArchived && (
+                  <div className={styles.archive}>
+                    {
+                      i18n === 'en-US' 
+                        ? <img className={styles['archived-img']} src={require('images/archived-en.png')} alt='archived' />
+                        : <img className={styles['archived-img']} src={require('images/archived-zh.png')} alt='archived' />
+                    }
+                  </div>
+                )
+              }
+              <Provider>
+                <>
+                  <div className={styles.card}>
+                    {
+                      isArchived ? (
+                        <div className={styles['heading-archive']}>
+                          <Icon 
+                            type='back' 
+                            customClass={styles['icon-back']} 
+                            onClick={() => { 
+                              setArchived(false); 
+                              handleSearchArchivedList(false);
+                            }} 
+                          />
+                          <span className={styles.divider}></span>
+                          <FormattedMessage id='common.archived.toggles.text' />
+                        </div>
+                      ) : (
+                        <div className={styles.heading}>
+                          <FormattedMessage id='common.toggles.text' />
+                        </div>
+                      )
+                    }
+                    <div className={styles.add}>
+                      <Form className={styles['filter-form']}>
+                        <Form.Field className={styles['evaluation-field']}>
+                          <label className={styles.label}>
+                            <FormattedMessage id='toggles.filter.evaluated' />
+                          </label>
+                          <Dropdown
+                            fluid 
+                            selection
+                            floating
+                            clearable
+                            selectOnBlur={false}
+                            className={styles['dropdown']}
+                            placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
+                            options={evaluationOptions} 
+                            icon={
+                              searchParams.visitFilter
+                                ? <Icon customClass={styles['angle-down']} type='remove-circle' />
+                                : <Icon customClass={styles['angle-down']} type='angle-down' />
+                            }
+                            onChange={handleEvaluationChange}
+                          />
+                        </Form.Field>
+                        <Form.Field className={styles['status-field']}>
+                          <label className={styles.label}>
+                            <FormattedMessage id='toggles.filter.status' />
+                          </label>
+                          <Dropdown 
+                            fluid 
+                            selection 
+                            floating
+                            clearable
+                            className={styles['status-dropdown']}
+                            selectOnBlur={false}
+                            placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
+                            options={statusOptions} 
+                            icon={
+                              typeof searchParams.disabled === 'boolean'
+                                ? <Icon customClass={styles['angle-down']} type='remove-circle' />
+                                : <Icon customClass={styles['angle-down']} type='angle-down' />
+                            }
+                            onChange={handleStatusChange}
+                          />
+                        </Form.Field>
+                        <Form.Field className={styles['tags-field']}>
+                          <label className={styles.label}>
+                            <FormattedMessage id='common.tags.text' />
+                          </label>
+                          <Dropdown 
+                            fluid 
+                            multiple 
+                            selection 
+                            floating
+                            clearable
+                            selectOnBlur={false}
+                            className={styles['dropdown']}
+                            placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
+                            options={tagOptions} 
+                            renderLabel={renderLabel}
+                            onChange={handleTagsChange}
+                            icon={
+                              searchParams.tags && searchParams.tags.length > 0
+                                ? <Icon customClass={styles['angle-down']} type='remove-circle' />
+                                : <Icon customClass={styles['angle-down']} type='angle-down' />
+                            }
+                          />
+                        </Form.Field>
+                        <Form.Field className={styles['keywords-field']}>
+                          <Form.Input 
+                            placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
+                            icon={<Icon customClass={styles['icon-search']} type='search' />}
+                            onChange={handleSearch}
+                          />
+                        </Form.Field>
+                      </Form>
+                      {
+                        !isArchived && (
+                          <EventTracker category='toggle' action='create-toggle'>
+                            <Button primary className={styles['add-button']} onClick={handleAddToggle}>
+                              <Icon customClass={styles['iconfont']} type='add' />
+                              <FormattedMessage id='common.toggle.text' />
+                            </Button>
+                          </EventTracker>
+                        )
+                      }
+                      <Popup
+                        basic
+                        open={archiveOpen}
+                        on='click'
+                        position='bottom right'
+                        className={styles.popup}
+                        trigger={
+                          <div 
+                            onClick={(e: SyntheticEvent) => {
+                              document.body.click();
+                              e.stopPropagation();
+                              setArchiveOpen(true);
+                            }}
+                            className={styles['toggle-menu']}
+                          >
+                            <Icon customClass={styles['menu-angle-down']} type='angle-down' />
+                          </div>
+                        }
+                      >
+                        <div className={styles['menu']} onClick={() => {
+                          setArchiveOpen(false);
+                        }}>
+                          {
+                            isArchived ? (
+                              <div className={styles['menu-item']} onClick={() => { 
+                                document.body.click();
+                                setArchived(false); 
+                                history.push(`/${projectKey}/${environmentKey}/toggles`);
+                                handleSearchArchivedList(false);
+                              }}>
+                                <FormattedMessage id='toggles.menu.view.active.toggle' />
+                              </div>
+                            ) : (
+                              <div className={styles['menu-item']} onClick={() => { 
+                                document.body.click();
+                                setArchived(true); 
+                                history.push(`/${projectKey}/${environmentKey}/toggles?isArchived=true`);
+                                handleSearchArchivedList(true);
+                              }}>
+                                <FormattedMessage id='toggles.menu.view.archive.toggle' />
+                              </div>
+                            )
+                          }
+                        </div>
+                      </Popup>
+                    </div>
+                    <div className={styles.lists}>
+                      <Table basic='very' unstackable>
+                        <Table.Header className={styles['table-header']}>
+                          <Table.Row>
+                            <Table.HeaderCell className={styles['column-brief']}>
+                              <FormattedMessage id='toggles.table.brief' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-status']}>
+                              <FormattedMessage id='toggles.table.status' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-type']}>
+                              <FormattedMessage id='common.type.text' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-tags']}>
+                              <FormattedMessage id='common.tags.text' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-evaluated']}>
+                              <FormattedMessage id='toggles.table.evaluation' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-modify']}>
+                              <FormattedMessage id='toggles.table.lastmodified' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-operation']}></Table.HeaderCell>
+                          </Table.Row>
+                        </Table.Header>
+                        {
+                          toggleList.length !== 0 && (
+                            <Table.Body>
+                              {
+                                toggleList?.map((toggle: IToggle) => {
+                                  return (
+                                    <ToggleItem 
+                                      key={toggle.key}
+                                      toggle={toggle} 
+                                      isArchived={isArchived}
+                                      setIsAdd={setIsAdd}
+                                      refreshToggleList={refreshToggleList}
+                                      setDrawerVisible={setDrawerVisible}
+                                    />
+                                  );
+                                })
+                              }
+                            </Table.Body>
+                          )
+                        }
+                      </Table>
+                      {
+                        toggleList.length === 0 && (
+                          <div className={styles['no-data']}>
+                            <div>
+                              <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                            </div>
+                            <div>
+                              <FormattedMessage id='common.nodata.text' />
+                            </div>
+                          </div>
+                        )
+                      }
+                    </div>
+                    {
+                      toggleList.length !== 0 && (
+                        <div className={styles.pagination}>
+                          <div className={styles['total']}>
+                            <span className={styles['total-count']}>{total} </span>
+                            <FormattedMessage id='toggles.total' />
+                          </div>
+                          {
+                            pagination.totalPages > 1 && (
+                              <Pagination 
+                                activePage={pagination.pageIndex} 
+                                totalPages={pagination.totalPages} 
+                                onPageChange={handlePageChange}
+                                firstItem={null}
+                                lastItem={null}
+                                prevItem={{
+                                  content: (<Icon type='angle-left' />)
+                                }}
+                                nextItem={{
+                                  content: (<Icon type='angle-right' />)
+                                }}
+                              />
+                            )
+                          }
+                        </div>
+                      )
+                    }
+                  </div>
+                  <ToggleDrawer 
+                    isAdd={isAdd}
+                    visible={visible}
+                    setDrawerVisible={setDrawerVisible}
+                    refreshToggleList={refreshToggleList}
+                  />
+                </>
+              </Provider>
             </div>
           )
         }
-        <Provider>
-          <>
-            <div className={styles.card}>
-              {
-                isArchived ? (
-                  <div className={styles['heading-archive']}>
-                    <Icon 
-                      type='back' 
-                      customClass={styles['icon-back']} 
-                      onClick={() => { 
-                        setArchived(false); 
-                        handleSearchArchivedList(false);
-                      }} 
-                    />
-                    <span className={styles.divider}></span>
-                    <FormattedMessage id='common.archived.toggles.text' />
-                  </div>
-                ) : (
-                  <div className={styles.heading}>
-                    <FormattedMessage id='common.toggles.text' />
-                  </div>
-                )
-              }
-              <div className={styles.add}>
-                <Form className={styles['filter-form']}>
-                  <Form.Field className={styles['evaluation-field']}>
-                    <label className={styles.label}>
-                      <FormattedMessage id='toggles.filter.evaluated' />
-                    </label>
-                    <Dropdown
-                      fluid 
-                      selection
-                      floating
-                      clearable
-                      selectOnBlur={false}
-                      className={styles['dropdown']}
-                      placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
-                      options={evaluationOptions} 
-                      icon={
-                        searchParams.visitFilter
-                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
-                          : <Icon customClass={styles['angle-down']} type='angle-down' />
-                      }
-                      onChange={handleEvaluationChange}
-                    />
-                  </Form.Field>
-                  <Form.Field className={styles['status-field']}>
-                    <label className={styles.label}>
-                      <FormattedMessage id='toggles.filter.status' />
-                    </label>
-                    <Dropdown 
-                      fluid 
-                      selection 
-                      floating
-                      clearable
-                      className={styles['status-dropdown']}
-                      selectOnBlur={false}
-                      placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
-                      options={statusOptions} 
-                      icon={
-                        typeof searchParams.disabled === 'boolean'
-                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
-                          : <Icon customClass={styles['angle-down']} type='angle-down' />
-                      }
-                      onChange={handleStatusChange}
-                    />
-                  </Form.Field>
-                  <Form.Field className={styles['tags-field']}>
-                    <label className={styles.label}>
-                      <FormattedMessage id='common.tags.text' />
-                    </label>
-                     <Dropdown 
-                      fluid 
-                      multiple 
-                      selection 
-                      floating
-                      clearable
-                      selectOnBlur={false}
-                      className={styles['dropdown']}
-                      placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
-                      options={tagOptions} 
-                      renderLabel={renderLabel}
-                      onChange={handleTagsChange}
-                      icon={
-                        searchParams.tags && searchParams.tags.length > 0
-                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
-                          : <Icon customClass={styles['angle-down']} type='angle-down' />
-                      }
-                    />
-                  </Form.Field>
-                  <Form.Field className={styles['keywords-field']}>
-                    <Form.Input 
-                      placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
-                      icon={<Icon customClass={styles['icon-search']} type='search' />}
-                      onChange={handleSearch}
-                    />
-                  </Form.Field>
-                </Form>
-                {
-                  !isArchived && (
-                    <EventTracker category='toggle' action='create-toggle'>
-                      <Button primary className={styles['add-button']} onClick={handleAddToggle}>
-                        <Icon customClass={styles['iconfont']} type='add' />
-                        <FormattedMessage id='common.toggle.text' />
-                      </Button>
-                    </EventTracker>
-                  )
-                }
-                <Popup
-                  basic
-                  open={archiveOpen}
-                  on='click'
-                  position='bottom right'
-                  className={styles.popup}
-                  trigger={
-                    <div 
-                      onClick={(e: SyntheticEvent) => {
-                        document.body.click();
-                        e.stopPropagation();
-                        setArchiveOpen(true);
-                      }}
-                      className={styles['toggle-menu']}
-                    >
-                      <Icon customClass={styles['menu-angle-down']} type='angle-down' />
-                    </div>
-                  }
-                >
-                  <div className={styles['menu']} onClick={() => {
-                    setArchiveOpen(false);
-                  }}>
-                    {
-                      isArchived ? (
-                        <div className={styles['menu-item']} onClick={() => { 
-                          document.body.click();
-                          setArchived(false); 
-                          history.push(`/${projectKey}/${environmentKey}/toggles`);
-                          handleSearchArchivedList(false);
-                        }}>
-                          <FormattedMessage id='toggles.menu.view.active.toggle' />
-                        </div>
-                      ) : (
-                        <div className={styles['menu-item']} onClick={() => { 
-                          document.body.click();
-                          setArchived(true); 
-                          history.push(`/${projectKey}/${environmentKey}/toggles?isArchived=true`);
-                          handleSearchArchivedList(true);
-                        }}>
-                          <FormattedMessage id='toggles.menu.view.archive.toggle' />
-                        </div>
-                      )
-                    }
-                  </div>
-                </Popup>
-              </div>
-              <div className={styles.lists}>
-                <Table basic='very' unstackable>
-                  <Table.Header className={styles['table-header']}>
-                    <Table.Row>
-                      <Table.HeaderCell className={styles['column-brief']}>
-                        <FormattedMessage id='toggles.table.brief' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-status']}>
-                        <FormattedMessage id='toggles.table.status' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-type']}>
-                        <FormattedMessage id='common.type.text' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-tags']}>
-                        <FormattedMessage id='common.tags.text' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-evaluated']}>
-                        <FormattedMessage id='toggles.table.evaluation' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-modify']}>
-                        <FormattedMessage id='toggles.table.lastmodified' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-operation']}></Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  {
-                    toggleList.length !== 0 && (
-                      <Table.Body>
-                        {
-                          toggleList?.map((toggle: IToggle) => {
-                            return (
-                              <ToggleItem 
-                                key={toggle.key}
-                                toggle={toggle} 
-                                isArchived={isArchived}
-                                setIsAdd={setIsAdd}
-                                refreshToggleList={refreshToggleList}
-                                setDrawerVisible={setDrawerVisible}
-                              />
-                            );
-                          })
-                        }
-                      </Table.Body>
-                    )
-                  }
-                </Table>
-                {
-                  toggleList.length === 0 && (
-                    <div className={styles['no-data']}>
-                      <div>
-                        <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                      </div>
-                      <div>
-                        <FormattedMessage id='common.nodata.text' />
-                      </div>
-                    </div>
-                  )
-                }
-              </div>
-              {
-                toggleList.length !== 0 && (
-                  <div className={styles.pagination}>
-                    <div className={styles['total']}>
-                      <span className={styles['total-count']}>{total} </span>
-                      <FormattedMessage id='toggles.total' />
-                    </div>
-                    {
-                      pagination.totalPages > 1 && (
-                        <Pagination 
-                          activePage={pagination.pageIndex} 
-                          totalPages={pagination.totalPages} 
-                          onPageChange={handlePageChange}
-                          firstItem={null}
-                          lastItem={null}
-                          prevItem={{
-                            content: (<Icon type='angle-left' />)
-                          }}
-                          nextItem={{
-                            content: (<Icon type='angle-right' />)
-                          }}
-                        />
-                      )
-                    }
-                  </div>
-                )
-              }
-            </div>
-            <ToggleDrawer 
-              isAdd={isAdd}
-              visible={visible}
-              setDrawerVisible={setDrawerVisible}
-              refreshToggleList={refreshToggleList}
-            />
-          </>
-        </Provider>
-      </div>
+      </>
     </ProjectLayout>
 	);
 };

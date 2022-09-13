@@ -1,10 +1,14 @@
 .sidebar {
   width: 200px;
   padding: 0 10px;
+  position: relative;
+  height: calc(100vh - 90px);
 }
 
 .sidebar-close {
   width: 80px;
+  position: relative;
+  height: calc(100vh - 90px);
 }
 
 .setting-sidebar {

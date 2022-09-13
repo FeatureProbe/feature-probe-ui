@@ -1,6 +1,6 @@
 import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
-import { Menu, MenuItemProps } from 'semantic-ui-react';
+import { Menu, MenuItemProps, Dimmer, Loader } from 'semantic-ui-react';
 import useResizeObserver from 'use-resize-observer';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
@@ -54,6 +54,8 @@ const Targeting = () => {
   const [ approvalInfo, saveApprovalInfo ] = useState<IApprovalInfo>();
   const [ pageInitCount, saveCount ] = useState<number>(0);
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
+  const [ isTargetingLoading, saveIsTargetingLoading ] = useState<boolean>(true);
+  const [ isInfoLoading, saveIsInfoLoading ] = useState<boolean>(true);
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
   const { i18n } = I18NContainer.useContainer();
 
@@ -73,6 +75,7 @@ const Targeting = () => {
   // get toggle basic info
   const initToggleInfo = useCallback(() => {
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(async(res) => {
+      saveIsInfoLoading(false);
       const { data, success, code } = res;
       if (success && data) {
         saveToggleInfo(data);
@@ -110,6 +113,7 @@ const Targeting = () => {
   // get toggle targeting info
   const initTargeting = useCallback(() => {
     getTargeting<IContent>(projectKey, environmentKey, toggleKey).then(res => {
+      saveIsTargetingLoading(false);
       const { data, success } = res;
       if (success && data) {
         const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, reviewers, status, submitBy, approvalBy, approvalComment } = data;
@@ -188,6 +192,7 @@ const Targeting = () => {
       getVersionsByVersion();
       saveRememberVersion(true);
     } else {
+      saveIsTargetingLoading(true);
       initTargeting();
     }
   }, [currentVersion, initTargeting, getVersionsByVersion]);
@@ -309,6 +314,7 @@ const Targeting = () => {
             toggleInfo={toggleInfo}
             modifyInfo={modifyInfo}
             approvalInfo={approvalInfo}
+            isInfoLoading={isInfoLoading}
             gotoGetStarted={gotoGetStarted}
             initTargeting={() => {
               initTargeting();
@@ -359,64 +365,76 @@ const Targeting = () => {
             }
           </div>
           <div className={styles.content}>
-            <div className={styles['content-left']}>
-              {
-                activeItem === 'targeting' && (
-                  <div id='targetingForm' ref={ref}>
+            {
+              isTargetingLoading ? (
+                <Dimmer active inverted>
+                  <Loader size='small'>
+                    <FormattedMessage id='common.loading.text' />
+                  </Loader>
+                </Dimmer>
+              ) : (
+                <>
+                  <div className={styles['content-left']}>
                     {
-                      targetingDisabled && (
-                        <div className={styles.message}>
-                          <div className={`${styles['message-content-warn']} ${styles['message-content']}`}>
-                            <i className={`${styles['icon-warning-circle']} icon-warning-circle iconfont`}></i>
-                            <span className={styles['message-content-text']}>
-                              <FormattedMessage id='targeting.view.versions' />
-                              <FormattedMessage id='common.version.text' />:
-                              { selectedVersion }
-                            </span>
-                            <Icon type='close' customClass={styles['close-icon']} onClick={() => quiteReviewHistory()} />
-                          </div>
+                      activeItem === 'targeting' && (
+                        <div id='targetingForm' ref={ref}>
+                          {
+                            targetingDisabled && (
+                              <div className={styles.message}>
+                                <div className={`${styles['message-content-warn']} ${styles['message-content']}`}>
+                                  <i className={`${styles['icon-warning-circle']} icon-warning-circle iconfont`}></i>
+                                  <span className={styles['message-content-text']}>
+                                    <FormattedMessage id='targeting.view.versions' />
+                                    <FormattedMessage id='common.version.text' />:
+                                    { selectedVersion }
+                                  </span>
+                                  <Icon type='close' customClass={styles['close-icon']} onClick={() => quiteReviewHistory()} />
+                                </div>
+                              </div>
+                            )
+                          }
+                          <TargetingForm
+                            ref={formRef}
+                            disabled={targetingDisabled || toggleArchived || (approvalInfo?.enableApproval && approvalInfo.status !== 'RELEASE')}
+                            targeting={targeting}
+                            toggleInfo={toggleInfo}
+                            segmentList={segmentList}
+                            approvalInfo={approvalInfo}
+                            toggleDisabled={toggleDisabled}
+                            initialTargeting={initialTargeting}
+                            initTargeting={() => {
+                              initTargeting();
+                              initHistory();
+                            }}
+                            saveToggleDisable={saveToggleDisable}
+                          />
                         </div>
                       )
                     }
-                    <TargetingForm
-                      ref={formRef}
-                      disabled={targetingDisabled || toggleArchived || (approvalInfo?.enableApproval && approvalInfo.status !== 'RELEASE')}
-                      targeting={targeting}
-                      toggleInfo={toggleInfo}
-                      segmentList={segmentList}
-                      approvalInfo={approvalInfo}
-                      toggleDisabled={toggleDisabled}
-                      initialTargeting={initialTargeting}
-                      initTargeting={() => {
-                        initTargeting();
-                        initHistory();
-                      }}
-                      saveToggleDisable={saveToggleDisable}
-                    />
+                    {
+                      activeItem === 'metrics' && (
+                        <Metrics />
+                      )
+                    }
                   </div>
-                )
-              }
-              {
-                activeItem === 'metrics' && (
-                  <Metrics />
-                )
-              }
-            </div>
-            {
-              historyOpen && (
-                <div className={styles['content-right']} style={{ height }}>
-                  <History 
-                    versions={versions}
-                    hasMore={historyHasMore}
-                    latestVersion={latestVersion}
-                    selectedVersion={selectedVersion}
-                    loadMore={() => {
-                      getVersionsList();
-                    }}
-                    reviewHistory={reviewHistory}
-                    setHistoryOpen={setHistoryOpen}
-                  />
-                </div>
+                  {
+                    historyOpen && (
+                      <div className={styles['content-right']} style={{ height }}>
+                        <History 
+                          versions={versions}
+                          hasMore={historyHasMore}
+                          latestVersion={latestVersion}
+                          selectedVersion={selectedVersion}
+                          loadMore={() => {
+                            getVersionsList();
+                          }}
+                          reviewHistory={reviewHistory}
+                          setHistoryOpen={setHistoryOpen}
+                        />
+                      </div>
+                    )
+                  }
+                </>
               )
             }
           </div>

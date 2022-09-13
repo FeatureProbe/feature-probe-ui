@@ -25,6 +25,9 @@ export interface IToggle {
   visitedTime: string;
   modifiedTime: string;
   modifiedBy: string;
+  isLocked?: boolean;
+  lockedBy?: string;
+  lockedTime?: string;
 }
 
 export interface IEditToggleParams {
