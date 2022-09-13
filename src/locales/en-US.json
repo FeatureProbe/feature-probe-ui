@@ -92,6 +92,9 @@
   "common.request.approval.text": "Request approval",
   "common.changes.text": "Changes",
   "common.skip.text": "Skip",
+  "common.lock.text": "This toggle can not be edited because it is locked",
+  "common.lock.by": "Locked by",
+  "common.lock.time": "Locked time",
 
   "header.getuser.error.text": "Get user info error!",
 

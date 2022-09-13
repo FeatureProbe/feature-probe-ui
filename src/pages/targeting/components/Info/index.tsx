@@ -1,5 +1,5 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Grid, Form, TextAreaProps, Popup } from 'semantic-ui-react';
+import { Grid, Form, TextAreaProps, Popup, Dimmer, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -24,6 +24,7 @@ interface IProps {
   toggleInfo?: IToggleInfo;
   modifyInfo?: IModifyInfo;
   approvalInfo?: IApprovalInfo;
+  isInfoLoading: boolean;
   gotoGetStarted(): void;
   initTargeting(): void;
   saveApprovalInfo(approvalInfo: IApprovalInfo): void;
@@ -31,7 +32,7 @@ interface IProps {
 }
 
 const Info = (props: IProps) => {
-  const { toggleInfo, modifyInfo, approvalInfo, gotoGetStarted, initTargeting, saveApprovalInfo, saveInitTargeting } = props;
+  const { toggleInfo, modifyInfo, approvalInfo, isInfoLoading, gotoGetStarted, initTargeting, saveApprovalInfo, saveInitTargeting } = props;
   const [ enableApproval, saveEnableApproval ] = useState<boolean>(false);
   const [ open, saveOpen ] = useState<boolean>(false);
   const [ diffOpen, saveDiffOpen ] = useState<boolean>(false);
@@ -210,225 +211,252 @@ const Info = (props: IProps) => {
 
 	return (
     <div className={styles.info}>
-      <div className={styles['info-title']}>
-        <div className={styles['info-title-left']}>
-          <div className={styles['info-toggle-name']}>
-            {toggleInfo?.name}
-          </div>
-          {
-            enableApproval && toggleStatus === 'PENDING' && (
-              <Popup
-                inverted
-                className={styles.popup}
-                trigger={
-                  <div className={`${styles['status-pending']} ${styles.status}`}>
-                    <Icon type='pending' customClass={styles['status-icon']} />
-                    <FormattedMessage id='approvals.status.pending' />
-                  </div>
+      {
+        isInfoLoading ? (
+          <Dimmer active inverted>
+            <Loader size='small'>
+              <FormattedMessage id='common.loading.text' />
+            </Loader>
+          </Dimmer>
+        ) : (
+          <>
+            <div className={styles['info-title']}>
+              <div className={styles['info-title-left']}>
+                <Popup
+                  inverted
+                  className={styles.popup}
+                  trigger={
+                    <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                  }
+                  content={
+                    <div>
+                      <div><FormattedMessage id='common.lock.text' /></div>
+                      <div><FormattedMessage id='common.lock.by' />: { '' }</div>
+                      <div><FormattedMessage id='common.lock.time' />: { dayjs().format('YYYY-MM-DD HH:mm:ss') }</div>
+                    </div>
+                  }
+                  position='top center'
+                />
+                <div className={styles['info-toggle-name']}>
+                  {toggleInfo?.name}
+                </div>
+                {
+                  enableApproval && toggleStatus === 'PENDING' && (
+                    <Popup
+                      inverted
+                      className={styles.popup}
+                      trigger={
+                        <div className={`${styles['status-pending']} ${styles.status}`}>
+                          <Icon type='pending' customClass={styles['status-icon']} />
+                          <FormattedMessage id='approvals.status.pending' />
+                        </div>
+                      }
+                      content={
+                        <span>
+                          <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers.join(', ')}
+                        </span>
+                      }
+                      position='top center'
+                    />
+                  )
                 }
-                content={
-                  <span>
-                    <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers.join(', ')}
-                  </span>
+                {
+                  (enableApproval && toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
+                    <div className={`${styles['status-publish']} ${styles.status}`}>
+                      <Icon type='wait' customClass={styles['status-icon']} />
+                      <FormattedMessage id='approvals.status.unpublished' />
+                    </div>
+                  )
                 }
-                position='top center'
-              />
-            )
-          }
-          {
-            (enableApproval && toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
-              <div className={`${styles['status-publish']} ${styles.status}`}>
-                <Icon type='wait' customClass={styles['status-icon']} />
-                <FormattedMessage id='approvals.status.unpublished' />
+                {
+                  enableApproval && toggleStatus === 'REJECT' && (
+                    <Popup
+                      inverted
+                      className={styles.popup}
+                      trigger={
+                        <div className={`${styles['status-reject']} ${styles.status}`}>
+                          <Icon type='reject' customClass={styles['status-icon']} />
+                          <FormattedMessage id='approvals.status.declined' />
+                        </div>
+                      }
+                      content={
+                        <span>
+                          <FormattedMessage id='approvals.reviewed.by' /> {approvalInfo?.approvalBy}: {approvalInfo?.approvalComment}
+                        </span>
+                      }
+                      position='top center'
+                    />
+                  )
+                }
               </div>
-            )
-          }
-          {
-            enableApproval && toggleStatus === 'REJECT' && (
-              <Popup
-                inverted
-                className={styles.popup}
-                trigger={
-                  <div className={`${styles['status-reject']} ${styles.status}`}>
-                    <Icon type='reject' customClass={styles['status-icon']} />
-                    <FormattedMessage id='approvals.status.declined' />
-                  </div>
-                }
-                content={
-                  <span>
-                    <FormattedMessage id='approvals.reviewed.by' /> {approvalInfo?.approvalBy}: {approvalInfo?.approvalComment}
-                  </span>
-                }
-                position='top center'
-              />
-            )
-          }
-        </div>
-        <div className={styles['info-title-right']}>
-          <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
-            <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
-            <FormattedMessage id='toggle.connect' />
-          </div>
-          <div>
-            {
-              enableApproval && toggleStatus !== 'RELEASE' && (
-                <Button secondary className={styles.btn} onClick={handleShowDiff}>
-                  <FormattedMessage id='targeting.approval.operation.view.changes' />
-                </Button>
-              )
-            }
-
-            {
-              enableApproval && toggleStatus === 'PENDING' && (
-                <>
+              <div className={styles['info-title-right']}>
+                <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
+                  <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
+                  <FormattedMessage id='toggle.connect' />
+                </div>
+                <div>
                   {
-                    approvalInfo?.submitBy === userInfo.account && (
+                    enableApproval && toggleStatus !== 'RELEASE' && (
+                      <Button secondary className={styles.btn} onClick={handleShowDiff}>
+                        <FormattedMessage id='targeting.approval.operation.view.changes' />
+                      </Button>
+                    )
+                  }
+
+                  {
+                    enableApproval && toggleStatus === 'PENDING' && (
                       <>
-                        <Button 
-                          secondary 
-                          className={styles.btn} 
-                          onClick={() => { 
-                            saveOpen(true);
-                            saveStatus('JUMP');
-                          }}
-                        >
-                          <FormattedMessage id='targeting.approval.operation.skip.approval' />
-                        </Button>
-                        <Button 
-                          secondary 
-                          className={styles['dangerous-btn']}
-                          onClick={() => { 
-                            saveOpen(true);
-                            saveStatus('REVOKE');
-                          }}
-                        >
-                          <FormattedMessage id='targeting.approval.operation.withdraw' />
-                        </Button>
+                        {
+                          approvalInfo?.submitBy === userInfo.account && (
+                            <>
+                              <Button 
+                                secondary 
+                                className={styles.btn} 
+                                onClick={() => { 
+                                  saveOpen(true);
+                                  saveStatus('JUMP');
+                                }}
+                              >
+                                <FormattedMessage id='targeting.approval.operation.skip.approval' />
+                              </Button>
+                              <Button 
+                                secondary 
+                                className={styles['dangerous-btn']}
+                                onClick={() => { 
+                                  saveOpen(true);
+                                  saveStatus('REVOKE');
+                                }}
+                              >
+                                <FormattedMessage id='targeting.approval.operation.withdraw' />
+                              </Button>
+                            </>
+                          )
+                        }
+                        
+                        {
+                          approvalInfo?.reviewers?.includes(userInfo.account) && (
+                            <>
+                              <Button 
+                                secondary 
+                                className={styles.btn}
+                                onClick={() => { 
+                                  saveOpen(true);
+                                  saveStatus('REJECT');
+                                }}
+                              >
+                                <FormattedMessage id='targeting.approval.operation.decline' />
+                              </Button>
+                              <Button 
+                                primary 
+                                className={styles.btn}
+                                onClick={() => { 
+                                  saveOpen(true);
+                                  saveStatus('PASS');
+                                }}
+                              >
+                                <FormattedMessage id='targeting.approval.operation.accept' />
+                              </Button>
+                            </>
+                          )
+                        }
                       </>
                     )
                   }
-                  
+
                   {
-                    approvalInfo?.reviewers?.includes(userInfo.account) && (
+                    (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && approvalInfo?.submitBy === userInfo.account) && (
                       <>
                         <Button 
                           secondary 
                           className={styles.btn}
                           onClick={() => { 
                             saveOpen(true);
-                            saveStatus('REJECT');
+                            saveStatus('CANCEL');
                           }}
                         >
-                          <FormattedMessage id='targeting.approval.operation.decline' />
+                          <FormattedMessage id='targeting.approval.operation.discard' />
                         </Button>
-                        <Button 
-                          primary 
-                          className={styles.btn}
-                          onClick={() => { 
-                            saveOpen(true);
-                            saveStatus('PASS');
-                          }}
-                        >
-                          <FormattedMessage id='targeting.approval.operation.accept' />
+                        <Button primary className={styles.btn} onClick={handlePublish}>
+                          <FormattedMessage id='targeting.approval.operation.publish' />
                         </Button>
                       </>
                     )
                   }
-                </>
-              )
-            }
 
-            {
-              (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && approvalInfo?.submitBy === userInfo.account) && (
-                <>
-                  <Button 
-                    secondary 
-                    className={styles.btn}
-                    onClick={() => { 
-                      saveOpen(true);
-                      saveStatus('CANCEL');
-                    }}
-                  >
-                    <FormattedMessage id='targeting.approval.operation.discard' />
-                  </Button>
-                  <Button primary className={styles.btn} onClick={handlePublish}>
-                    <FormattedMessage id='targeting.approval.operation.publish' />
-                  </Button>
-                </>
-              )
-            }
-
-            {
-              enableApproval && toggleStatus === 'REJECT' && approvalInfo?.submitBy === userInfo.account && (
-                <>
-                  <Button secondary className={styles['dangerous-btn']} onClick={() => { handleAbandon(); }}>
-                    <FormattedMessage id='targeting.approval.operation.abandon' />
-                  </Button>
-                  <Button primary className={styles.btn} onClick={() => { handleReEdit(); }}>
-                    <FormattedMessage id='targeting.approval.operation.modify' />
-                  </Button>
-                </>
-              )
-            }
-          </div>
-        </div>
-      </div>
-      <div className={styles['info-content']}>
-        <Grid columns='equal'>
-          <Grid.Row className={styles['info-content-row']}>
-            <Grid.Column>
-              <div className={styles.label}>
-                <FormattedMessage id='common.key.text' />:
+                  {
+                    enableApproval && toggleStatus === 'REJECT' && approvalInfo?.submitBy === userInfo.account && (
+                      <>
+                        <Button secondary className={styles['dangerous-btn']} onClick={() => { handleAbandon(); }}>
+                          <FormattedMessage id='targeting.approval.operation.abandon' />
+                        </Button>
+                        <Button primary className={styles.btn} onClick={() => { handleReEdit(); }}>
+                          <FormattedMessage id='targeting.approval.operation.modify' />
+                        </Button>
+                      </>
+                    )
+                  }
+                </div>
               </div>
-              <div className={`${styles['label-value-copy']} ${styles['label-value']}`}>
-                <CopyToClipboardPopup text={toggleInfo?.key || ''}>
-                  <span>{toggleInfo?.key ? toggleInfo.key : '-'}</span>
-                </CopyToClipboardPopup>
-              </div>
-            </Grid.Column>
-            <Grid.Column>
-              <div className={styles.label}>
-              <FormattedMessage id='common.type.text' />:
-              </div>
-              <div className={styles['label-value']}>{toggleInfo?.returnType ? toggleInfo.returnType : '-'}</div>
-            </Grid.Column>
-            <Grid.Column>
-              <div className={styles.label}>
-                <FormattedMessage id='common.description.text' />:
-              </div>
-              <div className={styles['label-value']}>{toggleInfo?.desc ? toggleInfo.desc : '-'}</div>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row className={styles['info-content-row']}>
-            <Grid.Column>
-              <div className={styles.label}>
-                <FormattedMessage id='common.modified.by.text' />:
-              </div>
-              <div className={styles['label-value']}>{modifyInfo?.modifiedBy ? modifyInfo.modifiedBy : '-'}</div>
-            </Grid.Column>
-            <Grid.Column>
-              <div className={styles.label}>
-                <FormattedMessage id='common.modified.time.text' />:
-              </div>
-              {
-                modifyInfo?.modifiedTime ? (
-                  <div className={styles['label-value']}>
-                    <FormattedMessage id='toggles.updated.text'/> {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
-                  </div>
-                ) : <>-</>
-              }
-            </Grid.Column>
-            <Grid.Column>
-              <div className={styles.label}>
-                <FormattedMessage id='common.tags.text' />:
-              </div>
-              <div>
-                { toggleInfo?.tags.join(',') || '-'}
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
+            </div>
+            <div className={styles['info-content']}>
+              <Grid columns='equal'>
+                <Grid.Row className={styles['info-content-row']}>
+                  <Grid.Column>
+                    <div className={styles.label}>
+                      <FormattedMessage id='common.key.text' />:
+                    </div>
+                    <div className={`${styles['label-value-copy']} ${styles['label-value']}`}>
+                      <CopyToClipboardPopup text={toggleInfo?.key || ''}>
+                        <span>{toggleInfo?.key ? toggleInfo.key : '-'}</span>
+                      </CopyToClipboardPopup>
+                    </div>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <div className={styles.label}>
+                    <FormattedMessage id='common.type.text' />:
+                    </div>
+                    <div className={styles['label-value']}>{toggleInfo?.returnType ? toggleInfo.returnType : '-'}</div>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <div className={styles.label}>
+                      <FormattedMessage id='common.description.text' />:
+                    </div>
+                    <div className={styles['label-value']}>{toggleInfo?.desc ? toggleInfo.desc : '-'}</div>
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row className={styles['info-content-row']}>
+                  <Grid.Column>
+                    <div className={styles.label}>
+                      <FormattedMessage id='common.modified.by.text' />:
+                    </div>
+                    <div className={styles['label-value']}>{modifyInfo?.modifiedBy ? modifyInfo.modifiedBy : '-'}</div>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <div className={styles.label}>
+                      <FormattedMessage id='common.modified.time.text' />:
+                    </div>
+                    {
+                      modifyInfo?.modifiedTime ? (
+                        <div className={styles['label-value']}>
+                          <FormattedMessage id='toggles.updated.text'/> {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
+                        </div>
+                      ) : <>-</>
+                    }
+                  </Grid.Column>
+                  <Grid.Column>
+                    <div className={styles.label}>
+                      <FormattedMessage id='common.tags.text' />:
+                    </div>
+                    <div>
+                      { toggleInfo?.tags.join(',') || '-'}
+                    </div>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            </div>
+          </>
+        )
+      }
       <Modal 
         open={open}
         width={480}

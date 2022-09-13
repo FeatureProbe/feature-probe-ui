@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table } from 'semantic-ui-react';
+import { Table, Popup } from 'semantic-ui-react';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
@@ -121,6 +121,25 @@ const ToggleItem = (props: IProps) => {
     >
       <Table.Cell>
         <div className={styles['toggle-info']}>
+          {
+            toggle.isLocked && (
+              <Popup
+                inverted
+                className={styles.popup}
+                trigger={
+                  <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                }
+                content={
+                  <div>
+                    <div><FormattedMessage id='common.lock.text' /></div>
+                    <div><FormattedMessage id='common.lock.by' />: { toggle.lockedBy }</div>
+                    <div><FormattedMessage id='common.lock.time' />: { dayjs(toggle.lockedTime).format('YYYY-MM-DD HH:mm:ss') }</div>
+                  </div>
+                }
+                position='top center'
+              />
+            )
+          }
           <div className={styles['toggle-info-name']}>
             {toggle.name}
           </div>

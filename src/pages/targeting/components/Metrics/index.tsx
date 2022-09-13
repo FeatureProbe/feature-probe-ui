@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useCallback, useState, SyntheticEvent, useRef } from 'react';
-import { Select, DropdownProps } from 'semantic-ui-react';
+import { Select, DropdownProps, Dimmer, Loader } from 'semantic-ui-react';
 import { Line } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { useHistory, useParams } from 'react-router-dom';
@@ -35,6 +35,7 @@ const Metrics = () => {
   const [ fitlerType, setFilterType ] = useState<string>('name');
   const [ total, setTotal ] = useState<number>(0);
   const [ isAccess, saveIsAccess ] = useState<boolean>(false);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
   const history = useHistory();
@@ -45,6 +46,7 @@ const Metrics = () => {
       lastHours: filterValue,
       metricType: fitlerType.toUpperCase(),
     }).then(res => {
+      saveIsLoading(false);
       const { data, success } = res;
       if (success && data) {
         setMetric(data.metrics || []);
@@ -101,6 +103,15 @@ const Metrics = () => {
 
 	return (
 		<div className={styles.metrics}>
+      {
+        isLoading && (
+          <Dimmer active inverted>
+            <Loader size='small'>
+              <FormattedMessage id='common.loading.text' />
+            </Loader>
+          </Dimmer>
+        )
+      }
       <div className={styles.title}>
         <div className={styles['title-text']}>
           <FormattedMessage id='common.evaluations.text' />
