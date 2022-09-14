@@ -412,7 +412,7 @@
   "approvals.table.header.cancelled.time": "取消时间",
   "approvals.table.header.skipped.time": "跳过时间",
   "approvals.table.header.withdrawn.time": "撤回时间",
-  "approvals.search.placeholder": "搜索标题",
+  "approvals.search.placeholder": "搜索变更说明",
   "approvals.total": "审批总量",
   "approvals.lists.error": "获取审批列表失败",
   "approvals.published.by": "发布人",

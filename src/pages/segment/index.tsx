@@ -55,6 +55,7 @@ const Segment = () => {
   const intl = useIntl();
 
   const fetchSegmentLists = useCallback(() => {
+    saveIsLoading(true);
     getSegmentList<ISegmentList>(projectKey, searchParams).then(async (res) => {
       saveIsLoading(false);
       const { success, data, code } = res;
@@ -111,84 +112,84 @@ const Segment = () => {
     <ProjectLayout>
       <div className={styles.segments}>
         <div className={styles.card}>
+          <div className={styles.heading}>
+            <FormattedMessage id='common.segments.text' />
+          </div>
+          <div className={styles.add}>
+            <Form className={styles['filter-form']}>
+              <Form.Field className={styles['keywords-field']}>
+                <Form.Input 
+                  placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
+                  icon={<Icon customClass={styles['icon-search']} type='search' />}
+                  onChange={handleSearch}
+                />
+              </Form.Field>
+            </Form>
+            <EventTracker category='segment' action='create-segment'>
+              <Button primary className={styles['add-button']} onClick={handleAddSegment}>
+                <Icon customClass={styles['iconfont']} type='add' />
+                <FormattedMessage id='common.segment.text' />
+              </Button>
+            </EventTracker>
+          </div>
           {
             isLoading ? (
-              <Dimmer active inverted>
-                <Loader size='small'>
-                  <FormattedMessage id='common.loading.text' />
-                </Loader>
-              </Dimmer>
+              <div className={styles.lists}>
+                <Dimmer active inverted>
+                  <Loader size='small'>
+                    <FormattedMessage id='common.loading.text' />
+                  </Loader>
+                </Dimmer>
+              </div>
             ) : (
-              <>
-                <div className={styles.heading}>
-                  <FormattedMessage id='common.segments.text' />
-                </div>
-                <div className={styles.add}>
-                  <Form className={styles['filter-form']}>
-                    <Form.Field className={styles['keywords-field']}>
-                      <Form.Input 
-                        placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
-                        icon={<Icon customClass={styles['icon-search']} type='search' />}
-                        onChange={handleSearch}
-                      />
-                    </Form.Field>
-                  </Form>
-                  <EventTracker category='segment' action='create-segment'>
-                    <Button primary className={styles['add-button']} onClick={handleAddSegment}>
-                      <Icon customClass={styles['iconfont']} type='add' />
-                      <FormattedMessage id='common.segment.text' />
-                    </Button>
-                  </EventTracker>
-                </div>
-                <div className={styles.lists}>
-                  <Table basic='very' unstackable>
-                    <Table.Header className={styles['table-header']}>
-                      <Table.Row>
-                        <Table.HeaderCell className={styles['column-name']}>
-                          <FormattedMessage id='common.name.text' />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-modify-by']}>
-                          <FormattedMessage id='common.modified.by.text' />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-modify-time']}>
-                          <FormattedMessage id='common.modified.time.text' />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-operation']}>
-                          <FormattedMessage id='common.operation.text' />
-                        </Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-                    {
-                      segmentList.length !== 0 && (
-                        <Table.Body>
-                          {
-                            segmentList?.map((segment: ISegment) => {
-                              return (
-                                <SegmentItem 
-                                  key={segment.key}
-                                  segment={segment}
-                                  fetchSegmentLists={fetchSegmentLists}
-                                />
-                              );
-                            })
-                          }
-                        </Table.Body>
-                      )
-                    }
-                  </Table>
+              <div className={styles.lists}>
+                <Table basic='very' unstackable>
+                  <Table.Header className={styles['table-header']}>
+                    <Table.Row>
+                      <Table.HeaderCell className={styles['column-name']}>
+                        <FormattedMessage id='common.name.text' />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-modify-by']}>
+                        <FormattedMessage id='common.modified.by.text' />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-modify-time']}>
+                        <FormattedMessage id='common.modified.time.text' />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-operation']}>
+                        <FormattedMessage id='common.operation.text' />
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
                   {
-                    segmentList.length === 0 && (
-                      <div className={styles['no-data']}>
-                        <div>
-                          <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                        </div>
-                        <div>
-                          <FormattedMessage id='common.nodata.text' />
-                        </div>
-                      </div>
+                    segmentList.length !== 0 && (
+                      <Table.Body>
+                        {
+                          segmentList?.map((segment: ISegment) => {
+                            return (
+                              <SegmentItem 
+                                key={segment.key}
+                                segment={segment}
+                                fetchSegmentLists={fetchSegmentLists}
+                              />
+                            );
+                          })
+                        }
+                      </Table.Body>
                     )
                   }
-                </div>
+                </Table>
+                {
+                  segmentList.length === 0 && (
+                    <div className={styles['no-data']}>
+                      <div>
+                        <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                      </div>
+                      <div>
+                        <FormattedMessage id='common.nodata.text' />
+                      </div>
+                    </div>
+                  )
+                }
                 {
                   segmentList.length !== 0 && (
                     <div className={styles.pagination}>
@@ -216,7 +217,7 @@ const Segment = () => {
                     </div>
                   )
                 }
-              </>
+              </div>
             )
           }
         </div>
