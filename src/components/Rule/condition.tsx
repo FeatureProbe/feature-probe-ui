@@ -11,8 +11,8 @@ import { IContainer } from 'interfaces/provider';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import { 
   getAttrOptions,
-  attributeOptions,
-  getSubjectSegmentOptions,
+  // attributeOptions,
+  // getSubjectSegmentOptions,
   timezoneOptions,
   DATETIME_TYPE,
   SEGMENT_TYPE,
@@ -54,7 +54,7 @@ const RuleContent = (props: IProps) => {
   const intl = useIntl();
   const [ options, setOption ] = useState<IOption[]>();
   const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
-  let subjectOptions: IOption[] = attributeOptions;
+  let subjectOptions: IOption[] = [];
 
   const {
     handleChangeAttr,
@@ -115,7 +115,7 @@ const RuleContent = (props: IProps) => {
   });
 
   if (useSegment) {
-    subjectOptions = getSubjectSegmentOptions();
+    subjectOptions = [];
   }
   
   const subjectIndex = subjectOptions?.findIndex((attr) => {
@@ -159,10 +159,10 @@ const RuleContent = (props: IProps) => {
             options={subjectOptions}
             value={condition.subject}
             openOnFocus={true}
-            selectOnBlur={true}
             closeOnChange={true}
+            noResultsMessage={null}
             disabled={condition.type === SEGMENT_TYPE || disabled}
-            icon={<Icon customClass={styles['subject-angle-down']} type='angle-down' />}
+            icon={null}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false }
             {
               ...register(`rule_${rule.id}_condition_${condition.id}_subject`, { 
@@ -363,7 +363,7 @@ const RuleContent = (props: IProps) => {
                   <div className={styles['error-text']}>
                     { 
                       condition.type !== SEGMENT_TYPE
-                      ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
+                      ? intl.formatMessage({id: 'targeting.rule.values.required'})
                       : intl.formatMessage({id: 'common.dropdown.placeholder'})
                     }
                   </div> 
