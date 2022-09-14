@@ -150,10 +150,10 @@ const Segment = () => {
                         <FormattedMessage id='common.name.text' />
                       </Table.HeaderCell>
                       <Table.HeaderCell className={styles['column-modify-by']}>
-                        <FormattedMessage id='common.modified.by.text' />
+                        <FormattedMessage id='common.updated.by.text' />
                       </Table.HeaderCell>
                       <Table.HeaderCell className={styles['column-modify-time']}>
-                        <FormattedMessage id='common.modified.time.text' />
+                        <FormattedMessage id='common.updated.time.text' />
                       </Table.HeaderCell>
                       <Table.HeaderCell className={styles['column-operation']}>
                         <FormattedMessage id='common.operation.text' />

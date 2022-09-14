@@ -23,7 +23,9 @@ const SegmentEdit = () => {
                 match.path === SEGMENT_EDIT_PATH && <FormattedMessage id='segments.edit.text' />
               }
             </div>
-            <Info />
+            <div className={styles.content}>
+              <Info />
+            </div>
           </div>
         </div>
       </Provider>
