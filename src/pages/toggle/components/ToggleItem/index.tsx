@@ -200,8 +200,13 @@ const ToggleItem = (props: IProps) => {
               <div>
                 <Icon type='evaluate' customClass={styles['icon-evaluate']} />
                 <span>
-                  <FormattedMessage id='toggles.evaluated.text' /> 
-                  {dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')}
+                  {
+                    intl.formatMessage({id: 'toggles.evaluated.text'}, {
+                      time: dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')
+                    })
+                  }
+                  {/* <FormattedMessage id='toggles.evaluated.text' /> 
+                  {dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')} */}
                 </span>
               </div>
             </div> 
