@@ -71,11 +71,8 @@ export const headerRoutes = [
     path: APPROVAL_PATH,
     exact: true,
     component: Approvals,
-  }
-];
-
-if (!isDemo) {
-  headerRoutes.push({
+  },
+  {
     path: MEMBER_PATH,
     exact: true,
     component: Member
@@ -84,8 +81,8 @@ if (!isDemo) {
     path: PROFILE_PATH,
     exact: true,
     component: Profile
-  });
-}
+  }
+];
 
 export const blankRoutes = [
   {

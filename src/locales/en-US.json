@@ -220,7 +220,7 @@
   "toggles.evaluated.text": "evaluated ",
   "toggles.evaluated.novisit": "no recent visit",
   "toggles.evaluated.link.sdk": "Please connect SDK",
-  "toggles.updated.text": "updated ",
+  "toggles.updated.text": "Updated at ",
   "toggles.info.error.text": "Error getting toggle information!",
   "toggles.targeting.error.text": "Error getting toggle targeting!",
   "toggles.menu.view.archive.toggle": "View archived toggles",
