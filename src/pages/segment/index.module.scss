@@ -35,6 +35,8 @@
   overflow-x: hidden;
   border-radius: 12px 12px 0 0;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .heading {
@@ -124,6 +126,8 @@
 
 .lists {
   margin-top: 16px;
+  flex: 1;
+  position: relative;
 }
 
 .table-header {
