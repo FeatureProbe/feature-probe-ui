@@ -41,7 +41,6 @@ const Info = (props: IProps) => {
   const [ isReEdit, saveIsREdit ] = useState<boolean>(true);
   const [ comment, saveComment ] = useState<string>('');
   const [ toggleStatus, saveToggleStatus ] = useState<string>(approvalInfo?.status || '');
-  // const [ targetingDiff, saveTargetingDiff ] = useState<ITargetingDiff>();
   const [ diffContent, setDiffContent ] = useState<string>('');
 
   const { userInfo } = HeaderContainer.useContainer();
@@ -56,16 +55,6 @@ const Info = (props: IProps) => {
     trigger,
     clearErrors,
   } = useForm();
-
-  // useEffect(() => {
-  //   if (diffOpen) {
-  //     getTargetingDiff<ITargetingDiff>(projectKey, environmentKey, toggleKey).then(res => {
-  //       if (res.success) {
-  //         saveTargetingDiff(res.data);
-  //       }
-  //     });
-  //   }
-  // }, [diffOpen, projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
     if (approvalInfo?.status) {
@@ -101,6 +90,7 @@ const Info = (props: IProps) => {
     if (approvalInfo) {
         saveApprovalInfo({
         ...approvalInfo,
+        locked: false,
         status: 'RELEASE',
       });
     }
