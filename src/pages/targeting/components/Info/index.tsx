@@ -443,18 +443,18 @@ const Info = (props: IProps) => {
                 <Grid.Row className={styles['info-content-row']}>
                   <Grid.Column>
                     <div className={styles.label}>
-                      <FormattedMessage id='common.modified.by.text' />:
+                      <FormattedMessage id='common.updated.by.text' />:
                     </div>
                     <div className={styles['label-value']}>{modifyInfo?.modifiedBy ? modifyInfo.modifiedBy : '-'}</div>
                   </Grid.Column>
                   <Grid.Column>
                     <div className={styles.label}>
-                      <FormattedMessage id='common.modified.time.text' />:
+                      <FormattedMessage id='common.updated.time.text' />:
                     </div>
                     {
                       modifyInfo?.modifiedTime ? (
                         <div className={styles['label-value']}>
-                          <FormattedMessage id='toggles.updated.text'/> {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
+                          {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
                         </div>
                       ) : <>-</>
                     }
