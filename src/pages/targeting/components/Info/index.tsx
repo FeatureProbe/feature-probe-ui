@@ -41,7 +41,7 @@ const Info = (props: IProps) => {
   const [ isReEdit, saveIsREdit ] = useState<boolean>(true);
   const [ comment, saveComment ] = useState<string>('');
   const [ toggleStatus, saveToggleStatus ] = useState<string>(approvalInfo?.status || '');
-  const [ targetingDiff, saveTargetingDiff ] = useState<ITargetingDiff>();
+  // const [ targetingDiff, saveTargetingDiff ] = useState<ITargetingDiff>();
   const [ diffContent, setDiffContent ] = useState<string>('');
 
   const { userInfo } = HeaderContainer.useContainer();
@@ -57,13 +57,15 @@ const Info = (props: IProps) => {
     clearErrors,
   } = useForm();
 
-  useEffect(() => {
-    getTargetingDiff<ITargetingDiff>(projectKey, environmentKey, toggleKey).then(res => {
-      if (res.success) {
-        saveTargetingDiff(res.data);
-      }
-    });
-  }, [projectKey, environmentKey, toggleKey]);
+  // useEffect(() => {
+  //   if (diffOpen) {
+  //     getTargetingDiff<ITargetingDiff>(projectKey, environmentKey, toggleKey).then(res => {
+  //       if (res.success) {
+  //         saveTargetingDiff(res.data);
+  //       }
+  //     });
+  //   }
+  // }, [diffOpen, projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
     if (approvalInfo?.status) {
@@ -186,7 +188,10 @@ const Info = (props: IProps) => {
   }, [projectKey, environmentKey, toggleKey]);
 
   // Show diffs
-  const handleShowDiff = useCallback(() => {
+  const handleShowDiff = useCallback(async () => {
+    const res = await getTargetingDiff<ITargetingDiff>(projectKey, environmentKey, toggleKey);
+    const targetingDiff = res.data;
+    
     if (targetingDiff) {
       const { currentContent, oldContent, oldDisabled, currentDisabled } = targetingDiff;
       const before = JSONbig.stringify({
@@ -208,7 +213,7 @@ const Info = (props: IProps) => {
       setDiffContent(content);
       saveDiffOpen(true);
     }
-  }, [targetingDiff]);
+  }, [projectKey, environmentKey, toggleKey]);
 
   // Save comment info
   const handleChangeComment = useCallback((e: SyntheticEvent, detail: TextAreaProps) => {
@@ -349,7 +354,7 @@ const Info = (props: IProps) => {
                             <>
                               <Button 
                                 secondary 
-                                className={styles.btn}
+                                className={styles['dangerous-btn']}
                                 onClick={() => { 
                                   saveOpen(true);
                                   saveStatus('REJECT');

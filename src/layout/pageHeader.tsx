@@ -21,7 +21,6 @@ import { IApprovalList } from 'interfaces/approval';
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
 const APPROVAL_NAV = 'approvals';
-const isDemo = localStorage.getItem('isDemo') === 'true';
 const isMainColorHeader = false;
 
 const PageHeader = () => {
@@ -187,21 +186,14 @@ const PageHeader = () => {
         <div className={projectCls} onClick={handleGotoProject}>
           <FormattedMessage id='common.projects.text' />
         </div>
-        {
-          isDemo ? null : (
-            <div className={settingCls} onClick={handleGotoAccount}>
-              <FormattedMessage id='common.settings.text' />
-            </div>
-          )
-        }
-        {
-          isDemo ? null : (
-            <div className={approvalCls} onClick={handleGotoApproval}>
-              <FormattedMessage id='approvals.center' />
-              { userInfo.approvalCount !== 0 && <span className={styles.count}>{userInfo.approvalCount > 99 ? '99+' : userInfo.approvalCount}</span> }
-            </div>
-          )
-        }
+        <div className={settingCls} onClick={handleGotoAccount}>
+          <FormattedMessage id='common.settings.text' />
+        </div>
+      
+        <div className={approvalCls} onClick={handleGotoApproval}>
+          <FormattedMessage id='approvals.center' />
+          { userInfo.approvalCount !== 0 && <span className={styles.count}>{userInfo.approvalCount > 99 ? '99+' : userInfo.approvalCount}</span> }
+        </div>
       </div>
       <div className={'user'}>
         <Popup
