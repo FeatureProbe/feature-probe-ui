@@ -96,7 +96,6 @@ const ToggleItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['toggle-modified-time']}>
-          <FormattedMessage id='toggles.updated.text' />
           {dayjs(segment?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
         </div>
       </Table.Cell>

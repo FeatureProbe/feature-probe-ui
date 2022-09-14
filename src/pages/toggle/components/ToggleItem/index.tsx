@@ -228,7 +228,6 @@ const ToggleItem = (props: IProps) => {
             {toggle.modifiedBy}
           </div>
           <div className={styles['toggle-modified-time']}>
-            <FormattedMessage id='toggles.updated.text' />
             {dayjs(toggle?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
           </div>
         </div>
