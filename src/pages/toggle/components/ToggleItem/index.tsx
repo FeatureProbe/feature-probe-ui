@@ -122,7 +122,7 @@ const ToggleItem = (props: IProps) => {
       <Table.Cell>
         <div className={styles['toggle-info']}>
           {
-            toggle.isLocked && (
+            toggle.locked && (
               <Popup
                 inverted
                 className={styles.popup}
@@ -131,9 +131,9 @@ const ToggleItem = (props: IProps) => {
                 }
                 content={
                   <div>
-                    <div><FormattedMessage id='common.lock.text' /></div>
-                    <div><FormattedMessage id='common.lock.by' />: { toggle.lockedBy }</div>
-                    <div><FormattedMessage id='common.lock.time' />: { dayjs(toggle.lockedTime).format('YYYY-MM-DD HH:mm:ss') }</div>
+                    <div className={styles['popup-line']}><FormattedMessage id='common.lock.text' /></div>
+                    <div className={styles['popup-line']}><FormattedMessage id='common.lock.by' />: { toggle.lockedBy }</div>
+                    <div className={styles['popup-line']}><FormattedMessage id='common.lock.time' />: { dayjs(toggle.lockedTime).format('YYYY-MM-DD HH:mm:ss') }</div>
                   </div>
                 }
                 position='top center'

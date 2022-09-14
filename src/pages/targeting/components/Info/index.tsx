@@ -25,6 +25,7 @@ interface IProps {
   modifyInfo?: IModifyInfo;
   approvalInfo?: IApprovalInfo;
   isInfoLoading: boolean;
+  targetingDisabled: boolean;
   gotoGetStarted(): void;
   initTargeting(): void;
   saveApprovalInfo(approvalInfo: IApprovalInfo): void;
@@ -32,7 +33,7 @@ interface IProps {
 }
 
 const Info = (props: IProps) => {
-  const { toggleInfo, modifyInfo, approvalInfo, isInfoLoading, gotoGetStarted, initTargeting, saveApprovalInfo, saveInitTargeting } = props;
+  const { toggleInfo, modifyInfo, approvalInfo, isInfoLoading, targetingDisabled, gotoGetStarted, initTargeting, saveApprovalInfo, saveInitTargeting } = props;
   const [ enableApproval, saveEnableApproval ] = useState<boolean>(false);
   const [ open, saveOpen ] = useState<boolean>(false);
   const [ diffOpen, saveDiffOpen ] = useState<boolean>(false);
@@ -77,6 +78,12 @@ const Info = (props: IProps) => {
       saveComment('');
     }
   }, [open, clearErrors]);
+
+  useEffect(() => {
+    if (targetingDisabled) {
+      saveEnableApproval(false);
+    }
+  }, [targetingDisabled, saveEnableApproval]);
 
   // Refresh initial targeting to make new diff
   const refreshInitialTargeting = useCallback(async () => {
@@ -222,21 +229,25 @@ const Info = (props: IProps) => {
           <>
             <div className={styles['info-title']}>
               <div className={styles['info-title-left']}>
-                <Popup
-                  inverted
-                  className={styles.popup}
-                  trigger={
-                    <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
-                  }
-                  content={
-                    <div>
-                      <div><FormattedMessage id='common.lock.text' /></div>
-                      <div><FormattedMessage id='common.lock.by' />: { '' }</div>
-                      <div><FormattedMessage id='common.lock.time' />: { dayjs().format('YYYY-MM-DD HH:mm:ss') }</div>
-                    </div>
-                  }
-                  position='top center'
-                />
+                {
+                  approvalInfo?.locked && enableApproval && (
+                    <Popup
+                      inverted
+                      className={styles.popup}
+                      trigger={
+                        <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                      }
+                      content={
+                        <div>
+                          <div className={styles['popup-line']}><FormattedMessage id='common.lock.text' /></div>
+                          <div className={styles['popup-line']}><FormattedMessage id='common.lock.by' />: { approvalInfo?.submitBy }</div>
+                          <div className={styles['popup-line']}><FormattedMessage id='common.lock.time' />: { dayjs(approvalInfo?.lockedTime).format('YYYY-MM-DD HH:mm:ss') }</div>
+                        </div>
+                      }
+                      position='top center'
+                    />
+                  )
+                }
                 <div className={styles['info-toggle-name']}>
                   {toggleInfo?.name}
                 </div>

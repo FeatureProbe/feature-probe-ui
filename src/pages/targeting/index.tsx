@@ -56,6 +56,7 @@ const Targeting = () => {
   const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
   const [ isTargetingLoading, saveIsTargetingLoading ] = useState<boolean>(true);
   const [ isInfoLoading, saveIsInfoLoading ] = useState<boolean>(true);
+  const [ isHistoryLoading, saveIsHistoryLoading ] = useState<boolean>(true);
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
   const { i18n } = I18NContainer.useContainer();
 
@@ -116,7 +117,21 @@ const Targeting = () => {
       saveIsTargetingLoading(false);
       const { data, success } = res;
       if (success && data) {
-        const { version, content, disabled, modifiedBy, modifiedTime, enableApproval, reviewers, status, submitBy, approvalBy, approvalComment } = data;
+        const { 
+          version, 
+          content, 
+          disabled, 
+          modifiedBy, 
+          modifiedTime, 
+          enableApproval, 
+          reviewers, 
+          status, 
+          submitBy, 
+          approvalBy, 
+          approvalComment,
+          locked,
+          lockedTime,
+        } = data;
         saveTargeting(cloneDeep(content));
         saveToggleDisable(disabled || false);
         saveInitTargeting(cloneDeep({
@@ -134,6 +149,8 @@ const Targeting = () => {
           submitBy,
           approvalBy,
           approvalComment,
+          locked,
+          lockedTime,
         });
         saveLatestVersion(version || 0);
         saveSelectedVersion(version || 0);
@@ -145,6 +162,7 @@ const Targeting = () => {
 
   // get specific history versions
   const getVersionsByVersion = useCallback(async () => {
+    saveIsHistoryLoading(true);
     const res = await getTargetingVersionsByVersion<ITargetingVersionsByVersion>(
       projectKey, 
       environmentKey, 
@@ -152,6 +170,8 @@ const Targeting = () => {
       currentVersion
     );
 
+    saveIsTargetingLoading(false);
+    saveIsHistoryLoading(false);
     const { data, success } = res;
     if (success && data) {
       saveVersions(data.versions);
@@ -212,6 +232,7 @@ const Targeting = () => {
       toggleKey, 
       params,
     ).then(res => {
+      saveIsHistoryLoading(false);
       const { data, success } = res;
       if (success && data) {
         const { content, number, totalPages } = data;
@@ -315,6 +336,7 @@ const Targeting = () => {
             modifyInfo={modifyInfo}
             approvalInfo={approvalInfo}
             isInfoLoading={isInfoLoading}
+            targetingDisabled={targetingDisabled}
             gotoGetStarted={gotoGetStarted}
             initTargeting={() => {
               initTargeting();
@@ -349,6 +371,7 @@ const Targeting = () => {
                     onClick={() => {
                       setHistoryOpen(!historyOpen);
                       if (!versions.length) {
+                        saveIsHistoryLoading(true);
                         getVersionsList();
                       }
                     }}
@@ -423,6 +446,7 @@ const Targeting = () => {
                         <History 
                           versions={versions}
                           hasMore={historyHasMore}
+                          isHistoryLoading={isHistoryLoading}
                           latestVersion={latestVersion}
                           selectedVersion={selectedVersion}
                           loadMore={() => {

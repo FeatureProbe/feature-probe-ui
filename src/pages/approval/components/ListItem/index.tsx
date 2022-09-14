@@ -79,21 +79,25 @@ const ListItem = (props: IProps) => {
           }}
         >
           <div>
-            <Popup
-              inverted
-              className={styles.popup}
-              trigger={
-                <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
-              }
-              content={
-                <div>
-                  <div><FormattedMessage id='common.lock.text' /></div>
-                  <div><FormattedMessage id='common.lock.by' />: { '' }</div>
-                  <div><FormattedMessage id='common.lock.time' />: { dayjs().format('YYYY-MM-DD HH:mm:ss') }</div>
-                </div>
-              }
-              position='top center'
-            />
+            {
+              approval.locked && (
+                <Popup
+                  inverted
+                  className={styles.popup}
+                  trigger={
+                    <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                  }
+                  content={
+                    <div>
+                      <div className={styles['popup-line']}><FormattedMessage id='common.lock.text' /></div>
+                      <div className={styles['popup-line']}><FormattedMessage id='common.lock.by' />: { approval.submitBy }</div>
+                      <div className={styles['popup-line']}><FormattedMessage id='common.lock.time' />: { dayjs(approval.lockedTime).format('YYYY-MM-DD HH:mm:ss') }</div>
+                    </div>
+                  }
+                  position='top center'
+                />
+              )
+            }
             { approval.toggleName }
           </div>
         </div>
