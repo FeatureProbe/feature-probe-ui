@@ -25,7 +25,7 @@ export interface IToggle {
   visitedTime: string;
   modifiedTime: string;
   modifiedBy: string;
-  isLocked?: boolean;
+  locked?: boolean;
   lockedBy?: string;
   lockedTime?: string;
 }

@@ -16,6 +16,8 @@ export interface IApproval {
   comment?: string;
   approvalTime?: string;
   sketchTime?: string;
+  locked?: boolean;
+  lockedTime?: string;
 }
 
 export interface IApprovalList {

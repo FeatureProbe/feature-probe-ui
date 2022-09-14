@@ -48,7 +48,7 @@ const ProjectLayout = (props: IProps) => {
   const [ envIndex, setEnvIndex ] = useState<number>(0);
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
-  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(false);
   const history = useHistory();
   const match = useRouteMatch();
 
@@ -68,6 +68,7 @@ const ProjectLayout = (props: IProps) => {
 
   useEffect(() => {
     if (!toggleKey) return;
+
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
       const { data, success } = res;
 

@@ -76,6 +76,16 @@
   opacity: 0.8;
 }
 
+.popup-line {
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #EFF2F7;
+}
+
+.popup-line:last-child {
+  margin-bottom: 0;
+}
+
 .toggle-modified {
   font-size: 15px;
 }

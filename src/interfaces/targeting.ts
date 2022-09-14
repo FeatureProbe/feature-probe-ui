@@ -75,6 +75,8 @@ export interface IContent {
   submitBy?: string;
   approvalBy?: string;
   approvalComment?: string;
+  locked?: boolean;
+  lockedTime?: string;
 }
 
 export interface IModifyInfo {
@@ -160,6 +162,8 @@ export interface IApprovalInfo {
   submitBy?: string;
   approvalBy?: string;
   approvalComment?: string;
+  locked?: boolean;
+  lockedTime?: string;
 }
 
 export interface ITargeting {

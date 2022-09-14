@@ -1,3 +1,7 @@
+.history {
+  height: 100%;
+}
+
 .history-title {
   display: flex;
   justify-content: space-between;
@@ -38,6 +42,8 @@
   margin-top: 8px;
   padding-left: 20px;
   padding-bottom: 24px;
+  position: relative;
+  height: calc(100% - 60px);
 }
 
 .loading {
