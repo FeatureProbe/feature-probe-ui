@@ -94,7 +94,7 @@
   "common.skip.text": "Skip",
   "common.lock.text": "This toggle is locked",
   "common.lock.by": "Locked by",
-  "common.lock.time": "Locked time",
+  "common.lock.time": "Locked at",
 
   "header.getuser.error.text": "Get user info error!",
 
