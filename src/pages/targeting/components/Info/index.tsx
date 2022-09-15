@@ -147,7 +147,7 @@ const Info = (props: IProps) => {
         message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
       }
     }
-  }, [intl, isReEdit, status, comment, approvalInfo, projectKey, environmentKey, toggleKey, refreshInitialTargeting, initTargeting]);
+  }, [intl, isReEdit, status, comment, projectKey, environmentKey, toggleKey, refreshInitialTargeting, initTargeting]);
 
   // Abandon this approval
   const handleAbandon = useCallback(async () => {
