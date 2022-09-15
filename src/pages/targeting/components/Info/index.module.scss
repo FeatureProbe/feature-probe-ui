@@ -190,12 +190,18 @@
 .modal-continue-edit {
   font-family: PingFangSC-Regular;
   font-size: 13px;
-  color: #74788D;
+  color: #495057;
 }
 
 .radio-group {
   display: flex;
   margin-top: 8px;
+
+  :global {
+    label {
+      color: #212529 !important;
+    }
+  }
 }
 
 .radio-group-item {
