@@ -65,7 +65,7 @@
 .table-header {
   :global {
     th {
-      padding-bottom: 0 !important
+      padding-bottom: 0 !important;
     }
 
     th:first-child {
@@ -73,6 +73,10 @@
       padding-bottom: 0 !important;
     }
   }
+}
+
+.column-toggle {
+  padding-left: 40px !important;
 }
 
 .column-title {

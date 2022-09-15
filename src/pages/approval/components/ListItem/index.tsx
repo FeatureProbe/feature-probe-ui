@@ -71,7 +71,7 @@ const ListItem = (props: IProps) => {
           {approval.title}
         </div>
       </Table.Cell>
-      <Table.Cell>
+      <Table.Cell className={styles['column-toggle']}>
         <div 
           className={styles['list-item-toggle']} 
           onClick={() => {

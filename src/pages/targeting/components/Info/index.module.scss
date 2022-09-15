@@ -100,6 +100,14 @@
   background-color: transparent !important;
 }
 
+.loader {
+  margin-right: 5px !important;
+}
+
+.loader-text {
+  vertical-align: middle;
+}
+
 .connect-sdk {
   color: #556EE6;
   cursor: pointer;
@@ -222,6 +230,10 @@
   text-align: right;
 }
 
+.footer-btn {
+  margin-left: 8px !important;
+}
+
 .diff-modal-header {
   display: flex;
   justify-content: space-between;
@@ -246,8 +258,6 @@
   font-size: 14px;
   color: rgba(0, 0, 0, 0.60);
   margin: 0 -16px -4px;
-  // border-bottom: 1px solid rgba(206, 212, 218, 0.6);
-  // padding-bottom: 24px;
 
   :global {
     .d2h-file-header {

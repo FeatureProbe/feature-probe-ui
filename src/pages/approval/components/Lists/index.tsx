@@ -188,7 +188,7 @@ const Lists = () => {
                   <Table.HeaderCell className={styles['column-title']}>
                     <FormattedMessage id='targeting.publish.modal.comment' />
                   </Table.HeaderCell>
-                  <Table.HeaderCell>
+                  <Table.HeaderCell className={styles['column-toggle']}>
                     <FormattedMessage id='common.toggle.text' />
                   </Table.HeaderCell>
                   <Table.HeaderCell>
