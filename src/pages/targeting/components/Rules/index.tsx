@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import SectionTitle from 'components/SectionTitle';
 import Icon from 'components/Icon';
 import Rule from 'components/Rule';
-import { IRule } from 'interfaces/targeting';
+import { ICondition, IOption, IRule } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import styles from './index.module.scss';
 import classNames from 'classnames';
@@ -30,6 +30,9 @@ const Rules = (props: IProps) => {
     hooksFormContainer, 
     segmentContainer 
   } = props;
+
+  const [ subjectOptions, saveSubjectOptions ] = useState<IOption[]>([]);
+
   const { 
     rules,
     saveRules,
@@ -53,6 +56,28 @@ const Rules = (props: IProps) => {
       [styles['add-disabled']]: rules.length >= MAX_RULES || disabled
     }
   );
+
+  useEffect(() => {
+    const subjectOptions: IOption[] = [];
+    rules.forEach((rule:IRule) => {
+      if (rule.conditions) {
+        rule.conditions.forEach((condition: ICondition) => {
+          const index = subjectOptions.findIndex((item) => {
+            return item.key === condition.subject;
+          });
+
+          if (index === -1 && condition.subject) {
+            subjectOptions.push({
+              key: condition.subject,
+              text: condition.subject,
+              value: condition.subject,
+            });
+          }
+        });
+      }
+    });
+    saveSubjectOptions(cloneDeep(subjectOptions));
+  }, [rules]);
 
 	return (
 		<div className={styles.rules}>
@@ -79,6 +104,7 @@ const Rules = (props: IProps) => {
                         disabled={disabled}
                         useSegment={useSegment}
                         ruleContainer={ruleContainer}
+                        subjectOptions={subjectOptions}
                         segmentContainer={segmentContainer}
                         hooksFormContainer={hooksFormContainer}
                         variationContainer={variationContainer}

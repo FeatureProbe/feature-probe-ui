@@ -28,6 +28,7 @@ interface IProps {
   useSegment?: boolean;
   conditionIndex: number;
   condition: ICondition;
+  subjectOptions: IOption[];
   ruleContainer: IContainer;
   variationContainer?: IContainer;
   segmentContainer?: IContainer;
@@ -43,7 +44,8 @@ const RuleContent = (props: IProps) => {
     rule,
     disabled,
     ruleIndex,
-    useSegment,
+    // useSegment,
+    subjectOptions,
     conditionIndex,
     condition,
     ruleContainer, 
@@ -54,7 +56,6 @@ const RuleContent = (props: IProps) => {
   const intl = useIntl();
   const [ options, setOption ] = useState<IOption[]>();
   const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
-  let subjectOptions: IOption[] = [];
 
   const {
     handleChangeAttr,
@@ -113,22 +114,6 @@ const RuleContent = (props: IProps) => {
       value: val,
     };
   });
-
-  if (useSegment) {
-    subjectOptions = [];
-  }
-  
-  const subjectIndex = subjectOptions?.findIndex((attr) => {
-    return attr.value === condition.subject;
-  });
-
-  if (subjectIndex === -1 && condition.subject) {
-    subjectOptions.push({
-      key: condition.subject,
-      text: condition.subject,
-      value: condition.subject,
-    });
-  }
 
   const inputProps = {
     placeholder: intl.formatMessage({id: 'common.dropdown.placeholder'}),
