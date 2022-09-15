@@ -203,7 +203,7 @@ const Steps = () => {
       saveClientAvailability(true);
     }
 
-  }, [projectKey, toggleKey]);
+  }, [intl, projectKey, toggleKey]);
 
   return (
     <div className={styles.page}>

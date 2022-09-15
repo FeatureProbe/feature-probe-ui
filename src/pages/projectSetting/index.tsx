@@ -109,7 +109,7 @@ const ProjectSetting = () => {
     }).then(() => {
       message.success(intl.formatMessage({id: 'toggles.settings.save.success'}));
     });
-  }, [intl, approvalSetting]);
+  }, [intl, projectKey, approvalSetting]);
 
   return (
     <ProjectLayout>

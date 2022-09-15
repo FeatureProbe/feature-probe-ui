@@ -29,14 +29,14 @@ const Lists = () => {
   const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
 
 	useEffect(() => {
-		if (location.pathname === LIST) {
+		if (window.location.pathname === LIST) {
 			saveType('APPROVAL');
-		} else if (location.pathname === MINE) {
+		} else if (window.location.pathname === MINE) {
 			saveType('APPLY');
 		}
 		saveStatus('PENDING');
     savePageIndex(0);
-	}, [location.pathname]);
+	}, [window.location.pathname]);
 
 	const init = useCallback(() => {
     saveIsLoading(true);
@@ -69,7 +69,7 @@ const Lists = () => {
         message.error(intl.formatMessage({id: 'approvals.lists.error'}));
       }
 		});
-  }, [type, status, keyword, pageIndex]);
+  }, [type, status, keyword, pageIndex, userInfo, saveUserInfo]);
 
   useEffect(() => {
     init();
@@ -85,7 +85,7 @@ const Lists = () => {
 
   const refreshList = useCallback(() => {
     init();
-  }, []);
+  }, [init]);
 
   return (
     <div className={styles.lists}>

@@ -273,7 +273,7 @@ const Targeting = () => {
     saveCount(0);
     initTargeting();
     saveTargetingDisabled(false);
-  }, [initTargeting, reviewHistory]);
+  }, [initTargeting]);
   
   const confirmReviewHistory = useCallback(() => {
     if (activeVersion) {

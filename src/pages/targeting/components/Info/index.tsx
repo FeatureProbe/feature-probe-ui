@@ -97,7 +97,7 @@ const Info = (props: IProps) => {
         status: 'RELEASE',
       });
     }
-  }, [projectKey, environmentKey, toggleKey, approvalInfo]);
+  }, [projectKey, environmentKey, toggleKey, approvalInfo, saveApprovalInfo, saveInitTargeting]);
 
   const onSubmit = useCallback(async () => {
     saveOpen(false);
@@ -147,7 +147,7 @@ const Info = (props: IProps) => {
         message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
       }
     }
-  }, [status, comment, approvalInfo, projectKey, environmentKey, toggleKey, refreshInitialTargeting]);
+  }, [intl, isReEdit, status, comment, approvalInfo, projectKey, environmentKey, toggleKey, refreshInitialTargeting, initTargeting]);
 
   // Abandon this approval
   const handleAbandon = useCallback(async () => {
@@ -158,7 +158,7 @@ const Info = (props: IProps) => {
     } else {
       message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
     }
-  }, [projectKey, environmentKey, toggleKey, initTargeting]);
+  }, [intl, projectKey, environmentKey, toggleKey, initTargeting]);
 
   // Continue to edit this approval
   const handleReEdit = useCallback(async () => {
@@ -166,7 +166,7 @@ const Info = (props: IProps) => {
     if (result.success) {
       refreshInitialTargeting();
     }
-  }, [projectKey, environmentKey, toggleKey, approvalInfo, refreshInitialTargeting]);
+  }, [projectKey, environmentKey, toggleKey, refreshInitialTargeting]);
 
   // Publish this approval
   const handlePublish = useCallback(() => {
@@ -178,7 +178,7 @@ const Info = (props: IProps) => {
         message.success(intl.formatMessage({id: 'targeting.publish.error.text'}));
       }
     });
-  }, [projectKey, environmentKey, toggleKey]);
+  }, [intl, projectKey, environmentKey, toggleKey, initTargeting]);
 
   // Show diffs
   const handleShowDiff = useCallback(async () => {
@@ -278,7 +278,7 @@ const Info = (props: IProps) => {
                   )
                 }
                 {
-                  (enableApproval && toggleStatus === 'PASS' || toggleStatus === 'JUMP') && (
+                  (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP')) && (
                     <div className={`${styles['status-publish']} ${styles.status}`}>
                       <Icon type='wait' customClass={styles['status-icon']} />
                       <FormattedMessage id='approvals.status.unpublished' />

@@ -37,19 +37,20 @@ const ListItem = (props: IProps) => {
 
   const onSubmit = useCallback(async() => {
     saveOpen(false);
-    
-    const res = await updateApprovalStatus(approval.projectKey, approval.environmentKey, approval.toggleKey, {
-      status: operationStatus,
-      comment,
-    });
-
-    if (res.success) {
-      message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
-      refreshList();
-    } else {
-      message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+    if (approval.projectKey && approval.environmentKey && approval.toggleKey) {
+      const res = await updateApprovalStatus(approval.projectKey, approval.environmentKey, approval.toggleKey, {
+        status: operationStatus,
+        comment,
+      });
+  
+      if (res.success) {
+        message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
+        refreshList();
+      } else {
+        message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+      }
     }
-  }, [comment, operationStatus, refreshList]);
+  }, [intl, comment, operationStatus, approval, refreshList]);
 
   const onCancel = useCallback(() => {
     saveOpen(false);
