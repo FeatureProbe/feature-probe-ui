@@ -5,7 +5,7 @@ import Button from 'components/Button';
 import Serve from 'components/Serve';
 import Icon from 'components/Icon';
 import Condition from './condition';
-import { IRule, ICondition } from 'interfaces/targeting';
+import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import { STRING_TYPE, NUMBER_TYPE, SEMVER_TYPE, DATETIME_TYPE, SEGMENT_TYPE } from './constants';
 import styles from './index.module.scss';
@@ -16,6 +16,7 @@ interface IProps {
   disabled?: boolean;
   useSegment?: boolean;
   ruleContainer: IContainer;
+  subjectOptions: IOption[];
   variationContainer?: IContainer;
   segmentContainer?: IContainer;
   hooksFormContainer: IContainer;
@@ -28,6 +29,7 @@ const RuleContent = (props: IProps) => {
     ruleIndex,
     useSegment,
     ruleContainer, 
+    subjectOptions,
     segmentContainer,
     variationContainer, 
     hooksFormContainer, 
@@ -65,6 +67,7 @@ const RuleContent = (props: IProps) => {
               useSegment={useSegment}
               conditionIndex={index}
               condition={condition}
+              subjectOptions={subjectOptions}
               ruleContainer={ruleContainer}
               segmentContainer={segmentContainer}
               variationContainer={variationContainer}

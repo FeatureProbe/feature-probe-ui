@@ -4,7 +4,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import RuleTitle from './RuleTitle';
 import RuleContent from './RuleContent';
 import Icon from 'components/Icon';
-import { IRule } from 'interfaces/targeting';
+import { IOption, IRule } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 
 import styles from './index.module.scss';
@@ -14,6 +14,7 @@ interface IProps {
   index: number;
   disabled?: boolean;
   useSegment?: boolean;
+  subjectOptions: IOption[];
   variationContainer?: IContainer;
   ruleContainer: IContainer;
   hooksFormContainer: IContainer;
@@ -27,6 +28,7 @@ const Rule = (props: IProps) => {
     disabled,
     useSegment,
     ruleContainer,
+    subjectOptions,
     variationContainer,
     hooksFormContainer,
     segmentContainer,
@@ -84,6 +86,7 @@ const Rule = (props: IProps) => {
                       ruleIndex={index}
                       disabled={disabled}
                       useSegment={useSegment}
+                      subjectOptions={subjectOptions}
                       ruleContainer={ruleContainer}
                       segmentContainer={segmentContainer}
                       variationContainer={variationContainer}
