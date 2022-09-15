@@ -262,7 +262,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, []);
 
   const handlePublishConfirm = useCallback(async () => {
-    if (approvalInfo?.enableApproval && comment === '') {
+    if (approvalInfo && approvalInfo?.enableApproval && comment === '') {
       await newTrigger('reason');
       return;
     }
@@ -274,7 +274,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         ...publishTargeting
       });
       if (res.success) {
-        if (approvalInfo?.enableApproval) {
+        if (approvalInfo && approvalInfo?.enableApproval) {
           message.success(intl.formatMessage({id: 'targeting.approval.request.success'}));
         } else {
           message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
@@ -284,7 +284,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       }
       setLoading(false);
     }
-  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, initTargeting]);
+  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, approvalInfo, initTargeting, newTrigger]);
 
   const handleGoBack = useCallback(() => {
     history.push(`/${projectKey}/${environmentKey}/toggles`);

@@ -121,7 +121,7 @@ const PageHeader = () => {
         });
       }
 		});
-  }, [intl, saveUserInfo]);
+  }, [intl, userInfo.approvalCount, saveUserInfo]);
 
   useEffect(() => {
     const reg = new RegExp('[^/]+$');
