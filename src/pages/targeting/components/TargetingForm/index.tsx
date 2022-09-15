@@ -376,9 +376,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       <div id='footer' className={styles.footer}>
         <EventTracker category='targeting' action='publish-toggle'>
           <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
-            {
-              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
-            }
+            { isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} /> }
             <span className={styles['publish-btn-text']}>
               {
                 approvalInfo?.enableApproval ? <FormattedMessage id='common.request.approval.text' /> : <FormattedMessage id='common.publish.text' />

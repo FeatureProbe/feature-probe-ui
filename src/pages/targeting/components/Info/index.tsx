@@ -42,6 +42,7 @@ const Info = (props: IProps) => {
   const [ comment, saveComment ] = useState<string>('');
   const [ toggleStatus, saveToggleStatus ] = useState<string>(approvalInfo?.status || '');
   const [ diffContent, setDiffContent ] = useState<string>('');
+  const [ isDiffLoading, saveIsDiffLoading ] = useState<boolean>(false);
 
   const { userInfo } = HeaderContainer.useContainer();
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
@@ -80,6 +81,7 @@ const Info = (props: IProps) => {
   const refreshInitialTargeting = useCallback(async () => {
     const res = await getTargeting<IContent>(projectKey, environmentKey, toggleKey);
     const { data, success } = res;
+
     if (success && data) {
       const { content, disabled } = data;
       saveInitTargeting(cloneDeep({
@@ -87,6 +89,7 @@ const Info = (props: IProps) => {
         content,
       }));
     }
+
     if (approvalInfo) {
         saveApprovalInfo({
         ...approvalInfo,
@@ -179,19 +182,24 @@ const Info = (props: IProps) => {
 
   // Show diffs
   const handleShowDiff = useCallback(async () => {
+    saveIsDiffLoading(true);
     const res = await getTargetingDiff<ITargetingDiff>(projectKey, environmentKey, toggleKey);
+    saveIsDiffLoading(false);
+
     const targetingDiff = res.data;
-    
     if (targetingDiff) {
       const { currentContent, oldContent, oldDisabled, currentDisabled } = targetingDiff;
+
       const before = JSONbig.stringify({
         disabled: oldDisabled,
         content: oldContent
       }, null, 2);
+
       const after = JSONbig.stringify({
         disabled: currentDisabled,
         content: currentContent
       }, null, 2);
+
       const result = createPatch('content', before.replace(/\\n/g, '\n'), after.replace(/\\n/g, '\n'));
 
       const content = html(result, {
@@ -236,7 +244,10 @@ const Info = (props: IProps) => {
                         <div>
                           <div className={styles['popup-line']}><FormattedMessage id='common.lock.text' /></div>
                           <div className={styles['popup-line']}><FormattedMessage id='common.lock.by' />: { approvalInfo?.submitBy }</div>
-                          <div className={styles['popup-line']}><FormattedMessage id='common.lock.time' />: { dayjs(approvalInfo?.lockedTime).format('YYYY-MM-DD HH:mm:ss') }</div>
+                          <div className={styles['popup-line']}>
+                            <FormattedMessage id='common.lock.time' />: 
+                            { dayjs(approvalInfo?.lockedTime).format('YYYY-MM-DD HH:mm:ss') }
+                          </div>
                         </div>
                       }
                       position='top center'
@@ -301,10 +312,15 @@ const Info = (props: IProps) => {
                   <FormattedMessage id='toggle.connect' />
                 </div>
                 <div>
+
+                  {/* Button Show Changes */}
                   {
                     enableApproval && toggleStatus !== 'RELEASE' && (
-                      <Button secondary className={styles.btn} onClick={handleShowDiff}>
-                        <FormattedMessage id='targeting.approval.operation.view.changes' />
+                      <Button secondary className={styles.btn} onClick={handleShowDiff} disabled={isDiffLoading}>
+                        { isDiffLoading && <Loader active inline size='tiny' className={styles['loader']} /> }
+                        <span className={styles['loader-text']}>
+                          <FormattedMessage id='targeting.approval.operation.view.changes' />
+                        </span>
                       </Button>
                     )
                   }
@@ -312,6 +328,8 @@ const Info = (props: IProps) => {
                   {
                     enableApproval && toggleStatus === 'PENDING' && (
                       <>
+                        {/* Button Skip Approval */}
+                        {/* Button Withdraw */}
                         {
                           approvalInfo?.submitBy === userInfo.account && (
                             <>
@@ -338,7 +356,9 @@ const Info = (props: IProps) => {
                             </>
                           )
                         }
-                        
+
+                        {/* Button Decline */}
+                        {/* Button Accept */}
                         {
                           approvalInfo?.reviewers?.includes(userInfo.account) && (
                             <>
@@ -369,6 +389,8 @@ const Info = (props: IProps) => {
                     )
                   }
 
+                  {/* Button Discard */}
+                  {/* Button Publish */}
                   {
                     (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && approvalInfo?.submitBy === userInfo.account) && (
                       <>
@@ -389,6 +411,9 @@ const Info = (props: IProps) => {
                     )
                   }
 
+                  
+                  {/* Button Abandon */}
+                  {/* Button Modify */}
                   {
                     enableApproval && toggleStatus === 'REJECT' && approvalInfo?.submitBy === userInfo.account && (
                       <>
@@ -463,11 +488,7 @@ const Info = (props: IProps) => {
           </>
         )
       }
-      <Modal 
-        open={open}
-        width={480}
-        footer={null}
-      >
+      <Modal open={open} width={480} footer={null}>
         <div>
           <div className={styles['modal-header']}>
             <span className={styles['modal-header-text']}>
@@ -538,7 +559,7 @@ const Info = (props: IProps) => {
                 <Button size='mini' basic type='reset' onClick={() => { saveOpen(false); }}>
                   <FormattedMessage id='common.cancel.text' />
                 </Button>
-                <Button size='mini' className={styles['btn']} type='submit' primary>
+                <Button size='mini' className={styles['footer-btn']} type='submit' primary>
                   <FormattedMessage id='common.confirm.text' />
                 </Button>
               </div>

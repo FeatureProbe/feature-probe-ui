@@ -11,16 +11,24 @@
   padding-left: 24px;
 }
 
+.column-toggle {
+  padding-left: 20px !important;
+}
+
 .list-item-toggle {
   font-size: 15px;
   color: #556EE6;
   cursor: pointer;
+  position: relative;
+  padding-left: 20px !important;
 }
 
 .toggle-lock {
   color: #F5483B;
   font-size: 14px;
   margin-right: 4px;
+  position: absolute;
+  left: 0;
 }
 
 .popup {
