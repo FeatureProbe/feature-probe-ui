@@ -1,5 +1,5 @@
 export const VariationColors = [
-  '#556EE6',
+  '#556ee6',
   '#FF9C1B',
   '#2AC8E4',
   '#A76CEC',
@@ -7,7 +7,7 @@ export const VariationColors = [
   '#A7B1EB',
   '#94BEF2',
   '#9DDEEB',
-  '#FFC300',
+  '#ffc300',
   '#CCABF1',
   '#3991FF',
   '#12CA7A',
@@ -22,7 +22,7 @@ export const VariationColors = [
 ];
 
 export const EnvironmentColors = [
-  '#556EE6',
+  '#556ee6',
   '#CFA004',
   '#6EA40E',
   '#3178CF',

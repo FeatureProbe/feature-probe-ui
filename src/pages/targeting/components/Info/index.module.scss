@@ -23,7 +23,7 @@
 }
 
 .toggle-lock {
-  color: #F5483B;
+  color: #f5483b;
   font-size: 18px;
   margin-right: 8px;
   position: relative;
@@ -37,7 +37,7 @@
 .popup-line {
   margin-bottom: 8px;
   font-size: 13px;
-  color: #EFF2F7;
+  color: #eef2f7;
 }
 
 .popup-line:last-child {
@@ -56,18 +56,18 @@
 }
 
 .status-pending {
-  background: #EFF8FF;
-  color: #4070F4;
+  background: #eff8ff;
+  color: #4070f4;
 }
 
 .status-publish {
-  background: #E5FBF0;
-  color: #00B365;
+  background: #e5fbf0;
+  color: #00b365;
 }
 
 .status-reject {
-  background: #FEECEF;
-  color: #FF4462;
+  background: #feecef;
+  color: #ff4462;
 }
 
 .status-icon {
@@ -88,8 +88,8 @@
 
 .dangerous-btn {
   margin-left: 8px !important;
-  color: #F5483B !important;
-  border: 1px solid #F5483B !important;
+  color: #f5483b !important;
+  border: 1px solid #f5483b !important;
 }
 
 .dangerous-btn:hover {
@@ -105,7 +105,7 @@
 }
 
 .connect-sdk {
-  color: #556EE6;
+  color: #556ee6;
   cursor: pointer;
   margin-right: 8px;
 }
@@ -129,13 +129,13 @@
 }
 
 .tags {
-  background: #ECECF6;
+  background: #ececf6;
   border-radius: 4px;
   font-size: 10px;
   color: #495057;
   display: inline-block;
   margin: 4px 8px 4px 0;
-  padding: 4px 4px;
+  padding: 4px;
 }
 
 .tags-text {
@@ -148,7 +148,7 @@
 }
 
 .label {
-  color: #74788D;
+  color: #74788d;
   font-size: 13px;
 }
 
@@ -209,7 +209,7 @@
 }
 
 .label-required {
-  color: #FF5F57;
+  color: #ff5f57;
   font-size: 20px;
   margin-right: 4px;
   height: 16px;
@@ -219,7 +219,7 @@
 }
 
 .error-text {
-  color: #F46A6A;
+  color: #f46a6a;
   margin-top: -15px;
   margin-bottom: 15px;
   font-size: 12px;
@@ -271,25 +271,25 @@
     }
 
     .d2h-file-wrapper {
-      border-top: 1px solid rgba(206,212,218,0.60);
-      border-bottom: 1px solid rgba(206,212,218,0.60);
+      border-top: 1px solid rgba(206, 212, 218, 0.6);
+      border-bottom: 1px solid rgba(206, 212, 218, 0.6);
       border-radius: 0;
     }
 
     .d2h-del {
-      background-color: #FFF5F4;
+      background-color: #fff5f4;
     }
 
     .d2h-code-line del, .d2h-code-side-line del {
-      background-color: #FFD4D0;
+      background-color: #ffd4d0;
     }
 
     .d2h-ins {
-      background-color: #EFFCF2;
+      background-color: #effcf2;
     }
 
     .d2h-code-line ins, .d2h-code-side-line ins {
-      background-color: #C2F6CE;
+      background-color: #c2f6ce;
     }
 
     .d2h-file-side-diff {

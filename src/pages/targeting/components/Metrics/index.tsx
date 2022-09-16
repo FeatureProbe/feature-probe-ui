@@ -235,7 +235,7 @@ ChartJS.register(
         ctx.moveTo(x, topY);
         ctx.lineTo(x, bottomY);
         ctx.lineWidth = 2;
-        ctx.strokeStyle = '#CED4DA';
+        ctx.strokeStyle = '#ced4da';
         ctx.stroke();
         ctx.restore();
       }

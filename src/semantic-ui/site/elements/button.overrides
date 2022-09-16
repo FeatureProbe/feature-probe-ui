@@ -15,7 +15,7 @@
 .ui.secondary.button {
   background-color: #ffffff;
   color: #556ee6;
-  border: 1px solid #556EE6;
+  border: 1px solid #556ee6;
 }
 
 .ui.secondary.buttons .button:hover,
@@ -38,34 +38,34 @@
 .ui.basic.buttons .button,
 .ui.basic.button {
   background: #ffffff !important;
-  color: #353A40 !important;
+  color: #353a40 !important;
   box-shadow: none;
-  border: 1px solid #CED4DA;
+  border: 1px solid #ced4da;
 }
 
 .ui.basic.buttons .button:hover,
 .ui.basic.button:hover {
   background: #ffffff !important;
-  color: #556EE6 !important;
-  border: 1px solid #556EE6;
+  color: #556ee6 !important;
+  border: 1px solid #556ee6;
   box-shadow: none;
 }
 .ui.basic.buttons .button:focus,
 .ui.basic.button:focus {
   background: #ffffff !important;
-  color: #556EE6 !important;
+  color: #556ee6 !important;
   box-shadow: none;
 }
 .ui.basic.buttons .button:active,
 .ui.basic.button:active {
   background: #ffffff !important;
-  color: #556EE6 !important;
+  color: #556ee6 !important;
   box-shadow: none;
 }
 .ui.basic.buttons .active.button,
 .ui.basic.active.button {
   background: #ffffff !important;
-  color: #556EE6 !important;
+  color: #556ee6 !important;
   box-shadow: none;
 }
 

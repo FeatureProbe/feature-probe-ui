@@ -8,7 +8,7 @@ const getOrCreateTooltip = (chart: Chart) => {
     tooltipEl.style.background = 'rgba(255, 255, 255, 0.95)';
     tooltipEl.style.borderRadius = '8px';
     tooltipEl.style.boxShadow = '0 -2px 4px 0 rgba(0,0,0,0.02), 0 2px 6px 6px rgba(0,0,0,0.02), 0 2px 6px 0 rgba(0,0,0,0.06)';
-    tooltipEl.style.color = '#74788D';
+    tooltipEl.style.color = '#74788d';
     tooltipEl.style.opacity = '1';
     tooltipEl.style.width = '170px';
     tooltipEl.style.pointerEvents = 'none';
@@ -107,7 +107,7 @@ export const externalTooltipHandler = (context: { chart: Chart; tooltip: Tooltip
       nameDiv.style.overflow = 'hidden';
       nameDiv.style.textOverflow = 'ellipsis';
       nameDiv.style.whiteSpace = 'nowrap';
-      nameDiv.style.color = '#74788D';
+      nameDiv.style.color = '#74788d';
       const textName = document.createTextNode(splitData[0]);
       nameDiv.appendChild(textName);
 

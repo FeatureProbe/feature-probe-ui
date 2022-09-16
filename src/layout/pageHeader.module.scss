@@ -3,7 +3,7 @@
 	line-height: 48px;
 	padding: 0 20px 0 10px;
 	display: flex;
-	background: #fff;
+	background: #ffffff;
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
 
   :global {
@@ -17,8 +17,8 @@
     }
     
     .navs-item-selected {
-      border-bottom: 2px solid #556EE6;
-      color: #556EE6;
+      border-bottom: 2px solid #556ee6;
+      color: #556ee6;
       height: 43px;
       font-family: PingFangSC-Medium;
       cursor: pointer;
@@ -28,7 +28,7 @@
       width: 30px;
       height: 30px;
       border-radius: 100%;
-      background: #556EE6;
+      background: #556ee6;
       display: inline-flex;
       justify-content: center;
       align-items: center;
@@ -100,7 +100,7 @@
 }
 
 .menu-item:hover {
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
 }
 
 .github {
@@ -113,13 +113,13 @@
 .count {
   height: 20px;
   min-width: 20px;
-  background: #F5483B;
-  border: 1px solid #FFFFFF;
+  background: #f5483b;
+  border: 1px solid #ffffff;
   border-radius: 10px;
   display: inline-block;
   font-family: PingFangSC-Medium;
   font-size: 12px;
-  color: #FFFFFF;
+  color: #ffffff;
   line-height: 20px;
   padding: 0 5px;
   position: absolute;
