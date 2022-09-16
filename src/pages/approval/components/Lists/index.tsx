@@ -36,7 +36,7 @@ const Lists = () => {
 		}
 		saveStatus('PENDING');
     savePageIndex(0);
-	}, []);
+	}, [window.location.pathname]);
 
 	const init = useCallback(() => {
     saveIsLoading(true);
@@ -69,7 +69,7 @@ const Lists = () => {
         message.error(intl.formatMessage({id: 'approvals.lists.error'}));
       }
 		});
-  }, [intl, type, status, keyword, pageIndex, userInfo, saveUserInfo]);
+  }, [intl, type, status, keyword, pageIndex, saveUserInfo]);
 
   useEffect(() => {
     init();
