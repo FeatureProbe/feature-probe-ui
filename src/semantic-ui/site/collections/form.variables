@@ -5,9 +5,9 @@
 @inputBackground: rgba(33, 37, 41, 0.04);
 @inputBorderRadius: 6px;
 @inputBorder: 1px solid transparent;
-@labelColor: #74788D;
+@labelColor: #74788d;
 @labelFontWeight: 'normal';
-@inputFocusBorderColor: #74788D;
+@inputFocusBorderColor: #74788d;
 
 @disabledLabelOpacity: 1;
 @disabledOpacity: 1;

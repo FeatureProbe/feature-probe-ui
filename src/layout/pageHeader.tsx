@@ -7,25 +7,27 @@ import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo } from 'services/user';
+import { getApprovalList } from 'services/approval';
 import { IUser } from 'interfaces/member';
 import { I18NContainer } from 'hooks';
-import { PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
+import { APPROVAL_ROUTE_LIST, PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
 import { EventTrack } from 'utils/track';
 import styles from './pageHeader.module.scss';
+import { IApprovalList } from 'interfaces/approval';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
-const isDemo = localStorage.getItem('isDemo') === 'true';
+const APPROVAL_NAV = 'approvals';
 const isMainColorHeader = false;
 
 const PageHeader = () => {
   const history = useHistory();
   const location = useLocation();
   const intl = useIntl();
-  const { saveUserInfo } = HeaderContainer.useContainer();
+  const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
 
   const [ selectedNav, setSelectedNav ] = useState<string>('');
   const [ account, setAccount ] = useState<string>('');
@@ -37,62 +39,6 @@ const PageHeader = () => {
     i18n,
     setI18n
   } = I18NContainer.useContainer();
-
-  useEffect(() => {
-    const handler = () => {
-      if (menuOpen) {
-        setMenuOpen(false);
-      }
-      if (helpMenuOpen) {
-        setHelpMenuOpen(false);
-      }
-      if (i18nMenuOpen) {
-        setI18nMenuOpen(false);
-      }
-    };
-    window.addEventListener('click', handler);
-
-    return () => window.removeEventListener('click', handler);
-  }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
-
-  useEffect(() => {
-    getUserInfo<IUser>().then((res) => {
-      const { success } = res;
-      if (success) {
-        const { data } = res;
-        if (data) {
-          setAccount(data?.account);
-          saveUserInfo(data);
-          EventTrack.setUserId(data.account);
-        }
-      } else {
-        message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
-      }
-    });
-  }, [intl, saveUserInfo]);
-
-  useEffect(() => {
-    const reg = new RegExp('[^/]+$');
-    const res = reg.exec(location.pathname);
-
-    if (res && res[0]) {
-      if (PROJECT_ROUTE_LIST.includes(res[0])) {
-        setSelectedNav(PROJECT_NAV);
-      } else if (SETTING_ROUTE_LIST.includes(res[0])) {
-        setSelectedNav(SETTING_NAV);
-      } else {
-        setSelectedNav(PROJECT_NAV);
-      }
-    }
-  }, [location.pathname]);
-
-  const handleGotoProject = useCallback(() => {
-    history.push(PROJECT_PATH);
-  }, [history]);
-
-  const handleGotoAccount = useCallback(() => {
-    history.push('/settings/members');
-  }, [history]);
 
   const headerCls = classNames(
     styles['header'],
@@ -115,6 +61,96 @@ const PageHeader = () => {
     }
   );
 
+  const approvalCls = classNames(
+    'navs-item',
+    {
+      'navs-item-selected': selectedNav === APPROVAL_NAV
+    }
+  );
+
+  useEffect(() => {
+    const handler = () => {
+      if (menuOpen) {
+        setMenuOpen(false);
+      }
+      if (helpMenuOpen) {
+        setHelpMenuOpen(false);
+      }
+      if (i18nMenuOpen) {
+        setI18nMenuOpen(false);
+      }
+    };
+    window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
+
+  useEffect(() => {
+    let result: IUser;
+
+    getUserInfo<IUser>().then(res => {
+      const { success } = res;
+      if (success) {
+        const { data } = res;
+        if (data) {
+          setAccount(data?.account);
+          saveUserInfo({
+            ...data,
+            approvalCount: userInfo.approvalCount,
+          });
+          EventTrack.setUserId(data.account);
+          result = data;
+        }
+      } else {
+        message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
+      }
+    });
+
+    getApprovalList<IApprovalList>({
+			pageIndex: 0,
+			status: 'PENDING',
+			type: 'APPROVAL',
+			keyword: '',
+		}).then(res => {
+			const { success, data } = res;
+			if (success && data) {
+				const { totalElements } = data;
+        saveUserInfo({
+          ...result,
+          approvalCount: totalElements,
+        });
+      }
+		});
+  }, [intl, userInfo.approvalCount, saveUserInfo]);
+
+  useEffect(() => {
+    const reg = new RegExp('[^/]+$');
+    const res = reg.exec(location.pathname);
+
+    if (res && res[0]) {
+      if (PROJECT_ROUTE_LIST.includes(res[0])) {
+        setSelectedNav(PROJECT_NAV);
+      }
+      else if (SETTING_ROUTE_LIST.includes(res?.input)) {
+        setSelectedNav(SETTING_NAV);
+      }
+      else if (APPROVAL_ROUTE_LIST.includes(res?.input)) {
+        setSelectedNav(APPROVAL_NAV);
+      }
+      else {
+        setSelectedNav(PROJECT_NAV);
+      }
+    }
+  }, [location.pathname]);
+
+  const handleGotoProject = useCallback(() => {
+    history.push(PROJECT_PATH);
+  }, [history]);
+
+  const handleGotoAccount = useCallback(() => {
+    history.push('/settings/members');
+  }, [history]);
+
   const handleLogout = useCallback(async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('organizeId');
@@ -126,8 +162,16 @@ const PageHeader = () => {
   }, []);
 
   const handleGotoDocument = useCallback(() => {
-    window.open('http://doc.featureprobe.io/');
-  }, []);
+    if (i18n === 'en-US') {
+      window.open('https://docs.featureprobe.io/');
+    } else {
+      window.open('https://docs.featureprobe.io/zh-CN');
+    }
+  }, [i18n]);
+
+  const handleGotoApproval = useCallback(() => {
+    history.push('/approvals/list');
+  }, [history]);
 
   return (
     <div className={headerCls}>
@@ -142,13 +186,14 @@ const PageHeader = () => {
         <div className={projectCls} onClick={handleGotoProject}>
           <FormattedMessage id='common.projects.text' />
         </div>
-        {
-          isDemo ? null : (
-            <div className={settingCls} onClick={handleGotoAccount}>
-              <FormattedMessage id='common.settings.text' />
-            </div>
-          )
-        }
+        <div className={settingCls} onClick={handleGotoAccount}>
+          <FormattedMessage id='common.settings.text' />
+        </div>
+      
+        <div className={approvalCls} onClick={handleGotoApproval}>
+          <FormattedMessage id='approvals.center' />
+          { userInfo.approvalCount !== 0 && <span className={styles.count}>{userInfo.approvalCount > 99 ? '99+' : userInfo.approvalCount}</span> }
+        </div>
       </div>
       <div className={'user'}>
         <Popup

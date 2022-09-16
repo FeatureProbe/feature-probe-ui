@@ -3,7 +3,7 @@
 *******************************/
 
 .ui.breadcrumb a {
-  color: #74788D;
+  color: #74788d;
 }
 .ui.breadcrumb a:hover {
   color: @linkHoverColor;

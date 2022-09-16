@@ -60,10 +60,10 @@
 /* Active */
 .ui.pagination.menu .active.item {
   box-shadow: none;
-  background: #556EE6;
-  border: 1px solid #556EE6;
+  background: #556ee6;
+  border: 1px solid #556ee6;
   border-radius: 100%;
-  color: #fff;
+  color: #ffffff;
   padding: 0;
 }
 

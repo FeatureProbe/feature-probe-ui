@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table } from 'semantic-ui-react';
+import { Table, Popup } from 'semantic-ui-react';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
@@ -121,6 +121,25 @@ const ToggleItem = (props: IProps) => {
     >
       <Table.Cell>
         <div className={styles['toggle-info']}>
+          {
+            toggle.locked && (
+              <Popup
+                inverted
+                className={styles.popup}
+                trigger={
+                  <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                }
+                content={
+                  <div>
+                    <div className={styles['popup-line']}><FormattedMessage id='common.lock.text' /></div>
+                    <div className={styles['popup-line']}><FormattedMessage id='common.lock.by' />: { toggle.lockedBy }</div>
+                    <div className={styles['popup-line']}><FormattedMessage id='common.lock.time' />: { dayjs(toggle.lockedTime).format('YYYY-MM-DD HH:mm:ss') }</div>
+                  </div>
+                }
+                position='top center'
+              />
+            )
+          }
           <div className={styles['toggle-info-name']}>
             {toggle.name}
           </div>
@@ -181,8 +200,13 @@ const ToggleItem = (props: IProps) => {
               <div>
                 <Icon type='evaluate' customClass={styles['icon-evaluate']} />
                 <span>
-                  <FormattedMessage id='toggles.evaluated.text' /> 
-                  {dayjs(toggle?.visitedTime).fromNow()}
+                  {
+                    intl.formatMessage({id: 'toggles.evaluated.text'}, {
+                      time: dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')
+                    })
+                  }
+                  {/* <FormattedMessage id='toggles.evaluated.text' /> 
+                  {dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')} */}
                 </span>
               </div>
             </div> 
@@ -204,8 +228,7 @@ const ToggleItem = (props: IProps) => {
             {toggle.modifiedBy}
           </div>
           <div className={styles['toggle-modified-time']}>
-            <FormattedMessage id='toggles.updated.text' />
-            {dayjs(toggle?.modifiedTime).fromNow()}
+            {dayjs(toggle?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
           </div>
         </div>
       </Table.Cell>

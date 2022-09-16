@@ -1,11 +1,13 @@
 import { SyntheticEvent, useEffect, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { 
-  Pagination, 
-  Table, 
-  Form, 
-  PaginationProps, 
-  InputOnChangeData 
+  Pagination,
+  Table,
+  Form,
+  PaginationProps,
+  InputOnChangeData,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
@@ -44,6 +46,7 @@ const Segment = () => {
     totalPages: 1,
   });
   const [ total, setTotal ] = useState<number>(0);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
   const [ searchParams, setSearchParams ] = useState<ISearchParams>({
     pageIndex: 0,
     pageSize: 10,
@@ -52,7 +55,9 @@ const Segment = () => {
   const intl = useIntl();
 
   const fetchSegmentLists = useCallback(() => {
+    saveIsLoading(true);
     getSegmentList<ISegmentList>(projectKey, searchParams).then(async (res) => {
+      saveIsLoading(false);
       const { success, data, code } = res;
         if (success && data) {
           const { content, pageable, totalPages, totalElements } = data;
@@ -127,77 +132,89 @@ const Segment = () => {
               </Button>
             </EventTracker>
           </div>
-          <div className={styles.lists}>
-            <Table basic='very' unstackable>
-              <Table.Header className={styles['table-header']}>
-                <Table.Row>
-                  <Table.HeaderCell className={styles['column-name']}>
-                    <FormattedMessage id='common.name.text' />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-modify-by']}>
-                    <FormattedMessage id='common.modified.by.text' />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-modify-time']}>
-                    <FormattedMessage id='common.modified.time.text' />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-operation']}>
-                    <FormattedMessage id='common.operation.text' />
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              {
-                segmentList.length !== 0 && (
-                  <Table.Body>
-                    {
-                      segmentList?.map((segment: ISegment) => {
-                        return (
-                          <SegmentItem 
-                            key={segment.key}
-                            segment={segment}
-                            fetchSegmentLists={fetchSegmentLists}
-                          />
-                        );
-                      })
-                    }
-                  </Table.Body>
-                )
-              }
-            </Table>
-            {
-              segmentList.length === 0 && (
-                <div className={styles['no-data']}>
-                  <div>
-                    <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                  </div>
-                  <div>
-                    <FormattedMessage id='common.nodata.text' />
-                  </div>
-                </div>
-              )
-            }
-          </div>
           {
-            segmentList.length !== 0 && (
-              <div className={styles.pagination}>
-                <div className={styles['total']}>
-                  <span className={styles['total-count']}>{total} </span>
-                  <FormattedMessage id='segments.total' />
-                </div>
+            isLoading ? (
+              <div className={styles.lists}>
+                <Dimmer active inverted>
+                  <Loader size='small'>
+                    <FormattedMessage id='common.loading.text' />
+                  </Loader>
+                </Dimmer>
+              </div>
+            ) : (
+              <div className={styles.lists}>
+                <Table basic='very' unstackable>
+                  <Table.Header className={styles['table-header']}>
+                    <Table.Row>
+                      <Table.HeaderCell className={styles['column-name']}>
+                        <FormattedMessage id='common.name.text' />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-modify-by']}>
+                        <FormattedMessage id='common.updated.by.text' />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-modify-time']}>
+                        <FormattedMessage id='common.updated.time.text' />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-operation']}>
+                        <FormattedMessage id='common.operation.text' />
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  {
+                    segmentList.length !== 0 && (
+                      <Table.Body>
+                        {
+                          segmentList?.map((segment: ISegment) => {
+                            return (
+                              <SegmentItem 
+                                key={segment.key}
+                                segment={segment}
+                                fetchSegmentLists={fetchSegmentLists}
+                              />
+                            );
+                          })
+                        }
+                      </Table.Body>
+                    )
+                  }
+                </Table>
                 {
-                  pagination.totalPages > 1 && (
-                    <Pagination 
-                      activePage={pagination.pageIndex} 
-                      totalPages={pagination.totalPages} 
-                      onPageChange={handlePageChange}
-                      firstItem={null}
-                      lastItem={null}
-                      prevItem={{
-                        content: (<Icon type='angle-left' />)
-                      }}
-                      nextItem={{
-                        content: (<Icon type='angle-right' />)
-                      }}
-                    />
+                  segmentList.length === 0 && (
+                    <div className={styles['no-data']}>
+                      <div>
+                        <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                      </div>
+                      <div>
+                        <FormattedMessage id='common.nodata.text' />
+                      </div>
+                    </div>
+                  )
+                }
+                {
+                  segmentList.length !== 0 && (
+                    <div className={styles.pagination}>
+                      <div className={styles['total']}>
+                        <span className={styles['total-count']}>{total} </span>
+                        <FormattedMessage id='segments.total' />
+                      </div>
+                      {
+                        pagination.totalPages > 1 && (
+                          <Pagination 
+                            activePage={pagination.pageIndex} 
+                            totalPages={pagination.totalPages} 
+                            onPageChange={handlePageChange}
+                            firstItem={null}
+                            lastItem={null}
+                            prevItem={{
+                              content: (<Icon type='angle-left' />)
+                            }}
+                            nextItem={{
+                              content: (<Icon type='angle-right' />)
+                            }}
+                          />
+                        )
+                      }
+                    </div>
                   )
                 }
               </div>

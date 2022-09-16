@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useCallback, useState, SyntheticEvent, useRef } from 'react';
-import { Select, DropdownProps } from 'semantic-ui-react';
+import { Select, DropdownProps, Dimmer, Loader } from 'semantic-ui-react';
 import { Line } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { useHistory, useParams } from 'react-router-dom';
@@ -35,6 +35,7 @@ const Metrics = () => {
   const [ fitlerType, setFilterType ] = useState<string>('name');
   const [ total, setTotal ] = useState<number>(0);
   const [ isAccess, saveIsAccess ] = useState<boolean>(false);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const intl = useIntl();
   const history = useHistory();
@@ -45,6 +46,7 @@ const Metrics = () => {
       lastHours: filterValue,
       metricType: fitlerType.toUpperCase(),
     }).then(res => {
+      saveIsLoading(false);
       const { data, success } = res;
       if (success && data) {
         setMetric(data.metrics || []);
@@ -101,93 +103,105 @@ const Metrics = () => {
 
 	return (
 		<div className={styles.metrics}>
-      <div className={styles.title}>
-        <div className={styles['title-text']}>
-          <FormattedMessage id='common.evaluations.text' />
-        </div>
-        <div className={styles.operations}>
-          <div className={styles.menus}>
-            <span className={`${styles['menu-item']} ${menuNameCls}`} onClick={() => { setFilterType('name'); }}>
-              <FormattedMessage id='common.name.text' />
-            </span>
-            <span className={`${styles['menu-item']} ${menuValueCls}`} onClick={() => { setFilterType('value'); }}>
-              <FormattedMessage id='common.value.uppercase.text' />
-            </span>
-          </div>
-          <Select
-            floating
-            value={filterValue}
-            placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})}
-            className={styles['title-select']}
-            options={getOption(intl)}
-            onChange={handleSelectChange}
-            icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
-          />
-        </div>
-      </div>
       {
-         isAccess ? (
-          <div className={styles.content}>
-            <div className={styles.variations}>
-              <div className={styles['table-header']}>
-                <div>
-                  {
-                    intl.formatMessage(
-                      {id: 'targeting.variations.evaluations.text'}, 
-                      {
-                        type: fitlerType === 'name' 
-                          ? intl.formatMessage({id: 'common.name.text'}) 
-                          : intl.formatMessage({id: 'common.value.uppercase.text'}) 
-                      }
-                    )
-                  }
-                </div>
-                { 
-                  total !== 0 && <div className={styles.total}>
-                    { total }
-                  </div> 
-                }
-              </div>
-              <div className={styles['table-content']}>
-                {
-                  summary?.map((item: IValues, index: number) => {
-                    return (
-                      <div className={styles['variation-name']}>
-                        <span style={{ background: VariationColors[index % 24] }} className={styles['variation-name-color']}></span>
-                        <span className={`${styles['variation-name-text']} ${item.deleted && styles['variation-name-deleted']}`}>
-                          { item.value }
-                        </span>
-                        <span className={`${styles['count']} ${item.deleted && styles['variation-deleted']}`}>
-                          { item.count }
-                        </span>
-                      </div>
-                    );
-                  })
-                }
-              </div>
-            </div>
-            <div className={styles.chart}>
-              <Line
-                height={0}
-                options={chartOptions}
-                data={chartData}
-              />
-            </div>
-          </div>
+        isLoading ? (
+          <Dimmer active inverted>
+            <Loader size='small'>
+              <FormattedMessage id='common.loading.text' />
+            </Loader>
+          </Dimmer>
         ) : (
-          <div className={styles['no-data']}>
-            <div>
-              <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+          <>
+            <div className={styles.title}>
+              <div className={styles['title-text']}>
+                <FormattedMessage id='common.evaluations.text' />
+              </div>
+              <div className={styles.operations}>
+                <div className={styles.menus}>
+                  <span className={`${styles['menu-item']} ${menuNameCls}`} onClick={() => { setFilterType('name'); }}>
+                    <FormattedMessage id='common.name.text' />
+                  </span>
+                  <span className={`${styles['menu-item']} ${menuValueCls}`} onClick={() => { setFilterType('value'); }}>
+                    <FormattedMessage id='common.value.uppercase.text' />
+                  </span>
+                </div>
+                <Select
+                  floating
+                  value={filterValue}
+                  placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})}
+                  className={styles['title-select']}
+                  options={getOption(intl)}
+                  onChange={handleSelectChange}
+                  icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                />
+              </div>
             </div>
-            <div className={styles['no-data-text']}>
-              <FormattedMessage id='targeting.metrics.no.data.text' />
-            </div>
-            <div className={styles['no-data-text']}>
-              <span className={styles['no-data-link']} onClick={handleGotoSDK}>
-                <FormattedMessage id='targeting.metrics.link.sdk.text' />
-              </span>
-            </div>
-          </div>
+            {
+              isAccess ? (
+                <div className={styles.content}>
+                  <div className={styles.variations}>
+                    <div className={styles['table-header']}>
+                      <div>
+                        {
+                          intl.formatMessage(
+                            {id: 'targeting.variations.evaluations.text'}, 
+                            {
+                              type: fitlerType === 'name' 
+                                ? intl.formatMessage({id: 'common.name.text'}) 
+                                : intl.formatMessage({id: 'common.value.uppercase.text'}) 
+                            }
+                          )
+                        }
+                      </div>
+                      { 
+                        total !== 0 && <div className={styles.total}>
+                          { total }
+                        </div> 
+                      }
+                    </div>
+                    <div className={styles['table-content']}>
+                      {
+                        summary?.map((item: IValues, index: number) => {
+                          return (
+                            <div className={styles['variation-name']}>
+                              <span style={{ background: VariationColors[index % 24] }} className={styles['variation-name-color']}></span>
+                              <span className={`${styles['variation-name-text']} ${item.deleted && styles['variation-name-deleted']}`}>
+                                { item.value }
+                              </span>
+                              <span className={`${styles['count']} ${item.deleted && styles['variation-deleted']}`}>
+                                { item.count }
+                              </span>
+                            </div>
+                          );
+                        })
+                      }
+                    </div>
+                  </div>
+                  <div className={styles.chart}>
+                    <Line
+                      height={0}
+                      options={chartOptions}
+                      data={chartData}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className={styles['no-data']}>
+                  <div>
+                    <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                  </div>
+                  <div className={styles['no-data-text']}>
+                    <FormattedMessage id='targeting.metrics.no.data.text' />
+                  </div>
+                  <div className={styles['no-data-text']}>
+                    <span className={styles['no-data-link']} onClick={handleGotoSDK}>
+                      <FormattedMessage id='targeting.metrics.link.sdk.text' />
+                    </span>
+                  </div>
+                </div>
+              )
+            }
+          </>
         )
       }
 		</div>
@@ -221,7 +235,7 @@ ChartJS.register(
         ctx.moveTo(x, topY);
         ctx.lineTo(x, bottomY);
         ctx.lineWidth = 2;
-        ctx.strokeStyle = '#CED4DA';
+        ctx.strokeStyle = '#ced4da';
         ctx.stroke();
         ctx.restore();
       }

@@ -9,4 +9,4 @@
 @pageBackground: #f0f1f4;
 @secondaryColorHover: rgba(85, 110, 230, 0.10);
 @trackBackground: transparent;
-@inputPlaceholderColor: #ADB5BC;
+@inputPlaceholderColor: #adb5bc;

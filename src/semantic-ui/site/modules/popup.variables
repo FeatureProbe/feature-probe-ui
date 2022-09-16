@@ -3,4 +3,4 @@
 *******************************/
 
 @invertedBackground: #212B36;
-@invertedColor: #EFF2F7;
+@invertedColor: #eef2f7;

@@ -21,6 +21,7 @@ import {
   SEGMENT_ADD_PATH, 
   GET_STARTED_PATH,
   SEGMENT_EDIT_PATH,
+  SETTING_PATH,
 } from 'router/routes';
 
 import styles from './layout.module.scss';
@@ -47,11 +48,13 @@ const ProjectLayout = (props: IProps) => {
   const [ envIndex, setEnvIndex ] = useState<number>(0);
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(false);
   const history = useHistory();
   const match = useRouteMatch();
 
   useEffect(() => {
     getProjectInfo<IProject>(projectKey).then(res => {
+      saveIsLoading(false);
       if (res.success) {
         const { data } = res;
         if (data) {
@@ -65,6 +68,7 @@ const ProjectLayout = (props: IProps) => {
 
   useEffect(() => {
     if (!toggleKey) return;
+
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
       const { data, success } = res;
 
@@ -123,7 +127,8 @@ const ProjectLayout = (props: IProps) => {
   return (
     <div className={styles.main}>
       <SideBar>
-        <ProjectSiderbar 
+        <ProjectSiderbar
+          isLoading={isLoading}
           projectInfo={projectInfo}
           backgroundColor={EnvironmentColors[envIndex]}
         />
@@ -172,6 +177,13 @@ const ProjectLayout = (props: IProps) => {
           {
             match.path === TOGGLE_PATH && (
               <Breadcrumb.Section active>{ projectInfo?.name }</Breadcrumb.Section>
+            )
+          }
+          {
+            match.path === SETTING_PATH && (
+              <Breadcrumb.Section active>
+                <FormattedMessage id='common.toggle.settings.text' />
+              </Breadcrumb.Section>
             )
           }
           {

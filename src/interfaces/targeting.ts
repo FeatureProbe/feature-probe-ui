@@ -63,12 +63,20 @@ export interface ITarget {
 }
 
 export interface IContent {
-  version?: number;
-  disabled?: boolean;
-  comment?: string;
-  content?: ITarget;
-  modifiedBy?: string;
-  modifiedTime?: string;
+  version: number;
+  disabled: boolean;
+  comment: string;
+  content: ITarget;
+  modifiedBy: string;
+  modifiedTime: string;
+  enableApproval: boolean;
+  status: string;
+  reviewers: string[];
+  submitBy?: string;
+  approvalBy?: string;
+  approvalComment?: string;
+  locked?: boolean;
+  lockedTime?: string;
 }
 
 export interface IModifyInfo {
@@ -108,6 +116,10 @@ export interface IVersion {
   createdTime: string;
   createdBy: string;
   disabled: boolean;
+  approvalBy: string;
+  approvalStatus: string;
+  approvalTime: string;
+  approvalComment?: string;
 }
 
 export interface ITargetingVersions {
@@ -141,4 +153,33 @@ export interface IDictionary {
   createdTime: string;
   value: string;
   updatedTime: string;
+}
+
+export interface IApprovalInfo {
+  enableApproval: boolean;
+  status: string;
+  reviewers: string[];
+  submitBy?: string;
+  approvalBy?: string;
+  approvalComment?: string;
+  locked?: boolean;
+  lockedTime?: string;
+}
+
+export interface ITargeting {
+  disabled: boolean;
+  content: ITarget;
+}
+
+export interface ITargetingParams {
+  disabled: boolean;
+  comment?: string;
+  content: ITarget;
+}
+
+export interface ITargetingDiff {
+  currentDisabled: boolean;
+  oldDisabled: boolean;
+  currentContent: ITarget;
+  oldContent: ITarget;
 }

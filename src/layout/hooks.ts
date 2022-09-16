@@ -15,6 +15,7 @@ export const useUserInfo = () => {
   const [ userInfo, saveUserInfo ] = useState({
     account: '',
     role: '',
+    approvalCount: 0,
   });
 
   return {

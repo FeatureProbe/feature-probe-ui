@@ -46,7 +46,7 @@
 }
 
 .label-required {
-  color: #FF5F57;
+  color: #ff5f57;
   font-size: 20px;
   vertical-align: middle;
   margin-right: 4px;
@@ -63,7 +63,7 @@
   height: 24px;
   border-radius: 100%;
   line-height: 24px;
-  color: #74788D;
+  color: #74788d;
 }
 
 .operation:hover {
@@ -87,7 +87,7 @@
 .angle-down {
   position: absolute;
   right: 10px;
-  color: #74788D;
+  color: #74788d;
   top: 8px;
 }
 
@@ -98,12 +98,12 @@
 }
 
 .error-text {
-  color: #F46A6A;
+  color: #f46a6a;
   font-size: 12px;
 }
 
 .drawer-error-text {
-  color: #F46A6A;
+  color: #f46a6a;
   font-size: 12px;
   transform: scale(0.83);
   transform-origin: left;
@@ -146,23 +146,23 @@
 
   :global {
     .CodeMirror-scroll {
-      background: #FFFAFA;
+      background: #fffafa;
       font-size: 12px;
       color: rgb(120, 139, 227);
       margin-bottom: 0;
       margin-right: 0;
       padding-bottom: 0;
       overflow: auto !important;
-      border: 1px solid #FF7066;
+      border: 1px solid #ff7066;
       border-radius: 8px;
     }
   }
 }
 
 .label {
-  color: #74788D;
+  color: #74788d;
 }
 
 .label-text {
-  color: #74788D;
+  color: #74788d;
 }

@@ -1,23 +1,24 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
-import { Dropdown, DropdownProps } from 'semantic-ui-react';
+import { Dropdown, DropdownProps, Dimmer, Loader } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import PutAwayMemu from 'components/PutAwayMenu';
 import { IRouterParams, IProject, IEnvironment } from 'interfaces/project';
-import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH, GET_STARTED_PATH } from 'router/routes';
+import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH, GET_STARTED_PATH, SETTING_PATH } from 'router/routes';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
 interface IProps {
+  isLoading: boolean;
   projectInfo: IProject;
   backgroundColor: string;
 }
 
 const ProjectSiderbar = (props: IProps) => {
-  const { projectInfo, backgroundColor } = props;
+  const { isLoading, projectInfo, backgroundColor } = props;
   const { projectKey, environmentKey, toggleKey, navigation } = useParams<IRouterParams>();
   const [ selectedItem, setSelectedItem ] = useState<string>();
   const [ open, setOpen ] = useState<boolean>(false);
@@ -55,6 +56,8 @@ const ProjectSiderbar = (props: IProps) => {
       setSelectedItem('toggle');
     } else if (path === SEGMENT_PATH || path === SEGMENT_ADD_PATH || path === SEGMENT_EDIT_PATH) {
       setSelectedItem('segments');
+    } else if (path === SETTING_PATH) {
+      setSelectedItem('settings');
     }
   }, [match]);
 
@@ -94,42 +97,66 @@ const ProjectSiderbar = (props: IProps) => {
     history.push(`/${projectKey}/${environmentKey}/segments`);
   }, [projectKey, environmentKey, history]);
 
+  const gotoSettings = useCallback(() => {
+    history.push(`/${projectKey}/${environmentKey}/settings`);
+  }, [projectKey, environmentKey, history]);
+
   return (
     <div className={sidebarCls}>
-      <div className={styles['project-name']}>
-        { projectInfo.name }
-      </div>
-      <div className={envCls} style={{ backgroundColor }}>
-        <Dropdown
-          className={styles['environment-dropdown']}
-          value={environmentKey} 
-          pointing={isPutAway ? 'left' : 'top'}
-          options={options} 
-          selection 
-          floating
-          fluid 
-          icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
-          onChange={handleChangeEnv}
-        />
-      </div>
+      {
+         isLoading ? (
+          <Dimmer Dimmer active inverted style={{backgroundColor: 'transparent'}}>
+            <Loader size='small'>
+              <FormattedMessage id='common.loading.text' />
+            </Loader>
+          </Dimmer>
+        ) : (
+          <>
+            <div className={styles['project-name']}>
+              { projectInfo.name }
+            </div>
+            <div className={envCls} style={{ backgroundColor }}>
+              <Dropdown
+                className={styles['environment-dropdown']}
+                value={environmentKey} 
+                pointing={isPutAway ? 'left' : 'top'}
+                options={options} 
+                selection 
+                floating
+                fluid 
+                icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                onChange={handleChangeEnv}
+              />
+            </div>
 
-      <div className={styles['project-menu']}>
-        <div className={`${selectedItem ==='toggle' && styles.selected} ${menuCls}`} onClick={gotoToggles}>
-          <PutAwayMemu
-            type='toggle'
-            isPutAway={isPutAway}
-            title={intl.formatMessage({id: 'common.toggles.text'})}
-          />
-        </div>
-      </div>
+            <div className={styles['project-menu']}>
+              <div className={`${selectedItem ==='toggle' && styles.selected} ${menuCls}`} onClick={gotoToggles}>
+                <PutAwayMemu
+                  type='toggle'
+                  isPutAway={isPutAway}
+                  title={intl.formatMessage({id: 'common.toggles.text'})}
+                />
+              </div>
+            </div>
 
-      <div className={`${selectedItem ==='segments' && styles.selected} ${menuCls}`} onClick={gotoSegments}>
-        <PutAwayMemu
-          type='member'
-          isPutAway={isPutAway}
-          title={intl.formatMessage({id: 'common.segments.text'})}
-        />
-      </div>
+            <div className={`${selectedItem ==='segments' && styles.selected} ${menuCls}`} onClick={gotoSegments}>
+              <PutAwayMemu
+                type='member'
+                isPutAway={isPutAway}
+                title={intl.formatMessage({id: 'common.segments.text'})}
+              />
+            </div>
+
+            <div className={`${selectedItem ==='settings' && styles.selected} ${menuCls}`} onClick={gotoSettings}>
+              <PutAwayMemu
+                type='setting'
+                isPutAway={isPutAway}
+                title={intl.formatMessage({id: 'common.toggle.settings.text'})}
+              />
+            </div>
+          </>
+        )
+      }
       
       <Modal 
         open={open}

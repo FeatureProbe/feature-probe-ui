@@ -6,7 +6,7 @@
 }
 
 .list-item:hover {
-  outline: 1px solid #556EE6;
+  outline: 1px solid #556ee6;
   background: rgba(85, 110, 230, 0.04);
   border-radius: 8px !important;
   -moz-outline-radius: 8px;
@@ -15,11 +15,12 @@
 .toggle-info {
   display: flex;
   align-items: center;
-  padding-left: 24px;
+  padding-left: 32px;
+  position: relative;
 }
 
 .toggle-info-name {
-  color: #556EE6;
+  color: #556ee6;
   font-size: 15px;
   font-family: HelveticaNeue-Medium;
 }
@@ -28,7 +29,7 @@
   margin-left: 8px;
   height: 16px;
   line-height: 16px;
-  background: #ECECF6;
+  background: #ececf6;
   border-radius: 4px;
   font-size: 10px;
   color: #495057;
@@ -46,7 +47,7 @@
   background: rgba(85, 110, 230, 0.1);
   border-radius: 4px;
   font-size: 10px;
-  color: #556EE6;
+  color: #556ee6;
   padding: 0 4px;
 }
 
@@ -60,9 +61,29 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-left: 24px;
+  padding-left: 32px;
   font-size: 12px;
   color: #495057;
+}
+
+.toggle-lock {
+  position: absolute;
+  left: 12px;
+  color: #f5483b;
+}
+
+.popup {
+  opacity: 0.8;
+}
+
+.popup-line {
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #eef2f7;
+}
+
+.popup-line:last-child {
+  margin-bottom: 0;
 }
 
 .toggle-modified {
@@ -70,11 +91,11 @@
 }
 
 .toggle-modified-by {
-  color: #74788D;
+  color: #74788d;
 }
 
 .toggle-modified-time {
-  color: #74788D;
+  color: #74788d;
   font-size: 12px;
 }
 
@@ -96,15 +117,15 @@
 }
 
 .toggle-status-icon-disabled {
-  background: #FF5E1A;
+  background: #ff5e1a;
 }
 
 .toggle-status-text-disabled {
-  color: #FF5E1A;
+  color: #ff5e1a;
 }
 
 .toggle-status-icon-enabled {
-  background: #34C38F;
+  background: #34c38f;
 }
 
 .toggle-status-text-enabled {
@@ -118,18 +139,17 @@
 
 .toggle-evaluated-tips {
   font-size: 12px;
-  color: #74788D;
+  color: #74788d;
 }
 
 .toggle-evaluated-tips-link {
   font-size: 12px;
-  color: #556EE6;
+  color: #556ee6;
   cursor: pointer;
 }
 
 .icon-evaluate {
-  color: #34C38F;
-  vertical-align: middle;
+  color: #34c38f;
   margin-right: 5px;
   font-size: 12px !important;
 }
@@ -142,13 +162,13 @@
 
 .toggle-operation-item {
   margin-right: 8px;
-  color: #556EE6;
+  color: #556ee6;
   cursor: pointer;
 }
 
 .warning-circle {
   font-size: 20px !important;
-  color: #F5483B;
+  color: #f5483b;
   padding: 0 10px;
 }
 

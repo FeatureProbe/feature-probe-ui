@@ -19,7 +19,6 @@
     line-height: 25px;
     width: 95%;
     overflow: hidden;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -93,13 +92,13 @@
   background: rgba(85, 110, 230, 0.1);
   border-radius: 4px;
   font-size: 10px;
-  color: #556EE6;
+  color: #556ee6;
   padding: 0 4px;
   display: inline-block;
 }
 
 .label-required {
-  color: #FF5F57;
+  color: #ff5f57;
   font-size: 20px;
   vertical-align: middle;
   margin-right: 4px;
@@ -108,7 +107,7 @@
 }
 
 .error-text {
-  color: #F46A6A;
+  color: #f46a6a;
   margin-top: -15px;
   margin-bottom: 15px;
   font-size: 12px;
@@ -119,12 +118,12 @@
 .angle-down {
   position: absolute;
   right: 10px;
-  color: #74788D;
+  color: #74788d;
   top: 6px;
 }
 
 .icon-question {
   vertical-align: middle;
   margin-left: 4px;
-  color: #74788D;
+  color: #74788d;
 }

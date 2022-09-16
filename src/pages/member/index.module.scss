@@ -1,11 +1,12 @@
 .member {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.01), 0 3px 6px 3px rgba(0, 0, 0, 0.01), 0 2px 6px 0 rgba(0, 0, 0, 0.03);
   border-radius: 12px 12px 0 0;
   height: calc(100vh - 64px);
   margin: 16px 20px 0;
   padding: 12px 24px 24px;
   min-height: 730px;
+  position: relative;
 }
 
 .heading {
@@ -36,7 +37,7 @@
 }
 
 .table-header {
-  background: #F8F9FA;
+  background: #f8f9fa;
   height: 42px;
   line-height: 42px;
   font-size: 13px;
@@ -73,7 +74,7 @@
 }
 
 .total {
-  color: #74788D;
+  color: #74788d;
   font-size: 12px;
 }
 
@@ -85,7 +86,7 @@
   text-align: center;
   font-family: PingFangSC-Medium;
   font-size: 18px;
-  color: #7D7D7D;
+  color: #7d7d7d;
 }
 
 .no-data-image {

@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState, useCallback, useEffect, useMemo } from 'react';
-import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps, Loader } from 'semantic-ui-react';
+import { Form, Button, InputOnChangeData, TextAreaProps, PaginationProps, Loader, Dimmer } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
@@ -54,6 +54,7 @@ const Info = () => {
   });
   const [ total, setTotal ] = useState<number>(0);
   const [ isLoading, setLoading ] = useState<boolean>(false);
+  const [ isPageLoading, saveIsLoading ] = useState<boolean>(false);
   const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const intl = useIntl();
   const history = useHistory();
@@ -80,8 +81,10 @@ const Info = () => {
 
   useEffect(() => {
     if (match.path === SEGMENT_EDIT_PATH) {
+      saveIsLoading(true);
       getSegmentDetail<ISegmentInfo>(projectKey, segmentKey).then(res => {
         const { data, success } = res;
+        saveIsLoading(false);
         if (success && data) {
           saveInitialSegment({
             name: data.name,
@@ -223,10 +226,6 @@ const Info = () => {
     }
   }, [match.path, publishSegment, projectKey, segmentKey, searchParams, intl, handleGoBack, confirmEditSegment]);
 
-  const onError = useCallback(() => {
-    console.log(errors);
-  }, [errors]);
-
   const creatRequestTimeCheck = useRequestTimeCheck();
   
   const debounceNameExist = useMemo(() => {
@@ -286,103 +285,116 @@ const Info = () => {
   }, [searchParams]);
 
 	return (
-    <Form className={styles['filter-form']} autoComplete='off' onSubmit={handleSubmit(onSubmit, onError)}>
-      <div className={styles['form-item']}>
-        <FormItemName
-          className={styles['form-item-name']}
-          value={segmentInfo?.name}
-          errors={errors}
-          register={register}
-          onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-            if (detail.value.length > 50 ) return;
-            if (detail.value !== originSegmentInfo.name) {
-              checkNameExist('NAME', detail.value);
-            }
-            handleChange(e, detail, 'name');
-            setValue(detail.name, detail.value);
-            await trigger('name');
+    <>
+      {
+        isPageLoading ? (
+          <Dimmer Dimmer active inverted>
+            <Loader size='small'>
+              <FormattedMessage id='common.loading.text' />
+            </Loader>
+          </Dimmer>
+        ) : (
+          <Form className={styles['filter-form']} autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+            <div className={styles['form-item']}>
+              <FormItemName
+                className={styles['form-item-name']}
+                value={segmentInfo?.name}
+                errors={errors}
+                register={register}
+                onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                  if (detail.value.length > 50 ) return;
+                  if (detail.value !== originSegmentInfo.name) {
+                    checkNameExist('NAME', detail.value);
+                  }
+                  handleChange(e, detail, 'name');
+                  setValue(detail.name, detail.value);
+                  await trigger('name');
+                  
+                  if (isKeyEdit || match.path === SEGMENT_EDIT_PATH) {
+                    return;
+                  }
+
+                  const reg = /[^A-Z0-9._-]+/gi;
+                  const keyValue = detail.value.replace(reg, '_');
+                  handleChange(e, {...detail, value: keyValue}, 'key');
+                  checkKeyExist('KEY', keyValue);
+                  setValue('key', keyValue);
+                  await trigger('key');
+                }}
+              />
+
+              <FormItemKey
+                className={styles['form-item-key']}
+                value={segmentInfo?.key}
+                errors={errors}
+                disabled={match.path === SEGMENT_EDIT_PATH}
+                register={register}
+                showPopup={false}
+                onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                  saveKeyEdit(true);
+                  checkKeyExist('KEY', detail.value);
+                  handleChange(e, detail, 'key');
+                  setValue(detail.name, detail.value);
+                  await trigger('key');
+                }}
+              />
+            </div>
             
-            if (isKeyEdit || match.path === SEGMENT_EDIT_PATH) {
-              return;
-            }
+            <div className={styles['form-item-description']}>
+              <FormItemDescription
+                value={segmentInfo?.description}
+                disabled={false}
+                onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+                  if (('' + detail.value).length > 500 ) return;
+                  handleChange(e, detail, 'description');
+                  setValue(detail.name, detail.value);
+                  await trigger('description');
+                }}
+              />
+            </div>
 
-            const reg = /[^A-Z0-9._-]+/gi;
-            const keyValue = detail.value.replace(reg, '_');
-            handleChange(e, {...detail, value: keyValue}, 'key');
-            checkKeyExist('KEY', keyValue);
-            setValue('key', keyValue);
-            await trigger('key');
-          }}
-        />
+            <div className={styles.rules}>
+              <Rules
+                useSegment={false}
+                ruleContainer={ruleContainer}
+                hooksFormContainer={hooksFormContainer}
+              />
+            </div>
 
-        <FormItemKey
-          className={styles['form-item-key']}
-          value={segmentInfo?.key}
-          errors={errors}
-          disabled={match.path === SEGMENT_EDIT_PATH}
-          register={register}
-          showPopup={false}
-          onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-            saveKeyEdit(true);
-            checkKeyExist('KEY', detail.value);
-            handleChange(e, detail, 'key');
-            setValue(detail.name, detail.value);
-            await trigger('key');
-          }}
-        />
-      </div>
-      
-      <div className={styles['form-item-description']}>
-        <FormItemDescription
-          value={segmentInfo?.description}
-          disabled={false}
-          onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
-            if (('' + detail.value).length > 500 ) return;
-            handleChange(e, detail, 'description');
-            setValue(detail.name, detail.value);
-            await trigger('description');
-          }}
-        />
-      </div>
+            <div id='footer' className={styles.footer}>
+              <EventTracker category='segment' action='publish-segment'>
+                <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
+                  {
+                    isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
+                  }
+                  <FormattedMessage id='common.publish.text' />
+                </Button>
+              </EventTracker>
+              
+              <Button basic type='reset' onClick={handleGoBack}>
+                <FormattedMessage id='common.cancel.text' />
+              </Button>
+            </div>
 
-      <div className={styles.rules}>
-        <Rules
-          useSegment={false}
-          ruleContainer={ruleContainer}
-          hooksFormContainer={hooksFormContainer}
-        />
-      </div>
+            <ConfirmModal 
+              open={open}
+              total={total}
+              setOpen={setOpen}
+              toggleList={toggleList}
+              pagination={pagination}
+              handlePageChange={handlePageChange}
+              confirmEditSegment={confirmEditSegment}
+            />
 
-      <div id='footer' className={styles.footer}>
-        <EventTracker category='segment' action='publish-segment'>
-          <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
-            {
-              isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
-            }
-            <FormattedMessage id='common.publish.text' />
-          </Button>
-        </EventTracker>
-        
-        <Button basic type='reset' onClick={handleGoBack}>
-          <FormattedMessage id='common.cancel.text' />
-        </Button>
-      </div>
-
-      <ConfirmModal 
-        open={open}
-        total={total}
-        setOpen={setOpen}
-        toggleList={toggleList}
-        pagination={pagination}
-        handlePageChange={handlePageChange}
-        confirmEditSegment={confirmEditSegment}
-      />
-
-      <Prompt
-        when={!publishDisabled}
-        message={intl.formatMessage({id: 'targeting.page.leave.text'})}
-      />
-    </Form>
+            <Prompt
+              when={!publishDisabled}
+              message={intl.formatMessage({id: 'targeting.page.leave.text'})}
+            />
+          </Form>
+        )
+      }
+    </>
+    
 	);
 };
 

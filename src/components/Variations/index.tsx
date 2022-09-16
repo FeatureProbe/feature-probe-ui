@@ -77,7 +77,7 @@ const Variations = (props: IProps) => {
       setError(
         'variations_duplicated', { 
           message: intl.formatMessage({
-            id: 'variations.dulpicated.error.text'
+            id: 'variations.duplicated.error.text'
           })
         });
     } else {
@@ -127,7 +127,7 @@ const Variations = (props: IProps) => {
         isError && <div className={styles['error-text']}>
           {
             intl.formatMessage({
-              id: 'variations.dulpicated.error.text'
+              id: 'variations.duplicated.error.text'
             })
           }
         </div>

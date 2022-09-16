@@ -222,10 +222,6 @@ const Drawer = (props: IParams) => {
     });
   }, []);
 
-  const onError = useCallback(() => {
-    console.log(errors);
-  }, [errors]);
-
   const clearVariationErrors = useCallback(() => {
    for(const key in getValues()) {
       if (key.startsWith('variation_')) {
@@ -289,7 +285,7 @@ const Drawer = (props: IParams) => {
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
       <Form 
         autoComplete='off'
-        onSubmit={handleSubmit(onSubmit, onError)} 
+        onSubmit={handleSubmit(onSubmit)} 
         className={`${styles['toggle-drawer-form']} ${visible && styles['toggle-drawer-form-inactive']}`}
       >
         <div className={styles.title}>

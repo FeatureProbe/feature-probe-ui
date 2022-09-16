@@ -4,12 +4,12 @@
 
 .ui.disabled.dropdown,
 .ui.dropdown .menu > .disabled.item {
-  background: #EFF2F7 !important;
-  border: 1px solid #CED4DA;
+  background: #eef2f7 !important;
+  border: 1px solid #ced4da;
   opacity: 1;
   pointer-events: inherit;
   cursor: not-allowed;
-  color: #ADB5BC;
+  color: #adb5bc;
 }
 
 .ui.multiple.dropdown > .label {
@@ -71,7 +71,7 @@
 }
 
 .ui.active.dropdown {
-  border: 1px solid #74788D;
+  border: 1px solid #74788d;
 }
 
 .ui.dropdown.error {
@@ -87,4 +87,9 @@
   color: #212529;
   font-weight: normal;
   text-transform: none;
+}
+
+.ui.dropdown:not(.button) > .default.text, .ui.default.dropdown:not(.button) > .text {
+  font-size: 12px;
+  line-height: 25px;
 }

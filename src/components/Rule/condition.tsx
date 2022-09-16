@@ -11,8 +11,8 @@ import { IContainer } from 'interfaces/provider';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import { 
   getAttrOptions,
-  attributeOptions,
-  getSubjectSegmentOptions,
+  // attributeOptions,
+  // getSubjectSegmentOptions,
   timezoneOptions,
   DATETIME_TYPE,
   SEGMENT_TYPE,
@@ -28,6 +28,7 @@ interface IProps {
   useSegment?: boolean;
   conditionIndex: number;
   condition: ICondition;
+  subjectOptions: IOption[];
   ruleContainer: IContainer;
   variationContainer?: IContainer;
   segmentContainer?: IContainer;
@@ -43,7 +44,8 @@ const RuleContent = (props: IProps) => {
     rule,
     disabled,
     ruleIndex,
-    useSegment,
+    // useSegment,
+    subjectOptions,
     conditionIndex,
     condition,
     ruleContainer, 
@@ -54,7 +56,6 @@ const RuleContent = (props: IProps) => {
   const intl = useIntl();
   const [ options, setOption ] = useState<IOption[]>();
   const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
-  let subjectOptions: IOption[] = attributeOptions;
 
   const {
     handleChangeAttr,
@@ -114,22 +115,6 @@ const RuleContent = (props: IProps) => {
     };
   });
 
-  if (useSegment) {
-    subjectOptions = getSubjectSegmentOptions();
-  }
-  
-  const subjectIndex = subjectOptions?.findIndex((attr) => {
-    return attr.value === condition.subject;
-  });
-
-  if (subjectIndex === -1 && condition.subject) {
-    subjectOptions.push({
-      key: condition.subject,
-      text: condition.subject,
-      value: condition.subject,
-    });
-  }
-
   const inputProps = {
     placeholder: intl.formatMessage({id: 'common.dropdown.placeholder'}),
     disabled: disabled,
@@ -140,7 +125,7 @@ const RuleContent = (props: IProps) => {
       {
         conditionIndex === 0 ? (
           <span className={`${styles['rule-item-prefix']} ${styles['rule-item-first']}`}>
-            <span className={styles['rule-item-text']}>if</span>
+            <span className={styles['rule-item-text']}>If</span>
           </span>
         ) : (
           <span className={styles['rule-item-prefix']}>
@@ -158,11 +143,11 @@ const RuleContent = (props: IProps) => {
             allowAdditions
             options={subjectOptions}
             value={condition.subject}
-            openOnFocus={false}
-            selectOnBlur={false}
+            openOnFocus={true}
             closeOnChange={true}
+            noResultsMessage={null}
             disabled={condition.type === SEGMENT_TYPE || disabled}
-            icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+            icon={null}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false }
             {
               ...register(`rule_${rule.id}_condition_${condition.id}_subject`, { 
@@ -363,7 +348,7 @@ const RuleContent = (props: IProps) => {
                   <div className={styles['error-text']}>
                     { 
                       condition.type !== SEGMENT_TYPE
-                      ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
+                      ? intl.formatMessage({id: 'targeting.rule.values.required'})
                       : intl.formatMessage({id: 'common.dropdown.placeholder'})
                     }
                   </div> 

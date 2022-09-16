@@ -9,7 +9,9 @@ import {
   Dropdown, 
   DropdownItemProps, 
   DropdownProps, 
-  InputOnChangeData 
+  InputOnChangeData,
+  Dimmer,
+  Loader,
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
@@ -67,6 +69,7 @@ const Toggle = () => {
   });
   const [ archiveOpen, setArchiveOpen ] = useState<boolean>(false);
   const [ isArchived, setArchived ] = useState<boolean>(search.indexOf('isArchived=true') > -1);
+  const [ isLoading, saveIsLoading ] = useState<boolean>(true);
   const history = useHistory();
   const intl = useIntl();
   const { i18n } = I18NContainer.useContainer();
@@ -84,9 +87,11 @@ const Toggle = () => {
 
   const getToggleLists = useCallback(() => {
     searchParams.environmentKey = environmentKey;
+    saveIsLoading(true);
     getToggleList<IToggleList>(projectKey, searchParams)
       .then(async (res) => {
         const { success, data, code } = res;
+        saveIsLoading(false);
         if (success && data) {
           const { content, pageable, totalPages, totalElements } = data;
           setToggleList(content);
@@ -334,7 +339,7 @@ const Toggle = () => {
                     <label className={styles.label}>
                       <FormattedMessage id='common.tags.text' />
                     </label>
-                     <Dropdown 
+                    <Dropdown 
                       fluid 
                       multiple 
                       selection 
@@ -417,90 +422,108 @@ const Toggle = () => {
                   </div>
                 </Popup>
               </div>
-              <div className={styles.lists}>
-                <Table basic='very' unstackable>
-                  <Table.Header className={styles['table-header']}>
-                    <Table.Row>
-                      <Table.HeaderCell className={styles['column-brief']}>
-                        <FormattedMessage id='toggles.table.brief' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-status']}>
-                        <FormattedMessage id='toggles.table.status' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-type']}>
-                        <FormattedMessage id='common.type.text' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-tags']}>
-                        <FormattedMessage id='common.tags.text' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-evaluated']}>
-                        <FormattedMessage id='toggles.table.evaluation' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-modify']}>
-                        <FormattedMessage id='toggles.table.lastmodified' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-operation']}></Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  {
-                    toggleList.length !== 0 && (
-                      <Table.Body>
-                        {
-                          toggleList?.map((toggle: IToggle) => {
-                            return (
-                              <ToggleItem 
-                                key={toggle.key}
-                                toggle={toggle} 
-                                isArchived={isArchived}
-                                setIsAdd={setIsAdd}
-                                refreshToggleList={refreshToggleList}
-                                setDrawerVisible={setDrawerVisible}
-                              />
-                            );
-                          })
-                        }
-                      </Table.Body>
-                    )
-                  }
-                </Table>
-                {
-                  toggleList.length === 0 && (
-                    <div className={styles['no-data']}>
-                      <div>
-                        <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                      </div>
-                      <div>
-                        <FormattedMessage id='common.nodata.text' />
-                      </div>
-                    </div>
-                  )
-                }
-              </div>
               {
-                toggleList.length !== 0 && (
-                  <div className={styles.pagination}>
-                    <div className={styles['total']}>
-                      <span className={styles['total-count']}>{total} </span>
-                      <FormattedMessage id='toggles.total' />
-                    </div>
+                isLoading ? (
+                  <div className={styles.lists}>
                     {
-                      pagination.totalPages > 1 && (
-                        <Pagination 
-                          activePage={pagination.pageIndex} 
-                          totalPages={pagination.totalPages} 
-                          onPageChange={handlePageChange}
-                          firstItem={null}
-                          lastItem={null}
-                          prevItem={{
-                            content: (<Icon type='angle-left' />)
-                          }}
-                          nextItem={{
-                            content: (<Icon type='angle-right' />)
-                          }}
-                        />
+                      isLoading && (
+                        <Dimmer active inverted>
+                          <Loader size='small'>
+                            <FormattedMessage id='common.loading.text' />
+                          </Loader>
+                        </Dimmer>
                       )
                     }
                   </div>
+                ) : (
+                  <>
+                    <div className={styles.lists}>
+                      <Table basic='very' unstackable>
+                        <Table.Header className={styles['table-header']}>
+                          <Table.Row>
+                            <Table.HeaderCell className={styles['column-brief']}>
+                              <FormattedMessage id='toggles.table.brief' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-status']}>
+                              <FormattedMessage id='toggles.table.status' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-type']}>
+                              <FormattedMessage id='common.type.text' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-tags']}>
+                              <FormattedMessage id='common.tags.text' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-evaluated']}>
+                              <FormattedMessage id='toggles.table.evaluation' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-modify']}>
+                              <FormattedMessage id='toggles.table.lastmodified' />
+                            </Table.HeaderCell>
+                            <Table.HeaderCell className={styles['column-operation']}></Table.HeaderCell>
+                          </Table.Row>
+                        </Table.Header>
+                        {
+                          toggleList.length !== 0 && (
+                            <Table.Body>
+                              {
+                                toggleList?.map((toggle: IToggle) => {
+                                  return (
+                                    <ToggleItem 
+                                      key={toggle.key}
+                                      toggle={toggle} 
+                                      isArchived={isArchived}
+                                      setIsAdd={setIsAdd}
+                                      refreshToggleList={refreshToggleList}
+                                      setDrawerVisible={setDrawerVisible}
+                                    />
+                                  );
+                                })
+                              }
+                            </Table.Body>
+                          )
+                        }
+                      </Table>
+                      {
+                        toggleList.length === 0 && (
+                          <div className={styles['no-data']}>
+                            <div>
+                              <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                            </div>
+                            <div>
+                              <FormattedMessage id='common.nodata.text' />
+                            </div>
+                          </div>
+                        )
+                      }
+                      {
+                        toggleList.length !== 0 && (
+                          <div className={styles.pagination}>
+                            <div className={styles['total']}>
+                              <span className={styles['total-count']}>{total} </span>
+                              <FormattedMessage id='toggles.total' />
+                            </div>
+                            {
+                              pagination.totalPages > 1 && (
+                                <Pagination 
+                                  activePage={pagination.pageIndex} 
+                                  totalPages={pagination.totalPages} 
+                                  onPageChange={handlePageChange}
+                                  firstItem={null}
+                                  lastItem={null}
+                                  prevItem={{
+                                    content: (<Icon type='angle-left' />)
+                                  }}
+                                  nextItem={{
+                                    content: (<Icon type='angle-right' />)
+                                  }}
+                                />
+                              )
+                            }
+                          </div>
+                        )
+                      }
+                    </div>
+                  </>
                 )
               }
             </div>

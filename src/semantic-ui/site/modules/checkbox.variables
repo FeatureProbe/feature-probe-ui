@@ -8,7 +8,7 @@
 @radioActiveBulletColor: #ffffff;
 @checkboxActiveBorderColor: #556ee6;
 @radioActiveBackground: #556ee6;
-@checkboxBorder: 1px solid #ADB5BD;
+@checkboxBorder: 1px solid #adb5bd;
 @checkboxActiveFocusBorderColor: #556ee6;
 @checkboxActiveFocusBackground: #ffffff;
 @radioActiveFocusBackground: #556ee6;
@@ -17,9 +17,9 @@
 
 @checkboxActiveBackground: #556eef;
 @checkboxActiveCheckColor: #ffffff;
-@checkboxBorder: 1px solid #ADB5BD;
+@checkboxBorder: 1px solid #adb5bd;
 @checkboxFocusBackground:  #ffffff;
-@checkboxFocusBorderColor: #ADB5BD; 
+@checkboxFocusBorderColor: #adb5bd; 
 @checkboxActiveFocusBackground: #556eef;
 @checkboxActiveFocusBorderColor: transparent;
 @checkboxActiveFocusCheckColor: ffffff;

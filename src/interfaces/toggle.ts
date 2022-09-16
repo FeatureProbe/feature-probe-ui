@@ -1,4 +1,4 @@
-import { IVariation } from "./targeting"
+import { IVariation } from './targeting';
 
 export interface ISort {
   sorted: boolean;
@@ -25,6 +25,9 @@ export interface IToggle {
   visitedTime: string;
   modifiedTime: string;
   modifiedBy: string;
+  locked?: boolean;
+  lockedBy?: string;
+  lockedTime?: string;
 }
 
 export interface IEditToggleParams {
@@ -34,7 +37,8 @@ export interface IEditToggleParams {
   returnType?: string;
   desc?: string;
   tags?: string[];
-  disabled?: true;
+  disabled?: boolean;
+  clientAvailability?: boolean;
 }
 
 export interface IToggleList {

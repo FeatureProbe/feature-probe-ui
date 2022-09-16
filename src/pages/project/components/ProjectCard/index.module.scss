@@ -7,10 +7,11 @@
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .card:hover {
-  background: #E8E8F0;
+  background: #e8e8f0;
   box-shadow: 0px 4px 8px 0px rgba(154, 177, 227, 0.5);
 }
 
@@ -101,12 +102,12 @@
 }
 
 .menu-item:hover {
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
 }
 
 .warning-circle {
   font-size: 20px !important;
-  color: #F5483B;
+  color: #f5483b;
   padding: 0 10px;
 }
 
@@ -139,5 +140,5 @@
 .no-data-text {
   font-family: PingFangSC-Medium;
   font-size: 14px;
-  color: #ADB5BC;
+  color: #adb5bc;
 }
