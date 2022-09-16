@@ -3,7 +3,7 @@
 }
 
 .intro {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.01), 0 3px 6px 3px rgba(0,0,0,0.01), 0 2px 6px 0 rgba(0,0,0,0.03);
   border-radius: 0 0 12px 12px;
   padding: 12px 24px 0;
@@ -24,7 +24,7 @@
 }
 
 .intro-icon {
-  color: #556EE6;
+  color: #556ee6;
   margin-right: 4px;
   line-height: 30px;
   margin-left: 18px;
@@ -42,7 +42,7 @@
 }
 
 .steps {
-  background: #FFFFFF;
+  background: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.01), 0 3px 6px 3px rgba(0,0,0,0.01), 0 2px 6px 0 rgba(0,0,0,0.03);
   border-radius: 12px;
   margin-top: 16px;
@@ -66,7 +66,7 @@
 }
 
 .checked-circle {
-  color: #556EE6;
+  color: #556ee6;
   font-size: 20px !important;
   text-align: center;
 }
@@ -74,9 +74,9 @@
 .circle {
   width: 20px;
   height: 20px;
-  color: #74788D;
+  color: #74788d;
   background-color: #ffffff;
-  border: 1px solid #74788D;
+  border: 1px solid #74788d;
   border-radius: 100%;
   text-align: center;
   font-size: 12px;
@@ -88,8 +88,8 @@
 .circleCurrent {
   width: 20px;
   height: 20px;
-  color: #fff;
-  background-color: #556EE6;
+  color: #ffffff;
+  background-color: #556ee6;
   border-radius: 100%;
   text-align: center;
   font-size: 12px;
@@ -110,7 +110,7 @@
 .lineSelected {
   height: 100%;
   width: 1px;
-  background-color: #556EE6;
+  background-color: #556ee6;
   position: relative;
   left: 10px;
   top: -4px;
@@ -121,7 +121,7 @@
   font-size: 14px;
   line-height: 28px;
   font-weight: bold;
-  color: #6D6F72;
+  color: #6d6f72;
 }
 
 .step-title-selected {
@@ -133,7 +133,7 @@
 }
 
 .label-required {
-  color: #FF5F57;
+  color: #ff5f57;
   font-size: 20px;
   vertical-align: middle;
   margin-right: 4px;
@@ -144,12 +144,12 @@
 .angle-down {
   position: absolute;
   right: 10px;
-  color: #74788D;
+  color: #74788d;
   top: 9px;
 }
 
 .icon-question {
-  color: #74788D;
+  color: #74788d;
   vertical-align: middle;
   margin-left: 4px;
 }
@@ -159,14 +159,14 @@
 }
 
 .success-circle {
-  color: #00B365;
+  color: #00b365;
   font-size: 20px !important;
   margin-right: 5px;
   vertical-align: bottom;
 }
 
 .error-circle {
-  color: #F5483B;
+  color: #f5483b;
   font-size: 20px !important;
   margin-right: 5px;
   vertical-align: bottom;
@@ -191,7 +191,7 @@
 }
 
 .card {
-  background: #FAFAFA;
+  background: #fafafa;
   border-radius: 12px;
   display: flex;
   padding: 12px;
@@ -214,7 +214,7 @@
 }
 
 .card-right:hover {
-  background-color: rgba(33,37,41,0.04);
+  background-color: rgba(33, 37, 41, 0.04);
 }
 
 .iconfont {
@@ -227,7 +227,7 @@
 
 .card-title {
   font-size: 13px;
-  color: #74788D;
+  color: #74788d;
 }
 
 .card-value {
@@ -262,7 +262,7 @@
 
 .code-step {
   font-size: 13px;
-  color: #74788D;
+  color: #74788d;
 }
 
 .code-step-title {
@@ -274,7 +274,7 @@
 .code-step-divider {
   width: 3px;
   height: 10px;
-  background-color: #556EE6;
+  background-color: #556ee6;
   display: inline-block;
   margin-right: 4px;
 }
@@ -288,10 +288,10 @@
 .copy-btn {
   width: 48px;
   height: 24px;
-  background: #FFFFFF;
-  border: 1px solid #556EE6;
+  background: #ffffff;
+  border: 1px solid #556ee6;
   border-radius: 6px;
-  color: #556EE6;
+  color: #556ee6;
   text-align: center;
   line-height: 22px;
   font-size: 12px;
@@ -315,9 +315,9 @@
 
 .client-sdk-usage {
   height: 28px;
-  background: #FFFAE0;
+  background: #fffae0;
   border-radius: 6px;
-  color: #592D00;
+  color: #592d00;
   margin: 6px 12px 32px;
   padding: 0 13px;
   font-size: 12px;
@@ -326,13 +326,13 @@
 }
 
 .client-sdk-usage-link {
-  color: #556EE6;
+  color: #556ee6;
   cursor: pointer;
   margin-left: 4px;
 }
 
 .warning-circle {
-  color: #FFC300;
+  color: #ffc300;
   margin-right: 10px;
   font-size: 17px !important;
 }

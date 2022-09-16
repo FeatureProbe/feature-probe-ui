@@ -10,9 +10,9 @@
 
 .ui.form .field.disabled :disabled {
   opacity: 1;
-  background: #EFF2F7;
-  border: 1px solid #CED4DA;
-  color: #ADB5BC;
+  background: #eef2f7;
+  border: 1px solid #ced4da;
+  color: #adb5bc;
 }
 
 .ui.form .field {
@@ -76,7 +76,7 @@
   box-shadow: none !important;
   background-color: transparent !important;
   background-image: none !important;
-  border-color: #74788D !important;
+  border-color: #74788d !important;
   transition: background-color 50000s ease-in-out 0s !important;
 }
 

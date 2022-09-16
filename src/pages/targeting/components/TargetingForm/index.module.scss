@@ -18,7 +18,7 @@
   line-height: 28px;
   margin-left: 20px;
   font-size: 13px;
-  color: #74788D;
+  color: #74788d;
   height: 28px;
 }
 
@@ -67,7 +67,7 @@
 .footer {
   height: 56px;
   background: #ffffff;
-  border-top: 1px solid #EBEDEF;
+  border-top: 1px solid #ebedef;
   line-height: 56px;
   padding: 0 20px;
   position: fixed;
@@ -106,7 +106,7 @@
 .modal-header-text {
   font-family: PingFangSC-Medium;
   font-size: 16px;
-  color: rgba(0,0,0,0.87);
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .modal-content {
@@ -126,25 +126,25 @@
     }
 
     .d2h-file-wrapper {
-      border-top: 1px solid rgba(206,212,218,0.60);
-      border-bottom: 1px solid rgba(206,212,218,0.60);
+      border-top: 1px solid rgba(206, 212, 218, 0.6);
+      border-bottom: 1px solid rgba(206, 212, 218, 0.6);
       border-radius: 0;
     }
 
     .d2h-del {
-      background-color: #FFF5F4;
+      background-color: #fff5f4;
     }
 
     .d2h-code-line del, .d2h-code-side-line del {
-      background-color: #FFD4D0;
+      background-color: #ffd4d0;
     }
 
     .d2h-ins {
-      background-color: #EFFCF2;
+      background-color: #effcf2;
     }
 
     .d2h-code-line ins, .d2h-code-side-line ins {
-      background-color: #C2F6CE;
+      background-color: #c2f6ce;
     }
 
     .d2h-file-side-diff {
@@ -204,7 +204,7 @@
 
 .icon-info {
   font-size: 14px !important;
-  color: #74788D;
+  color: #74788d;
   vertical-align: middle;
   margin-left: 6px;
 }
@@ -214,7 +214,7 @@
 }
 
 .label-required {
-  color: #FF5F57;
+  color: #ff5f57;
   font-size: 20px;
   margin-right: 4px;
   height: 16px;
@@ -224,7 +224,7 @@
 }
 
 .error-text {
-  color: #F46A6A;
+  color: #f46a6a;
   margin-top: -15px;
   margin-bottom: 15px;
   font-size: 12px;

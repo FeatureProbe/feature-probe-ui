@@ -57,8 +57,8 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
         },
         label: {
           enabled: true,
-          backgroundColor: '#FEF3F2',
-          color: '#F55043',
+          backgroundColor: '#fef3f2',
+          color: '#f55043',
           content: () => intl.formatMessage({id: 'common.version.change.text'}),
           position: 'start',
           xAdjust: lang === 'en-US' ? 33 : 29,
