@@ -1,21 +1,20 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Form, Table, Pagination, InputOnChangeData, PaginationProps, Dimmer, Loader } from 'semantic-ui-react';
+import { Form, Table, Pagination, InputOnChangeData, PaginationProps, Dimmer, Loader, Checkbox } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { cloneDeep, debounce } from 'lodash';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import ListItem from '../ListItem';
 import { IApproval, IApprovalList } from 'interfaces/approval';
 import { getApprovalList } from 'services/approval';
+// import { HeaderContainer } from 'layout/hooks';
 import styles from './index.module.scss';
-import { debounce } from 'lodash';
-import { HeaderContainer } from 'layout/hooks';
 
 const LIST = '/approvals/list';
 const MINE = '/approvals/mine';
 
 const Lists = () => {
 	const intl = useIntl();
-	const [ status, saveStatus ] = useState<string>('PENDING');
 	const [ type, saveType ] = useState<string>('APPROVAL');
 	const [ keyword, saveKeyword ] = useState<string>('');
   const [ isLoading, saveIsLoading ] = useState<boolean>(true);
@@ -24,9 +23,10 @@ const Lists = () => {
 		pageIndex: 1,
 		totalPages: 5,
 	});
+  const [ statusList, saveStatusList ] = useState<string[]>(['PENDING']);
 	const [ approvalList, saveApprovalList ] = useState<IApproval[]>([]);
 	const [ total, setTotal ] = useState<number>(0);
-  const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
+  // const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
 
 	useEffect(() => {
 		if (window.location.pathname === LIST) {
@@ -34,7 +34,7 @@ const Lists = () => {
 		} else if (window.location.pathname === MINE) {
 			saveType('APPLY');
 		}
-		saveStatus('PENDING');
+		saveStatusList(['PENDING']);
     savePageIndex(0);
 	}, [window.location.pathname]);
 
@@ -43,7 +43,7 @@ const Lists = () => {
 		getApprovalList<IApprovalList>({
 			pageIndex,
       pageSize: 10,
-			status,
+			status: statusList,
 			type,
 			keyword,
 		}).then(res => {
@@ -57,19 +57,18 @@ const Lists = () => {
 					totalPages,
 				});
 				setTotal(totalElements);
-
-        if (status === 'PENDING' && type === 'APPROVAL') {
-          saveUserInfo({
-            ...userInfo,
-            approvalCount: totalElements
-          });
-        }
+        // if (status === 'PENDING' && type === 'APPROVAL') {
+        //   saveUserInfo({
+        //     ...userInfo,
+        //     approvalCount: totalElements
+        //   });
+        // }
 			}
       else {
         message.error(intl.formatMessage({id: 'approvals.lists.error'}));
       }
 		});
-  }, [intl, type, status, keyword, pageIndex, saveUserInfo]);
+  }, [intl, type, statusList, keyword, pageIndex]);
 
   useEffect(() => {
     init();
@@ -83,81 +82,66 @@ const Lists = () => {
     savePageIndex(Number(data.activePage) - 1);
   }, []);
 
-  const refreshList = useCallback(() => {
-    init();
-  }, [init]);
+  const handleChange = useCallback((status) => {
+    if (statusList.includes(status)) {
+      const index = statusList.indexOf(status);
+      statusList.splice(index, 1);
+    } else {
+      statusList.push(status);
+    }
+    saveStatusList(cloneDeep(statusList));
+  }, [statusList, saveStatusList]);
 
   return (
     <div className={styles.lists}>
       <div className={styles.header}>
         <div className={styles.tabs}>
-          <div 
-            className={`${styles['tabs-item']} ${status === 'PENDING' && styles['tabs-item-selected']}`} 
-            onClick={() => { 
-              saveStatus('PENDING');
-              savePageIndex(0);
-            }}
-          >
-              <FormattedMessage id='approvals.status.pending' />
-          </div>
-          <div 
-            className={`${styles['tabs-item']} ${status === 'PASS' && styles['tabs-item-selected']}`} 
-            onClick={() => { 
-              saveStatus('PASS');
-              savePageIndex(0);
-            }}
-          >
-            <FormattedMessage id='approvals.status.unpublished' />
-          </div>
-          <div 
-            className={`${styles['tabs-item']} ${status === 'REJECT' && styles['tabs-item-selected']}`} 
-            onClick={() => { 
-              saveStatus('REJECT');
-            }}
-          >
-            <FormattedMessage id='approvals.status.declined' />
-          </div>
-          <div 
-            className={`${styles['tabs-item']} ${status === 'JUMP' && styles['tabs-item-selected']}`} 
-            onClick={() => { 
-              saveStatus('JUMP');
-              savePageIndex(0);
-            }}
-          >
-            <FormattedMessage id='approvals.status.skipped' />
-          </div>
-          <div 
-            className={`${styles['tabs-item']} ${status === 'REVOKE' && styles['tabs-item-selected']}`} 
-            onClick={() => { 
-              saveStatus('REVOKE');
-              savePageIndex(0);
-            }}
-            >
-              <FormattedMessage id='approvals.status.withdrawn' />
+          <div className={styles['tabs-item']}>
+            <Checkbox
+              checked={statusList.includes('PENDING')}
+              label={intl.formatMessage({id: 'approvals.status.pending'})}
+              onChange={() => {
+                handleChange('PENDING');
+              }}
+            />
           </div>
           {
             type === 'APPLY' && (
-              <div 
-                className={`${styles['tabs-item']} ${status === 'RELEASE' && styles['tabs-item-selected']}`} 
-                onClick={() => { 
-                  saveStatus('RELEASE');
-                  savePageIndex(0);
-                }}
-              >
-                <FormattedMessage id='approvals.status.published' />
-              </div>
-            )
-          }
-          {
-            type === 'APPLY' && (
-              <div 
-                className={`${styles['tabs-item']} ${status === 'CANCEL' && styles['tabs-item-selected']}`} 
-                onClick={() => { 
-                  saveStatus('CANCEL');
-                }}
-              >
-                <FormattedMessage id='approvals.status.cancelled' />
-              </div>
+              <>
+                <div className={styles['tabs-item']}>
+                  <Checkbox 
+                    label={intl.formatMessage({id: 'approvals.status.accepted'})}
+                    checked={statusList.includes('PASS')}
+                    onChange={() => {
+                      handleChange('PASS');
+                    }}
+                  />
+                </div>
+                <div className={styles['tabs-item']}>
+                  <Checkbox 
+                    label={intl.formatMessage({id: 'approvals.status.declined'})} 
+                    onChange={() => {
+                      handleChange('REJECT');
+                    }}
+                  />
+                </div>
+                <div className={styles['tabs-item']}>
+                  <Checkbox 
+                    label={intl.formatMessage({id: 'approvals.status.skipped'})} 
+                    onChange={() => {
+                      handleChange('JUMP');
+                    }}
+                  />
+                </div>
+                <div className={styles['tabs-item']}>
+                  <Checkbox 
+                    label={intl.formatMessage({id: 'approvals.status.withdrawn'})} 
+                    onChange={() => {
+                      handleChange('REVOKE');
+                    }} 
+                  />
+                </div>
+              </>
             )
           }
         </div>
@@ -192,6 +176,9 @@ const Lists = () => {
                     <FormattedMessage id='common.toggle.text' />
                   </Table.HeaderCell>
                   <Table.HeaderCell>
+                    <FormattedMessage id='approvals.table.header.status' />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
                     <FormattedMessage id='common.project.text' />
                   </Table.HeaderCell>
                   <Table.HeaderCell>
@@ -201,54 +188,18 @@ const Lists = () => {
                     <FormattedMessage id='approvals.table.header.request' />
                   </Table.HeaderCell>
                   {
-                    status === 'JUMP' && (
+                    type === 'APPLY' && (
                       <Table.HeaderCell>
-                        <FormattedMessage id='approvals.table.header.skipped.time' />
+                        <FormattedMessage id='toggles.settings.approval.reviewers' />
                       </Table.HeaderCell>
                     )
                   }
-                  {
-                    status === 'REVOKE' && (
-                      <Table.HeaderCell>
-                        <FormattedMessage id='approvals.table.header.withdrawn.time' />
-                      </Table.HeaderCell>
-                    )
-                  }
-                  {
-                    (status === 'PASS' || status === 'REJECT' || status === 'RELEASE'|| status === 'CANCEL') && (
-                      <Table.HeaderCell>
-                        <FormattedMessage id='approvals.table.header.review' />
-                      </Table.HeaderCell>
-                    )
-                  }
-                  {
-                    status !== 'PENDING' && (
-                      <Table.HeaderCell>
-                        <FormattedMessage id='approvals.table.header.comment' />
-                      </Table.HeaderCell>
-                    )
-                  }
-                  {
-                    status === 'RELEASE' && (
-                      <Table.HeaderCell>
-                        <FormattedMessage id='approvals.table.header.published.time' />
-                      </Table.HeaderCell>
-                    )
-                  }
-                  {
-                    status === 'CANCEL' && (
-                      <Table.HeaderCell>
-                        <FormattedMessage id='approvals.table.header.cancelled.time' />
-                      </Table.HeaderCell>
-                    )
-                  }
-                  {
-                    status === 'PENDING' && type === 'APPROVAL' && (
-                      <Table.HeaderCell>
-                        <FormattedMessage id='common.operation.text' />
-                      </Table.HeaderCell>
-                    )
-                  }
+                  <Table.HeaderCell>
+                    <FormattedMessage id='approvals.table.header.review' />
+                  </Table.HeaderCell>
+                  <Table.HeaderCell>
+                    <FormattedMessage id='approvals.table.header.comment' />
+                  </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -257,9 +208,7 @@ const Lists = () => {
                     return (
                       <ListItem 
                         type={type}
-                        status={status}
                         approval={approval}
-                        refreshList={refreshList}
                       />
                     );
                   })
@@ -267,7 +216,7 @@ const Lists = () => {
               </Table.Body>
             </Table>
             {
-              approvalList.length === 0 && (
+              approvalList.length === 0 ? (
                 <div className={styles['no-data']}>
                   <div>
                     <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
@@ -276,10 +225,7 @@ const Lists = () => {
                     <FormattedMessage id='common.nodata.text' />
                   </div>
                 </div>
-              )
-            }
-            {
-              approvalList.length !== 0 && (
+              ) : (
                 <div className={styles.pagination}>
                   <div className={styles['total']}>
                     <span className={styles['total-count']}>{total} </span>

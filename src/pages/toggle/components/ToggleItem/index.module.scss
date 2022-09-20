@@ -72,6 +72,52 @@
   color: #f5483b;
 }
 
+.status-circle {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 100%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.status-circle-pending-review {
+  background-color: #556ee6;
+}
+
+.status-circle-pending-publish {
+  background-color: #00b365;
+}
+
+.status-circle-pending-review {
+  background-color: #556ee6;
+}
+
+.status-circle-declined {
+  background-color: #ff4462;
+}
+
+.status-circle-release {
+  background-color: #9c9c9c;
+}
+
+.publish-status-pending-review {
+  color: #556ee6;
+}
+
+.publish-status-pending-publish {
+  color: #00b365;
+}
+
+.publish-status-declined {
+  color: #ff4462;
+}
+
+.publish-status-release {
+  color: #9c9c9c;
+}
+
 .popup {
   opacity: 0.8;
 }

@@ -104,7 +104,9 @@ const Info = (props: IProps) => {
 
     // Cancel publish
     if (status === 'CANCEL') {
-      const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
+      const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey, {
+        comment
+      });
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.approval.cancel.success'}));
         
@@ -151,7 +153,9 @@ const Info = (props: IProps) => {
 
   // Abandon this approval
   const handleAbandon = useCallback(async () => {
-    const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
+    const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey, {
+      comment: ''
+    });
     if (res.success) {
       initTargeting();
       message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
@@ -162,7 +166,9 @@ const Info = (props: IProps) => {
 
   // Continue to edit this approval
   const handleReEdit = useCallback(async () => {
-    const result = await cancelTargetingDraft(projectKey, environmentKey, toggleKey);
+    const result = await cancelTargetingDraft(projectKey, environmentKey, toggleKey, {
+      comment: ''
+    });
     if (result.success) {
       refreshInitialTargeting();
     }
@@ -389,20 +395,20 @@ const Info = (props: IProps) => {
                     )
                   }
 
-                  {/* Button Discard */}
+                  {/* Button Abandon */}
                   {/* Button Publish */}
                   {
                     (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && approvalInfo?.submitBy === userInfo.account) && (
                       <>
                         <Button 
                           secondary 
-                          className={styles.btn}
+                          className={styles['dangerous-btn']}
                           onClick={() => { 
                             saveOpen(true);
                             saveStatus('CANCEL');
                           }}
                         >
-                          <FormattedMessage id='targeting.approval.operation.discard' />
+                          <FormattedMessage id='targeting.approval.operation.abandon' />
                         </Button>
                         <Button primary className={styles.btn} onClick={handlePublish}>
                           <FormattedMessage id='targeting.approval.operation.publish' />
@@ -496,7 +502,7 @@ const Info = (props: IProps) => {
               { status === 'REVOKE' && <FormattedMessage id='targeting.approval.modal.withdraw' /> }
               { status === 'REJECT' && <FormattedMessage id='targeting.approval.modal.reject' /> }
               { status === 'JUMP' && <FormattedMessage id='targeting.approval.operation.skip.approval' /> }
-              { status === 'CANCEL' && <FormattedMessage id='targeting.approval.operation.discard' /> }
+              { status === 'CANCEL' && <FormattedMessage id='targeting.approval.operation.abandon' /> }
             </span>
             <Icon customClass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
           </div>
@@ -527,14 +533,14 @@ const Info = (props: IProps) => {
               }
               <Form.Field>
                 <label>
-                  { status !== 'PASS' && <span className={styles['label-required']}>*</span> }
+                  { (status !== 'PASS' && status !== 'CANCEL') && <span className={styles['label-required']}>*</span> }
                   <FormattedMessage id='targeting.approval.modal.reason' />:
                 </label>
                 
                 <Form.TextArea 
                   {
                     ...register('reason', { 
-                      required: status !== 'PASS', 
+                      required: status !== 'PASS' && status !== 'CANCEL', 
                     })
                   }
                   error={ errors.reason ? true : false }

@@ -161,6 +161,48 @@ const ToggleItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         {
+          toggle.releaseStatus === 'PENDING_APPROVAL' && (
+            <div className={styles['publish-status-pending-review']}>
+              <span className={`${styles['status-circle']} ${styles['status-circle-pending-review']}`}></span>
+              <span>
+                <FormattedMessage id='approvals.status.pending' />
+              </span>
+            </div>
+          )
+        }
+        {
+          toggle.releaseStatus === 'PENDING_RELEASE' && (
+            <div className={styles['publish-status-pending-publish']}>
+              <span className={`${styles['status-circle']} ${styles['status-circle-pending-publish']}`}></span>
+              <span>
+                <FormattedMessage id='approvals.status.unpublished' />
+              </span>
+            </div>
+          )
+        }
+        {
+          toggle.releaseStatus === 'REJECT' && (
+            <div className={styles['publish-status-declined']}>
+              <span className={`${styles['status-circle']} ${styles['status-circle-declined']}`}></span>
+              <span>
+                <FormattedMessage id='approvals.status.declined' />
+              </span>
+            </div>
+          )
+        }
+        {
+          toggle.releaseStatus === 'RELEASE' && (
+            <div className={styles['publish-status-release']}>
+              <span className={`${styles['status-circle']} ${styles['status-circle-release']}`}></span>
+              <span>
+                <FormattedMessage id='approvals.status.published' />
+              </span>
+            </div>
+          )
+        }
+      </Table.Cell>
+      <Table.Cell>
+        {
           toggle.disabled ? (
             <div className={styles['toggle-status']}>
               <div className={`${styles['toggle-status-icon']} ${styles['toggle-status-icon-disabled']}`}></div>
@@ -205,8 +247,6 @@ const ToggleItem = (props: IProps) => {
                       time: dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')
                     })
                   }
-                  {/* <FormattedMessage id='toggles.evaluated.text' /> 
-                  {dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')} */}
                 </span>
               </div>
             </div> 

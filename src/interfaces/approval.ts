@@ -14,10 +14,11 @@ export interface IApproval {
   toggleKey: string;
   toggleName: string;
   comment?: string;
-  approvalTime?: string;
-  sketchTime?: string;
   locked?: boolean;
   lockedTime?: string;
+  modifiedTime?: string;
+  canceled: boolean;
+  cancelReason?: string;
 }
 
 export interface IApprovalList {
@@ -38,7 +39,7 @@ export interface IApprovalParams {
   pageIndex?: number;
   pageSize?: number;
   keyword?: string;
-  status: string;
+  status: string[];
   type: string;
 }
 

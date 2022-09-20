@@ -15,6 +15,66 @@
   padding-left: 20px !important;
 }
 
+.cancel-publish {
+  height: 16px;
+  background: #ECECF6;
+  border-radius: 4px;
+  color: #495057;
+  transform: scale(0.9);
+  font-size: 12px;
+  padding: 1px 4px;
+  margin-left: 4px;
+}
+
+.status-pending {
+  color: #556ee6;
+}
+
+.status-pass {
+  color: #00b365;
+}
+
+.status-revoke {
+  color: #9c9c9c;
+}
+
+.status-declined {
+  color: #ff4462;
+}
+
+.status-jump {
+  color: #ffc300;
+}
+
+.status-circle {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  display: inline-block;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.status-circle-pending {
+  background-color: #556ee6;
+}
+
+.status-circle-pass {
+  background-color: #00b365;
+}
+
+.status-circle-revoke {
+  background-color: #9c9c9c;
+}
+
+.status-circle-declined {
+  background-color: #ff4462;
+}
+
+.status-circle-jump {
+  background-color: #ffc300;
+}
+
 .list-item-toggle {
   font-size: 15px;
   color: #556ee6;

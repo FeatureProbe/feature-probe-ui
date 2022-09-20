@@ -6,8 +6,12 @@
 }
 
 .column-brief {
-  min-width: 380px;
+  min-width: 320px;
   padding-left: 32px !important;
+}
+
+.column-publishing-status {
+  min-width: 160px !important;
 }
 
 .column-status {
@@ -158,6 +162,7 @@
   padding: 0 24px;
   position: relative;
   flex: 1;
+  overflow-x: auto;
 }
 
 .archived-img {
@@ -237,24 +242,59 @@
   font-size: 24px !important;
 }
 
+.icon-filter {
+  color: #919aac;
+  margin-left: 8px;
+  position: relative;
+  top: 1px;
+  cursor: pointer;
+}
+
 .popup {
-  padding: 4px 0 !important;
+  padding: 8px 0 !important;
   margin-top: 4px !important;
+  min-width: 180px !important;
 }
 
 .menu {
-  min-width: 90px;
   color: #212529;
+  padding-bottom: 8px;
 }
 
 .menu-item {
-  height: 28px;
-  line-height: 28px;
+  height: 32px;
+  line-height: 32px;
   cursor: pointer;
   font-size: 12px;
   padding: 0 12px;
+
+  :global {
+    .checkbox {
+      width: 100%;
+    }
+  }
 }
 
 .menu-item:hover {
   background-color: #f8f9fa;
+}
+
+.popup-footer {
+  border-top: 1px solid #e2e5e9;
+  text-align: right;
+  padding-top: 7px;
+  padding-right: 12px;
+}
+
+.popup-footer-clear {
+  font-size: 13px;
+  color: #353a40;
+  cursor: pointer;
+}
+
+.popup-footer-confirm {
+  font-size: 13px;
+  color: #556ee6;
+  cursor: pointer;
+  margin-left: 12px;
 }
