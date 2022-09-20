@@ -12,9 +12,10 @@ import {
   InputOnChangeData,
   Dimmer,
   Loader,
+  Checkbox,
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { debounce } from 'lodash';
+import { cloneDeep, debounce } from 'lodash';
 import ToggleItem from './components/ToggleItem';
 import ToggleDrawer from './components/ToggleDrawer';
 import ProjectLayout from 'layout/projectLayout';
@@ -47,6 +48,7 @@ interface ISearchParams {
   tags?: string[];
   keyword?: number;
   archived?: boolean;
+  releaseStatusList?: string[];
 }
 
 const Toggle = () => {
@@ -70,6 +72,8 @@ const Toggle = () => {
   const [ archiveOpen, setArchiveOpen ] = useState<boolean>(false);
   const [ isArchived, setArchived ] = useState<boolean>(search.indexOf('isArchived=true') > -1);
   const [ isLoading, saveIsLoading ] = useState<boolean>(true);
+  const [ popupOpen, savePopupOpen ] = useState<boolean>(false);
+  const [ releaseStatusList, saveReleaseStatusList ] = useState<string[]>([]);
   const history = useHistory();
   const intl = useIntl();
   const { i18n } = I18NContainer.useContainer();
@@ -79,11 +83,14 @@ const Toggle = () => {
       if (archiveOpen) {
         setArchiveOpen(false);
       }
+      if (popupOpen) {
+        savePopupOpen(false);
+      }
     };
     window.addEventListener('click', handler);
 
     return () => window.removeEventListener('click', handler);
-  }, [archiveOpen]);
+  }, [archiveOpen, popupOpen]);
 
   const getToggleLists = useCallback(() => {
     searchParams.environmentKey = environmentKey;
@@ -253,6 +260,18 @@ const Toggle = () => {
       archived,
     });
   }, [searchParams]);
+
+  const handleChange = useCallback((status) => {
+    if (releaseStatusList.includes(status)) {
+      const index = releaseStatusList.indexOf(status);
+      releaseStatusList.splice(index, 1);
+    }
+    else {
+      releaseStatusList.push(status);
+    }
+    saveReleaseStatusList(cloneDeep(releaseStatusList));
+  }, [releaseStatusList, saveReleaseStatusList]);
+
 
 	return (
     <ProjectLayout>
@@ -444,6 +463,95 @@ const Toggle = () => {
                             <Table.HeaderCell className={styles['column-brief']}>
                               <FormattedMessage id='toggles.table.brief' />
                             </Table.HeaderCell>
+                            {
+                              <Table.HeaderCell className={styles['column-publishing-status']}>
+                                <div>
+                                  <span>
+                                    <FormattedMessage id='approvals.table.header.status' />
+                                  </span>
+                                  <Popup
+                                    basic
+                                    open={popupOpen}
+                                    on='click'
+                                    position='bottom right'
+                                    className={styles.popup}
+                                    trigger={
+                                      <Icon 
+                                        type='filter' 
+                                        customClass={styles['icon-filter']} 
+                                        onClick={(e: SyntheticEvent) => {
+                                          document.body.click();
+                                          e.stopPropagation();
+                                          savePopupOpen(true);
+                                        }} 
+                                      />
+                                    }
+                                  >
+                                    <div onClick={(e) => e.stopPropagation()}>
+                                      <div className={styles['menu']}>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.pending'})}
+                                            checked={releaseStatusList.includes('PENDING_APPROVAL')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('PENDING_APPROVAL');
+                                            }}
+                                          />
+                                        </div>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.unpublished'})}
+                                            checked={releaseStatusList.includes('PENDING_RELEASE')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('PENDING_RELEASE');
+                                            }}
+                                          />
+                                        </div>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.declined'})}
+                                            checked={releaseStatusList.includes('REJECT')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('REJECT');
+                                            }}
+                                          />
+                                        </div>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.published'})}
+                                            checked={releaseStatusList.includes('RELEASE')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('RELEASE');
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
+                                      <div className={styles['popup-footer']}>
+                                        <span className={styles['popup-footer-clear']} onClick={() => { 
+                                          saveReleaseStatusList([]);
+                                        }}>
+                                          <FormattedMessage id='common.clear.text' />
+                                        </span>
+                                        <span className={styles['popup-footer-confirm']} onClick={() => {
+                                          setSearchParams({
+                                            ...searchParams,
+                                            pageIndex: 0,
+                                            releaseStatusList,
+                                          });
+                                          savePopupOpen(false);
+                                        }}>
+                                          <FormattedMessage id='common.confirm.text' />
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </Popup>
+                                </div>
+                              </Table.HeaderCell>
+                            }
                             <Table.HeaderCell className={styles['column-status']}>
                               <FormattedMessage id='toggles.table.status' />
                             </Table.HeaderCell>
@@ -463,23 +571,41 @@ const Toggle = () => {
                           </Table.Row>
                         </Table.Header>
                         {
-                          toggleList.length !== 0 && (
-                            <Table.Body>
+                          isLoading ? (
+                            <div className={styles.lists}>
                               {
-                                toggleList?.map((toggle: IToggle) => {
-                                  return (
-                                    <ToggleItem 
-                                      key={toggle.key}
-                                      toggle={toggle} 
-                                      isArchived={isArchived}
-                                      setIsAdd={setIsAdd}
-                                      refreshToggleList={refreshToggleList}
-                                      setDrawerVisible={setDrawerVisible}
-                                    />
-                                  );
-                                })
+                                isLoading && (
+                                  <Dimmer active inverted>
+                                    <Loader size='small'>
+                                      <FormattedMessage id='common.loading.text' />
+                                    </Loader>
+                                  </Dimmer>
+                                )
                               }
-                            </Table.Body>
+                            </div>
+                          ) : (
+                            <>
+                              {
+                                toggleList.length !== 0 && (
+                                  <Table.Body>
+                                    {
+                                      toggleList?.map((toggle: IToggle) => {
+                                        return (
+                                          <ToggleItem 
+                                            key={toggle.key}
+                                            toggle={toggle} 
+                                            isArchived={isArchived}
+                                            setIsAdd={setIsAdd}
+                                            refreshToggleList={refreshToggleList}
+                                            setDrawerVisible={setDrawerVisible}
+                                          />
+                                        );
+                                      })
+                                    }
+                                  </Table.Body>
+                                )
+                              }
+                            </>
                           )
                         }
                       </Table>

@@ -51,7 +51,11 @@ export const publishTargetingDraft = async<T> (projectKey: string, environmentKe
   });
 };
 
-export const cancelTargetingDraft = async<T> (projectKey: string, environmentKey: string, toggleKey: string) => {
+interface IComment {
+  comment?: string;
+}
+
+export const cancelTargetingDraft = async<T> (projectKey: string, environmentKey: string, toggleKey: string, data: IComment) => {
   const url = `${API.cancelTargetingSketch
     .replace(':projectKey', projectKey)
     .replace(':environmentKey', environmentKey)
@@ -62,6 +66,7 @@ export const cancelTargetingDraft = async<T> (projectKey: string, environmentKey
     method: 'PATCH',
     headers: {
       ...ApplicationJson()
-    }
+    },
+    body: JSON.stringify(data),
   });
 };

@@ -108,7 +108,7 @@ const PageHeader = () => {
 
     getApprovalList<IApprovalList>({
 			pageIndex: 0,
-			status: 'PENDING',
+			status: ['PENDING'],
 			type: 'APPROVAL',
 			keyword: '',
 		}).then(res => {

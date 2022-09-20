@@ -28,6 +28,7 @@ export interface IToggle {
   locked?: boolean;
   lockedBy?: string;
   lockedTime?: string;
+  releaseStatus: string;
 }
 
 export interface IEditToggleParams {
