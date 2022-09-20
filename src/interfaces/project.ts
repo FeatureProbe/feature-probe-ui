@@ -11,6 +11,7 @@ export interface IEnvironment {
   clientSdkKey: string;
   serverSdkKey: string;
   archived?: boolean;
+  enableApproval?: boolean;
 }
 
 export interface IEnvironmentParams {
