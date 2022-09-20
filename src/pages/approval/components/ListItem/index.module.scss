@@ -28,22 +28,32 @@
 
 .status-pending {
   color: #556ee6;
+  display: flex;
+  align-items: center;
 }
 
 .status-pass {
   color: #00b365;
+  display: flex;
+  align-items: center;
 }
 
 .status-revoke {
   color: #9c9c9c;
+  display: flex;
+  align-items: center;
 }
 
 .status-declined {
   color: #ff4462;
+  display: flex;
+  align-items: center;
 }
 
 .status-jump {
   color: #ffc300;
+  display: flex;
+  align-items: center;
 }
 
 .status-circle {
@@ -52,7 +62,6 @@
   border-radius: 100%;
   display: inline-block;
   margin-right: 4px;
-  vertical-align: middle;
 }
 
 .status-circle-pending {
@@ -93,6 +102,11 @@
 
 .popup {
   opacity: 0.8;
+}
+
+.popup-content {
+  max-width: 100px;
+  overflow: auto;
 }
 
 .popup-line {

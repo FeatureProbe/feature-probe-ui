@@ -32,13 +32,13 @@ const ListItem = (props: IProps) => {
                 className={styles.popup}
                 trigger={
                   <span className={styles['cancel-publish']}>
-                    <FormattedMessage id='targeting.approval.operation.abandon' />
+                    <FormattedMessage id='approvals.table.header.abandoned' />
                   </span>
                 }
                 content={
-                  <span>
-                    {approval.cancelReason}
-                  </span>
+                  <div className={styles['popup-content']}>
+                    <FormattedMessage id='approvals.table.header.comment' />: {approval.cancelReason}
+                  </div>
                 }
                 position='top center'
               />
