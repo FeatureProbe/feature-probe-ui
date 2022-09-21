@@ -490,7 +490,7 @@ const Toggle = () => {
                                       trigger={
                                         <Icon 
                                           type='filter' 
-                                          customClass={styles['icon-filter']} 
+                                          customClass={`${styles['icon-filter']} ${releaseStatusList.length > 0 && styles['icon-filter-selected']}`} 
                                           onClick={(e: SyntheticEvent) => {
                                             document.body.click();
                                             e.stopPropagation();

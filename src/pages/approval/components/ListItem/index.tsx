@@ -26,7 +26,7 @@ const ListItem = (props: IProps) => {
         <div className={styles['list-item-title']}>
           {approval.title}
           {
-            approval.canceled && (
+            approval.canceled && approval.status === 'PASS' && (
               <Popup
                 inverted
                 className={styles.popup}
