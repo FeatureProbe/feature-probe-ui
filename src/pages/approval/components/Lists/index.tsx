@@ -75,6 +75,7 @@ const Lists = () => {
   }, [init]);
 
   const handleSearch = debounce(useCallback((e: SyntheticEvent, detail: InputOnChangeData) => {
+    savePageIndex(0);
     saveKeyword(detail.value);
   }, []), 300);
 
@@ -89,6 +90,7 @@ const Lists = () => {
     } else {
       statusList.push(status);
     }
+    savePageIndex(0);
     saveStatusList(cloneDeep(statusList));
   }, [statusList, saveStatusList]);
 
