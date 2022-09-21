@@ -66,9 +66,23 @@
   color: #495057;
 }
 
-.toggle-lock {
+.toggle-lock-bg {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 24px;
+  margin-right: 8px;
   position: absolute;
-  left: 12px;
+  left: 4px;
+}
+
+.toggle-lock-bg:hover {
+  background: rgba(33, 37, 41, 0.04);
+}
+
+.toggle-lock {
   color: #f5483b;
 }
 

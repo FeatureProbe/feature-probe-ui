@@ -24,7 +24,22 @@ const ListItem = (props: IProps) => {
     <Table.Row className={styles['list-item']}>
       <Table.Cell>
         <div className={styles['list-item-title']}>
-          {approval.title}
+          <Popup
+            inverted
+            className={styles.popup}
+            trigger={
+              <span>
+                { approval.title }
+              </span>
+            }
+            content={
+              <div className={styles['popup-content']}>
+                { approval.title }
+              </div>
+            }
+            position='top left'
+          />
+          
           {
             approval.canceled && approval.status === 'PASS' && (
               <Popup
@@ -60,7 +75,9 @@ const ListItem = (props: IProps) => {
                   inverted
                   className={styles.popup}
                   trigger={
-                    <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                    <span className={styles['toggle-lock-bg']}>
+                      <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                    </span>   
                   }
                   content={
                     <div>
@@ -164,7 +181,27 @@ const ListItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['list-item-reason']}>
-          {approval.comment || '-'}
+          {
+            approval.comment ? (
+              <Popup
+                inverted
+                className={styles.popup}
+                trigger={
+                  <span>
+                    { approval.title }
+                  </span>
+                }
+                content={
+                  <div className={styles['popup-content']}>
+                    { approval.title }
+                  </div>
+                }
+                position='top left'
+              />
+            ) : (
+              <span>-</span>
+            )
+          }
         </div>
       </Table.Cell>
     </Table.Row>

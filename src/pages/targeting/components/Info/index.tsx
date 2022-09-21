@@ -244,7 +244,9 @@ const Info = (props: IProps) => {
                       inverted
                       className={styles.popup}
                       trigger={
-                        <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                        <span className={styles['toggle-lock-bg']}>
+                          <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                        </span>
                       }
                       content={
                         <div>
