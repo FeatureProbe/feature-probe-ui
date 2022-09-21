@@ -22,13 +22,14 @@ interface ILocationParams {
 interface IProps {
   toggle: IToggle
   isArchived?: boolean;
+  enableApproval: boolean;
   setDrawerVisible(visible: boolean): void;
   setIsAdd(isAdd: boolean): void;
   refreshToggleList(): void;
 }
 
 const ToggleItem = (props: IProps) => {
-  const { toggle, isArchived, setDrawerVisible, setIsAdd, refreshToggleList } = props;
+  const { toggle, isArchived, enableApproval, setDrawerVisible, setIsAdd, refreshToggleList } = props;
   const [ visible, setVisible ] = useState<boolean>(false);
   const [ archiveOpen, setArchiveOpen] = useState<boolean>(false);
   const [ restoreOpen, setRestoreOpen] = useState<boolean>(false);
@@ -127,7 +128,9 @@ const ToggleItem = (props: IProps) => {
                 inverted
                 className={styles.popup}
                 trigger={
-                  <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                  <span className={styles['toggle-lock-bg']}>
+                    <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                  </span>
                 }
                 content={
                   <div>
@@ -159,6 +162,52 @@ const ToggleItem = (props: IProps) => {
           )
         }
       </Table.Cell>
+      {
+        enableApproval && (
+          <Table.Cell>
+            {
+              toggle.releaseStatus === 'PENDING_APPROVAL' && (
+                <div className={styles['publish-status-pending-review']}>
+                  <span className={`${styles['status-circle']} ${styles['status-circle-pending-review']}`}></span>
+                  <span>
+                    <FormattedMessage id='approvals.status.pending' />
+                  </span>
+                </div>
+              )
+            }
+            {
+              toggle.releaseStatus === 'PENDING_RELEASE' && (
+                <div className={styles['publish-status-pending-publish']}>
+                  <span className={`${styles['status-circle']} ${styles['status-circle-pending-publish']}`}></span>
+                  <span>
+                    <FormattedMessage id='approvals.status.unpublished' />
+                  </span>
+                </div>
+              )
+            }
+            {
+              toggle.releaseStatus === 'REJECT' && (
+                <div className={styles['publish-status-declined']}>
+                  <span className={`${styles['status-circle']} ${styles['status-circle-declined']}`}></span>
+                  <span>
+                    <FormattedMessage id='approvals.status.declined' />
+                  </span>
+                </div>
+              )
+            }
+            {
+              toggle.releaseStatus === 'RELEASE' && (
+                <div className={styles['publish-status-release']}>
+                  <span className={`${styles['status-circle']} ${styles['status-circle-release']}`}></span>
+                  <span>
+                    <FormattedMessage id='approvals.status.published' />
+                  </span>
+                </div>
+              )
+            }
+          </Table.Cell>
+        )
+      }
       <Table.Cell>
         {
           toggle.disabled ? (
@@ -205,8 +254,6 @@ const ToggleItem = (props: IProps) => {
                       time: dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')
                     })
                   }
-                  {/* <FormattedMessage id='toggles.evaluated.text' /> 
-                  {dayjs(toggle?.visitedTime).format('YYYY-MM-DD HH:mm:ss')} */}
                 </span>
               </div>
             </div> 

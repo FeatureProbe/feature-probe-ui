@@ -95,7 +95,7 @@ const ProjectSetting = () => {
   const saveToggleDisable = useCallback((environmentKey:string, checked: boolean) => {
     const settings = cloneDeep(approvalSetting);
     settings.forEach((setting: IApprovalSetting) => {
-      if (setting.environmentKey === environmentKey) {
+      if (setting.environmentKey === environmentKey && setting.reviewers.length > 0) {
         setting.enable = checked;
       }
     });

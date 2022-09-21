@@ -14,16 +14,11 @@
 .tabs {
   display: flex;
   height: 32px;
-  background: #F6F6F7;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #6d6f72;
-  padding: 0 2px;
 }
 
 .tabs-item {
   text-align: center;
-  padding: 0 12px;
+  padding-right: 24px;
   height: 28px;
   margin: 2px 0;
   line-height: 28px;
@@ -74,11 +69,15 @@
 }
 
 .column-toggle {
-  padding-left: 40px !important;
+  padding-left: 50px !important;
 }
 
 .column-title {
   width: 200px !important;
+}
+
+.column-reviewers {
+  width: 240px !important;
 }
 
 .pagination {
