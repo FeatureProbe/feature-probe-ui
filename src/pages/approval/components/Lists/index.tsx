@@ -7,7 +7,6 @@ import message from 'components/MessageBox';
 import ListItem from '../ListItem';
 import { IApproval, IApprovalList } from 'interfaces/approval';
 import { getApprovalList } from 'services/approval';
-import { HeaderContainer } from 'layout/hooks';
 import styles from './index.module.scss';
 
 const LIST = '/approvals/list';
@@ -26,7 +25,6 @@ const Lists = () => {
   const [ statusList, saveStatusList ] = useState<string[]>(['PENDING']);
 	const [ approvalList, saveApprovalList ] = useState<IApproval[]>([]);
 	const [ total, setTotal ] = useState<number>(0);
-  const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
 
 	useEffect(() => {
 		if (window.location.pathname === LIST) {
@@ -57,18 +55,12 @@ const Lists = () => {
 					totalPages,
 				});
 				setTotal(totalElements);
-        if (type === 'APPROVAL') {
-          saveUserInfo({
-            ...userInfo,
-            approvalCount: totalElements
-          });
-        }
 			}
       else {
         message.error(intl.formatMessage({id: 'approvals.lists.error'}));
       }
 		});
-  }, [intl, type, statusList, keyword, pageIndex, saveUserInfo]);
+  }, [intl, type, statusList, keyword, pageIndex]);
 
   useEffect(() => {
     init();

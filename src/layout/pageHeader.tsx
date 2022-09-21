@@ -1,4 +1,4 @@
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
@@ -9,6 +9,7 @@ import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo } from 'services/user';
 import { getApprovalList } from 'services/approval';
 import { IUser } from 'interfaces/member';
+import { IApprovalList } from 'interfaces/approval';
 import { I18NContainer } from 'hooks';
 import { APPROVAL_ROUTE_LIST, PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
@@ -16,7 +17,6 @@ import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
 import { EventTrack } from 'utils/track';
 import styles from './pageHeader.module.scss';
-import { IApprovalList } from 'interfaces/approval';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
@@ -27,7 +27,7 @@ const PageHeader = () => {
   const history = useHistory();
   const location = useLocation();
   const intl = useIntl();
-  const { userInfo, saveUserInfo } = HeaderContainer.useContainer();
+  const { approvalCount, saveUserInfo, saveApprovalCount } = HeaderContainer.useContainer();
 
   const [ selectedNav, setSelectedNav ] = useState<string>('');
   const [ account, setAccount ] = useState<string>('');
@@ -39,6 +39,8 @@ const PageHeader = () => {
     i18n,
     setI18n
   } = I18NContainer.useContainer();
+
+  const timer: { current: NodeJS.Timeout | null } = useRef(null);
 
   const headerCls = classNames(
     styles['header'],
@@ -85,27 +87,23 @@ const PageHeader = () => {
     return () => window.removeEventListener('click', handler);
   }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
 
-  useEffect(() => {
-    let result: IUser;
 
+  useEffect(() => {
     getUserInfo<IUser>().then(res => {
       const { success } = res;
       if (success) {
-        const { data } = res;
-        if (data) {
-          setAccount(data?.account);
-          saveUserInfo({
-            ...data,
-            approvalCount: userInfo.approvalCount,
-          });
-          EventTrack.setUserId(data.account);
-          result = data;
+        if (res.data) {
+          setAccount(res.data.account);
+          saveUserInfo(res.data);
+          EventTrack.setUserId(res.data.account);
         }
       } else {
         message.error(intl.formatMessage({id: 'header.getuser.error.text'}));
       }
     });
+  }, [intl, saveUserInfo]);
 
+  const initApprovalList = useCallback(() => {
     getApprovalList<IApprovalList>({
 			pageIndex: 0,
 			status: ['PENDING'],
@@ -115,13 +113,22 @@ const PageHeader = () => {
 			const { success, data } = res;
 			if (success && data) {
 				const { totalElements } = data;
-        saveUserInfo({
-          ...result,
-          approvalCount: totalElements,
-        });
+        saveApprovalCount(totalElements);
       }
 		});
-  }, [intl, userInfo.approvalCount, saveUserInfo]);
+  }, [saveApprovalCount]);
+
+  useEffect(() => {
+    if (timer.current) {
+      clearInterval(timer.current);
+    }
+    initApprovalList();
+    timer.current = setInterval(initApprovalList, 5000);
+    
+    return () => {
+      clearInterval(timer.current as NodeJS.Timeout);
+    };
+  }, [initApprovalList]);
 
   useEffect(() => {
     const reg = new RegExp('[^/]+$');
@@ -192,7 +199,7 @@ const PageHeader = () => {
       
         <div className={approvalCls} onClick={handleGotoApproval}>
           <FormattedMessage id='approvals.center' />
-          { userInfo.approvalCount !== 0 && <span className={styles.count}>{userInfo.approvalCount > 99 ? '99+' : userInfo.approvalCount}</span> }
+          { approvalCount !== 0 && <span className={styles.count}>{approvalCount > 99 ? '99+' : approvalCount}</span> }
         </div>
       </div>
       <div className={'user'}>

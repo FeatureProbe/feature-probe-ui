@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { createContainer } from 'unstated-next';
 import { useLocalStorage } from 'utils/hooks';
-import { useState } from 'react';
 
 export const usePutaway = () => {
   const [ isPutAway, setIsputAway ] = useLocalStorage('sidebarIsPutAway', false);
@@ -15,12 +15,15 @@ export const useUserInfo = () => {
   const [ userInfo, saveUserInfo ] = useState({
     account: '',
     role: '',
-    approvalCount: 0,
   });
+
+  const [ approvalCount, saveApprovalCount ] = useState<number>(0);
 
   return {
     userInfo,
+    approvalCount,
     saveUserInfo,
+    saveApprovalCount,
   };
 };
 
