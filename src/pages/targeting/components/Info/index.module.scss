@@ -22,12 +22,23 @@
   align-items: center;
 }
 
+.toggle-lock-bg {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 24px;
+  margin-right: 8px;
+}
+
+.toggle-lock-bg:hover {
+  background: rgba(33, 37, 41, 0.04);
+}
+
 .toggle-lock {
   color: #f5483b;
-  font-size: 18px;
-  margin-right: 8px;
-  position: relative;
-  top: 2px;
+  font-size: 16px !important;
 }
 
 .popup {

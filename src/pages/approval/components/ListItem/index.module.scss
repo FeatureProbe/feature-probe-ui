@@ -89,15 +89,27 @@
   color: #556ee6;
   cursor: pointer;
   position: relative;
-  padding-left: 20px !important;
+  padding-left: 30px !important;
+}
+
+.toggle-lock-bg {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 24px;
+}
+
+.toggle-lock-bg:hover {
+  background: rgba(33, 37, 41, 0.04);
 }
 
 .toggle-lock {
   color: #f5483b;
   font-size: 14px;
-  margin-right: 4px;
-  position: absolute;
-  left: 0;
 }
 
 .popup {
