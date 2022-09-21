@@ -13,7 +13,7 @@ const Approvals = () => {
   const [ selectedNav, saveSelectedNav ] = useState<string>(LIST);
   const location = useLocation();
   const history = useHistory();
-  const { userInfo } = HeaderContainer.useContainer();
+  const { approvalCount } = HeaderContainer.useContainer();
   
   const listCls = classNames(
     styles['navs-item'],
@@ -48,7 +48,7 @@ const Approvals = () => {
           }}
         >
           <FormattedMessage id='approvals.lists' />
-          { userInfo.approvalCount !== 0 && <span className={styles.count}>{userInfo.approvalCount > 99 ? '99+' : userInfo.approvalCount}</span> }
+          { approvalCount !== 0 && <span className={styles.count}>{approvalCount > 99 ? '99+' : approvalCount}</span> }
         </div>
         <div 
           className={mineCls} 
