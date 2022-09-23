@@ -152,7 +152,7 @@ export const getPythonCode = (options: IOption) => {
 import featureprobe as fp
 
 if __name__ == '__main__':
-  config = fp.Config(remote_uri='${remoteUrl}', sync_mode='pooling')
+  config = fp.Config(remote_uri='${remoteUrl}', sync_mode='pooling', refresh_interval=3)
   with fp.Client('${serverSdkKey}', config) as client:
     user = fp.User()
     ${userWithCode}
