@@ -82,3 +82,23 @@
   margin-left: 12px;
   color: #74788d;
 }
+
+.color-square {
+  width: 10px;
+  height: 10px;
+  margin: 0 4px 0 0;
+}
+
+.environment-key-box {
+  display: flex;
+  height: 30px;
+  align-items: center;
+}
+
+.error-text {
+  color: #f46a6a;
+  margin-left: 8px;
+  font-size: 12px;
+  transform: scale(0.83);
+  transform-origin: left;
+}

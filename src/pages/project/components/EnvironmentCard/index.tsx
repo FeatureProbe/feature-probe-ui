@@ -2,7 +2,7 @@ import { SyntheticEvent, useCallback, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { EnvironmentColors, EnvironmentBgColors } from 'constants/colors';
+import { EnvironmentBgColors, EnvironmentColors } from 'constants/colors';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
@@ -28,7 +28,6 @@ interface IProps {
 const EnvironmentCard = (props: IProps) => {
   const { item, index, projectKey, total, isArchived, handleEditEnvironment, refreshEnvironmentList } = props;
   const history = useHistory();
-  const [ isHover, setIsHover ] = useState<boolean>(false);
   const [ open, setMenuOpen ] = useState<boolean>(false);
   const [ archiveOpen, setArchiveOpen] = useState<boolean>(false);
   const [ restoreOpen, setRestoreOpen] = useState<boolean>(false);
@@ -90,8 +89,6 @@ const EnvironmentCard = (props: IProps) => {
     <div 
       className={styles.environment} 
       onClick={() => handleGotoToggle(item.key)} 
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
     >
       <div style={{background: EnvironmentColors[index % 5]}} className={styles['environment-line']}></div>
       <div className={styles.content}>
@@ -110,7 +107,7 @@ const EnvironmentCard = (props: IProps) => {
         <div className={styles.title}>
           <span>{ item.name }</span>
           {
-            isHover && OWNER.includes(userInfo.role) && (
+            OWNER.includes(userInfo.role) && (
               <Popup
                 open={open}
                 on='click'

@@ -1,5 +1,5 @@
 
-export const PROJECT_ROUTE_LIST = ['projects', 'toggles', 'targeting', 'metrics', 'segments'];
+export const PROJECT_ROUTE_LIST = ['projects'];
 export const SETTING_ROUTE_LIST = ['/settings/members', '/settings/profile'];
 export const APPROVAL_ROUTE_LIST = ['/approvals/list', '/approvals/mine'];
 
