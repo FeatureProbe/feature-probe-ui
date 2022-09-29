@@ -1,7 +1,7 @@
 
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import  { Radio, CheckboxProps, Form, Dropdown, DropdownProps, DropdownItemProps, Dimmer, Loader } from 'semantic-ui-react';
+import  { Radio, CheckboxProps, Form, Dropdown, DropdownProps, DropdownItemProps, Dimmer, Loader, Popup } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { cloneDeep, isEqual } from 'lodash';
 import { useForm } from 'react-hook-form';
@@ -164,9 +164,9 @@ const ProjectSetting = () => {
                         return (
                           <Form.Group className={styles.group}>
                             <Form.Field width={2}>
-                              <div className={styles['environment-key-box']}>
+                              <div className={styles['environment-name-box']}>
                                 <div className={styles['color-square']} style={{background: EnvironmentColors[index % 5]}}/>
-                                <div className='environment-key-text'>{setting.environmentKey}</div>
+                                <div className='environment-name-text'>{setting.environmentName}</div>
                               </div>
                             </Form.Field>
                             <Form.Field width={12}>
@@ -197,17 +197,28 @@ const ProjectSetting = () => {
                               { errors[`approval-reviewers-${index}`] && <div className={styles['error-text']}>{ intl.formatMessage({ id: 'toggles.settings.approval.reviewers.placeholder' }) }</div> }
                             </Form.Field>
                             <Form.Field width={2}>
-                              <Radio
-                                size='mini'
-                                toggle 
-                                checked={setting.enable}
-                                onChange={(e: SyntheticEvent, data: CheckboxProps) => {
-                                  saveToggleDisable(setting.environmentKey, !!data.checked);
-                                  trigger(`approval-reviewers-${index}`);
-                                }} 
-                                className={styles['approval-status']} 
-                                disabled={!OWNER.includes(userInfo.role)}
+                              <Popup
+                                inverted
+                                disabled={!setting.locked}
+                                className={styles.popup}
+                                trigger={
+                                  <Radio
+                                    size='mini'
+                                    toggle 
+                                    checked={setting.enable}
+                                    onChange={(e: SyntheticEvent, data: CheckboxProps) => {
+                                      saveToggleDisable(setting.environmentKey, !!data.checked);
+                                      trigger(`approval-reviewers-${index}`);
+                                    }} 
+                                    className={styles['approval-status']} 
+                                    disabled={!OWNER.includes(userInfo.role) || setting.locked}
+                                  />
+                                }
+                                content={intl.formatMessage({ id: 'toggles.settings.approval.enable.tips' })}
+                                position='top left'
+                                wide
                               />
+                              
                             </Form.Field>
                           </Form.Group>
                         );

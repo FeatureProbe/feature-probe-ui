@@ -192,11 +192,6 @@ const ProjectCard = (props: IProps) => {
             )
           }
         </div>
-        <div className={styles.key}>
-          <span className={styles['key-label']}>
-            { project.key }
-          </span>
-          </div>
         <div className={styles.desc}>
           { project.description }
         </div>

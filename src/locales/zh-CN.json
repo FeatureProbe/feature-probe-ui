@@ -85,7 +85,7 @@
   "common.copy.uppercase.text": "复制",
   "common.email.text": "邮箱",
   "common.email.placeholder.text": "请输入邮箱地址",
-  "common.toggle.settings.text": "设置",
+  "common.toggle.settings.text": "审批设置",
   "common.toggle.appoval.settings.text": "审批设置",
   "common.yes.text": "是",
   "common.no.text": "否",
@@ -238,6 +238,7 @@
   "toggles.settings.approval.reviewers": "审批人",
   "toggles.settings.approval.reviewers.placeholder": "请选择审批人",
   "toggles.settings.approval.enable": "开启审批",
+  "toggles.settings.approval.enable.tips": "该环境存在审批流程未结束的开关，不允许关闭",
   "toggles.settings.save.success": "保存成功",
 
   "targeting.default.rule": "默认规则",
