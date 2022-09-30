@@ -99,7 +99,7 @@
   "header.getuser.error.text": "无法获取用户信息!",
 
   "sidebar.modal.title": "离开当前页面?",
-  "sidebar.modal.content": "切换到 {env} 环境",
+  "sidebar.modal.content": "切换到 {envName} 环境",
   "sidebar.putaway.text": "收起",
 
   "login.account.required": "输入帐号",

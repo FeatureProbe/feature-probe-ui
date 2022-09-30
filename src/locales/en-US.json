@@ -99,7 +99,7 @@
   "header.getuser.error.text": "Get user info error!",
 
   "sidebar.modal.title": "Are you sure to leave this page?",
-  "sidebar.modal.content": "switch to {env} environment",
+  "sidebar.modal.content": "switch to {envName} environment",
   "sidebar.putaway.text": "Collapse",
 
   "login.account.required": "Please input account",
