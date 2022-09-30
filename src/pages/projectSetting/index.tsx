@@ -74,10 +74,11 @@ const ProjectSetting = () => {
     init();
   }, [init]);
 
-  const renderLabel = useCallback((label: DropdownItemProps) => {
+  const renderLabel = useCallback((label: DropdownItemProps, setting: IApprovalSetting) => {
+    const cantRemove: boolean = setting.reviewers.length === 1 && setting.enable === true;
     return ({
       content: label.text,
-      removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
+      removeIcon: !cantRemove && <Icon type='close' customClass={styles['dropdown-remove-icon']} />
     });
   }, []);
 
@@ -85,9 +86,8 @@ const ProjectSetting = () => {
     const settings = cloneDeep(approvalSetting);
     settings.forEach((setting: IApprovalSetting) => {
       if (setting.environmentKey === environmentKey) {
-        setting.reviewers = reviewers;
-        if(reviewers.length === 0) {
-          setting.enable = false;
+        if(!(setting.enable === true && reviewers.length === 0)) {
+          setting.reviewers = reviewers;
         }
       }
     });
@@ -185,7 +185,9 @@ const ProjectSetting = () => {
                                 options={options}
                                 value={setting.reviewers}
                                 openOnFocus={false}
-                                renderLabel={renderLabel}
+                                renderLabel={(label) => {
+                                  return renderLabel(label, setting);
+                                }}
                                 disabled={!OWNER.includes(userInfo.role)}
                                 icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
                                 noResultsMessage={null}
