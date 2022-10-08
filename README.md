@@ -6,6 +6,7 @@ but we highly recommend using it as the management portal.
 The FeatureProbe UI provides extensive UI features for managing and updating properties, 
 rollout, rollback, configuration peer reviews, permission management, history, and many other features.
 
+## [中文文档](https://docs.featureprobe.io/zh-CN/)
 
 ## Getting Started
 
