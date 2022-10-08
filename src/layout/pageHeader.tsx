@@ -17,10 +17,12 @@ import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
 import { EventTrack } from 'utils/track';
 import styles from './pageHeader.module.scss';
+import serviceManualSvg from 'images/service-manual.svg';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';
 const APPROVAL_NAV = 'approvals';
+const EMPTY_NAV = 'empty';
 const isMainColorHeader = false;
 
 const PageHeader = () => {
@@ -145,7 +147,7 @@ const PageHeader = () => {
         setSelectedNav(APPROVAL_NAV);
       }
       else {
-        setSelectedNav(PROJECT_NAV);
+        setSelectedNav(EMPTY_NAV);
       }
     }
   }, [location.pathname]);
@@ -247,7 +249,7 @@ const PageHeader = () => {
               }}
               className={styles['question-popup']}
             >
-              <Icon customClass={styles['question']} type='question' />
+              <img src={serviceManualSvg} alt='doc' />
             </div>
           }
         >

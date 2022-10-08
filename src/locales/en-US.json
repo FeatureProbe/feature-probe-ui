@@ -95,6 +95,7 @@
   "common.lock.text": "This toggle is locked",
   "common.lock.by": "Locked by",
   "common.lock.time": "Locked at",
+  "common.approval.reviewers.invalid": "Please select an approver first",
 
   "header.getuser.error.text": "Get user info error!",
 

@@ -142,3 +142,23 @@
   font-size: 14px;
   color: #adb5bc;
 }
+
+.add-environment {
+  display: inline-block;
+  cursor: pointer;
+  color: #556ee6;
+  font-size: 12px;
+  width: 64px;
+  height: 18px;
+  line-height: 18px;
+  margin: 8px 10px 0;
+}
+
+.add-environment-icon {
+  font-size: 12px !important;
+  margin: 0 4px 0 0;
+}
+
+.project-edit {
+  font-size: 12px;
+}

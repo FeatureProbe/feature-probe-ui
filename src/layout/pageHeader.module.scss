@@ -78,7 +78,9 @@
 }
 
 .question-popup {
+  display: flex;
   margin-right: 24px;
+  align-items: center;
 }
 
 .question {

@@ -151,7 +151,7 @@ const ProjectSiderbar = (props: IProps) => {
               <PutAwayMemu
                 type='setting'
                 isPutAway={isPutAway}
-                title={intl.formatMessage({id: 'common.toggle.settings.text'})}
+                title={intl.formatMessage({id: 'common.toggle.appoval.settings.text'})}
               />
             </div>
           </>
