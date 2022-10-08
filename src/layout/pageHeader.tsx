@@ -7,9 +7,9 @@ import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import { PROJECT_PATH } from 'router/routes';
 import { getUserInfo } from 'services/user';
-import { getApprovalList } from 'services/approval';
+import { getApprovalTotalByStatus } from 'services/approval';
 import { IUser } from 'interfaces/member';
-import { IApprovalList } from 'interfaces/approval';
+import { IApprovalTotal } from 'interfaces/approval';
 import { I18NContainer } from 'hooks';
 import { APPROVAL_ROUTE_LIST, PROJECT_ROUTE_LIST, SETTING_ROUTE_LIST } from 'constants/pathname';
 import logo from 'images/logo.svg';
@@ -106,16 +106,13 @@ const PageHeader = () => {
   }, [intl, saveUserInfo]);
 
   const initApprovalList = useCallback(() => {
-    getApprovalList<IApprovalList>({
-			pageIndex: 0,
-			status: ['PENDING'],
-			type: 'APPROVAL',
-			keyword: '',
+    getApprovalTotalByStatus<IApprovalTotal>({
+			status: 'PENDING'
 		}).then(res => {
 			const { success, data } = res;
 			if (success && data) {
-				const { totalElements } = data;
-        saveApprovalCount(totalElements);
+				const { total } = data;
+        saveApprovalCount(total);
       }
 		});
   }, [saveApprovalCount]);

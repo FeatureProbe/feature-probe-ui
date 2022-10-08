@@ -2,7 +2,7 @@ import { SyntheticEvent, useCallback, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Popup } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { EnvironmentBgColors, EnvironmentColors } from 'constants/colors';
+import { EnvironmentColors } from 'constants/colors';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
@@ -172,11 +172,6 @@ const EnvironmentCard = (props: IProps) => {
               </Popup>
             )
           }
-        </div>
-        <div className={styles.key} >
-          <span style={{color: EnvironmentColors[index % 5], backgroundColor: EnvironmentBgColors[index % 5]}} className={styles['key-label']}>
-            { item.key }
-          </span>
         </div>
         <div className={styles['sdk-key']}>
           <span className={styles.text}>

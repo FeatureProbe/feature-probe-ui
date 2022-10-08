@@ -23,6 +23,7 @@ const ProjectSiderbar = (props: IProps) => {
   const [ selectedItem, setSelectedItem ] = useState<string>();
   const [ open, setOpen ] = useState<boolean>(false);
   const [ env, setEnv ] = useState<string>('');
+  const [ envName, setEnvName ] = useState<string>('');
   const history = useHistory();
   const match = useRouteMatch();
   const intl = useIntl();
@@ -74,6 +75,8 @@ const ProjectSiderbar = (props: IProps) => {
 
     // @ts-ignore detail value
     setEnv(detail.value);
+    // @ts-ignore envName
+    setEnvName(e.target.innerText);
   }, []);
 
   const gotoPage = useCallback(() => {
@@ -176,7 +179,7 @@ const ProjectSiderbar = (props: IProps) => {
               intl.formatMessage({
                 id: 'sidebar.modal.content'
               }, {
-                env
+                envName
               }) 
             }
           </div>

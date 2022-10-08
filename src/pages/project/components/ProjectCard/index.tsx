@@ -140,7 +140,7 @@ const ProjectCard = (props: IProps) => {
                   });
                   handleEditProject(project.key);
                 }}>
-                  <Icon id={`${project.key}-icon-edit`} customClass={styles['iconfont']} type="edit" />
+                  <Icon customClass={styles['iconfont']} type="edit" />
                 </div>
                 <Popup
                   basic
@@ -192,11 +192,6 @@ const ProjectCard = (props: IProps) => {
             )
           }
         </div>
-        <div className={styles.key}>
-          <span className={styles['key-label']}>
-            { project.key }
-          </span>
-          </div>
         <div className={styles.desc}>
           { project.description }
         </div>
