@@ -96,7 +96,7 @@ const ProjectSetting = () => {
     if(settings[index].reviewers.length) {
       clearErrors(`approval-reviewers-${index}`);
     }
-  }, [approvalSetting]);
+  }, [approvalSetting, clearErrors]);
 
   const saveToggleDisable = useCallback((environmentKey:string, checked: boolean) => {
     const settings = cloneDeep(approvalSetting);
@@ -118,7 +118,7 @@ const ProjectSetting = () => {
       saveOriginSetting(approvalSetting);
       clearErrors();
     });
-  }, [intl, projectKey, approvalSetting]);
+  }, [intl, projectKey, approvalSetting, clearErrors]);
 
   return (
     <ProjectLayout>
