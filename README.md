@@ -39,6 +39,11 @@ You can alternatively install and run UI with a Docker image. To run, binding th
 $ docker run -d -p 8081:8081 --name fp-ui featureprobe/ui
 ```
 
+### Installing UI Independently with yarn or npm
+
+You can alternatively install and run UI with yarn or npm, Check it out at docs: [How to install UI](https://docs.featureprobe.io/how-to/develop/ui-local-develop). 
+[中文版](https://docs.featureprobe.io/zh-CN/how-to/develop/ui-local-develop)
+
 
 ### Building a customized UI on top of the original one
 If you would like to customize the original UI of FeatureProbe, you can clone or folk a copy of this repository
