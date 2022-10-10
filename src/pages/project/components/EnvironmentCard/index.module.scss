@@ -1,6 +1,6 @@
 .environment {
   margin-top: 12px;
-  height: 146px;
+  height: 138px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -31,22 +31,7 @@
   height: 20px;
   align-items: center;
   position: relative;
-}
-
-.key {
-  height: 16px;
-  margin-bottom: 8px;
-}
-
-.key-label {
-  background: rgba(33, 37, 41, 0.06);
-  border-radius: 4px;
-  color: #495057;
-  display: inline-block;
-  transform-origin: left top;
-  transform: scale(0.83);
-  line-height: 20px;
-  padding: 2px 4px;
+  margin-bottom: 16px;
 }
 
 .iconfont {
