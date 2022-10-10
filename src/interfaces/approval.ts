@@ -43,10 +43,20 @@ export interface IApprovalParams {
   type: string;
 }
 
+export interface IApprovalTotalParams {
+  status: string
+}
+
+export interface IApprovalTotal {
+  total: number
+}
+
 export interface IApprovalSetting {
   reviewers: string[];
   enable: boolean;
   environmentKey: string;
+  environmentName: string;
+  locked: boolean;
 }
 
 export interface ISettings {
