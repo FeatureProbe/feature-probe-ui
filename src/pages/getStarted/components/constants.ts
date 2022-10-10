@@ -327,3 +327,45 @@ fp.start();
     }
   ];
 };
+
+export const getMiniProgramCode = (options: IOption) => {
+  const { intl, clientSdkKey, userWithCode, returnType, toggleKey, remoteUrl } = options;
+  return [
+    {
+      title: intl.formatMessage({id: 'getstarted.js.first.step.title'}),
+      code: 'npm install featureprobe-client-sdk-miniprogram --save'
+    }, 
+    {
+      title: intl.formatMessage({id: 'getstarted.js.second.step.title'}),
+      code: 
+`import { featureProbeClient, FPUser} from "featureprobe-client-sdk-miniprogram";
+
+const user = new FPUser();
+${userWithCode}
+featureProbeClient.init({
+    remoteUrl: "${remoteUrl}",
+    clientSdkKey: "${clientSdkKey}",
+    user,
+});
+
+featureProbeClient.start();
+`
+    }, 
+    {
+      title: intl.formatMessage({id: 'getstarted.js.third.step.title'}),
+      name: intl.formatMessage({id: 'getstarted.miniprogram.third.step.name.one'}),
+      code: 
+`const app = getApp();
+const value = app.globalData.toggles[${toggleKey}].value;
+`
+    },
+    {
+      name: intl.formatMessage({id: 'getstarted.miniprogram.third.step.name.second'}),
+      code: 
+`featureProbeClient.on("ready", function() {
+    ${returnType === 'boolean' ? `const value = fp.boolValue("${toggleKey}", false);` : ''}${returnType === 'number' ? `const value = fp.numberValue("${toggleKey}", 1.0);` : ''}${returnType === 'string' ? `const value = fp.stringValue("${toggleKey}", "s");` : ''}${returnType === 'json' ? `const value = fp.jsonValue("${toggleKey}", {});` : ''}
+});
+`
+    }
+  ];
+};

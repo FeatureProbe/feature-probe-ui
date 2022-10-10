@@ -389,6 +389,8 @@
   "getstarted.js.second.step.or": "或者使用",
   "getstarted.js.third.step.title": "第三步：在代码中使用功能开关",
   "getstarted.js.third.step.name.one": "您可以使用SDK来获取一个用户从某个开关中获取到的变量值",
+  "getstarted.miniprogram.third.step.name.one": "您可以从 globalData 对象中获取变量值，SDK会自动更新 globalData.toggles 对象",
+  "getstarted.miniprogram.third.step.name.second": "您还可以使用 SDK 对外暴露的 API 来获取开关返回值",
 
   "platform.warning.text": "根据国家相关规定，严禁将FeatureProbe用于违法金融借贷、区块链虚拟币、博彩以及任何含有网络电信诈骗功能的应用程序，一旦被发现，将会立即停止你使用FeantureProbe相关功能，并上报给网络安全监管部门。",
 

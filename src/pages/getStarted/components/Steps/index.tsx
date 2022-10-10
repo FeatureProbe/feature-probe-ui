@@ -75,18 +75,14 @@ const Steps = () => {
 
     Promise.all([getFromDictionary<IDictionary>(key), getTargeting<IContent>(projectKey, environmentKey, toggleKey)]).then(res => {
       saveIsStepLoading(false);
-
       if (res[0].success && res[0].data) {
         const savedData = JSON.parse(res[0].data.value);
         if (savedData.step2.done) {
           saveCurrentStep(3);
           saveCurrentSDK(savedData.step1.sdk);
-          return;
-        } 
-        if (savedData.step1.done) {
+        } else if (savedData.step1.done) {
           saveCurrentStep(2);
           saveCurrentSDK(savedData.step1.sdk);
-          return;
         }
       } else {
         saveCurrentStep(1);
@@ -132,11 +128,9 @@ const Steps = () => {
       let key = '';
       if (currentSDK === 'Java') {
         key = JAVA_SDK_VERSION;
-      } 
-      else if (currentSDK === 'Rust') {
+      } else if (currentSDK === 'Rust') {
         key = RUST_SDK_VERSION;
-      } 
-      else if (currentSDK === 'Android') {
+      } else if (currentSDK === 'Android') {
         key = ANDROID_SDK_VERSION;
       }
 

@@ -389,6 +389,8 @@
   "getstarted.js.second.step.or": "Or via ",
   "getstarted.js.third.step.title": "Step 3: Use the instance to get your setting value",
   "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle",
+  "getstarted.miniprogram.third.step.name.one": "You can get variation value from globalData object, SDK will update globalData.toggles object automatically",
+  "getstarted.miniprogram.third.step.name.second": "You can also use the SDK API to check which value this user will receive for a given feature toggle",
 
   "platform.warning.text": "According to the Cybersecurity Law, it is prohibited to use FeatureProbe for illegal financial lending, cryptocurrency, gambling and any applications containing Telemarketing Scams functions, once discovered, you will be immediately stopped from using FeatureProbe and reported to the Cyber Security Department.",
 

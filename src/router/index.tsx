@@ -29,7 +29,7 @@ const Router = () => {
 
   const init = useCallback(async() => {
     if (!USER) {
-      USER = new FPUser(Date.now().toString());
+      USER = new FPUser();
     }
 
     if (!FP) {
