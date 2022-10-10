@@ -357,6 +357,7 @@
   "connect.fourth.failed": "您没有此SDK密钥连接成功的应用程序。",
   "connect.fourth.success": "连接成功！",
   "connect.fourth.failed.button": "重试连接",
+  "connect.fourth.failed.link": "常见失败原因",
 
   "getstarted.java.first.step": "第一步：将SDK添加到您的应用",
   "getstarted.java.first.step.name.one": "使用一个已有的工程，或者如下创建一个新的工程",

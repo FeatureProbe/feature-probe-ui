@@ -2,7 +2,11 @@ import ReactGA from 'react-ga4';
 
 export const EventTrack = {
   init() {
-    ReactGA.initialize('G-CMLDTZH6RC');
+    if(window.location.origin === 'https://featureprobe.io') {
+      ReactGA.initialize('G-11770CT0PH');
+    } else {
+      ReactGA.initialize('G-CMLDTZH6RC');
+    }
   },
 
   setUserId(userId: string) {
