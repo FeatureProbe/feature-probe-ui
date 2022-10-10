@@ -357,6 +357,7 @@
   "connect.fourth.failed": "You have no applications connected using this SDK Key. ",
   "connect.fourth.success": "Successfully connected！",
   "connect.fourth.failed.button": "Retry Connection",
+  "connect.fourth.failed.link": "Common reasons for failed",
 
   "getstarted.java.first.step": "Step 1: Install the Java SDK to your project",
   "getstarted.java.first.step.name.one": "Use your exist project, or create a new one as follow:",
