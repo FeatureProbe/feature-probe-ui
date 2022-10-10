@@ -18,6 +18,7 @@ import {
   getPythonCode,
   getRustCode,
   getSwiftCode,
+  getMiniProgramCode,
 } from '../constants';
 import styles from '../Steps/index.module.scss';
 
@@ -204,6 +205,20 @@ const StepSecond = (props: IProps) => {
             userWithCode += `user.with("${item}", /* ${item} */);\n`;
           });
           saveOptions(getJSCode({
+            clientSdkKey,
+            toggleKey,
+            returnType,
+            intl,
+            userWithCode,
+            remoteUrl,
+          }));
+          break;
+        case 'Mini Program':
+          saveLanguage('javascript');
+          result.forEach(item => {
+            userWithCode += `user.with("${item}", /* ${item} */);\n`;
+          });
+          saveOptions(getMiniProgramCode({
             clientSdkKey,
             toggleKey,
             returnType,

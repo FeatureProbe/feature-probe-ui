@@ -12,6 +12,7 @@ import javascript from 'images/javascript.svg';
 import android from 'images/android.svg';
 import swift from 'images/swift.svg';
 import apple from 'images/apple.svg';
+import miniprogram from 'images/wechat-miniprogram.png';
 import styles from '../Steps/index.module.scss';
 
 const SDK_LOGOS = {
@@ -23,6 +24,7 @@ const SDK_LOGOS = {
   'Android': android,
   'Swift': swift,
   'Objective-C': apple,
+  'Mini Program': miniprogram,
 };
 
 const SERVER_SIDE_SDKS = [
@@ -60,6 +62,10 @@ const CLIENT_SIDE_SDKS = [
   {
     name: 'Objective-C',
     logo: apple,
+  },
+  {
+    name: 'Mini Program',
+    logo: miniprogram,
   }
 ];
 
