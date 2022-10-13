@@ -156,7 +156,7 @@ const ToggleItem = (props: IProps) => {
             </CopyToClipboardPopup>
           </div>
           {
-            toggle.useDays && (
+            toggle.useDays && !isArchived && (
               <div className={styles['toggle-permanent-bg']}>
                 <Popup
                   inverted
