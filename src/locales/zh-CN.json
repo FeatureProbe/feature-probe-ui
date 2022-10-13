@@ -193,7 +193,7 @@
   "toggles.filter.evaluated.not.last.seven.days": "7日前有访问",
   "toggles.filter.evaluated.never": "无访问",
   "toggles.filter.status": "状态",
-  "toggles.permanent.status": "永久开关",
+  "toggles.filter.permanent.status": "永久开关",
   "toggles.filter.search.placeholder": "搜索名称、标识或描述",
   "toggles.table.brief": "简介",
   "toggles.table.publishing.status": "发布状态",

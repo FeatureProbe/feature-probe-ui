@@ -413,7 +413,7 @@ const Toggle = () => {
                   </Form.Field>
                   <Form.Field className={styles['permanent-field']}>
                     <label className={styles.label}>
-                      <FormattedMessage id='toggles.permanent.status' />
+                      <FormattedMessage id='toggles.filter.permanent.status' />
                     </label>
                     <Dropdown 
                       fluid 

@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table, Popup, Icon as SIcon } from 'semantic-ui-react';
+import { Table, Popup } from 'semantic-ui-react';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
@@ -163,7 +163,7 @@ const ToggleItem = (props: IProps) => {
                   className={styles.popup}
                   trigger={
                     <span>
-                      <SIcon name='clock outline' />
+                      <Icon type='time-o' />
                     </span>
                   }
                   content={intl.formatMessage({ id: 'toggles.permanent.tips' }, { useDays: toggle.useDays })}

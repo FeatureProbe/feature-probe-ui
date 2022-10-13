@@ -193,7 +193,7 @@
   "toggles.filter.evaluated.not.last.seven.days": "Before the last 7 days",
   "toggles.filter.evaluated.never": "Never",
   "toggles.filter.status": "Status",
-  "toggles.permanent.status": "permanent",
+  "toggles.filter.permanent.status": "permanent",
   "toggles.filter.search.placeholder": "Search for name, key or description",
   "toggles.table.brief": "Brief",
   "toggles.table.publishing.status": "Publishing Status",
