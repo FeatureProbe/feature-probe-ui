@@ -50,6 +50,7 @@ interface ISearchParams {
   keyword?: number;
   archived?: boolean;
   releaseStatusList?: string[];
+  permanent?: boolean;
 }
 
 const Toggle = () => {
@@ -425,7 +426,7 @@ const Toggle = () => {
                       placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
                       options={permanentOptions} 
                       icon={
-                        typeof searchParams.disabled === 'boolean'
+                        typeof searchParams.permanent === 'boolean'
                           ? <Icon customClass={styles['angle-down']} type='remove-circle' />
                           : <Icon customClass={styles['angle-down']} type='angle-down' />
                       }

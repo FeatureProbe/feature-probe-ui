@@ -481,7 +481,7 @@ const Targeting = () => {
             </div>
           </Modal>
           {
-            toggleInfo?.useDays && (
+            toggleInfo?.useDays && !toggleInfo.archived && (
               <div 
                 className={styles['permanent-warning-message']}
               >
