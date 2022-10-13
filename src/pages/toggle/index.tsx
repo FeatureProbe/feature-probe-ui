@@ -211,6 +211,21 @@ const Toggle = () => {
     ];
   }, [intl]);
 
+  const permanentOptions = useMemo(() => {
+    return [
+      { 
+        key: 'yes', 
+        value: true, 
+        text: intl.formatMessage({id: 'common.yes.text'}) 
+      },
+      { 
+        key: 'no', 
+        value: false, 
+        text: intl.formatMessage({id: 'common.no.text'}) 
+      },
+    ];
+  }, [intl]);
+
   const renderLabel = useCallback((label: DropdownItemProps) => {
     return ({
       content: label.text,
@@ -231,6 +246,14 @@ const Toggle = () => {
       ...searchParams,
       // @ts-ignore detail value
       disabled: data.value
+    });
+  }, [searchParams]);
+
+  const handlePermanentChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
+    setSearchParams({
+      ...searchParams,
+      // @ts-ignore detail value
+      permanent: data.value
     });
   }, [searchParams]);
 
@@ -386,6 +409,27 @@ const Toggle = () => {
                           ? <Icon customClass={styles['angle-down']} type='remove-circle' />
                           : <Icon customClass={styles['angle-down']} type='angle-down' />
                       }
+                    />
+                  </Form.Field>
+                  <Form.Field className={styles['permanent-field']}>
+                    <label className={styles.label}>
+                      <FormattedMessage id='toggles.filter.permanent.status' />
+                    </label>
+                    <Dropdown 
+                      fluid 
+                      selection 
+                      floating
+                      clearable
+                      className={styles['permanent-dropdown']}
+                      selectOnBlur={false}
+                      placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
+                      options={permanentOptions} 
+                      icon={
+                        typeof searchParams.disabled === 'boolean'
+                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
+                          : <Icon customClass={styles['angle-down']} type='angle-down' />
+                      }
+                      onChange={handlePermanentChange}
                     />
                   </Form.Field>
                   <Form.Field className={styles['keywords-field']}>

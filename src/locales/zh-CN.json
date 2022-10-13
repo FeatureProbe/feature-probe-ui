@@ -193,6 +193,7 @@
   "toggles.filter.evaluated.not.last.seven.days": "7日前有访问",
   "toggles.filter.evaluated.never": "无访问",
   "toggles.filter.status": "状态",
+  "toggles.filter.permanent.status": "永久开关",
   "toggles.filter.search.placeholder": "搜索名称、标识或描述",
   "toggles.table.brief": "简介",
   "toggles.table.publishing.status": "发布状态",
@@ -233,6 +234,9 @@
   "toggles.restore.content": "所有环境下的此开关将一并恢复",
   "toggles.restore.success": "开关恢复成功",
   "toggles.restore.error": "开关恢复失败",
+  "toggles.permanent.type": "使用永久性开关？",
+  "toggles.permanent.type.tips": "FeatureProbe非常关心代码质量，技术债务会随着时间的推移而逐渐增加。非“永久性”开关周期是30天，超时我们会及时提示您清理。如果希望将其作为长期开关保留在代码中，可以标记为“永久性”开关，我们不会提示您处理。",
+  "toggles.permanent.tips": "该开关是临时开关，已使用{useDays}天，建议及时清理",
 
   "toggles.settings.tips": "支持统一对该项目下的开关配置变更进行审批设置，设置完成后，将对该环境内的所有开关生效",
   "toggles.settings.approval.reviewers": "审批人",
