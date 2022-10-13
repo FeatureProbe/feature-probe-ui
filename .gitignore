@@ -1,8 +1,8 @@
 .DS_Store
 node_modules
 dist
-yarn.lock
 yarn-error.log
 .vscode
 .idea
 build/
+package-lock.json

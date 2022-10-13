@@ -174,7 +174,7 @@ const Member = () => {
               primary 
               type='submit'
               className={styles.btn} 
-              disabled={ errors[OLD_PASSWORD] || errors[NEW_PASSWORD] || errors[CONFIRM_NEW_PASSWORD] } 
+              disabled={ !!errors[OLD_PASSWORD] || !!errors[NEW_PASSWORD] || !!errors[CONFIRM_NEW_PASSWORD] } 
             >
               <FormattedMessage id='profile.password.update' />
             </Button>
