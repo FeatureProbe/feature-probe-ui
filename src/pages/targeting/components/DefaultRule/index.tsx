@@ -19,7 +19,7 @@ const DefaultRule = (props: IProps) => {
   } = defaultServeContainer.useContainer();
 
   return (
-    <div className={styles['default-rule']}>
+    <div className={`${styles['default-rule']} joyride-default-rule`}>
       <SectionTitle
         title={intl.formatMessage({id: 'targeting.default.rule'})}
         showTooltip={true}

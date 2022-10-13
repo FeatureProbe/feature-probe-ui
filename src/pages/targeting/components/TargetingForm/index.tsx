@@ -10,6 +10,7 @@ import { html } from 'diff2html/lib/diff2html';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
+import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
 import Rules from '../Rules';
 import DefaultRule from '../DefaultRule';
 import DisabledServe from '../DisabledServe';
@@ -37,6 +38,7 @@ import { IRouterParams } from 'interfaces/project';
 import { ISegmentList } from 'interfaces/segment';
 import 'diff2html/bundles/css/diff2html.min.css';
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
+import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -50,6 +52,41 @@ interface IProps {
   initTargeting(): void;
   saveToggleDisable(status: boolean): void;
 }
+
+const STEPS: Step[] = [
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>服务</div>
+        <ul className={styles['joyride-item']} >
+          <li>管理应用「服务」及服务的「环境」信息</li>
+          <li>快速拷贝「环境密钥」，与代码环境变量建立关联</li>
+          <li>点击卡片进入不同服务及环境的「开关列表」</li>
+        </ul>
+        <div className={styles['joyride-pagination']}>1/2</div>
+      </div>
+    ),
+    placement: 'bottom',
+    target: '.joyride-toggle-status',
+    spotlightPadding: 0,
+    ...commonConfig
+  },
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>项目-环境-开关列表</div>
+        <ul className={styles['joyride-item']} >
+          <li>点击可切换环境</li>
+        </ul>
+        <div className={styles['joyride-pagination']}>2/2</div>
+      </div>
+    ),
+    placement: 'top',
+    spotlightPadding: 4,
+    target: '.joyride-default-rule',
+    ...commonConfig
+  },
+];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Targeting = forwardRef((props: IProps, ref: any) => {
@@ -66,6 +103,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const [ comment, setComment ] = useState<string>('');
   const [ isLoading, setLoading ] = useState<boolean>(false);
   const [ options, saveOptions ] = useState<IOption[]>();
+  const [ run, saveRun ] = useState<boolean>(false);
   const history = useHistory();
   const intl = useIntl();
   const formRef = useRef();
@@ -89,6 +127,10 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const {
     saveSegmentList,
   } = segmentContainer.useContainer();
+
+  useEffect(() => {
+    saveRun(true);
+  }, []);
 
   useEffect(() => {
     if (targeting) {
@@ -313,170 +355,199 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     history.push(`/${projectKey}/${environmentKey}/settings`);
   }, [history, projectKey, environmentKey]);
 
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status } = data;
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+
+    if (finishedStatuses.includes(status)) {
+      saveRun(false);
+    }
+  };
+
 	return (
-    <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' ref={formRef}>
-      <div className={styles.status}>
-        <SectionTitle title={intl.formatMessage({id: 'targeting.status.text'})} />
-        <div className={styles['toggle-status']}>
-          <Radio
-            size='mini'
-            toggle 
-            checked={!toggleDisabled} 
-            onChange={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(!data.checked || false)} 
-            className={styles['info-toggle-status']} 
+    <div>
+      <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' ref={formRef}>
+        <div className={`${styles.status} joyride-toggle-status`}>
+          <SectionTitle title={intl.formatMessage({id: 'targeting.status.text'})} />
+          <div className={styles['toggle-status']}>
+            <Radio
+              size='mini'
+              toggle 
+              checked={!toggleDisabled} 
+              onChange={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(!data.checked || false)} 
+              className={styles['info-toggle-status']} 
+              disabled={disabled}
+            />
+          </div>
+          {
+            toggleDisabled ? (
+              <div className={styles['status-text']}>
+                <FormattedMessage id='targeting.status.disabled.text' />
+                <span className={styles['name-color']} style={{background: VariationColors[Number(disabledServe.select) % 20]}}></span>
+                <span className={styles['name-text']}>
+                  {disabledText}
+                </span>
+              </div>
+            ) : (
+              <div className={styles['status-text']}>
+                <FormattedMessage id='common.enabled.text' />
+              </div>
+            )
+          }
+        </div>
+
+        <div className={styles.variations}>
+          <SectionTitle
+            title={intl.formatMessage({id: 'common.variations.text'})}
+            showTooltip={true}
+            tooltipText={intl.formatMessage({id: 'toggles.variations.tips'})}
+          />
+          <Variations
+            disabled={disabled}
+            returnType={toggleInfo?.returnType || ''}
+            hooksFormContainer={hooksFormContainer}
+            variationContainer={variationContainer}
+          />
+        </div>
+        <div className={styles.rules}>
+          <Rules 
+            disabled={disabled}
+            useSegment={true}
+            ruleContainer={ruleContainer}
+            variationContainer={variationContainer}
+            hooksFormContainer={hooksFormContainer}
+            segmentContainer={segmentContainer}
+          />
+          <DefaultRule
+            disabled={disabled}
+          />
+          <DisabledServe 
             disabled={disabled}
           />
         </div>
-        {
-          toggleDisabled ? (
-            <div className={styles['status-text']}>
-              <FormattedMessage id='targeting.status.disabled.text' />
-              <span className={styles['name-color']} style={{background: VariationColors[Number(disabledServe.select) % 20]}}></span>
-              <span className={styles['name-text']}>
-                 {disabledText}
+        <div id='footer' className={styles.footer}>
+          <EventTracker category='targeting' action='publish-toggle'>
+            <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
+              { isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} /> }
+              <span className={styles['publish-btn-text']}>
+                {
+                  approvalInfo?.enableApproval ? <FormattedMessage id='common.request.approval.text' /> : <FormattedMessage id='common.publish.text' />
+                }
               </span>
-            </div>
-          ) : (
-            <div className={styles['status-text']}>
-              <FormattedMessage id='common.enabled.text' />
-            </div>
-          )
-        }
-      </div>
-
-      <div className={styles.variations}>
-        <SectionTitle
-          title={intl.formatMessage({id: 'common.variations.text'})}
-          showTooltip={true}
-          tooltipText={intl.formatMessage({id: 'toggles.variations.tips'})}
-        />
-        <Variations
-          disabled={disabled}
-          returnType={toggleInfo?.returnType || ''}
-          hooksFormContainer={hooksFormContainer}
-          variationContainer={variationContainer}
-        />
-      </div>
-      <div className={styles.rules}>
-        <Rules 
-          disabled={disabled}
-          useSegment={true}
-          ruleContainer={ruleContainer}
-          variationContainer={variationContainer}
-          hooksFormContainer={hooksFormContainer}
-          segmentContainer={segmentContainer}
-        />
-        <DefaultRule 
-          disabled={disabled}
-        />
-        <DisabledServe 
-          disabled={disabled}
-        />
-      </div>
-      <div id='footer' className={styles.footer}>
-        <EventTracker category='targeting' action='publish-toggle'>
-          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
-            { isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} /> }
-            <span className={styles['publish-btn-text']}>
-              {
-                approvalInfo?.enableApproval ? <FormattedMessage id='common.request.approval.text' /> : <FormattedMessage id='common.publish.text' />
-              }
-            </span>
+            </Button>
+          </EventTracker>
+          <Button basic type='reset' onClick={handleGoBack}>
+            <FormattedMessage id='common.cancel.text' />
           </Button>
-        </EventTracker>
-        <Button basic type='reset' onClick={handleGoBack}>
-          <FormattedMessage id='common.cancel.text' />
-        </Button>
-      </div>
-      <Modal 
-        open={open}
-        width={800}
-        handleCancel={handlePublishCancel}
-        handleConfirm={handlePublishConfirm}
-      >
-        <div>
-          <div className={styles['modal-header']}>
-            <span className={styles['modal-header-text']}>
-              <FormattedMessage id='targeting.publish.modal.title' />
-            </span>
-            <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
-          </div>
-          <div className={styles['modal-content']}>
-            <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
-            <Form>
-              {
-                approvalInfo?.enableApproval && (
-                  <div className={styles['approval']}>
-                    <div className={styles['approval-title']}>
-                      <FormattedMessage id='toggles.settings.approval.reviewers' />:
-                      <Popup
-                        inverted
-                        trigger={
-                          <Icon type='info' customClass={styles['icon-info']} />
-                        }
-                        content={intl.formatMessage({id: 'targeting.approval.tips'})}
-                        position='top center'
-                        className={styles.popup}
-                      />
-                    </div>
-                    <div className={styles['approval-content']}>
-                      <Dropdown 
-                        fluid 
-                        multiple 
-                        selection 
-                        value={approvalInfo?.reviewers}
-                        options={options} 
-                        renderLabel={renderLabel}
-                        icon={null}
-                        disabled={true}
-                        className={styles['approval-dropdown']}
-                      />
-                      <div className={styles['approval-btn']} onClick={handleGotoSetting}>
-                        <FormattedMessage id='common.toggle.appoval.settings.text' />
+        </div>
+        <Modal 
+          open={open}
+          width={800}
+          handleCancel={handlePublishCancel}
+          handleConfirm={handlePublishConfirm}
+        >
+          <div>
+            <div className={styles['modal-header']}>
+              <span className={styles['modal-header-text']}>
+                <FormattedMessage id='targeting.publish.modal.title' />
+              </span>
+              <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
+            </div>
+            <div className={styles['modal-content']}>
+              <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
+              <Form>
+                {
+                  approvalInfo?.enableApproval && (
+                    <div className={styles['approval']}>
+                      <div className={styles['approval-title']}>
+                        <FormattedMessage id='toggles.settings.approval.reviewers' />:
+                        <Popup
+                          inverted
+                          trigger={
+                            <Icon type='info' customClass={styles['icon-info']} />
+                          }
+                          content={intl.formatMessage({id: 'targeting.approval.tips'})}
+                          position='top center'
+                          className={styles.popup}
+                        />
+                      </div>
+                      <div className={styles['approval-content']}>
+                        <Dropdown 
+                          fluid 
+                          multiple 
+                          selection 
+                          value={approvalInfo?.reviewers}
+                          options={options} 
+                          renderLabel={renderLabel}
+                          icon={null}
+                          disabled={true}
+                          className={styles['approval-dropdown']}
+                        />
+                        <div className={styles['approval-btn']} onClick={handleGotoSetting}>
+                          <FormattedMessage id='common.toggle.appoval.settings.text' />
+                        </div>
                       </div>
                     </div>
+                  )
+                }
+                <div className={styles['comment']}>
+                  <div className={styles['comment-title']}>
+                    { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
+                    <FormattedMessage id='targeting.publish.modal.comment' />:
                   </div>
-                )
-              }
-              <div className={styles['comment']}>
-                <div className={styles['comment-title']}>
-                  { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
-                  <FormattedMessage id='targeting.publish.modal.comment' />:
-                </div>
-                <div className={styles['comment-content']}>
-                  <Form.TextArea
-                    {
-                      ...newRegister('reason', { 
-                        required: approvalInfo?.enableApproval, 
-                      })
+                  <div className={styles['comment-content']}>
+                    <Form.TextArea
+                      {
+                        ...newRegister('reason', { 
+                          required: approvalInfo?.enableApproval, 
+                        })
+                      }
+                      error={ newFormState.errors.reason ? true : false }
+                      className={styles['comment-input']} 
+                      placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
+                      onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+                        handleInputComment(e, detail);
+                        newSetValue(detail.name, detail.value);
+                        await newTrigger('reason');
+                      }}
+                    />
+                    { 
+                      newFormState.errors.reason && (
+                        <div className={styles['error-text']}>
+                          <FormattedMessage id='common.input.placeholder' />
+                        </div> 
+                      )
                     }
-                    error={ newFormState.errors.reason ? true : false }
-                    className={styles['comment-input']} 
-                    placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
-                    onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
-                      handleInputComment(e, detail);
-                      newSetValue(detail.name, detail.value);
-                      await newTrigger('reason');
-                    }}
-                  />
-                  { 
-                    newFormState.errors.reason && (
-                      <div className={styles['error-text']}>
-                        <FormattedMessage id='common.input.placeholder' />
-                      </div> 
-                    )
-                  }
+                  </div>
                 </div>
-              </div>
-            </Form>
+              </Form>
+            </div>
           </div>
-        </div>
-      </Modal>
-      <Prompt
-        when={!publishDisabled}
-        message={intl.formatMessage({id: 'targeting.page.leave.text'})}
+        </Modal>
+        <Prompt
+          when={!publishDisabled}
+          message={intl.formatMessage({id: 'targeting.page.leave.text'})}
+        />
+      </Form>
+      <Joyride
+        run={run}
+        callback={handleJoyrideCallback}
+        continuous
+        hideCloseButton
+        scrollToFirstStep
+        showProgress={false}
+        showSkipButton
+        steps={STEPS}
+        locale={{
+          'back': '上一个',
+          'next': '下一个',
+          'last': '完成'
+        }}
+        floaterProps={{...floaterStyle}}
+        styles={{...tourStyle}}
       />
-    </Form>
+    </div>
+   
 	);
 });
 

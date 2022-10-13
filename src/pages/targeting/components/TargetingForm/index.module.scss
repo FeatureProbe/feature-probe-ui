@@ -231,3 +231,22 @@
   transform: scale(0.83);
   transform-origin: left;
 }
+
+.joyride-title {
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #212529;
+}
+
+.joyride-item {
+  padding-left: 18px;
+  font-size: 14px;
+  color: #74788D;
+}
+
+.joyride-pagination {
+  position: absolute;
+  bottom: 18px;
+  font-size: 14px;
+  color: #74788D;
+}

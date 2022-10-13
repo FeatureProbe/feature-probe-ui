@@ -52,6 +52,7 @@ const PageHeader = () => {
   );
 
   const projectCls = classNames(
+    'joyride-project',
     'navs-item',
     {
       'navs-item-selected': selectedNav === PROJECT_NAV
@@ -188,7 +189,7 @@ const PageHeader = () => {
           : <img className={styles['logo-image']} src={logo} alt='logo' />
         }
       </div>
-      <div className={styles.navs}>
+      <div className={`${styles.navs} project-nav`}>
         <div className={projectCls} onClick={handleGotoProject}>
           <FormattedMessage id='common.projects.text' />
         </div>

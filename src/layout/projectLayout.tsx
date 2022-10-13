@@ -2,6 +2,7 @@ import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
 import { Breadcrumb } from  'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
+import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
 import SideBar from './sidebar';
 import ProjectSiderbar from './projectSiderbar';
 import message from 'components/MessageBox';
@@ -12,8 +13,9 @@ import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { IDictionary } from 'interfaces/targeting';
 import { IProject, IRouterParams } from 'interfaces/project';
 import { IToggleInfo } from 'interfaces/targeting';
-
 import { EnvironmentColors } from 'constants/colors';
+import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
+
 import { 
   TOGGLE_PATH, 
   TARGETING_PATH, 
@@ -32,6 +34,41 @@ interface IProps {
   children: ReactElement
 }
 
+const STEPS: Step[] = [
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>服务</div>
+        <ul className={styles['joyride-item']} >
+          <li>管理应用「服务」及服务的「环境」信息</li>
+          <li>快速拷贝「环境密钥」，与代码环境变量建立关联</li>
+          <li>点击卡片进入不同服务及环境的「开关列表」</li>
+        </ul>
+        <div className={styles['joyride-pagination']}>1/2</div>
+      </div>
+    ),
+    placement: 'bottom',
+    target: '.joyride-project',
+    spotlightPadding: 0,
+    ...commonConfig
+  },
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>项目-环境-开关列表</div>
+        <ul className={styles['joyride-item']} >
+          <li>点击可切换环境</li>
+        </ul>
+        <div className={styles['joyride-pagination']}>2/2</div>
+      </div>
+    ),
+    placement: 'right',
+    spotlightPadding: 4,
+    target: '.joyride-environment',
+    ...commonConfig
+  },
+];
+
 const ProjectLayout = (props: IProps) => {
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
   const [ projectInfo, setProjectInfo ] = useState<IProject>({
@@ -49,6 +86,7 @@ const ProjectLayout = (props: IProps) => {
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ run, saveRun ] = useState<boolean>(false);
   const history = useHistory();
   const match = useRouteMatch();
 
@@ -64,6 +102,7 @@ const ProjectLayout = (props: IProps) => {
         message.error(res.message || 'Get project information error!');
       }
     });
+    saveRun(true);
   }, [projectKey]);
 
   useEffect(() => {
@@ -124,8 +163,35 @@ const ProjectLayout = (props: IProps) => {
     });
   }, []);
 
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { status } = data;
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+
+    if (finishedStatuses.includes(status)) {
+      saveRun(false);
+    }
+  };
+
   return (
     <div className={styles.main}>
+      <Joyride
+        run={run}
+        callback={handleJoyrideCallback}
+        continuous
+        hideCloseButton
+        scrollToFirstStep
+        showProgress={false}
+        showSkipButton
+        steps={STEPS}
+        spotlightPadding={0}
+        locale={{
+          'back': '上一个',
+          'next': '下一个',
+          'last': '完成'
+        }}
+        floaterProps={{...floaterStyle}}
+        styles={{...tourStyle}}
+      />
       <SideBar>
         <ProjectSiderbar
           isLoading={isLoading}
