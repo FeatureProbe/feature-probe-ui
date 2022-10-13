@@ -6,6 +6,7 @@ nvm install v16.13.1
 nvm use v16.13.1
 
 # npm config set registry http://npm.intra.xiaojukeji.com
+yum install yarn
 yarn
 yarn build
 
