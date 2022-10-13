@@ -6,8 +6,8 @@ nvm install v16.13.1
 nvm use v16.13.1
 
 # npm config set registry http://npm.intra.xiaojukeji.com
-npm install
-npm run build
+yarn
+yarn build
 
 ret=$?
 if [ $ret -ne 0 ];then
