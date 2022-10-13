@@ -29,6 +29,8 @@ export interface IToggle {
   lockedBy?: string;
   lockedTime?: string;
   releaseStatus: string;
+  permanent: boolean;
+  useDays?: number;
 }
 
 export interface IEditToggleParams {
@@ -40,6 +42,7 @@ export interface IEditToggleParams {
   tags?: string[];
   disabled?: boolean;
   clientAvailability?: boolean;
+  permanent?: boolean;
 }
 
 export interface IToggleList {
@@ -69,5 +72,7 @@ export interface IToggleInfo {
   createdTime?: string;
   createdBy?: string;
   modifiedTime?: string;
-  modifiedBy?: string
+  modifiedBy?: string;
+  permanent: boolean;
+  useDays?: number;
 }

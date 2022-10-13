@@ -193,6 +193,7 @@
   "toggles.filter.evaluated.not.last.seven.days": "Before the last 7 days",
   "toggles.filter.evaluated.never": "Never",
   "toggles.filter.status": "Status",
+  "toggles.permanent.status": "permanent",
   "toggles.filter.search.placeholder": "Search for name, key or description",
   "toggles.table.brief": "Brief",
   "toggles.table.publishing.status": "Publishing Status",
@@ -233,6 +234,9 @@
   "toggles.restore.content": "The toggle will be restored in all environments.",
   "toggles.restore.success": "Restore toggle successfully",
   "toggles.restore.error": "Error restoring toggle",
+  "toggles.permanent.type": "This is a permanent toggle",
+  "toggles.permanent.type.tips": "FeatureProbe cares a lot about code quality, and technical debt builds up over time. The non-\"permanent\" toggle cycle is is 30 days, and we will prompt you to clean it up in time. If you want to keep it in your code as a long-term toggle, you can mark it as a \"permanent\" toggle and we won't prompt you to clean it up.",
+  "toggles.permanent.tips": "This toggle is temporary and has been used for {useDays} days. It is recommended to clean it in time!",
 
   "toggles.settings.tips": "Set approval strategy for environments. The strategy will affect all toggle publishing in this environment.",
   "toggles.settings.approval.reviewers": "Reviewers",
