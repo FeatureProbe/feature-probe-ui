@@ -163,7 +163,7 @@ const ToggleItem = (props: IProps) => {
                   className={styles.popup}
                   trigger={
                     <span>
-                      <Icon type='time-o' />
+                      <Icon type='timeout' />
                     </span>
                   }
                   content={intl.formatMessage({ id: 'toggles.permanent.tips' }, { useDays: toggle.useDays })}
