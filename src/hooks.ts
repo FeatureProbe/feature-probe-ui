@@ -3,7 +3,9 @@ import { createContainer } from 'unstated-next';
 import { useLocalStorage } from 'utils/hooks';
 
 export const useI18N = () => {
-  const [i18n, setI18n] = useLocalStorage('i18n', 'en-US');
+  const localLanguage = navigator.language.toLocaleLowerCase().slice(0, 2);
+  const defaultLanguage = localLanguage === 'zh' ? 'zh-CN' : 'en-US';
+  const [i18n, setI18n] = useLocalStorage('i18n', defaultLanguage);
 
   return {
     i18n,
