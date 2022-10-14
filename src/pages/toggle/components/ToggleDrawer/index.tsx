@@ -14,7 +14,7 @@ import {
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import Joyride, { CallBackProps, EVENTS, Step, ACTIONS } from 'react-joyride';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
@@ -27,14 +27,16 @@ import { VariationColors } from 'constants/colors';
 import { CONFLICT } from 'constants/httpCode';
 import { replaceSpace } from 'utils/tools';
 import { initVariations, initBooleanVariations, returnTypeOptions } from './constants';
-import { IVariation } from 'interfaces/targeting';
+import { IDictionary, IVariation } from 'interfaces/targeting';
 import { ITag, ITagOption } from 'interfaces/project';
 import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'services/toggle';
+import { saveDictionary, getFromDictionary } from 'services/dictionary';
 
-import styles from './index.module.scss';
 import { debounce } from 'lodash';
 import { useRequestTimeCheck } from 'hooks';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
+import styles from './index.module.scss';
+import { USER_GUIDE_TOGGLE } from 'constants/dictionary_keys';
 
 interface IParams {
   isAdd: boolean;
@@ -53,10 +55,12 @@ const STEPS: Step[] = [
   {
     content: (
       <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>客户端SDK</div>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.creat.toggle.step1.title' />
+        </div>
         <ul className={styles['joyride-item']} >
-          <li>如果后续会使用客户端SDK，请选择"使用"</li>
-          <li>如果后续会使用客户端SDK，请选择"使用"</li>
+          <li><FormattedMessage id='guide.creat.toggle.step1.sdk1' /></li>
+          <li><FormattedMessage id='guide.creat.toggle.step1.sdk2' /></li>
         </ul>
         <div className={styles['joyride-pagination']}>1/3</div>
       </div>
@@ -69,10 +73,16 @@ const STEPS: Step[] = [
   {
     content: (
       <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>返回类型</div>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.creat.toggle.step2.title' />
+        </div>
         <ul className={styles['joyride-item']} >
-          <li>"返回类型"决定了代码中能读到的开关返回值类型</li>
-          <li>一旦创建，不能更改</li>
+          <li>
+            <FormattedMessage id='guide.creat.toggle.step2.type1' />
+          </li>
+          <li>
+            <FormattedMessage id='guide.creat.toggle.step2.type2' />
+          </li>
         </ul>
         <div className={styles['joyride-pagination']}>2/3</div>
       </div>
@@ -85,9 +95,13 @@ const STEPS: Step[] = [
   {
     content: (
       <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>未生效时返回值</div>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.creat.toggle.step3.title' />
+        </div>
         <ul className={styles['joyride-item']} >
-          <li>"未生效时返回值"是开关关闭时的返回值</li>
+          <li>
+            <FormattedMessage id='guide.creat.toggle.step3.type'/>
+          </li>
         </ul>
         <div className={styles['joyride-pagination']}>3/3</div>
       </div>
@@ -117,6 +131,7 @@ const Drawer = (props: IParams) => {
   const [ tagsOptions, saveTagsOptions ] = useState<ITagOption[]>([]);
   const [ run, saveRun ] = useState<boolean>(false);
   const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
+  const [ stepIndex, saveStepIndex ] = useState<number>(0);
   const intl = useIntl();
 
   const { 
@@ -158,14 +173,33 @@ const Drawer = (props: IParams) => {
     }
   }, [intl, projectKey]);
 
+  const getUserGuide = useCallback(() => {
+    getFromDictionary<IDictionary>(USER_GUIDE_TOGGLE).then(res => {
+      const { success, data } = res;
+      if (success && data) {
+        const savedData = JSON.parse(data.value);
+        if (parseInt(savedData) !== STEPS.length) {
+          setTimeout(() => {
+            saveRun(true);
+          }, 500);
+          saveStepIndex(parseInt(savedData));
+        }
+      } else {
+        setTimeout(() => {
+          saveRun(true);
+        }, 500);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (visible) {
       clearErrors();
       getTagList();
       saveKeyEdit(false);
-      setTimeout(() => {
-        saveRun(true);
-      }, 1000);
+      if (isAdd) {
+        getUserGuide();
+      }
     } else {
       saveToggleInfo({
         name: '',
@@ -186,9 +220,7 @@ const Drawer = (props: IParams) => {
         disabledServe: 0
       });
     }
-
-    
-  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo]);
+  }, [visible, isAdd, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo]);
 
   useEffect(() => {
     setValue('name', toggleInfo.name);
@@ -340,11 +372,12 @@ const Drawer = (props: IParams) => {
   }, [debounceKeyExist]);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data;
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+    const { action, index, type } = data;
 
-    if (finishedStatuses.includes(status)) {
-      saveRun(false);
+    if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+      saveStepIndex(nextStepIndex);
+      saveDictionary(USER_GUIDE_TOGGLE, nextStepIndex);
     }
   };
 
@@ -461,7 +494,7 @@ const Drawer = (props: IParams) => {
             />
           </Form.Field>
 
-          <Form.Field className='joyride-sdk-type'>
+          <Form.Field className={`${styles.joyride} joyride-sdk-type`}>
             <label>
               <FormattedMessage id='toggles.sdk.type' />
             </label>
@@ -483,7 +516,7 @@ const Drawer = (props: IParams) => {
             </div>
           </Form.Field>
           
-          <Form.Field className='joyride-return-type'>
+          <Form.Field className={`${styles.joyride} joyride-return-type`}>
             <label>
               <span className={styles['label-required']}>*</span>
               <FormattedMessage id='toggles.returntype' />
@@ -551,7 +584,7 @@ const Drawer = (props: IParams) => {
             />
           </FormField>
 
-          <Form.Field className='joyride-disabled-return-value'>
+          <Form.Field className={`${styles.joyride} joyride-disabled-return-value`}>
             <label>
               <span className={styles['label-required']}>*</span>
               <FormattedMessage id='common.disabled.return.type.text' />
@@ -598,6 +631,7 @@ const Drawer = (props: IParams) => {
       <Joyride
         run={run}
         callback={handleJoyrideCallback}
+        stepIndex={stepIndex}
         continuous
         hideCloseButton
         scrollToFirstStep
@@ -606,9 +640,9 @@ const Drawer = (props: IParams) => {
         steps={STEPS}
         spotlightPadding={0}
         locale={{
-          'back': '上一个',
-          'next': '下一个',
-          'last': '完成'
+          'back': intl.formatMessage({id: 'guide.last'}),
+          'next': intl.formatMessage({id: 'guide.next'}),
+          'last': intl.formatMessage({id: 'guide.done'}),
         }}
         floaterProps={{...floaterStyle}}
         styles={{...tourStyle}}

@@ -13,6 +13,7 @@ export const tourStyle: Styles = {
     color: '#FFFFFF',
     fontSize: '12px',
     borderRadius: '6px',
+    width: '64px'
   },
   buttonBack: {
     background: '#FFFFFF',
@@ -20,7 +21,11 @@ export const tourStyle: Styles = {
     borderRadius: '6px',
     color: '#556EE6',
     fontSize: '12px',
-    padding: '7px 8px'
+    padding: '7px 8px',
+    width: '64px'
+  },
+  buttonClose: {
+    width: '64px'
   },
   tooltip: {
     padding: '16px 24px',

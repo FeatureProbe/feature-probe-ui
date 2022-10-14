@@ -1,8 +1,8 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
 import { Breadcrumb } from  'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
-import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
+import { FormattedMessage, useIntl } from 'react-intl';
+import Joyride, { CallBackProps, Step, EVENTS, ACTIONS } from 'react-joyride';
 import SideBar from './sidebar';
 import ProjectSiderbar from './projectSiderbar';
 import message from 'components/MessageBox';
@@ -15,6 +15,7 @@ import { IProject, IRouterParams } from 'interfaces/project';
 import { IToggleInfo } from 'interfaces/targeting';
 import { EnvironmentColors } from 'constants/colors';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
+import { DEMO_TIP_SHOW, USER_GUIDE_LAYOUT } from 'constants/dictionary_keys';
 
 import { 
   TOGGLE_PATH, 
@@ -28,8 +29,6 @@ import {
 
 import styles from './layout.module.scss';
 
-const DEMO_TIP_SHOW = 'is_demo_tips_show';
-
 interface IProps {
   children: ReactElement
 }
@@ -38,26 +37,30 @@ const STEPS: Step[] = [
   {
     content: (
       <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>服务</div>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.global.step1.title' />
+        </div>
         <ul className={styles['joyride-item']} >
-          <li>管理应用「服务」及服务的「环境」信息</li>
-          <li>快速拷贝「环境密钥」，与代码环境变量建立关联</li>
-          <li>点击卡片进入不同服务及环境的「开关列表」</li>
+          <li><FormattedMessage id='guide.global.step1.project' /></li>
+          <li><FormattedMessage id='guide.global.step1.env' /></li>
+          <li><FormattedMessage id='guide.global.step1.enter' /></li>
         </ul>
         <div className={styles['joyride-pagination']}>1/2</div>
       </div>
     ),
     placement: 'bottom',
-    target: '.joyride-project',
     spotlightPadding: 0,
+    target: '.joyride-project',
     ...commonConfig
   },
   {
     content: (
       <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>项目-环境-开关列表</div>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.global.step2.title' />
+        </div>
         <ul className={styles['joyride-item']} >
-          <li>点击可切换环境</li>
+          <li><FormattedMessage id='guide.global.step2.env' /></li>
         </ul>
         <div className={styles['joyride-pagination']}>2/2</div>
       </div>
@@ -87,8 +90,10 @@ const ProjectLayout = (props: IProps) => {
   const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
   const [ run, saveRun ] = useState<boolean>(false);
+  const [ stepIndex, saveStepIndex ] = useState<number>(0);
   const history = useHistory();
   const match = useRouteMatch();
+  const intl = useIntl();
 
   useEffect(() => {
     getProjectInfo<IProject>(projectKey).then(res => {
@@ -102,7 +107,6 @@ const ProjectLayout = (props: IProps) => {
         message.error(res.message || 'Get project information error!');
       }
     });
-    saveRun(true);
   }, [projectKey]);
 
   useEffect(() => {
@@ -134,6 +138,23 @@ const ProjectLayout = (props: IProps) => {
         saveTipVisible(true);
       }
     });
+
+    getFromDictionary<IDictionary>(USER_GUIDE_LAYOUT).then(res => {
+      const { success, data } = res;
+      if (success && data) {
+        const savedData = JSON.parse(data.value);
+        if (parseInt(savedData) !== STEPS.length) {
+          setTimeout(() => {
+            saveRun(true);
+          }, 0);
+          saveStepIndex(parseInt(savedData));
+        }
+      } else {
+        setTimeout(() => {
+          saveRun(true);
+        }, 0);
+      }
+    });
   }, []);
   
   const gotoProjects = useCallback(() => {
@@ -141,9 +162,7 @@ const ProjectLayout = (props: IProps) => {
   }, [history]);
 
   const gotoToggle = useCallback(() => {
-    if (!toggleKey) {
-      return;
-    };
+    if (!toggleKey) return;
     history.push(`/${projectKey}/${environmentKey}/toggles`);
   }, [history, projectKey, environmentKey, toggleKey]);
 
@@ -163,20 +182,22 @@ const ProjectLayout = (props: IProps) => {
     });
   }, []);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data;
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+  const handleJoyrideCallback = useCallback((data: CallBackProps) => {
+    const { action, index, type } = data;
 
-    if (finishedStatuses.includes(status)) {
-      saveRun(false);
+    if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+      saveStepIndex(nextStepIndex);
+      saveDictionary(USER_GUIDE_LAYOUT, nextStepIndex);
     }
-  };
+  }, []);
 
   return (
     <div className={styles.main}>
       <Joyride
         run={run}
         callback={handleJoyrideCallback}
+        stepIndex={stepIndex}
         continuous
         hideCloseButton
         scrollToFirstStep
@@ -185,9 +206,9 @@ const ProjectLayout = (props: IProps) => {
         steps={STEPS}
         spotlightPadding={0}
         locale={{
-          'back': '上一个',
-          'next': '下一个',
-          'last': '完成'
+          'back': intl.formatMessage({id: 'guide.last'}),
+          'next': intl.formatMessage({id: 'guide.next'}),
+          'last': intl.formatMessage({id: 'guide.done'}),
         }}
         floaterProps={{...floaterStyle}}
         styles={{...tourStyle}}

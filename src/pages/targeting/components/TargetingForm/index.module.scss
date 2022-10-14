@@ -3,7 +3,11 @@
   border-radius: 12px;
   background-color: #ffffff;
   padding: 24px;
-  display: flex;
+}
+
+.joyride-status {
+  display: inline-flex;
+  width: auto;
 }
 
 .toggle-status {
@@ -29,16 +33,20 @@
   margin-left: 5px;
   border-radius: 4px;
   vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 
 .name-text {
   vertical-align: middle;
   margin-left: 4px;
   display: inline-block;
-  width: 400px;
+  max-width: 400px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  position: relative;
+  top: -2px;
 }
 
 .variations {
