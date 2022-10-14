@@ -12,8 +12,8 @@
       cursor: pointer;
       font-size: 16px;
       color: #495057;
-      margin-right: 35px;
       position: relative;
+      padding: 0 18px;
     }
     
     .navs-item-selected {
@@ -61,7 +61,7 @@
 .navs {
 	flex: 1;
 	display: flex;
-	margin-left: 100px;
+	margin-left: 82px;
 }
 
 .popup {
@@ -126,7 +126,7 @@
   padding: 0 5px;
   position: absolute;
   top: 5px;
-  right: -10px;
+  right: 5px;
   text-align: center;
 }
 
@@ -143,6 +143,7 @@
       font-size: 16px;
       margin-right: 35px;
       opacity: 0.7;
+      padding: 0 12px;
     }
 
     .navs-item-selected {

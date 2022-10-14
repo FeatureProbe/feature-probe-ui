@@ -1,7 +1,8 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
 import { Breadcrumb } from  'semantic-ui-react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
+import Joyride, { CallBackProps, Step, EVENTS, ACTIONS } from 'react-joyride';
 import SideBar from './sidebar';
 import ProjectSiderbar from './projectSiderbar';
 import message from 'components/MessageBox';
@@ -12,8 +13,10 @@ import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { IDictionary } from 'interfaces/targeting';
 import { IProject, IRouterParams } from 'interfaces/project';
 import { IToggleInfo } from 'interfaces/targeting';
-
 import { EnvironmentColors } from 'constants/colors';
+import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
+import { DEMO_TIP_SHOW, USER_GUIDE_LAYOUT } from 'constants/dictionary_keys';
+
 import { 
   TOGGLE_PATH, 
   TARGETING_PATH, 
@@ -26,11 +29,48 @@ import {
 
 import styles from './layout.module.scss';
 
-const DEMO_TIP_SHOW = 'is_demo_tips_show';
-
 interface IProps {
   children: ReactElement
 }
+
+const STEPS: Step[] = [
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.global.step1.title' />
+        </div>
+        <ul className={styles['joyride-item']} >
+          <li><FormattedMessage id='guide.global.step1.project' /></li>
+          <li><FormattedMessage id='guide.global.step1.env' /></li>
+          <li><FormattedMessage id='guide.global.step1.enter' /></li>
+        </ul>
+        <div className={styles['joyride-pagination']}>1/2</div>
+      </div>
+    ),
+    placement: 'bottom',
+    spotlightPadding: 0,
+    target: '.joyride-project',
+    ...commonConfig
+  },
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.global.step2.title' />
+        </div>
+        <ul className={styles['joyride-item']} >
+          <li><FormattedMessage id='guide.global.step2.env' /></li>
+        </ul>
+        <div className={styles['joyride-pagination']}>2/2</div>
+      </div>
+    ),
+    placement: 'right',
+    spotlightPadding: 4,
+    target: '.joyride-environment',
+    ...commonConfig
+  },
+];
 
 const ProjectLayout = (props: IProps) => {
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
@@ -49,8 +89,11 @@ const ProjectLayout = (props: IProps) => {
   const [ toggleName, saveToggleName ] = useState<string>('');
   const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
+  const [ run, saveRun ] = useState<boolean>(false);
+  const [ stepIndex, saveStepIndex ] = useState<number>(0);
   const history = useHistory();
   const match = useRouteMatch();
+  const intl = useIntl();
 
   useEffect(() => {
     getProjectInfo<IProject>(projectKey).then(res => {
@@ -95,6 +138,23 @@ const ProjectLayout = (props: IProps) => {
         saveTipVisible(true);
       }
     });
+
+    getFromDictionary<IDictionary>(USER_GUIDE_LAYOUT).then(res => {
+      const { success, data } = res;
+      if (success && data) {
+        const savedData = JSON.parse(data.value);
+        if (parseInt(savedData) !== STEPS.length) {
+          setTimeout(() => {
+            saveRun(true);
+          }, 0);
+          saveStepIndex(parseInt(savedData));
+        }
+      } else {
+        setTimeout(() => {
+          saveRun(true);
+        }, 0);
+      }
+    });
   }, []);
   
   const gotoProjects = useCallback(() => {
@@ -102,9 +162,7 @@ const ProjectLayout = (props: IProps) => {
   }, [history]);
 
   const gotoToggle = useCallback(() => {
-    if (!toggleKey) {
-      return;
-    };
+    if (!toggleKey) return;
     history.push(`/${projectKey}/${environmentKey}/toggles`);
   }, [history, projectKey, environmentKey, toggleKey]);
 
@@ -124,8 +182,37 @@ const ProjectLayout = (props: IProps) => {
     });
   }, []);
 
+  const handleJoyrideCallback = useCallback((data: CallBackProps) => {
+    const { action, index, type } = data;
+
+    if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+      saveStepIndex(nextStepIndex);
+      saveDictionary(USER_GUIDE_LAYOUT, nextStepIndex);
+    }
+  }, []);
+
   return (
     <div className={styles.main}>
+      <Joyride
+        run={run}
+        callback={handleJoyrideCallback}
+        stepIndex={stepIndex}
+        continuous
+        hideCloseButton
+        scrollToFirstStep
+        showProgress={false}
+        showSkipButton
+        steps={STEPS}
+        spotlightPadding={0}
+        locale={{
+          'back': intl.formatMessage({id: 'guide.last'}),
+          'next': intl.formatMessage({id: 'guide.next'}),
+          'last': intl.formatMessage({id: 'guide.done'}),
+        }}
+        floaterProps={{...floaterStyle}}
+        styles={{...tourStyle}}
+      />
       <SideBar>
         <ProjectSiderbar
           isLoading={isLoading}
