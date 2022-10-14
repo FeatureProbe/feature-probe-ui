@@ -492,16 +492,6 @@ const Targeting = () => {
               </div>
             </div>
           </Modal>
-          {
-            toggleInfo?.useDays && !toggleInfo.archived && (
-              <div 
-                className={styles['permanent-warning-message']}
-              >
-                <Icon type='warning-circle' customClass={styles['warning-icon']} />
-                <FormattedMessage id='toggles.permanent.tips' values={{ useDays: toggleInfo?.useDays }} />
-              </div>
-            )
-          }
         </div>
       </Provider>
     </ProjectLayout>
