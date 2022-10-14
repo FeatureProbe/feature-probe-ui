@@ -23,7 +23,7 @@
     "dayjs": "^1.11.0",
     "diff": "^5.0.0",
     "diff2html": "^3.4.17",
-    "featureprobe-client-sdk-js": "^1.1.0",
+    "featureprobe-client-sdk-js": "^1.1.1",
     "json-bigint": "^1.0.0",
     "jsonlint-mod": "^1.7.6",
     "less-loader": "^7.3.0",
@@ -111,5 +111,5 @@
   "resolutions": {
     "@types/react": "17.0.43"
   },
-  "proxy": "http://featureprobe-df.intra.xiaojukeji.com/"
+  "proxy": "https://featureprobe.io/"
 }
