@@ -286,10 +286,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     }
   }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, approvalInfo, initTargeting, newTrigger]);
 
-  const handleGoBack = useCallback(() => {
-    history.push(`/${projectKey}/${environmentKey}/toggles`);
-  }, [history, projectKey, environmentKey]);
-
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {
       return variations[disabledServe.select].name 
@@ -384,9 +380,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             </span>
           </Button>
         </EventTracker>
-        <Button basic type='reset' onClick={handleGoBack}>
-          <FormattedMessage id='common.cancel.text' />
-        </Button>
       </div>
       <Modal 
         open={open}

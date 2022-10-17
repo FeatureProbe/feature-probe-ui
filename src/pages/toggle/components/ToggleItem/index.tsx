@@ -270,16 +270,6 @@ const ToggleItem = (props: IProps) => {
         }
       </Table.Cell>
       <Table.Cell>
-        <div className={styles['toggle-modified']}>
-          <div className={styles['toggle-modified-by']}>
-            {toggle.modifiedBy}
-          </div>
-          <div className={styles['toggle-modified-time']}>
-            {dayjs(toggle?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
-          </div>
-        </div>
-      </Table.Cell>
-      <Table.Cell>
         {
           visible ? (
             <div className={styles['toggle-operation']}>

@@ -370,10 +370,6 @@ const Info = () => {
                   <FormattedMessage id='common.publish.text' />
                 </Button>
               </EventTracker>
-              
-              <Button basic type='reset' onClick={handleGoBack}>
-                <FormattedMessage id='common.cancel.text' />
-              </Button>
             </div>
 
             <ConfirmModal 
