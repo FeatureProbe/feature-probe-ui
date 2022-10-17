@@ -435,22 +435,21 @@
   "guide.global.step2.env": "点击可切换环境，查看不同环境下的开关信息",
   
   "guide.creat.toggle.step1.title": "客户端SDK",
-  "guide.creat.toggle.step1.sdk1": "如果后续会到客户端SDK，请选择“使用”",
-  "guide.creat.toggle.step1.sdk2": "选择“未使用”客户端SDK，后续连接SDK将不会展示客户端SDK",
+  "guide.creat.toggle.step1.sdk1": "如果该开关后续会用到客户端SDK，请选择“使用”",
+  "guide.creat.toggle.step1.sdk2": "选择“未使用”客户端SDK，该开关连接SDK将不会展示客户端SDK",
   "guide.creat.toggle.step2.title": "返回类型",
-  "guide.creat.toggle.step2.type1": "“返回类型”决定了代码中能读到的开关返回值类型",
+  "guide.creat.toggle.step2.type1": "“返回类型”决定了该开关对应的代码中能读到的开关返回值类型",
   "guide.creat.toggle.step2.type2": "一旦创建，不可更改",
-  "guide.creat.toggle.step3.title": "未生效时返回值",
-  "guide.creat.toggle.step3.type": "“未生效时返回值”是开关关闭时的返回值",
+  "guide.creat.toggle.step3.title": "未生效时的返回分组",
+  "guide.creat.toggle.step3.type": "“未生效时的返回分组”是该开关关闭时的返回值",
   
   "guide.toggle.targeting.step1.title": "点击切换开关状态",
-  "guide.toggle.targeting.step1.off": "“关闭”状态，返回值为“未生效时返回值”", 
+  "guide.toggle.targeting.step1.off": "“关闭”状态，返回值取决于“未生效时的返回分组”", 
   "guide.toggle.targeting.step1.on": "“打开”状态，返回值取决于下方的“规则”和“默认规则”", 
-  "guide.toggle.targeting.step2.title": "为“未指定人群”设置默认返回值",
-  "guide.toggle.targeting.step2.default": "一个用户，若以上所有的“规则”都没命中，则返回“默认返回值”",
+  "guide.toggle.targeting.step2.title": "为“未指定人群”设置默认规则",
+  "guide.toggle.targeting.step2.default": "一个用户，若以上所有的“规则”都没命中，则返回“默认规则”的返回值",
 
   "guide.next": "下一个",
   "guide.last": "上一个",
   "guide.done": "完成"
-  
 }
