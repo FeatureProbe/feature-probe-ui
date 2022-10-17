@@ -156,11 +156,11 @@ const ProjectLayout = (props: IProps) => {
               <>
                 <Breadcrumb.Section link onClick={gotoToggle}>
                   {
-                    projectInfo.name.length > 25 
+                    projectInfo.name.length > 24
                       ? 
                         <Popup
                           inverted
-                          trigger={<span>{stringLimit(projectInfo.name, 25)}</span>}
+                          trigger={<span>{stringLimit(projectInfo.name, 24)}</span>}
                           content={projectInfo.name}
                           position='top center'
                           wide={true}
@@ -171,11 +171,11 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   {
-                    projectInfo.name.length > 25 
+                    projectInfo.name.length > 24
                       ? 
                         <Popup
                           inverted
-                          trigger={<span>{stringLimit(toggleName, 25)}</span>}
+                          trigger={<span>{stringLimit(toggleName, 24)}</span>}
                           content={toggleName}
                           position='top center'
                           wide={true}
@@ -191,11 +191,11 @@ const ProjectLayout = (props: IProps) => {
               <>
                 <Breadcrumb.Section link onClick={gotoToggle}>
                   {
-                    projectInfo.name.length > 25 
+                    projectInfo.name.length > 24 
                       ? 
                         <Popup
                           inverted
-                          trigger={<span>{stringLimit(projectInfo.name, 25)}</span>}
+                          trigger={<span>{stringLimit(projectInfo.name, 24)}</span>}
                           content={projectInfo.name}
                           position='top center'
                           wide={true}
@@ -206,11 +206,11 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section link onClick={gotoTargeting}>
                   {
-                    projectInfo.name.length > 25 
+                    projectInfo.name.length > 24 
                       ? 
                         <Popup
                           inverted
-                          trigger={<span>{stringLimit(toggleName, 25)}</span>}
+                          trigger={<span>{stringLimit(toggleName, 24)}</span>}
                           content={toggleName}
                           position='top center'
                           wide={true}
@@ -229,11 +229,11 @@ const ProjectLayout = (props: IProps) => {
             match.path === TOGGLE_PATH && (
               <Breadcrumb.Section active>
                 {
-                  projectInfo.name.length > 25 
+                  projectInfo.name.length > 24 
                     ? 
                       <Popup
                         inverted
-                        trigger={<span>{stringLimit(projectInfo.name, 25)}</span>}
+                        trigger={<span>{stringLimit(projectInfo.name, 24)}</span>}
                         content={projectInfo.name}
                         position='top center'
                         wide={true}
