@@ -126,75 +126,72 @@ const ProjectCard = (props: IProps) => {
           </div>
           {
             OWNER.includes(userInfo.role) && (
-              <Popup
-                basic
-                open={menuOpen}
-                on='click'
-                position='bottom left'
-                className={styles.popup}
-                trigger={
-                  <div onClick={() => {
-                    setMenuOpen(true);
-                  }}>
-                    <Icon id={`${project.key}-icon-more`} customClass={styles['iconfont']} type='more' />
-                  </div>
-                }
-              >
-                <div className={styles['menu']} onClick={() => {setMenuOpen(false);}}>
-                  <div className={styles['menu-item']} onClick={() => {
-                    saveProjectInfo({
-                      name: project.name,
-                      key: project.key,
-                      description: project.description,
-                    });
-                    saveOriginProjectInfo({
-                      name: project.name,
-                      key: project.key,
-                      description: project.description,
-                    });
-                    handleEditProject(project.key);
-                  }}>
-                    <FormattedMessage id='projects.menu.edit.project' />
-                  </div>
-                  <div className={styles['menu-item']} onClick={handleAddEnvironment}>
-                    <FormattedMessage id='projects.menu.add.environment' />
-                  </div>
-                  {
-                    isArchived ? (
-                      <div 
-                        className={styles['menu-item']} 
-                        onClick={() => {
-                          setIsArchived(false);
-                          refreshEnvironmentList(false);
-                        }}
-                      >
-                        <FormattedMessage id='projects.menu.view.active.environment' />
-                      </div>
-                    ) : (
-                      <div 
-                        className={styles['menu-item']} 
-                        onClick={() => {
-                          setIsArchived(true);
-                          refreshEnvironmentList(true);
-                        }}
-                      >
-                        <FormattedMessage id='projects.menu.view.archive.environment' />
-                      </div>
-                    )
-                  }
-                  <div className={styles['menu-item']} onClick={() => { checkProjectDeletable(); }}>
-                    <FormattedMessage id='projects.menu.delete.project' />
-                  </div>
+              <>
+                <div className={styles['project-edit']} onClick={() => {
+                  saveProjectInfo({
+                    name: project.name,
+                    key: project.key,
+                    description: project.description,
+                  });
+                  saveOriginProjectInfo({
+                    name: project.name,
+                    key: project.key,
+                    description: project.description,
+                  });
+                  handleEditProject(project.key);
+                }}>
+                  <Icon customClass={styles['iconfont']} type="edit" />
                 </div>
-              </Popup>
+                <Popup
+                  basic
+                  open={menuOpen}
+                  on='click'
+                  position='bottom left'
+                  className={styles.popup}
+                  trigger={
+                    <div onClick={() => {
+                      setMenuOpen(true);
+                    }}>
+                      <Icon id={`${project.key}-icon-more`} customClass={styles['iconfont']} type='more' />
+                    </div>
+                  }
+                >
+                  <div className={styles['menu']} onClick={() => {setMenuOpen(false);}}>
+                    <div className={styles['menu-item']} onClick={handleAddEnvironment}>
+                      <FormattedMessage id='projects.menu.add.environment' />
+                    </div>
+                    {
+                      isArchived ? (
+                        <div 
+                          className={styles['menu-item']} 
+                          onClick={() => {
+                            setIsArchived(false);
+                            refreshEnvironmentList(false);
+                          }}
+                        >
+                          <FormattedMessage id='projects.menu.view.active.environment' />
+                        </div>
+                      ) : (
+                        <div 
+                          className={styles['menu-item']} 
+                          onClick={() => {
+                            setIsArchived(true);
+                            refreshEnvironmentList(true);
+                          }}
+                        >
+                          <FormattedMessage id='projects.menu.view.archive.environment' />
+                        </div>
+                      )
+                    }
+                    <div className={styles['menu-item']} onClick={() => { checkProjectDeletable(); }}>
+                      <FormattedMessage id='projects.menu.delete.project' />
+                    </div>
+                  </div>
+                </Popup>
+              </>
             )
           }
         </div>
-        <div className={styles.key}>
-          <span className={styles['key-label']}>
-            { project.key }
-          </span>
-          </div>
         <div className={styles.desc}>
           { project.description }
         </div>
@@ -223,6 +220,14 @@ const ProjectCard = (props: IProps) => {
                   />
                 );
               })
+            }
+            {
+              !isArchived && (
+                <div className={styles['add-environment']} onClick={handleAddEnvironment}>
+                  <Icon customClass={styles['add-environment-icon']} type='add' />
+                  <FormattedMessage id='projects.menu.add.environment' />
+                </div>
+              )
             }
             {
               environments.length === 0 && (

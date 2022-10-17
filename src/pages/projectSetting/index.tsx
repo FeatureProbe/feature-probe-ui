@@ -1,9 +1,11 @@
 
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import  { Radio, CheckboxProps, Form, Input, Dropdown, DropdownProps, DropdownItemProps, Dimmer, Loader } from 'semantic-ui-react';
+import  { Radio, CheckboxProps, Form, Dropdown, DropdownProps, DropdownItemProps, Dimmer, Loader, Popup } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { cloneDeep, isEqual } from 'lodash';
+import { useForm } from 'react-hook-form';
+import { EnvironmentColors } from 'constants/colors';
 import ProjectLayout from 'layout/projectLayout';
 import { HeaderContainer } from 'layout/hooks';
 import Icon from 'components/Icon';
@@ -32,6 +34,7 @@ const ProjectSetting = () => {
   const intl = useIntl();
   const { projectKey } = useParams<IParams>();
   const { userInfo } = HeaderContainer.useContainer();
+  const { trigger, formState: { errors }, register, clearErrors } = useForm();
 
   const init = useCallback(async () => {
     getProjectApprovalSettings<IApprovalSetting[]>(projectKey).then(res => {
@@ -71,26 +74,29 @@ const ProjectSetting = () => {
     init();
   }, [init]);
 
-  const renderLabel = useCallback((label: DropdownItemProps) => {
+  const renderLabel = useCallback((label: DropdownItemProps, setting: IApprovalSetting) => {
+    const cantRemove: boolean = setting.reviewers.length === 1 && setting.enable === true;
     return ({
       content: label.text,
-      removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
+      removeIcon: !cantRemove && <Icon type='close' customClass={styles['dropdown-remove-icon']} />
     });
   }, []);
 
-  const handleChangeApproval = useCallback((environmentKey: string, reviewers: string[]) => {
+  const handleChangeApproval = useCallback((environmentKey: string, reviewers: string[], index: number) => {
     const settings = cloneDeep(approvalSetting);
     settings.forEach((setting: IApprovalSetting) => {
       if (setting.environmentKey === environmentKey) {
-        setting.reviewers = reviewers;
-        if(reviewers.length === 0) {
-          setting.enable = false;
+        if(!(setting.enable === true && reviewers.length === 0)) {
+          setting.reviewers = reviewers;
         }
       }
     });
 
     saveApprovalSetting(settings);
-  }, [approvalSetting]);
+    if(settings[index].reviewers.length) {
+      clearErrors(`approval-reviewers-${index}`);
+    }
+  }, [approvalSetting, clearErrors]);
 
   const saveToggleDisable = useCallback((environmentKey:string, checked: boolean) => {
     const settings = cloneDeep(approvalSetting);
@@ -108,8 +114,11 @@ const ProjectSetting = () => {
       approvalSettings: approvalSetting,
     }).then(() => {
       message.success(intl.formatMessage({id: 'toggles.settings.save.success'}));
+      saveIsSame(true);
+      saveOriginSetting(approvalSetting);
+      clearErrors();
     });
-  }, [intl, projectKey, approvalSetting]);
+  }, [intl, projectKey, approvalSetting, clearErrors]);
 
   return (
     <ProjectLayout>
@@ -134,7 +143,7 @@ const ProjectSetting = () => {
                 <div>
                   <Form className={styles['approval-form']}>
                     <Form.Group>
-                      <Form.Field width={4}>
+                      <Form.Field width={2}>
                         <label className={styles.label}>
                           <FormattedMessage id='common.environment.text' />:
                         </label>
@@ -151,14 +160,23 @@ const ProjectSetting = () => {
                       </Form.Field>
                     </Form.Group>
                     {
-                      approvalSetting.map((setting: IApprovalSetting) => {
+                      approvalSetting.map((setting: IApprovalSetting, index: number) => {
                         return (
                           <Form.Group className={styles.group}>
-                            <Form.Field width={4}>
-                              <Input value={setting.environmentKey} />
+                            <Form.Field width={2}>
+                              <div className={styles['environment-name-box']}>
+                                <div className={styles['color-square']} style={{background: EnvironmentColors[index % 5]}}/>
+                                <div className='environment-name-text'>{setting.environmentName}</div>
+                              </div>
                             </Form.Field>
                             <Form.Field width={12}>
                               <Dropdown
+                                {
+                                  ...register(`approval-reviewers-${index}`, {
+                                    validate: () => !(approvalSetting[index].reviewers.length === 0) || intl.formatMessage({ id: 'toggles.settings.approval.reviewers.placeholder' })
+                                  })
+                                }
+                                error={ errors[`approval-reviewers-${index}`] ? true : false }
                                 placeholder={intl.formatMessage({id: 'toggles.settings.approval.reviewers.placeholder'})}
                                 search
                                 selection
@@ -167,25 +185,42 @@ const ProjectSetting = () => {
                                 options={options}
                                 value={setting.reviewers}
                                 openOnFocus={false}
-                                renderLabel={renderLabel}
+                                renderLabel={(label) => {
+                                  return renderLabel(label, setting);
+                                }}
                                 disabled={!OWNER.includes(userInfo.role)}
                                 icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
                                 noResultsMessage={null}
                                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                                   // @ts-ignore detail value
-                                  handleChangeApproval(setting.environmentKey, detail.value);
+                                  handleChangeApproval(setting.environmentKey, detail.value, index);
                                 }}
                               />
+                              { errors[`approval-reviewers-${index}`] && <div className={styles['error-text']}>{ intl.formatMessage({ id: 'toggles.settings.approval.reviewers.placeholder' }) }</div> }
                             </Form.Field>
                             <Form.Field width={2}>
-                              <Radio
-                                size='mini'
-                                toggle 
-                                checked={setting.enable}
-                                onChange={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(setting.environmentKey, !!data.checked)} 
-                                className={styles['approval-status']} 
-                                disabled={!OWNER.includes(userInfo.role)}
+                              <Popup
+                                inverted
+                                disabled={!setting.locked}
+                                className={styles.popup}
+                                trigger={
+                                  <Radio
+                                    size='mini'
+                                    toggle 
+                                    checked={setting.enable}
+                                    onChange={(e: SyntheticEvent, data: CheckboxProps) => {
+                                      saveToggleDisable(setting.environmentKey, !!data.checked);
+                                      trigger(`approval-reviewers-${index}`);
+                                    }} 
+                                    className={styles['approval-status']} 
+                                    disabled={!OWNER.includes(userInfo.role) || setting.locked}
+                                  />
+                                }
+                                content={intl.formatMessage({ id: 'toggles.settings.approval.enable.tips' })}
+                                position='top left'
+                                wide
                               />
+                              
                             </Form.Field>
                           </Form.Group>
                         );

@@ -343,7 +343,7 @@ const Info = (props: IProps) => {
                             <>
                               <Button 
                                 secondary 
-                                className={styles.btn} 
+                                className={styles['dangerous-btn']} 
                                 onClick={() => { 
                                   saveOpen(true);
                                   saveStatus('JUMP');

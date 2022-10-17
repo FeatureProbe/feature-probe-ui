@@ -6,6 +6,7 @@ but we highly recommend using it as the management portal.
 The FeatureProbe UI provides extensive UI features for managing and updating properties, 
 rollout, rollback, configuration peer reviews, permission management, history, and many other features.
 
+## [中文文档](https://docs.featureprobe.io/zh-CN/)
 
 ## Getting Started
 
@@ -37,6 +38,11 @@ You can alternatively install and run UI with a Docker image. To run, binding th
 ```
 $ docker run -d -p 8081:8081 --name fp-ui featureprobe/ui
 ```
+
+### Installing UI Independently with yarn or npm
+
+You can alternatively install and run UI with yarn or npm, Check it out at docs: [How to install UI](https://docs.featureprobe.io/how-to/develop/ui-local-develop). 
+[中文版](https://docs.featureprobe.io/zh-CN/how-to/develop/ui-local-develop)
 
 
 ### Building a customized UI on top of the original one
