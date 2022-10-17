@@ -332,11 +332,11 @@ export const getMiniProgramCode = (options: IOption) => {
   const { intl, clientSdkKey, userWithCode, returnType, toggleKey, remoteUrl } = options;
   return [
     {
-      title: intl.formatMessage({id: 'getstarted.js.first.step.title'}),
+      title: intl.formatMessage({id: 'getstarted.miniprogram.first.step.title'}),
       code: 'npm install featureprobe-client-sdk-miniprogram --save'
     }, 
     {
-      title: intl.formatMessage({id: 'getstarted.js.second.step.title'}),
+      title: intl.formatMessage({id: 'getstarted.miniprogram.second.step.title'}),
       code: 
 `import { featureProbeClient, FPUser} from "featureprobe-client-sdk-miniprogram";
 
@@ -352,7 +352,7 @@ featureProbeClient.start();
 `
     }, 
     {
-      title: intl.formatMessage({id: 'getstarted.js.third.step.title'}),
+      title: intl.formatMessage({id: 'getstarted.miniprogram.third.step.title'}),
       name: intl.formatMessage({id: 'getstarted.miniprogram.third.step.name.one'}),
       code: 
 `const app = getApp();
