@@ -160,6 +160,7 @@ const ProjectLayout = (props: IProps) => {
                       ? 
                         <Popup
                           inverted
+                          className={styles.popup}
                           trigger={<span>{stringLimit(projectInfo.name, 24)}</span>}
                           content={projectInfo.name}
                           position='top center'
@@ -171,10 +172,11 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   {
-                    projectInfo.name.length > 24
+                    toggleName.length > 24
                       ? 
                         <Popup
                           inverted
+                          className={styles.popup}
                           trigger={<span>{stringLimit(toggleName, 24)}</span>}
                           content={toggleName}
                           position='top center'
@@ -195,6 +197,7 @@ const ProjectLayout = (props: IProps) => {
                       ? 
                         <Popup
                           inverted
+                          className={styles.popup}
                           trigger={<span>{stringLimit(projectInfo.name, 24)}</span>}
                           content={projectInfo.name}
                           position='top center'
@@ -206,10 +209,11 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section link onClick={gotoTargeting}>
                   {
-                    projectInfo.name.length > 24 
+                    toggleName.length > 24 
                       ? 
                         <Popup
                           inverted
+                          className={styles.popup}
                           trigger={<span>{stringLimit(toggleName, 24)}</span>}
                           content={toggleName}
                           position='top center'
@@ -233,6 +237,7 @@ const ProjectLayout = (props: IProps) => {
                     ? 
                       <Popup
                         inverted
+                        className={styles.popup}
                         trigger={<span>{stringLimit(projectInfo.name, 24)}</span>}
                         content={projectInfo.name}
                         position='top center'
