@@ -669,7 +669,7 @@ const Drawer = (props: IParams) => {
         showProgress={false}
         showSkipButton
         steps={STEPS}
-        spotlightPadding={0}
+        disableCloseOnEsc={true}
         locale={{
           'back': intl.formatMessage({id: 'guide.last'}),
           'next': intl.formatMessage({id: 'guide.next'}),
