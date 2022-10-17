@@ -437,8 +437,8 @@
   "guide.creat.toggle.step2.title": "返回类型",
   "guide.creat.toggle.step2.type1": "“返回类型”决定了该开关对应的代码中能读到的开关返回值类型",
   "guide.creat.toggle.step2.type2": "一旦创建，不可更改",
-  "guide.creat.toggle.step3.title": "未生效时返回值",
-  "guide.creat.toggle.step3.type": "“未生效时返回值”是该开关关闭时的返回值",
+  "guide.creat.toggle.step3.title": "未生效时的返回分组",
+  "guide.creat.toggle.step3.type": "“未生效时的返回分组”是该开关关闭时的返回值",
   
   "guide.toggle.targeting.step1.title": "点击切换开关状态",
   "guide.toggle.targeting.step1.off": "“关闭”状态，返回值取决于“未生效时的返回分组”", 
