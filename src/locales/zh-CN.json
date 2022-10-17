@@ -391,6 +391,9 @@
   "getstarted.js.second.step.or": "或者使用",
   "getstarted.js.third.step.title": "第三步：在代码中使用功能开关",
   "getstarted.js.third.step.name.one": "您可以使用SDK来获取一个用户从某个开关中获取到的变量值",
+  "getstarted.miniprogram.first.step.title": "第一步：安装小程序SDK",
+  "getstarted.miniprogram.second.step.title": "第二步：初始化SDK",
+  "getstarted.miniprogram.third.step.title": "第三步：使用功能开关",
   "getstarted.miniprogram.third.step.name.one": "您可以从 globalData 对象中获取变量值，SDK会自动更新 globalData.toggles 对象",
   "getstarted.miniprogram.third.step.name.second": "您还可以使用 SDK 对外暴露的 API 来获取开关返回值",
 
