@@ -14,6 +14,7 @@ import {
 import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
+import Joyride, { CallBackProps, EVENTS, Step, ACTIONS } from 'react-joyride';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
@@ -26,13 +27,16 @@ import { VariationColors } from 'constants/colors';
 import { CONFLICT } from 'constants/httpCode';
 import { replaceSpace } from 'utils/tools';
 import { initVariations, initBooleanVariations, returnTypeOptions } from './constants';
-import { IVariation } from 'interfaces/targeting';
+import { IDictionary, IVariation } from 'interfaces/targeting';
 import { ITag, ITagOption } from 'interfaces/project';
 import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'services/toggle';
+import { saveDictionary, getFromDictionary } from 'services/dictionary';
 
-import styles from './index.module.scss';
 import { debounce } from 'lodash';
 import { useRequestTimeCheck } from 'hooks';
+import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
+import styles from './index.module.scss';
+import { USER_GUIDE_TOGGLE } from 'constants/dictionary_keys';
 
 interface IParams {
   isAdd: boolean;
@@ -46,6 +50,68 @@ interface ILocationParams {
   projectKey: string;
   environmentKey: string;
 }
+
+const STEPS: Step[] = [
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.creat.toggle.step1.title' />
+        </div>
+        <ul className={styles['joyride-item']} >
+          <li><FormattedMessage id='guide.creat.toggle.step1.sdk1' /></li>
+          <li><FormattedMessage id='guide.creat.toggle.step1.sdk2' /></li>
+        </ul>
+        <div className={styles['joyride-pagination']}>1/3</div>
+      </div>
+    ),
+    placement: 'left',
+    target: '.joyride-sdk-type',
+    spotlightPadding: 10,
+    ...commonConfig
+  },
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.creat.toggle.step2.title' />
+        </div>
+        <ul className={styles['joyride-item']} >
+          <li>
+            <FormattedMessage id='guide.creat.toggle.step2.type1' />
+          </li>
+          <li>
+            <FormattedMessage id='guide.creat.toggle.step2.type2' />
+          </li>
+        </ul>
+        <div className={styles['joyride-pagination']}>2/3</div>
+      </div>
+    ),
+    placement: 'left',
+    spotlightPadding: 10,
+    target: '.joyride-return-type',
+    ...commonConfig
+  },
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.creat.toggle.step3.title' />
+        </div>
+        <ul className={styles['joyride-item']} >
+          <li>
+            <FormattedMessage id='guide.creat.toggle.step3.type'/>
+          </li>
+        </ul>
+        <div className={styles['joyride-pagination']}>3/3</div>
+      </div>
+    ),
+    placement: 'left',
+    spotlightPadding: 10,
+    target: '.joyride-disabled-return-value',
+    ...commonConfig
+  },
+];
 
 const Drawer = (props: IParams) => {
   const { isAdd, visible, setDrawerVisible, refreshToggleList } = props;
@@ -63,7 +129,9 @@ const Drawer = (props: IParams) => {
   const { projectKey } = useParams<ILocationParams>();
   const { variations, saveVariations } = variationContainer.useContainer();
   const [ tagsOptions, saveTagsOptions ] = useState<ITagOption[]>([]);
+  const [ run, saveRun ] = useState<boolean>(false);
   const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
+  const [ stepIndex, saveStepIndex ] = useState<number>(0);
   const intl = useIntl();
 
   const { 
@@ -105,11 +173,33 @@ const Drawer = (props: IParams) => {
     }
   }, [intl, projectKey]);
 
+  const getUserGuide = useCallback(() => {
+    getFromDictionary<IDictionary>(USER_GUIDE_TOGGLE).then(res => {
+      const { success, data } = res;
+      if (success && data) {
+        const savedData = JSON.parse(data.value);
+        if (parseInt(savedData) !== STEPS.length) {
+          setTimeout(() => {
+            saveRun(true);
+          }, 500);
+          saveStepIndex(parseInt(savedData));
+        }
+      } else {
+        setTimeout(() => {
+          saveRun(true);
+        }, 500);
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (visible) {
       clearErrors();
       getTagList();
       saveKeyEdit(false);
+      if (isAdd) {
+        getUserGuide();
+      }
     } else {
       saveToggleInfo({
         name: '',
@@ -118,7 +208,8 @@ const Drawer = (props: IParams) => {
         tags: [],
         clientAvailability: false,
         returnType: 'boolean',
-        disabledServe: 0
+        disabledServe: 0,
+        permanent: false,
       });
       saveOriginToggleInfo({
         name: '',
@@ -127,10 +218,11 @@ const Drawer = (props: IParams) => {
         tags: [],
         clientAvailability: false,
         returnType: 'boolean',
-        disabledServe: 0
+        disabledServe: 0,
+        permanent: false,
       });
     }
-  }, [visible, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo]);
+  }, [visible, isAdd, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo, getUserGuide]);
 
   useEffect(() => {
     setValue('name', toggleInfo.name);
@@ -281,6 +373,16 @@ const Drawer = (props: IParams) => {
     await debounceKeyExist(type, value);
   }, [debounceKeyExist]);
 
+  const handleJoyrideCallback = (data: CallBackProps) => {
+    const { action, index, type } = data;
+
+    if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+      saveStepIndex(nextStepIndex);
+      saveDictionary(USER_GUIDE_TOGGLE, nextStepIndex);
+    }
+  };
+
 	return (
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
       <Form 
@@ -310,7 +412,6 @@ const Drawer = (props: IParams) => {
           <Icon customClass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
         <div className={styles['toggle-drawer-form-content']}>
-
           <FormItemName
             className={styles.input}
             value={toggleInfo?.name}
@@ -395,7 +496,7 @@ const Drawer = (props: IParams) => {
             />
           </Form.Field>
 
-          <Form.Field>
+          <Form.Field className={`${styles.joyride} joyride-sdk-type`}>
             <label>
               <FormattedMessage id='toggles.sdk.type' />
             </label>
@@ -417,7 +518,7 @@ const Drawer = (props: IParams) => {
             </div>
           </Form.Field>
           
-          <Form.Field>
+          <Form.Field className={`${styles.joyride} joyride-return-type`}>
             <label>
               <span className={styles['label-required']}>*</span>
               <FormattedMessage id='toggles.returntype' />
@@ -485,7 +586,7 @@ const Drawer = (props: IParams) => {
             />
           </FormField>
 
-          <Form.Field>
+          <Form.Field className={`${styles.joyride} joyride-disabled-return-value`}>
             <label>
               <span className={styles['label-required']}>*</span>
               <FormattedMessage id='common.disabled.return.type.text' />
@@ -520,6 +621,35 @@ const Drawer = (props: IParams) => {
               }
             />
           </Form.Field>
+          <Form.Field>
+            <label>
+              <FormattedMessage id='toggles.permanent.type' />
+              <Popup
+                inverted
+                trigger={<Icon customClass={styles['icon-question']} type='question' />}
+                content={intl.formatMessage({id: 'toggles.permanent.type.tips'})}
+                position='top center'
+                className={styles.popup}
+                wide={true}
+              />
+            </label>
+            <div className={styles['radio-group']}>
+              <Form.Radio
+                name='permanent-yes'
+                label={intl.formatMessage({id: 'common.yes.text'})}
+                className={styles['radio-group-item']}
+                checked={!!toggleInfo.permanent}
+                onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'permanent')} 
+              />
+              <Form.Radio 
+                name='permanent-no'
+                label={intl.formatMessage({id: 'common.no.text'})}
+                className={styles['radio-group-item']}
+                checked={!toggleInfo.permanent}
+                onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'permanent')} 
+              />
+            </div>
+          </Form.Field>
           { 
             errors.disabledServe && (
               <div className={styles['error-text']}>
@@ -529,6 +659,25 @@ const Drawer = (props: IParams) => {
           }
         </div>
       </Form>
+      <Joyride
+        run={run}
+        callback={handleJoyrideCallback}
+        stepIndex={stepIndex}
+        continuous
+        hideCloseButton
+        scrollToFirstStep
+        showProgress={false}
+        showSkipButton
+        steps={STEPS}
+        disableCloseOnEsc={true}
+        locale={{
+          'back': intl.formatMessage({id: 'guide.last'}),
+          'next': intl.formatMessage({id: 'guide.next'}),
+          'last': intl.formatMessage({id: 'guide.done'}),
+        }}
+        floaterProps={{...floaterStyle}}
+        styles={{...tourStyle}}
+      />
     </div>
 	);
 };

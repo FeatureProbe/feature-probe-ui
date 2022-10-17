@@ -53,6 +53,8 @@ export interface IToggleInfo {
   clientAvailability: boolean;
   variations: IVariation[];
   archived: boolean;
+  permanent: boolean;
+  useDays?: number;
 }
 
 export interface ITarget {

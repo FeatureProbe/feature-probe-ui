@@ -2,10 +2,10 @@ import { getProjectList } from 'services/project';
 import { IProject, IEnvironment } from 'interfaces/project';
 import { IDictionary } from 'interfaces/targeting';
 import { getFromDictionary } from 'services/dictionary';
-const KEY = 'user_last_seen';
+import { LAST_SEEN } from 'constants/dictionary_keys';
 
 const getInfo = async () => {
-  const res =  await getFromDictionary<IDictionary>(KEY);
+  const res =  await getFromDictionary<IDictionary>(LAST_SEEN);
   const { success, data } = res;
   if (success && data) {
     return JSON.parse(data.value);
