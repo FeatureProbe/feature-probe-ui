@@ -73,9 +73,9 @@ const STEPS: Step[] = [
         <div className={styles['joyride-pagination']}>1/2</div>
       </div>
     ),
+    spotlightPadding: 20,
     placement: 'right',
     target: '.joyride-toggle-status',
-    spotlightPadding: 20,
     ...commonConfig
   },
   {
@@ -92,8 +92,8 @@ const STEPS: Step[] = [
         <div className={styles['joyride-pagination']}>2/2</div>
       </div>
     ),
-    placement: 'right',
     spotlightPadding: 4,
+    placement: 'right',
     target: '.joyride-default-rule',
     ...commonConfig
   },
@@ -572,6 +572,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         scrollToFirstStep
         showProgress={false}
         showSkipButton
+        scrollOffset={100}
+        disableCloseOnEsc={true}
         steps={STEPS}
         locale={{
           'back': intl.formatMessage({id: 'guide.last'}),
