@@ -208,7 +208,8 @@ const Drawer = (props: IParams) => {
         tags: [],
         clientAvailability: false,
         returnType: 'boolean',
-        disabledServe: 0
+        disabledServe: 0,
+        permanent: false,
       });
       saveOriginToggleInfo({
         name: '',
@@ -217,7 +218,8 @@ const Drawer = (props: IParams) => {
         tags: [],
         clientAvailability: false,
         returnType: 'boolean',
-        disabledServe: 0
+        disabledServe: 0,
+        permanent: false,
       });
     }
   }, [visible, isAdd, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo]);
@@ -618,6 +620,35 @@ const Drawer = (props: IParams) => {
                 <Icon customClass={styles['angle-down']} type='angle-down' />
               }
             />
+          </Form.Field>
+          <Form.Field>
+            <label>
+              <FormattedMessage id='toggles.permanent.type' />
+              <Popup
+                inverted
+                trigger={<Icon customClass={styles['icon-question']} type='question' />}
+                content={intl.formatMessage({id: 'toggles.permanent.type.tips'})}
+                position='top center'
+                className={styles.popup}
+                wide={true}
+              />
+            </label>
+            <div className={styles['radio-group']}>
+              <Form.Radio
+                name='permanent-yes'
+                label={intl.formatMessage({id: 'common.yes.text'})}
+                className={styles['radio-group-item']}
+                checked={!!toggleInfo.permanent}
+                onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'permanent')} 
+              />
+              <Form.Radio 
+                name='permanent-no'
+                label={intl.formatMessage({id: 'common.no.text'})}
+                className={styles['radio-group-item']}
+                checked={!toggleInfo.permanent}
+                onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'permanent')} 
+              />
+            </div>
           </Form.Field>
           { 
             errors.disabledServe && (

@@ -64,6 +64,7 @@ export const useToggleInfo = () => {
     clientAvailability: false,
     returnType: 'boolean',
     disabledServe: 0,
+    permanent: false,
   });
 
   const [ originToggleInfo, saveOriginToggleInfo ] = useState<IToggleInfo>({
@@ -74,6 +75,7 @@ export const useToggleInfo = () => {
     clientAvailability: false,
     returnType: 'boolean',
     disabledServe: 0,
+    permanent: false,
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps | DropdownProps | CheckboxProps, type: string) => {
@@ -81,6 +83,8 @@ export const useToggleInfo = () => {
 
     if (type === 'clientAvailability') {
       toggleInfo[type] = detail.name === 'yes';
+    } else if ( type === 'permanent' ) {
+      toggleInfo[type] = detail.name === 'permanent-yes';
     } else {
       // @ts-ignore detail value
       toggleInfo[type] = value;
