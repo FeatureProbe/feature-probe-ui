@@ -1,6 +1,6 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
-import { Breadcrumb } from  'semantic-ui-react';
+import { Breadcrumb, Popup } from  'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import SideBar from './sidebar';
 import ProjectSiderbar from './projectSiderbar';
@@ -25,6 +25,7 @@ import {
 } from 'router/routes';
 
 import styles from './layout.module.scss';
+import { stringLimit } from 'utils/tools';
 
 const DEMO_TIP_SHOW = 'is_demo_tips_show';
 
@@ -153,10 +154,34 @@ const ProjectLayout = (props: IProps) => {
           {
             match.path === TARGETING_PATH && (
               <>
-                <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
+                <Breadcrumb.Section link onClick={gotoToggle}>
+                  {
+                    projectInfo.name.length > 25 
+                      ? 
+                        <Popup
+                          inverted
+                          trigger={<span>{stringLimit(projectInfo.name, 25)}</span>}
+                          content={projectInfo.name}
+                          position='top center'
+                          wide={true}
+                        /> 
+                      : projectInfo.name
+                  }
+                </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
-                  { toggleName }
+                  {
+                    projectInfo.name.length > 25 
+                      ? 
+                        <Popup
+                          inverted
+                          trigger={<span>{stringLimit(toggleName, 25)}</span>}
+                          content={toggleName}
+                          position='top center'
+                          wide={true}
+                        /> 
+                      : toggleName
+                  }
                 </Breadcrumb.Section>
               </>
             )
@@ -164,9 +189,35 @@ const ProjectLayout = (props: IProps) => {
           {
             match.path === GET_STARTED_PATH && (
               <>
-                <Breadcrumb.Section link onClick={gotoToggle}>{ projectInfo?.name }</Breadcrumb.Section>
+                <Breadcrumb.Section link onClick={gotoToggle}>
+                  {
+                    projectInfo.name.length > 25 
+                      ? 
+                        <Popup
+                          inverted
+                          trigger={<span>{stringLimit(projectInfo.name, 25)}</span>}
+                          content={projectInfo.name}
+                          position='top center'
+                          wide={true}
+                        /> 
+                      : projectInfo.name
+                  }
+                </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
-                <Breadcrumb.Section link onClick={gotoTargeting}>{ toggleName }</Breadcrumb.Section>
+                <Breadcrumb.Section link onClick={gotoTargeting}>
+                  {
+                    projectInfo.name.length > 25 
+                      ? 
+                        <Popup
+                          inverted
+                          trigger={<span>{stringLimit(toggleName, 25)}</span>}
+                          content={toggleName}
+                          position='top center'
+                          wide={true}
+                        /> 
+                      : toggleName
+                  }
+                </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   <FormattedMessage id='common.get.started.text' />
@@ -176,7 +227,20 @@ const ProjectLayout = (props: IProps) => {
           }
           {
             match.path === TOGGLE_PATH && (
-              <Breadcrumb.Section active>{ projectInfo?.name }</Breadcrumb.Section>
+              <Breadcrumb.Section active>
+                {
+                  projectInfo.name.length > 25 
+                    ? 
+                      <Popup
+                        inverted
+                        trigger={<span>{stringLimit(projectInfo.name, 25)}</span>}
+                        content={projectInfo.name}
+                        position='top center'
+                        wide={true}
+                      /> 
+                    : projectInfo.name
+                }
+              </Breadcrumb.Section>
             )
           }
           {
