@@ -25,21 +25,7 @@ const ListItem = (props: IProps) => {
     <Table.Row className={styles['list-item']}>
       <Table.Cell>
         <div className={styles['list-item-title']}>
-          <Popup
-            inverted
-            className={styles.popup}
-            trigger={
-              <span>
-                { approval.title }
-              </span>
-            }
-            content={
-              <div className={styles['popup-content']}>
-                { approval.title }
-              </div>
-            }
-            position='top left'
-          />
+        <TextLimit text={approval.title} maxWidth={170} showPopup popupProps={{ position: 'top left' }} />
           
           {
             approval.canceled && approval.status === 'PASS' && (
