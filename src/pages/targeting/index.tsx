@@ -131,6 +131,7 @@ const Targeting = () => {
           approvalComment,
           locked,
           lockedTime,
+          publishTime,
         } = data;
         saveTargeting(cloneDeep(content));
         saveToggleDisable(disabled || false);
@@ -151,6 +152,7 @@ const Targeting = () => {
           approvalComment,
           locked,
           lockedTime,
+          publishTime,
         });
         saveLatestVersion(version || 0);
         saveSelectedVersion(version || 0);

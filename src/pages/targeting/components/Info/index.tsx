@@ -479,9 +479,9 @@ const Info = (props: IProps) => {
                       <FormattedMessage id='common.updated.time.text' />:
                     </div>
                     {
-                      modifyInfo?.modifiedTime ? (
+                      approvalInfo?.publishTime ? (
                         <div className={styles['label-value']}>
-                          {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
+                          {dayjs(approvalInfo?.publishTime).format('YYYY-MM-DD HH:mm:ss')}
                         </div>
                       ) : <>-</>
                     }

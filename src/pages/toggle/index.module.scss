@@ -140,6 +140,7 @@
   right: 10px;
   color: #74788d;
   top: 8px;
+  -webkit-appearance: unset !important;
 }
 
 .dropdown-remove-icon {
@@ -178,10 +179,13 @@
 }
 
 .table-header {
+  position: sticky;
+  top: 0;
   background: #f8f9fa;
   height: 42px;
   line-height: 42px;
   font-size: 13px;
+  z-index: 1;
 
   :global {
     th {
