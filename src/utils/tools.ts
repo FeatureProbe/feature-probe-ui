@@ -36,3 +36,11 @@ export const getVariationName = (variations: IVariation[]) => {
   }
   return name;
 };
+
+export const stringLimit = (str: string, limit: number) => {
+  if(str.length > limit) {
+    return str.slice(0, limit - 3).concat('...');
+  } else {
+    return str;
+  }
+};
