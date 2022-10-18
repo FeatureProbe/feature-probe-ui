@@ -91,7 +91,7 @@ const ListItem = (props: IProps) => {
                 />
               )
             }
-            <TextLimit text={approval.toggleName} maxLength={24} showPopup={true} />
+            <TextLimit text={approval.toggleName} maxWidth={190} showPopup={true} />
           </div>
         </div>
       </Table.Cell>
@@ -149,7 +149,7 @@ const ListItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['list-item-project']}>
-          <TextLimit text={approval.projectName} maxLength={24} showPopup={true} />
+          <TextLimit text={approval.projectName} maxWidth={190} showPopup={true} />
         </div>
       </Table.Cell>
       <Table.Cell>

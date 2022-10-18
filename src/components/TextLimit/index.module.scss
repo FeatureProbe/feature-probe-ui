@@ -1,3 +1,10 @@
 .popup {
-    opacity: 0.8;
+  opacity: 0.8;
+}
+
+.limit-str-container {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
