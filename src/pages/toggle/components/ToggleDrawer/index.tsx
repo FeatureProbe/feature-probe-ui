@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Joyride, { CallBackProps, EVENTS, Step, ACTIONS } from 'react-joyride';
+import { FieldErrors } from 'react-hook-form';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
@@ -37,7 +38,6 @@ import { useRequestTimeCheck } from 'hooks';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import styles from './index.module.scss';
 import { USER_GUIDE_TOGGLE } from 'constants/dictionary_keys';
-
 interface IParams {
   isAdd: boolean;
   visible: boolean;
@@ -295,6 +295,14 @@ const Drawer = (props: IParams) => {
     }
   }, [intl, isAdd, projectKey, refreshToggleList, setDrawerVisible, setError, toggleInfo, variations]);
 
+  const onError = (errors: FieldErrors) => {
+    let errorEle = document.querySelector(`[name=${Object.keys(errors)[0]}]`);
+    if(!errorEle) {
+      errorEle = document.querySelector(`#${Object.keys(errors)[0]}`);
+    }
+    errorEle?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   const handleAddTag = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
     const res = await addTag(projectKey, {
       name: detail.value?.toString() || '',
@@ -387,7 +395,7 @@ const Drawer = (props: IParams) => {
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
       <Form 
         autoComplete='off'
-        onSubmit={handleSubmit(onSubmit)} 
+        onSubmit={handleSubmit(onSubmit, onError)} 
         className={`${styles['toggle-drawer-form']} ${visible && styles['toggle-drawer-form-inactive']}`}
       >
         <div className={styles.title}>

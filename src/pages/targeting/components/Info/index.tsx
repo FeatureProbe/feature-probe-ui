@@ -19,6 +19,7 @@ import { getTargeting, getTargetingDiff } from 'services/toggle';
 import { IToggleInfo, IModifyInfo, IApprovalInfo, ITargetingDiff, ITargeting, IContent } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
+import TextLimit from 'components/TextLimit';
 
 interface IProps {
   toggleInfo?: IToggleInfo;
@@ -263,7 +264,7 @@ const Info = (props: IProps) => {
                   )
                 }
                 <div className={styles['info-toggle-name']}>
-                  {toggleInfo?.name}
+                  <TextLimit text={toggleInfo?.name ?? ''} maxLength={24} showPopup={true} />
                 </div>
                 {
                   enableApproval && toggleStatus === 'PENDING' && (
@@ -315,14 +316,10 @@ const Info = (props: IProps) => {
                 }
               </div>
               <div className={styles['info-title-right']}>
-                {
-                  !toggleInfo?.archived && (
-                    <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
-                      <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
-                      <FormattedMessage id='toggle.connect' />
-                    </div>
-                  )
-                }
+                <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
+                  <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
+                  <FormattedMessage id='toggle.connect' />
+                </div>
                 <div>
 
                   {/* Button Show Changes */}
@@ -479,9 +476,9 @@ const Info = (props: IProps) => {
                       <FormattedMessage id='common.updated.time.text' />:
                     </div>
                     {
-                      approvalInfo?.publishTime ? (
+                      modifyInfo?.modifiedTime ? (
                         <div className={styles['label-value']}>
-                          {dayjs(approvalInfo?.publishTime).format('YYYY-MM-DD HH:mm:ss')}
+                          {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
                         </div>
                       ) : <>-</>
                     }

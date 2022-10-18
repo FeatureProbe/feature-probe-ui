@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import Icon from 'components/Icon';
 import styles from './index.module.scss';
 import { IApproval } from 'interfaces/approval';
+import TextLimit from 'components/TextLimit';
 
 interface IProps {
   type: string;
@@ -90,7 +91,7 @@ const ListItem = (props: IProps) => {
                 />
               )
             }
-            { approval.toggleName }
+            <TextLimit text={approval.toggleName} maxLength={24} showPopup={true} />
           </div>
         </div>
       </Table.Cell>
@@ -148,7 +149,7 @@ const ListItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['list-item-project']}>
-          {approval.projectName}
+          <TextLimit text={approval.projectName} maxLength={24} showPopup={true} />
         </div>
       </Table.Cell>
       <Table.Cell>
