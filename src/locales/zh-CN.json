@@ -440,7 +440,6 @@
   
   "guide.creat.toggle.step1.title": "客户端SDK",
   "guide.creat.toggle.step1.sdk1": "如果该开关后续会用到客户端SDK，请选择“使用”",
-  "guide.creat.toggle.step1.sdk2": "选择“未使用”客户端SDK，该开关连接SDK将不会展示客户端SDK",
   "guide.creat.toggle.step2.title": "返回类型",
   "guide.creat.toggle.step2.type1": "“返回类型”决定了该开关对应的代码中能读到的开关返回值类型",
   "guide.creat.toggle.step2.type2": "一旦创建，不可更改",
