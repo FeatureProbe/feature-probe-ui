@@ -59,7 +59,7 @@ const ToggleItem = (props: IProps) => {
     getToggleInfo<IToggleInfo>(projectKey, environmentKey, toggleKey).then(res => {
       const { data, success } = res;
       if (success && data) {
-        const { name, key, returnType, disabledServe, desc, tags, clientAvailability } = data;
+        const { name, key, returnType, disabledServe, desc, tags, clientAvailability, permanent } = data;
         setDrawerVisible(true);
         setIsAdd(false);
         saveVariations(data.variations || []);
@@ -72,6 +72,7 @@ const ToggleItem = (props: IProps) => {
           desc,
           tags,
           clientAvailability,
+          permanent,
         });
 
         saveOriginToggleInfo({
@@ -82,6 +83,7 @@ const ToggleItem = (props: IProps) => {
           desc,
           tags,
           clientAvailability,
+          permanent,
         });
       }
     });
@@ -153,6 +155,24 @@ const ToggleItem = (props: IProps) => {
               </div>
             </CopyToClipboardPopup>
           </div>
+          {
+            toggle.useDays && !isArchived && (
+              <div className={styles['toggle-permanent-bg']}>
+                <Popup
+                  inverted
+                  className={styles.popup}
+                  trigger={
+                    <span>
+                      <Icon type='timeout' />
+                    </span>
+                  }
+                  content={intl.formatMessage({ id: 'toggles.permanent.tips' }, { useDays: toggle.useDays })}
+                  position='top center'
+                  wide={true}
+                />
+              </div>
+            )
+          }
         </div>
         {
           toggle.desc && (

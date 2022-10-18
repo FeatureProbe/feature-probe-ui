@@ -38,6 +38,7 @@ const ProjectSiderbar = (props: IProps) => {
   );
 
   const envCls = classNames(
+    'joyride-environment',
     styles.environment, 
     {
       [styles['environment-close']]: isPutAway

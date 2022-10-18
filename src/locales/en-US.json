@@ -193,6 +193,7 @@
   "toggles.filter.evaluated.not.last.seven.days": "Before the last 7 days",
   "toggles.filter.evaluated.never": "Never",
   "toggles.filter.status": "Status",
+  "toggles.filter.permanent.status": "Permanent",
   "toggles.filter.search.placeholder": "Search for name, key or description",
   "toggles.table.brief": "Brief",
   "toggles.table.publishing.status": "Publishing Status",
@@ -232,6 +233,9 @@
   "toggles.restore.content": "The toggle will be restored in all environments.",
   "toggles.restore.success": "Restore toggle successfully",
   "toggles.restore.error": "Error restoring toggle",
+  "toggles.permanent.type": "Is this a permanent toggle?",
+  "toggles.permanent.type.tips": "FeatureProbe cares a lot about code quality, and technical debt builds up over time. The non-\"permanent\" toggle cycle is is 30 days, and we will prompt you to clean it up in time. If you want to keep it in your code as a long-term toggle, you can mark it as a \"permanent\" toggle and we won't prompt you to clean it up.",
+  "toggles.permanent.tips": "This toggle is temporary and has been used for {useDays} days. It is recommended to clean it in time!",
 
   "toggles.settings.tips": "Set approval strategy for environments. The strategy will affect all toggle publishing in this environment.",
   "toggles.settings.approval.reviewers": "Reviewers",
@@ -390,6 +394,9 @@
   "getstarted.js.second.step.or": "Or via ",
   "getstarted.js.third.step.title": "Step 3: Use the instance to get your setting value",
   "getstarted.js.third.step.name.one": "You can use SDK to check which value this user will receive for a given feature toggle",
+  "getstarted.miniprogram.first.step.title": "Step 1: Install the Mini Program SDK",
+  "getstarted.miniprogram.second.step.title": "Step 2: Initialize SDK",
+  "getstarted.miniprogram.third.step.title": "Step 3: Use the instance to get your setting value",
   "getstarted.miniprogram.third.step.name.one": "You can get variation value from globalData object, SDK will update globalData.toggles object automatically",
   "getstarted.miniprogram.third.step.name.second": "You can also use the SDK API to check which value this user will receive for a given feature toggle",
 
@@ -423,7 +430,7 @@
   "approvals.reviewed.by": "Reviewed by",
   "approvals.skipped.by": "Skipped by",
   
-  "guide.global.step1.title": "project",
+  "guide.global.step1.title": "Project",
   "guide.global.step1.project": "Manage the [project] and the [environments] information of the project",
   "guide.global.step1.env": "Quickly copy the [environment key] and associate it with the code environment variable",
   "guide.global.step1.enter": "Switch the entry for viewing the toggles of different projects",
@@ -431,17 +438,21 @@
   "guide.global.step2.env": "Click to switch the environment and view the toggles information in different environments",
   
   "guide.creat.toggle.step1.title": "Client SDK",
-  "guide.creat.toggle.step1.sdk1": "If the client SDK will come later, please select [Yes]",
-  "guide.creat.toggle.step1.sdk2": "If [no] is selected for the client SDK, the client SDK will not be displayed when connecting the SDK later",
+  "guide.creat.toggle.step1.sdk1": "If this toggle will later use the client SDK, please select [Yes]",
+  "guide.creat.toggle.step1.sdk2": "If [no] is selected for the client SDK, this toggle will not display the client SDK when connecting to the SDK",
   "guide.creat.toggle.step2.title": "Return Type",
-  "guide.creat.toggle.step2.type1": "[Return Type] determines the type of toggle return value that can be read in the code",
+  "guide.creat.toggle.step2.type1": "[Return Type] determines the type of toggle return value that can be read in the code corresponding to the toggle",
   "guide.creat.toggle.step2.type2": "After the toggle is created, it cannot be changed",
   "guide.creat.toggle.step3.title": "Disabled toggle return value",
   "guide.creat.toggle.step3.type": "[Disabled toggle return value] is the return value when the toggle is disabled",
   
   "guide.toggle.targeting.step1.title": "Click to switch toggle status",
-  "guide.toggle.targeting.step1.off": "Disabled status, the return value is [Disabled toggle return value]", 
+  "guide.toggle.targeting.step1.off": "Disabled status, the return value depends on the [Disabled toggle return value]", 
   "guide.toggle.targeting.step1.on": "Enabled status, the return value depends on the [Rules] and [Default Rule] below", 
   "guide.toggle.targeting.step2.title": "Set the default return value for 【Unspecified Crowd】",
-  "guide.toggle.targeting.step2.default": "If all the above [rules] of a user fail to hit, the [default rule] will be returned"
+  "guide.toggle.targeting.step2.default": "If all the above [rules] of a user fail to hit, the [default rule] will be returned",
+
+  "guide.next": "Next",
+  "guide.last": "Last",
+  "guide.done": "Done"
 }

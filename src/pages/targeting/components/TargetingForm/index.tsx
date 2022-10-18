@@ -10,6 +10,7 @@ import { html } from 'diff2html/lib/diff2html';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
+import Joyride, { CallBackProps, EVENTS, ACTIONS, Step } from 'react-joyride';
 import Rules from '../Rules';
 import DefaultRule from '../DefaultRule';
 import DisabledServe from '../DisabledServe';
@@ -32,11 +33,14 @@ import {
   segmentContainer
 } from '../../provider';
 import { VariationColors } from 'constants/colors';
-import { IApprovalInfo, ICondition, IOption, IRule, ITarget, ITargeting, IToggleInfo, IVariation } from 'interfaces/targeting';
+import { IApprovalInfo, ICondition, IDictionary, IOption, IRule, ITarget, ITargeting, IToggleInfo, IVariation } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import { ISegmentList } from 'interfaces/segment';
-import 'diff2html/bundles/css/diff2html.min.css';
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
+import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
+import { getFromDictionary, saveDictionary } from 'services/dictionary';
+import { USER_GUIDE_LAYOUT, USER_GUIDE_TARGETING } from 'constants/dictionary_keys';
+import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -50,6 +54,50 @@ interface IProps {
   initTargeting(): void;
   saveToggleDisable(status: boolean): void;
 }
+
+const STEPS: Step[] = [
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.toggle.targeting.step1.title' />
+        </div>
+        <ul className={styles['joyride-item']} >
+          <li>
+            <FormattedMessage id='guide.toggle.targeting.step1.off' />
+          </li>
+          <li>
+            <FormattedMessage id='guide.toggle.targeting.step1.on' />
+          </li>
+        </ul>
+        <div className={styles['joyride-pagination']}>1/2</div>
+      </div>
+    ),
+    spotlightPadding: 20,
+    placement: 'right',
+    target: '.joyride-toggle-status',
+    ...commonConfig
+  },
+  {
+    content: (
+      <div className={styles['joyride-content']}>
+        <div className={styles['joyride-title']}>
+          <FormattedMessage id='guide.toggle.targeting.step2.title' />
+        </div>
+        <ul className={styles['joyride-item']} >
+          <li>
+            <FormattedMessage id='guide.toggle.targeting.step2.default' />
+          </li>
+        </ul>
+        <div className={styles['joyride-pagination']}>2/2</div>
+      </div>
+    ),
+    spotlightPadding: 4,
+    placement: 'right',
+    target: '.joyride-default-rule',
+    ...commonConfig
+  },
+];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Targeting = forwardRef((props: IProps, ref: any) => {
@@ -66,6 +114,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const [ comment, setComment ] = useState<string>('');
   const [ isLoading, setLoading ] = useState<boolean>(false);
   const [ options, saveOptions ] = useState<IOption[]>();
+  const [ run, saveRun ] = useState<boolean>(false);
+  const [ stepIndex, saveStepIndex ] = useState<number>(0);
   const history = useHistory();
   const intl = useIntl();
   const formRef = useRef();
@@ -89,6 +139,31 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const {
     saveSegmentList,
   } = segmentContainer.useContainer();
+
+  useEffect(() => {
+    Promise.all([
+      getFromDictionary<IDictionary>(USER_GUIDE_LAYOUT), 
+      getFromDictionary<IDictionary>(USER_GUIDE_TARGETING), 
+    ]).then(res => {
+      // After finishing layout user guide, then show targeting user guide
+      if (res[0].success && res[0].data && parseInt(JSON.parse(res[0].data.value)) === 2) {
+        const { success, data } = res[1];
+        if (success && data) {
+          const savedData = JSON.parse(data.value);
+          if (parseInt(savedData) !== STEPS.length) {
+            setTimeout(() => {
+              saveRun(true);
+            }, 0);
+            saveStepIndex(parseInt(savedData));
+          }
+        } else {
+          setTimeout(() => {
+            saveRun(true);
+          }, 0);
+        }
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (targeting) {
@@ -309,35 +384,47 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     history.push(`/${projectKey}/${environmentKey}/settings`);
   }, [history, projectKey, environmentKey]);
 
+  const handleJoyrideCallback = useCallback((data: CallBackProps) => {
+    const { action, index, type } = data;
+
+    if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
+      const nextStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+      saveStepIndex(nextStepIndex);
+      saveDictionary(USER_GUIDE_TARGETING, nextStepIndex);
+    }
+  }, []);
+
 	return (
     <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' ref={formRef}>
-      <div className={styles.status}>
-        <SectionTitle title={intl.formatMessage({id: 'targeting.status.text'})} />
-        <div className={styles['toggle-status']}>
-          <Radio
-            size='mini'
-            toggle 
-            checked={!toggleDisabled} 
-            onChange={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(!data.checked || false)} 
-            className={styles['info-toggle-status']} 
-            disabled={disabled}
-          />
+      <div className={`${styles.status}`}>
+        <div className={`${styles['joyride-status']} joyride-toggle-status`}>
+          <SectionTitle title={intl.formatMessage({id: 'targeting.status.text'})} />
+          <div className={styles['toggle-status']}>
+            <Radio
+              size='mini'
+              toggle 
+              checked={!toggleDisabled} 
+              onChange={(e: SyntheticEvent, data: CheckboxProps) => saveToggleDisable(!data.checked || false)} 
+              className={styles['info-toggle-status']} 
+              disabled={disabled}
+            />
+          </div>
+          {
+            toggleDisabled ? (
+              <div className={styles['status-text']}>
+                <span><FormattedMessage id='targeting.status.disabled.text' /></span>
+                <span className={styles['name-color']} style={{background: VariationColors[Number(disabledServe.select) % 20]}}></span>
+                <span className={styles['name-text']}>
+                  {disabledText}
+                </span>
+              </div>
+            ) : (
+              <div className={styles['status-text']}>
+                <FormattedMessage id='common.enabled.text' />
+              </div>
+            )
+          }
         </div>
-        {
-          toggleDisabled ? (
-            <div className={styles['status-text']}>
-              <FormattedMessage id='targeting.status.disabled.text' />
-              <span className={styles['name-color']} style={{background: VariationColors[Number(disabledServe.select) % 20]}}></span>
-              <span className={styles['name-text']}>
-                 {disabledText}
-              </span>
-            </div>
-          ) : (
-            <div className={styles['status-text']}>
-              <FormattedMessage id='common.enabled.text' />
-            </div>
-          )
-        }
       </div>
 
       <div className={styles.variations}>
@@ -362,7 +449,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
           hooksFormContainer={hooksFormContainer}
           segmentContainer={segmentContainer}
         />
-        <DefaultRule 
+        <DefaultRule
           disabled={disabled}
         />
         <DisabledServe 
@@ -468,6 +555,26 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       <Prompt
         when={!publishDisabled}
         message={intl.formatMessage({id: 'targeting.page.leave.text'})}
+      />
+      <Joyride
+        run={run}
+        callback={handleJoyrideCallback}
+        stepIndex={stepIndex}
+        continuous
+        hideCloseButton
+        scrollToFirstStep
+        showProgress={false}
+        showSkipButton
+        scrollOffset={100}
+        disableCloseOnEsc={true}
+        steps={STEPS}
+        locale={{
+          'back': intl.formatMessage({id: 'guide.last'}),
+          'next': intl.formatMessage({id: 'guide.next'}),
+          'last': intl.formatMessage({id: 'guide.done'}),
+        }}
+        floaterProps={{...floaterStyle}}
+        styles={{...tourStyle}}
       />
     </Form>
 	);
