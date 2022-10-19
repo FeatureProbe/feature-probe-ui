@@ -171,10 +171,10 @@
 }
 
 .lists {
-  margin-top: 16px;
-  padding: 0 24px;
   position: relative;
-  flex: 1;
+  margin: 16px 24px 0;
+  padding: 0 1px;
+  flex: 1 1;
   overflow-x: auto;
 }
 

@@ -2,9 +2,11 @@
   opacity: 0.8;
 }
 
-.limit-str-container {
+.limit-str-container-w {
   display: inline-block;
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
+  vertical-align: bottom;
+  line-height: unset !important;
 }

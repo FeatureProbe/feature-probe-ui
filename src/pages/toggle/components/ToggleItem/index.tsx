@@ -13,6 +13,7 @@ import { IToggle } from 'interfaces/toggle';
 import { IToggleInfo } from 'interfaces/targeting';
 import { variationContainer, toggleInfoContainer } from '../../provider';
 import styles from './index.module.scss';
+import TextLimit from 'components/TextLimit';
 
 interface ILocationParams {
   projectKey: string;
@@ -146,7 +147,7 @@ const ToggleItem = (props: IProps) => {
             )
           }
           <div className={styles['toggle-info-name']}>
-            {toggle.name}
+            <TextLimit text={toggle.name} maxWidth={300} />
           </div>
           <div className={styles['toggle-info-key']}>
             <CopyToClipboardPopup text={toggle.key}>

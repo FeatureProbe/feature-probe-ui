@@ -29,6 +29,7 @@ const EnvironmentModal = (props: IProps) => {
   const { open, isAdd, projectKey, handleCancel, handleConfirm } = props;
   const [isKeyEdit, saveKeyEdit] = useState<boolean>(false);
   const intl = useIntl();
+  const [ submitLoading, setSubmitLoading ] = useState<boolean>(false);
 
   const {
     formState: { errors },
@@ -122,6 +123,7 @@ const EnvironmentModal = (props: IProps) => {
 
   const onSubmit = useCallback(async () => {
     let res;
+    setSubmitLoading(true);
 
     const params = replaceSpace(cloneDeep(environmentInfo));
     if (params.name === '') {
@@ -136,6 +138,7 @@ const EnvironmentModal = (props: IProps) => {
     } else {
       res = await editEnvironment(projectKey, environmentInfo.key, params);
     }
+    setSubmitLoading(false);
 
     if (res.success) {
       message.success(
@@ -224,7 +227,7 @@ const EnvironmentModal = (props: IProps) => {
               <Button size='mini' className={styles['btn']} type='reset' basic onClick={handleCancel}>
                 <FormattedMessage id='common.cancel.text' />
               </Button>
-              <Button size='mini' type='submit' primary disabled={errors.name || errors.key}>
+              <Button loading={submitLoading} size='mini' type='submit' primary disabled={errors.name || errors.key || submitLoading}>
                 <FormattedMessage id='common.confirm.text' />
               </Button>
             </div>

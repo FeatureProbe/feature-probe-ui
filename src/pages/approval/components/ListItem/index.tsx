@@ -25,7 +25,7 @@ const ListItem = (props: IProps) => {
     <Table.Row className={styles['list-item']}>
       <Table.Cell>
         <div className={styles['list-item-title']}>
-        <TextLimit text={approval.title} maxWidth={170} showPopup popupProps={{ position: 'top left' }} />
+        <TextLimit text={approval.title} maxWidth={170} popupProps={{ position: 'top left' }} />
           
           {
             approval.canceled && approval.status === 'PASS' && (
@@ -77,7 +77,7 @@ const ListItem = (props: IProps) => {
                 />
               )
             }
-            <TextLimit text={approval.toggleName} maxWidth={190} showPopup={true} />
+            <TextLimit text={approval.toggleName} maxWidth={190} />
           </div>
         </div>
       </Table.Cell>
@@ -135,7 +135,7 @@ const ListItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['list-item-project']}>
-          <TextLimit text={approval.projectName} maxWidth={190} showPopup={true} />
+          <TextLimit text={approval.projectName} maxWidth={190} />
         </div>
       </Table.Cell>
       <Table.Cell>

@@ -401,7 +401,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       saveDictionary(USER_GUIDE_TARGETING, nextStepIndex);
     }
   }, []);
-
+  
 	return (
     <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off' ref={formRef}>
       <div className={`${styles.status}`}>

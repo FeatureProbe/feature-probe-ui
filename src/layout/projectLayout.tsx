@@ -221,7 +221,7 @@ const ProjectLayout = (props: IProps) => {
           backgroundColor={EnvironmentColors[envIndex]}
         />
       </SideBar>
-      <div className={styles.content}>
+      <div className={styles['project-content']}>
         {
           tipVisible && (localStorage.getItem('isDemo') === 'true') && (
             <div className={styles['platform-tips']}>
@@ -242,11 +242,11 @@ const ProjectLayout = (props: IProps) => {
             match.path === TARGETING_PATH && (
               <>
                 <Breadcrumb.Section link onClick={gotoToggle}>
-                  <TextLimit text={projectInfo.name} maxWidth={190} showPopup={true} />
+                  <TextLimit text={projectInfo.name} maxWidth={190} />
                 </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
-                  <TextLimit text={toggleName} maxWidth={190} showPopup={true} />
+                  <TextLimit text={toggleName} maxWidth={190} />
                 </Breadcrumb.Section>
               </>
             )
@@ -255,11 +255,11 @@ const ProjectLayout = (props: IProps) => {
             match.path === GET_STARTED_PATH && (
               <>
                 <Breadcrumb.Section link onClick={gotoToggle}>
-                  <TextLimit text={projectInfo.name} maxWidth={190} showPopup={true} />
+                  <TextLimit text={projectInfo.name} maxWidth={190} />
                 </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section link onClick={gotoTargeting}>
-                  <TextLimit text={toggleName} maxWidth={190} showPopup={true} />
+                  <TextLimit text={toggleName} maxWidth={190} />
                 </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
@@ -271,7 +271,7 @@ const ProjectLayout = (props: IProps) => {
           {
             match.path === TOGGLE_PATH && (
               <Breadcrumb.Section active>
-                <TextLimit text={projectInfo.name} maxWidth={190} showPopup={true} />
+                <TextLimit text={projectInfo.name} maxWidth={190} />
               </Breadcrumb.Section>
             )
           }
