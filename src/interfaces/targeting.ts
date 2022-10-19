@@ -49,7 +49,6 @@ export interface IToggleInfo {
   disabledServe: number;
   modifiedBy: string;
   modifiedTime: string;
-  publishTime: string;
   returnType: string;
   clientAvailability: boolean;
   variations: IVariation[];
