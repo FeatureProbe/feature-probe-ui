@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useRef } from 'react';
 import debounce from 'lodash/debounce';
 import { Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
@@ -16,13 +16,13 @@ const CopyToClipboardPopup = (props: IProps) => {
   const [ isCopySuccess, setSuccess ] = useState<boolean>(false);
   const [ open, setOpen ] = useState<boolean>(false);
 
-  let timer: NodeJS.Timeout;
+  const timer = useRef<NodeJS.Timeout>();
 
   const handleCopy = () => {
-    clearTimeout(timer);
+    clearTimeout(timer.current);
     setOpen(true);
     setSuccess(true);
-    timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       setSuccess(false);
       setOpen(false);
     }, 2000);
@@ -38,7 +38,7 @@ const CopyToClipboardPopup = (props: IProps) => {
 
   const handelUnmount = () => {
     setSuccess(false);
-    clearTimeout(timer);
+    clearTimeout(timer.current);
   };
 
   return (

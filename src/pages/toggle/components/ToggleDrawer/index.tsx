@@ -222,7 +222,7 @@ const Drawer = (props: IParams) => {
         permanent: false,
       });
     }
-  }, [visible, isAdd, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo]);
+  }, [visible, isAdd, clearErrors, getTagList, saveToggleInfo, saveOriginToggleInfo, getUserGuide]);
 
   useEffect(() => {
     setValue('name', toggleInfo.name);

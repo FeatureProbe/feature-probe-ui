@@ -1,8 +1,8 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
-import { Breadcrumb, Popup } from  'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Joyride, { CallBackProps, Step, EVENTS, ACTIONS } from 'react-joyride';
+import { Breadcrumb, Popup } from  'semantic-ui-react';
 import SideBar from './sidebar';
 import ProjectSiderbar from './projectSiderbar';
 import message from 'components/MessageBox';
@@ -16,6 +16,7 @@ import { IToggleInfo } from 'interfaces/targeting';
 import { EnvironmentColors } from 'constants/colors';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import { DEMO_TIP_SHOW, USER_GUIDE_LAYOUT } from 'constants/dictionary_keys';
+import { stringLimit } from 'utils/tools';
 
 import { 
   TOGGLE_PATH, 
@@ -28,7 +29,6 @@ import {
 } from 'router/routes';
 
 import styles from './layout.module.scss';
-import { stringLimit } from 'utils/tools';
 
 interface IProps {
   children: ReactElement
