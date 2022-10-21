@@ -42,7 +42,7 @@
   height: 4px;
   margin: 0 20px;
   background: #556ee6;
-  min-width: 1080px;
+  min-width: 1160px;
 }
 
 .platform-tips {
@@ -97,6 +97,6 @@
 }
 
 .project-content {
-  min-width: 1200px;
   flex-grow: 1;
+  overflow: auto !important;
 }

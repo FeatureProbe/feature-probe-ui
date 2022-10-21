@@ -209,7 +209,6 @@ const Targeting = () => {
   }, [currentVersion, projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
-    console.log('我重载了', currentVersion);
     if (currentVersion) {
       setHistoryOpen(true);
       getVersionsByVersion();
