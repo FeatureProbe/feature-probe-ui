@@ -406,7 +406,7 @@ const Drawer = (props: IParams) => {
           </div>
           <Button loading={submitLoading} size='mini' primary type='submit' disabled={Object.keys(errors).length !== 0 || submitLoading}>
             {
-              isAdd ? <FormattedMessage id='common.create.text' /> : <FormattedMessage id='common.save.text' />
+              isAdd ? <FormattedMessage id='toggles.create.text' /> : <FormattedMessage id='common.save.text' />
             }
           </Button>
           <div className={styles.divider}></div>
