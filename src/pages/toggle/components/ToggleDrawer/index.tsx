@@ -60,7 +60,6 @@ const STEPS: Step[] = [
         </div>
         <ul className={styles['joyride-item']} >
           <li><FormattedMessage id='guide.creat.toggle.step1.sdk1' /></li>
-          <li><FormattedMessage id='guide.creat.toggle.step1.sdk2' /></li>
         </ul>
         <div className={styles['joyride-pagination']}>1/3</div>
       </div>
