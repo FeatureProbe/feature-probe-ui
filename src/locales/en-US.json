@@ -440,7 +440,6 @@
   
   "guide.creat.toggle.step1.title": "Client SDK",
   "guide.creat.toggle.step1.sdk1": "If this toggle will later use the client SDK, please select [Yes]",
-  "guide.creat.toggle.step1.sdk2": "If [no] is selected for the client SDK, this toggle will not display the client SDK when connecting to the SDK",
   "guide.creat.toggle.step2.title": "Return Type",
   "guide.creat.toggle.step2.type1": "[Return Type] determines the type of toggle return value that can be read in the code corresponding to the toggle",
   "guide.creat.toggle.step2.type2": "After the toggle is created, it cannot be changed",
