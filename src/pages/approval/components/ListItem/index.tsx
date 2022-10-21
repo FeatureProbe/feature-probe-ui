@@ -4,9 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import { Table, Popup } from 'semantic-ui-react';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
-import styles from './index.module.scss';
 import { IApproval } from 'interfaces/approval';
 import TextLimit from 'components/TextLimit';
+import styles from './index.module.scss';
 
 interface IProps {
   type: string;

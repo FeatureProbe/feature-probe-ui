@@ -7,6 +7,7 @@ import SideBar from './sidebar';
 import ProjectSiderbar from './projectSiderbar';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
+import TextLimit from 'components/TextLimit';
 import { getProjectInfo } from 'services/project';
 import { getToggleInfo } from 'services/toggle';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
@@ -28,7 +29,6 @@ import {
 } from 'router/routes';
 
 import styles from './layout.module.scss';
-import TextLimit from 'components/TextLimit';
 
 interface IProps {
   children: ReactElement

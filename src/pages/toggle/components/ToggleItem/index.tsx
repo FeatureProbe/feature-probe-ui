@@ -7,13 +7,13 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import message from 'components/MessageBox';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
+import TextLimit from 'components/TextLimit';
 import TagsList from 'components/TagsList';
 import { editToggle, getToggleInfo } from 'services/toggle';
 import { IToggle } from 'interfaces/toggle';
 import { IToggleInfo } from 'interfaces/targeting';
 import { variationContainer, toggleInfoContainer } from '../../provider';
 import styles from './index.module.scss';
-import TextLimit from 'components/TextLimit';
 
 interface ILocationParams {
   projectKey: string;

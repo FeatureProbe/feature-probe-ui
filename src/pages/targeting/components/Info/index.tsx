@@ -13,13 +13,14 @@ import Button from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import message from 'components/MessageBox';
+import TextLimit from 'components/TextLimit';
 import { HeaderContainer } from 'layout/hooks';
 import { updateApprovalStatus, publishTargetingDraft, cancelTargetingDraft } from 'services/approval';
 import { getTargeting, getTargetingDiff } from 'services/toggle';
 import { IToggleInfo, IModifyInfo, IApprovalInfo, ITargetingDiff, ITargeting, IContent } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
-import TextLimit from 'components/TextLimit';
+
 
 interface IProps {
   toggleInfo?: IToggleInfo;
