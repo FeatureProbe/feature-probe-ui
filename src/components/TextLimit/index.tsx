@@ -15,9 +15,9 @@ interface IProps {
 const TextLimit: React.FC<IProps> = (props) => {
   const { text, maxLength, maxWidth, hidePopup, popupRender, popupProps } = props;
   const ref = useRef<HTMLDivElement | null>(null);
-  const [isLong, setIsLoing] = useState<boolean>(false);
+  const [isLong, setIsLong] = useState<boolean>(false);
 
-  const longJudge: () => boolean = useCallback(() => {
+  const judgeLength: () => boolean = useCallback(() => {
     if(maxLength) {
       return text.length > maxLength;
     } else if(maxWidth) {
@@ -35,10 +35,10 @@ const TextLimit: React.FC<IProps> = (props) => {
     if(ref.current) {
       if(ref.current.clientWidth === 0 && ref.current.clientHeight === 0) {
         setTimeout(() => {
-          setIsLoing(longJudge());
+          setIsLong(judgeLength());
         }, 500);
       } else {
-        setIsLoing(longJudge());
+        setIsLong(judgeLength());
       }
     }
   }, [ref.current]);
