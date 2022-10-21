@@ -622,9 +622,6 @@ const Toggle = () => {
                             <Table.HeaderCell className={styles['column-evaluated']}>
                               <FormattedMessage id='toggles.table.evaluation' />
                             </Table.HeaderCell>
-                            <Table.HeaderCell className={styles['column-modify']}>
-                              <FormattedMessage id='toggles.table.lastmodified' />
-                            </Table.HeaderCell>
                             <Table.HeaderCell className={styles['column-operation']}></Table.HeaderCell>
                           </Table.Row>
                         </Table.Header>
@@ -645,7 +642,7 @@ const Toggle = () => {
                             <>
                               {
                                 toggleList.length !== 0 && (
-                                  <Table.Body>
+                                  <Table.Body className={styles['table-body']}>
                                     {
                                       toggleList?.map((toggle: IToggle) => {
                                         return (

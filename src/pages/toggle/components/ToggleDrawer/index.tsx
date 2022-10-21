@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Joyride, { CallBackProps, EVENTS, Step, ACTIONS } from 'react-joyride';
+import { FieldErrors } from 'react-hook-form';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
@@ -37,7 +38,6 @@ import { useRequestTimeCheck } from 'hooks';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import styles from './index.module.scss';
 import { USER_GUIDE_TOGGLE } from 'constants/dictionary_keys';
-
 interface IParams {
   isAdd: boolean;
   visible: boolean;
@@ -132,6 +132,7 @@ const Drawer = (props: IParams) => {
   const [ run, saveRun ] = useState<boolean>(false);
   const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
   const [ stepIndex, saveStepIndex ] = useState<number>(0);
+  const [ submitLoading, setSubmitLoading ] = useState<boolean>(false);
   const intl = useIntl();
 
   const { 
@@ -257,6 +258,7 @@ const Drawer = (props: IParams) => {
   }, [isAdd, toggleInfo.returnType, saveVariations]);
 
   const onSubmit = useCallback(async () => {
+    setSubmitLoading(true);
     let res;
     const params = replaceSpace(cloneDeep(toggleInfo));
     const clonevariations = cloneDeep(variations);
@@ -275,6 +277,7 @@ const Drawer = (props: IParams) => {
         ...params
       });
     }
+    setSubmitLoading(false);
 
     if (res.success) {
       message.success(
@@ -294,6 +297,14 @@ const Drawer = (props: IParams) => {
       );
     }
   }, [intl, isAdd, projectKey, refreshToggleList, setDrawerVisible, setError, toggleInfo, variations]);
+
+  const onError = (errors: FieldErrors) => {
+    let errorEle = document.querySelector(`[name=${Object.keys(errors)[0]}]`);
+    if(!errorEle) {
+      errorEle = document.querySelector(`#${Object.keys(errors)[0]}`);
+    }
+    errorEle?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   const handleAddTag = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
     const res = await addTag(projectKey, {
@@ -387,23 +398,14 @@ const Drawer = (props: IParams) => {
     <div className={`${styles['toggle-drawer']} ${visible && styles['toggle-drawer-inactive']}`}>
       <Form 
         autoComplete='off'
-        onSubmit={handleSubmit(onSubmit)} 
+        onSubmit={handleSubmit(onSubmit, onError)} 
         className={`${styles['toggle-drawer-form']} ${visible && styles['toggle-drawer-form-inactive']}`}
       >
         <div className={styles.title}>
           <div className={styles['title-left']}>
             { isAdd ? <FormattedMessage id='toggles.create.toggle' /> : <FormattedMessage id='toggles.edit.toggle' /> }
           </div>
-          <Button 
-            basic 
-            size='mini' 
-            type='reset' 
-            className={styles['btn-cancel']} 
-            onClick={() => {setDrawerVisible(false);}}
-          >
-            <FormattedMessage id='common.cancel.text' />
-          </Button>
-          <Button size='mini' primary type='submit' disabled={Object.keys(errors).length !== 0}>
+          <Button loading={submitLoading} size='mini' primary type='submit' disabled={Object.keys(errors).length !== 0 || submitLoading}>
             {
               isAdd ? <FormattedMessage id='common.create.text' /> : <FormattedMessage id='common.save.text' />
             }

@@ -131,6 +131,7 @@ const Targeting = () => {
           approvalComment,
           locked,
           lockedTime,
+          publishTime,
         } = data;
         saveTargeting(cloneDeep(content));
         saveToggleDisable(disabled || false);
@@ -151,6 +152,7 @@ const Targeting = () => {
           approvalComment,
           locked,
           lockedTime,
+          publishTime,
         });
         saveLatestVersion(version || 0);
         saveSelectedVersion(version || 0);
@@ -158,7 +160,7 @@ const Targeting = () => {
         message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
     });
-  }, [intl, projectKey, environmentKey, toggleKey]);
+  }, [projectKey, environmentKey, toggleKey]);
 
   // get specific history versions
   const getVersionsByVersion = useCallback(async () => {
@@ -204,9 +206,10 @@ const Targeting = () => {
     } else {
       message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
     }
-  }, [currentVersion, projectKey, environmentKey, toggleKey, intl]);
+  }, [currentVersion, projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
+    console.log('我重载了', currentVersion);
     if (currentVersion) {
       setHistoryOpen(true);
       getVersionsByVersion();
@@ -322,7 +325,7 @@ const Targeting = () => {
         <div className={styles.targeting}>
           {
             toggleInfo?.useDays && !toggleInfo.archived && (
-              <div className={styles.message}>
+              <div className={styles['permanent-message-box']}>
                 <div 
                   className={styles['permanent-warning-message']}
                 >

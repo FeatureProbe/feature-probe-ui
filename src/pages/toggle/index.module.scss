@@ -148,6 +148,7 @@
   right: 10px;
   color: #74788d;
   top: 8px;
+  -webkit-appearance: unset !important;
 }
 
 .dropdown-remove-icon {
@@ -170,10 +171,10 @@
 }
 
 .lists {
-  margin-top: 16px;
-  padding: 0 24px;
   position: relative;
-  flex: 1;
+  margin: 16px 24px 0;
+  padding: 0 1px;
+  flex: 1 1;
   overflow-x: auto;
 }
 
@@ -186,16 +187,24 @@
 }
 
 .table-header {
+  position: sticky;
+  top: 0;
   background: #f8f9fa;
   height: 42px;
   line-height: 42px;
   font-size: 13px;
+  z-index: 1;
 
   :global {
     th {
       padding-bottom: 0 !important
     }
   }
+}
+
+.table-body {
+  position: relative;
+  top: 1px;
 }
 
 .pagination {

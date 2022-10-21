@@ -199,7 +199,6 @@
   "toggles.table.publishing.status": "Publishing Status",
   "toggles.table.status": "Status",
   "toggles.table.evaluation": "Evaluation",
-  "toggles.table.lastmodified": "Template Modified",
   "toggles.total": "toggles in total",
   "toggles.list.error.text": "Error getting toggle list!",
   "toggles.create.toggle": "Create a toggle template",
