@@ -194,7 +194,7 @@
   "toggles.filter.evaluated.never": "Never",
   "toggles.filter.status": "Status",
   "toggles.filter.permanent.status": "Permanent",
-  "toggles.filter.search.placeholder": "Search for name, key or description",
+  "toggles.filter.search.placeholder": "Search for keyword",
   "toggles.table.brief": "Brief",
   "toggles.table.publishing.status": "Publishing Status",
   "toggles.table.status": "Status",
