@@ -363,7 +363,7 @@ const Info = () => {
 
             <div id='footer' className={styles.footer}>
               <EventTracker category='segment' action='publish-segment'>
-                <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
+                <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0 || isLoading}>
                   {
                     isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
                   }

@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { Popup, PopupProps } from 'semantic-ui-react';
 import { stringLimit } from '../../utils/tools';
 import styles from './index.module.scss';

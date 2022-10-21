@@ -202,6 +202,11 @@
   }
 }
 
+.table-body {
+  position: relative;
+  top: 1px;
+}
+
 .pagination {
   margin: 16px 0;
   text-align: right;

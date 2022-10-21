@@ -642,7 +642,7 @@ const Toggle = () => {
                             <>
                               {
                                 toggleList.length !== 0 && (
-                                  <Table.Body>
+                                  <Table.Body className={styles['table-body']}>
                                     {
                                       toggleList?.map((toggle: IToggle) => {
                                         return (

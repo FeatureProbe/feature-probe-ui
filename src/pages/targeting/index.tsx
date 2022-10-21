@@ -160,7 +160,7 @@ const Targeting = () => {
         message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
     });
-  }, [intl, projectKey, environmentKey, toggleKey]);
+  }, [projectKey, environmentKey, toggleKey]);
 
   // get specific history versions
   const getVersionsByVersion = useCallback(async () => {
@@ -206,9 +206,10 @@ const Targeting = () => {
     } else {
       message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
     }
-  }, [currentVersion, projectKey, environmentKey, toggleKey, intl]);
+  }, [currentVersion, projectKey, environmentKey, toggleKey]);
 
   useEffect(() => {
+    console.log('我重载了', currentVersion);
     if (currentVersion) {
       setHistoryOpen(true);
       getVersionsByVersion();
