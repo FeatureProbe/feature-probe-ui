@@ -215,7 +215,7 @@
   "toggles.variations.tips": "Variations decide the toggle's return value in your code.",
   "toggles.disabled.return.type.tips": "Define the return value when toggle is disabled.",
   "toggles.disabled.return.type.errortext": "Please select disabled serve",
-  "toggles.create.success": "Created toggle successfully",
+  "toggles.create.success": "Created toggle and published successfully",
   "toggles.create.error": "Error creating toggle",
   "toggles.edit.success": "Updated toggle successfully",
   "toggles.edit.error": "Error editing toggle.",

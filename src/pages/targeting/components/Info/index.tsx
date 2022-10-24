@@ -317,10 +317,12 @@ const Info = (props: IProps) => {
                 }
               </div>
               <div className={styles['info-title-right']}>
-                <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
-                  <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
-                  <FormattedMessage id='toggle.connect' />
-                </div>
+                {!toggleInfo?.archived && (
+                  <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
+                    <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
+                    <FormattedMessage id='toggle.connect' />
+                  </div>
+                ) }
                 <div>
 
                   {/* Button Show Changes */}
