@@ -20,14 +20,12 @@ const TextLimit: React.FC<IProps> = (props) => {
   const judgeLength: () => boolean = useCallback(() => {
     if(maxLength) {
       return text.length > maxLength;
-    } else if(maxWidth) {
+    } else {
       if(ref.current) {
         return ref.current.scrollWidth > ref.current.clientWidth;
       } else {
         return false;
       }
-    } else {
-      return false;
     }
   }, [ref.current]);
 
@@ -43,31 +41,27 @@ const TextLimit: React.FC<IProps> = (props) => {
     }
   }, [ref.current]);
 
-  if( !maxLength && !maxWidth ) {
-    return <span>{text}</span>;
-  } else {
-    return (
-      <Popup
-        inverted
-        disabled={!(!hidePopup && isLong)}
-        trigger={
-          <div 
-            className={`${maxWidth ? styles['limit-str-container-w'] : 'limit-str-container-n'}`}
-            ref={ref}
-            style={{
-              maxWidth: maxWidth + 'px' ?? 'unset',
-            }}
-          >
-            { stringLimit(text, maxLength ?? 0) }
-          </div>
-        }
-        content={popupRender ?? <span>{ text }</span>}
-        position="top center"
-        className={styles.popup}
-        {...popupProps}
-      />
-    );
-  }
+  return (
+    <Popup
+      inverted
+      disabled={!(!hidePopup && isLong)}
+      trigger={
+        <span 
+          className={`${maxLength ? styles['limit-str-container-n'] : styles['limit-str-container-w']}`}
+          ref={ref}
+          style={{
+            maxWidth: maxWidth ?? '100%',
+          }}
+        >
+          { stringLimit(text, maxLength ?? 0) }
+        </span>
+      }
+      content={popupRender ??  text }
+      className={styles.popup}
+      wide='very'
+      {...popupProps}
+    />
+  );
 };
 
 export default TextLimit;
