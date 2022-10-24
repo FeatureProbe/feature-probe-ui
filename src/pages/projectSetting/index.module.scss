@@ -2,10 +2,11 @@
 .setting {
   background-color: #ffffff;
   margin: 0 20px;
-  height: calc(100vh - 94px);
+  min-height: calc(100vh - 94px);
   display: flex;
   flex-direction: column;
   position: relative;
+  min-width: 1160px;
 }
 
 .content {

@@ -5,7 +5,7 @@ import {
   TextAreaProps,
 } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import debounce from 'lodash/debounce';
 import message from 'components/MessageBox';
@@ -33,6 +33,7 @@ interface IProps {
 const ProjectDrawer = (props: IProps) => {
   const { isAdd, visible, projectKey, setDrawerVisible, refreshProjectsList } = props;
   const [ isKeyEdit, saveKeyEdit ] = useState<boolean>(false);
+  const [ submitLoading, setSubmitLoading ] = useState<boolean>(false);
   const intl = useIntl();
   const {
     formState: { errors },
@@ -140,6 +141,7 @@ const ProjectDrawer = (props: IProps) => {
 
   const onSubmit = useCallback(async () => {
     let res;
+    setSubmitLoading(true);
     const params = replaceSpace(cloneDeep(projectInfo));
     if (params.name === '') {
       setError('name', {
@@ -153,6 +155,7 @@ const ProjectDrawer = (props: IProps) => {
     } else {
       res = await editProject(projectKey, params);
     }
+    setSubmitLoading(false);
 
     if (res.success) {
       message.success(isAdd 
@@ -186,10 +189,7 @@ const ProjectDrawer = (props: IProps) => {
           <div className={styles['title-left']}>
             { isAdd ? intl.formatMessage({id: 'projects.create.project'}) : intl.formatMessage({id: 'projects.edit.project'}) }
           </div>
-          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false);}}>
-            <FormattedMessage id='common.cancel.text' />
-          </Button>
-          <Button size='mini' primary type='submit' disabled={errors.name || errors.key}>
+          <Button loading={submitLoading} size='mini' primary type='submit' disabled={errors.name || errors.key || submitLoading}>
             {
               isAdd ? intl.formatMessage({id: 'common.create.text'}) : intl.formatMessage({id: 'common.save.text'})
             }

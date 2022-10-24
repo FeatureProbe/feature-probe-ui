@@ -194,16 +194,16 @@
   "toggles.filter.evaluated.never": "Never",
   "toggles.filter.status": "Status",
   "toggles.filter.permanent.status": "Permanent",
-  "toggles.filter.search.placeholder": "Search for name, key or description",
+  "toggles.filter.search.placeholder": "Search for keyword",
   "toggles.table.brief": "Brief",
   "toggles.table.publishing.status": "Publishing Status",
   "toggles.table.status": "Status",
   "toggles.table.evaluation": "Evaluation",
-  "toggles.table.lastmodified": "Template Modified",
   "toggles.total": "toggles in total",
   "toggles.list.error.text": "Error getting toggle list!",
-  "toggles.create.toggle": "Create a toggle template",
-  "toggles.edit.toggle": "Edit toggle template",
+  "toggles.create.toggle": "Create a toggle",
+  "toggles.create.text": "Create and publish",
+  "toggles.edit.toggle": "Edit toggle",
   "toggles.key.tips": "Use this key in your code. Cannot be changed after creation.",
   "toggles.sdk.type": "Use client-side SDK?",
   "toggles.sdk.yes": "yes",
@@ -453,6 +453,6 @@
   "guide.toggle.targeting.step2.default": "If all the above [rules] of a user fail to hit, the [default rule] will be returned",
 
   "guide.next": "Next",
-  "guide.last": "Last",
+  "guide.last": "Previous",
   "guide.done": "Done"
 }

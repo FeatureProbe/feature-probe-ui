@@ -1,7 +1,7 @@
 .targeting {
   position: relative;
-  padding: 0 20px 20px;
-  min-width: 1120px;
+  padding: 0 20px;
+  min-width: 1200px;
 }
 
 .menus {
@@ -110,7 +110,7 @@
   z-index: 1;
 }
 
-.message {
+.permanent-message-box {
   height: 0;
   display: flex;
   justify-content: center;
