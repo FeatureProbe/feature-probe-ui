@@ -35,6 +35,7 @@ const ProjectSetting = () => {
   const { projectKey } = useParams<IParams>();
   const { userInfo } = HeaderContainer.useContainer();
   const { trigger, formState: { errors }, register, clearErrors } = useForm();
+  const [ submitLoading, setSubmitLoading ] = useState<boolean>(false);
 
   const init = useCallback(async () => {
     getProjectApprovalSettings<IApprovalSetting[]>(projectKey).then(res => {
@@ -110,13 +111,17 @@ const ProjectSetting = () => {
   }, [approvalSetting]);
 
   const handleSubmit = useCallback(() => {
+    setSubmitLoading(true);
     saveSettings(projectKey, {
       approvalSettings: approvalSetting,
     }).then(() => {
+      setSubmitLoading(false);
       message.success(intl.formatMessage({id: 'toggles.settings.save.success'}));
       saveIsSame(true);
       saveOriginSetting(approvalSetting);
       clearErrors();
+    }).catch(() => {
+      setSubmitLoading(false);
     });
   }, [intl, projectKey, approvalSetting, clearErrors]);
 
@@ -235,7 +240,8 @@ const ProjectSetting = () => {
                   type='submit' 
                   className={styles['publish-btn']} 
                   onClick={handleSubmit}
-                  disabled={!OWNER.includes(userInfo.role) || isSame}
+                  disabled={!OWNER.includes(userInfo.role) || isSame || submitLoading}
+                  loading={submitLoading}
                 >
                   <span className={styles['publish-btn-text']}>
                     <FormattedMessage id='common.save.text' />

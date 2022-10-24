@@ -13,12 +13,14 @@ import Button from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import message from 'components/MessageBox';
+import TextLimit from 'components/TextLimit';
 import { HeaderContainer } from 'layout/hooks';
 import { updateApprovalStatus, publishTargetingDraft, cancelTargetingDraft } from 'services/approval';
 import { getTargeting, getTargetingDiff } from 'services/toggle';
 import { IToggleInfo, IModifyInfo, IApprovalInfo, ITargetingDiff, ITargeting, IContent } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
+
 
 interface IProps {
   toggleInfo?: IToggleInfo;
@@ -263,7 +265,7 @@ const Info = (props: IProps) => {
                   )
                 }
                 <div className={styles['info-toggle-name']}>
-                  {toggleInfo?.name}
+                  <TextLimit text={toggleInfo?.name ?? ''} maxWidth={190} />
                 </div>
                 {
                   enableApproval && toggleStatus === 'PENDING' && (
@@ -315,10 +317,12 @@ const Info = (props: IProps) => {
                 }
               </div>
               <div className={styles['info-title-right']}>
-                <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
-                  <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
-                  <FormattedMessage id='toggle.connect' />
-                </div>
+                {!toggleInfo?.archived && (
+                  <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
+                    <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
+                    <FormattedMessage id='toggle.connect' />
+                  </div>
+                ) }
                 <div>
 
                   {/* Button Show Changes */}
@@ -475,9 +479,9 @@ const Info = (props: IProps) => {
                       <FormattedMessage id='common.updated.time.text' />:
                     </div>
                     {
-                      modifyInfo?.modifiedTime ? (
+                      approvalInfo?.publishTime ? (
                         <div className={styles['label-value']}>
-                          {dayjs(modifyInfo?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
+                          {dayjs(approvalInfo.publishTime).format('YYYY-MM-DD HH:mm:ss')}
                         </div>
                       ) : <>-</>
                     }

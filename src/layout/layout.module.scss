@@ -26,8 +26,9 @@
 
 .breadcrumb {
   font-size: 12px;
-  line-height: 18px;
-  padding: 12px 24px 12px 48px;
+  line-height: 42px !important;
+  padding: 0 24px 0 48px;
+  height: 42px;
 }
 
 .breadcrumb-icon {
@@ -41,7 +42,7 @@
   height: 4px;
   margin: 0 20px;
   background: #556ee6;
-  min-width: 1080px;
+  min-width: 1160px;
 }
 
 .platform-tips {
@@ -93,4 +94,9 @@
 
 .popup {
   opacity: 0.8;
+}
+
+.project-content {
+  flex-grow: 1;
+  overflow: auto !important;
 }

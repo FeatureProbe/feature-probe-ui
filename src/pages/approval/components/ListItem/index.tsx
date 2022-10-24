@@ -4,8 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import { Table, Popup } from 'semantic-ui-react';
 import dayjs from 'dayjs';
 import Icon from 'components/Icon';
-import styles from './index.module.scss';
 import { IApproval } from 'interfaces/approval';
+import TextLimit from 'components/TextLimit';
+import styles from './index.module.scss';
 
 interface IProps {
   type: string;
@@ -24,21 +25,7 @@ const ListItem = (props: IProps) => {
     <Table.Row className={styles['list-item']}>
       <Table.Cell>
         <div className={styles['list-item-title']}>
-          <Popup
-            inverted
-            className={styles.popup}
-            trigger={
-              <span>
-                { approval.title }
-              </span>
-            }
-            content={
-              <div className={styles['popup-content']}>
-                { approval.title }
-              </div>
-            }
-            position='top left'
-          />
+        <TextLimit text={approval.title} maxWidth={170} popupProps={{ position: 'top left' }} />
           
           {
             approval.canceled && approval.status === 'PASS' && (
@@ -90,7 +77,7 @@ const ListItem = (props: IProps) => {
                 />
               )
             }
-            { approval.toggleName }
+            <TextLimit text={approval.toggleName} maxWidth={190} />
           </div>
         </div>
       </Table.Cell>
@@ -148,7 +135,7 @@ const ListItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['list-item-project']}>
-          {approval.projectName}
+          <TextLimit text={approval.projectName} maxWidth={190} />
         </div>
       </Table.Cell>
       <Table.Cell>

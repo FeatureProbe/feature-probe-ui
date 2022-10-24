@@ -52,7 +52,6 @@ const PageHeader = () => {
   );
 
   const projectCls = classNames(
-    'joyride-project',
     'navs-item',
     {
       'navs-item-selected': selectedNav === PROJECT_NAV
@@ -190,8 +189,10 @@ const PageHeader = () => {
         }
       </div>
       <div className={`${styles.navs} project-nav`}>
-        <div className={projectCls} onClick={handleGotoProject}>
-          <FormattedMessage id='common.projects.text' />
+        <div className='joyride-project'>
+          <div className={projectCls} onClick={handleGotoProject}>
+            <FormattedMessage id='common.projects.text' />
+          </div>
         </div>
         <div className={settingCls} onClick={handleGotoAccount}>
           <FormattedMessage id='common.settings.text' />

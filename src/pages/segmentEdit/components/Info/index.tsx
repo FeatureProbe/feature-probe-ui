@@ -203,10 +203,10 @@ const Info = () => {
           const { content, pageable, totalPages, totalElements } = data;
           setToggleList(content);
           setPagination({
-            pageIndex: pageable.pageNumber + 1,
-            totalPages,
+            pageIndex: (pageable?.pageNumber || 0) + 1,
+            totalPages: totalPages || 1,
           });
-          setTotal(totalElements);
+          setTotal(totalElements || 0);
           if (totalElements > 0) {
             setOpen(true);
           } else {
@@ -363,17 +363,13 @@ const Info = () => {
 
             <div id='footer' className={styles.footer}>
               <EventTracker category='segment' action='publish-segment'>
-                <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0}>
+                <Button primary type='submit' className={styles['publish-btn']} disabled={publishDisabled || Object.keys(errors).length !== 0 || isLoading}>
                   {
                     isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} />
                   }
                   <FormattedMessage id='common.publish.text' />
                 </Button>
               </EventTracker>
-              
-              <Button basic type='reset' onClick={handleGoBack}>
-                <FormattedMessage id='common.cancel.text' />
-              </Button>
             </div>
 
             <ConfirmModal 
