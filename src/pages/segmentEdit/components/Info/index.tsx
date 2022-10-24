@@ -203,10 +203,10 @@ const Info = () => {
           const { content, pageable, totalPages, totalElements } = data;
           setToggleList(content);
           setPagination({
-            pageIndex: pageable.pageNumber + 1,
-            totalPages,
+            pageIndex: (pageable?.pageNumber || 0) + 1,
+            totalPages: totalPages || 1,
           });
-          setTotal(totalElements);
+          setTotal(totalElements || 0);
           if (totalElements > 0) {
             setOpen(true);
           } else {
