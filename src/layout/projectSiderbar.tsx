@@ -10,6 +10,7 @@ import { IRouterParams, IProject, IEnvironment } from 'interfaces/project';
 import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH, GET_STARTED_PATH, SETTING_PATH } from 'router/routes';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
+import TextLimit from 'components/TextLimit';
 
 interface IProps {
   isLoading: boolean;
@@ -117,7 +118,13 @@ const ProjectSiderbar = (props: IProps) => {
         ) : (
           <>
             <div className={styles['project-name']}>
-              { projectInfo.name }
+              <TextLimit 
+                text={projectInfo.name} 
+                popupProps={{ 
+                  position: 'top left',
+                  offset: [0, -8],
+                }} 
+              />
             </div>
             <div className={envCls} style={{ backgroundColor }}>
               <Dropdown
