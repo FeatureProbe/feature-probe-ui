@@ -51,10 +51,10 @@ const Lists = () => {
 				const { content, pageable, totalPages, totalElements } = data;
 				saveApprovalList(content);
 				setPagination({
-					pageIndex: pageable.pageNumber + 1,
-					totalPages,
+					pageIndex: (pageable?.pageNumber || 0) + 1,
+          totalPages: totalPages || 1,
 				});
-				setTotal(totalElements);
+				setTotal(totalElements || 0);
 			}
       else {
         message.error(intl.formatMessage({id: 'approvals.lists.error'}));
