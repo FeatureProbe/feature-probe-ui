@@ -243,6 +243,7 @@
   "toggles.settings.approval.reviewers.placeholder": "请选择审批人",
   "toggles.settings.approval.enable": "开启审批",
   "toggles.settings.approval.enable.tips": "该环境存在审批流程未结束的开关，不允许关闭",
+  "toggles.settings.approval.enable.writer.tips": "您没有操作权限",
   "toggles.settings.save.success": "保存成功",
 
   "targeting.default.rule": "默认规则",

@@ -243,6 +243,7 @@
   "toggles.settings.approval.reviewers.placeholder": "Please select reviewers",
   "toggles.settings.approval.enable": "Enable Approval",
   "toggles.settings.approval.enable.tips": "The environment has toggles in the approval process that are not allowed to be turned off",
+  "toggles.settings.approval.enable.writer.tips": "You have no operation permission",
   "toggles.settings.save.success": "Successfully saved",
 
   "targeting.default.rule": "Default Rule",
