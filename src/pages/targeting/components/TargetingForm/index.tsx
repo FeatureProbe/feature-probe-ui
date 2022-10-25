@@ -289,6 +289,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         }
       });
       delete rule.id;
+      delete rule.active;
     });
 
     const requestVariations = cloneDeep(variations);
