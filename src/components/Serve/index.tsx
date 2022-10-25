@@ -245,7 +245,7 @@ const Serve = (props: IProps) => {
             </div>
             {
               total !== TOTAL && (
-                <div className={styles.message}>
+                <div id={`rule_${id}_serve_total`} className={styles.message}>
                   <Icon customClass={styles['message-iconfont']} type='remove-circle' />
                   {
                     intl.formatMessage({

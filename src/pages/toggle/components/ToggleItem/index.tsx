@@ -7,6 +7,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import message from 'components/MessageBox';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
+import TextLimit from 'components/TextLimit';
 import TagsList from 'components/TagsList';
 import { editToggle, getToggleInfo } from 'services/toggle';
 import { IToggle } from 'interfaces/toggle';
@@ -146,7 +147,7 @@ const ToggleItem = (props: IProps) => {
             )
           }
           <div className={styles['toggle-info-name']}>
-            {toggle.name}
+            <TextLimit text={toggle.name} maxWidth={300} />
           </div>
           <div className={styles['toggle-info-key']}>
             <CopyToClipboardPopup text={toggle.key}>
@@ -288,16 +289,6 @@ const ToggleItem = (props: IProps) => {
             </div>
           )
         }
-      </Table.Cell>
-      <Table.Cell>
-        <div className={styles['toggle-modified']}>
-          <div className={styles['toggle-modified-by']}>
-            {toggle.modifiedBy}
-          </div>
-          <div className={styles['toggle-modified-time']}>
-            {dayjs(toggle?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
-          </div>
-        </div>
       </Table.Cell>
       <Table.Cell>
         {

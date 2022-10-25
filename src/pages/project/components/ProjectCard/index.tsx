@@ -15,6 +15,7 @@ import { getEnvironmentList, editProject } from 'services/project';
 import { getToggleList } from 'services/toggle';
 import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
+import TextLimit from 'components/TextLimit';
 
 interface IProps {
   project: IProject;
@@ -122,7 +123,7 @@ const ProjectCard = (props: IProps) => {
       <div className={styles.header}>
         <div className={styles.title}>
           <div className={styles.name}>
-            { project.name }
+            <TextLimit text={project.name} maxWidth={194} />
           </div>
           {
             OWNER.includes(userInfo.role) && (

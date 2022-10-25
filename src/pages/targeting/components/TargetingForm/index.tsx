@@ -3,7 +3,7 @@ import { Form, Radio, CheckboxProps, TextAreaProps, InputOnChangeData, Loader, D
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import JSONbig from 'json-bigint';
 import { createPatch } from 'diff';
 import { html } from 'diff2html/lib/diff2html';
@@ -331,6 +331,14 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     setOpen(true);
   }, [intl, publishTargeting, initialTargeting, variations, setError]);
 
+  const onError = (errors: FieldErrors) => {
+    let errorEle = document.querySelector(`[name=${Object.keys(errors)[0]}]`);
+    if(!errorEle) {
+      errorEle = document.querySelector(`#${Object.keys(errors)[0]}`);
+    }
+    errorEle?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   const handlePublishCancel = useCallback(() => {
     setOpen(false);
     setComment('');
@@ -360,10 +368,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       setLoading(false);
     }
   }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, approvalInfo, initTargeting, newTrigger]);
-
-  const handleGoBack = useCallback(() => {
-    history.push(`/${projectKey}/${environmentKey}/toggles`);
-  }, [history, projectKey, environmentKey]);
 
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {
@@ -397,9 +401,9 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       saveDictionary(USER_GUIDE_TARGETING, nextStepIndex);
     }
   }, []);
-
+  
 	return (
-    <Form onSubmit={handleSubmit(onSubmit)} autoComplete='off' ref={formRef}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} autoComplete='off' ref={formRef}>
       <div className={`${styles.status}`}>
         <div className={`${styles['joyride-status']} joyride-toggle-status`}>
           <SectionTitle title={intl.formatMessage({id: 'targeting.status.text'})} />
@@ -471,9 +475,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             </span>
           </Button>
         </EventTracker>
-        <Button basic type='reset' onClick={handleGoBack}>
-          <FormattedMessage id='common.cancel.text' />
-        </Button>
       </div>
       <Modal 
         open={open}

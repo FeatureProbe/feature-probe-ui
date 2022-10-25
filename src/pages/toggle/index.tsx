@@ -106,10 +106,10 @@ const Toggle = () => {
           const { content, pageable, totalPages, totalElements } = data;
           setToggleList(content);
           setPagination({
-            pageIndex: pageable.pageNumber + 1,
-            totalPages,
+            pageIndex: (pageable?.pageNumber || 0) + 1,
+            totalPages: totalPages || 1,
           });
-          setTotal(totalElements);
+          setTotal(totalElements || 0);
           return;
         } else if (!success && code === NOT_FOUND) {
           saveDictionary(LAST_SEEN, {});
@@ -622,9 +622,6 @@ const Toggle = () => {
                             <Table.HeaderCell className={styles['column-evaluated']}>
                               <FormattedMessage id='toggles.table.evaluation' />
                             </Table.HeaderCell>
-                            <Table.HeaderCell className={styles['column-modify']}>
-                              <FormattedMessage id='toggles.table.lastmodified' />
-                            </Table.HeaderCell>
                             <Table.HeaderCell className={styles['column-operation']}></Table.HeaderCell>
                           </Table.Row>
                         </Table.Header>
@@ -645,7 +642,7 @@ const Toggle = () => {
                             <>
                               {
                                 toggleList.length !== 0 && (
-                                  <Table.Body>
+                                  <Table.Body className={styles['table-body']}>
                                     {
                                       toggleList?.map((toggle: IToggle) => {
                                         return (

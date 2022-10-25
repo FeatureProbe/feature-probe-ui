@@ -63,10 +63,10 @@ const Segment = () => {
           const { content, pageable, totalPages, totalElements } = data;
           setSegmentList(content || []);
           setPagination({
-            pageIndex: pageable.pageNumber + 1,
-            totalPages,
+            pageIndex: (pageable?.pageNumber || 0) + 1,
+            totalPages: totalPages || 1,
           });
-          setTotal(totalElements);
+          setTotal(totalElements || 0);
           return;
         } else if (!success && code === NOT_FOUND) {
           saveDictionary(LAST_SEEN, {});
