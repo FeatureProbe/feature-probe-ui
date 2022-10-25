@@ -62,12 +62,7 @@ export const useRule = () => {
       id: uuidv4(),
       name: '',
       serve: undefined,
-      conditions: [{
-        id: uuidv4(),
-        type: 'string',
-        subject: '',
-        predicate: '',
-      }],
+      conditions: [],
       active: true
     };
     rules.push(rule);
