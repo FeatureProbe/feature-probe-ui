@@ -37,6 +37,7 @@ export interface IRule {
   name: string;
   conditions: ICondition[];
   serve?: IServe;
+  active?: boolean;
 }
 
 export interface IToggleInfo {

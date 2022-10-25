@@ -1,4 +1,5 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { FieldErrors } from 'react-hook-form';
 import { createContainer } from 'unstated-next';
 import { useLocalStorage } from 'utils/hooks';
 
@@ -30,4 +31,43 @@ export const useRequestTimeCheck = () => {
   }, [requestTimes]);
 
   return creatRequestTimeCheck;
+};
+
+export const useFormErrorScrollIntoView = (errors?: FieldErrors) => {
+  const errorRef = useRef(errors);
+  const beforeScroll = useRef<(names: string[]) => void>();
+
+  useEffect(() => {
+    errorRef.current = errors;
+  }, [errors]);
+
+  const scrollToError = useCallback(() => {
+    if(errorRef.current) {
+      const names = Object.keys(errorRef.current);
+      if(beforeScroll.current) {
+        beforeScroll.current(names);
+      }
+      setTimeout(() => {
+        document.querySelector(`[name=${names[0]}]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+  }, [errorRef]);
+
+  const registerErrorName = useCallback((name: string) => {
+    return {
+      ref: (ref: unknown) => {
+        (ref as HTMLElement)?.setAttribute('name', name);
+      }
+    };
+  }, []);
+
+  const setBeforeScrollCallback = useCallback((fc: (names: string[]) => void) => {
+    beforeScroll.current = fc;
+  }, [beforeScroll]);
+
+  return {
+    scrollToError,
+    registerErrorName,
+    setBeforeScrollCallback,
+  };
 };

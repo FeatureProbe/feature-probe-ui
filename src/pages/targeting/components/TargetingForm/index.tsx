@@ -3,7 +3,7 @@ import { Form, Radio, CheckboxProps, TextAreaProps, InputOnChangeData, Loader, D
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import JSONbig from 'json-bigint';
 import { createPatch } from 'diff';
 import { html } from 'diff2html/lib/diff2html';
@@ -42,6 +42,7 @@ import { getFromDictionary, saveDictionary } from 'services/dictionary';
 import { USER_GUIDE_LAYOUT, USER_GUIDE_TARGETING } from 'constants/dictionary_keys';
 import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
+import { useFormErrorScrollIntoView } from 'hooks';
 
 interface IProps {
   disabled?: boolean;
@@ -134,11 +135,33 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     setValue,
     setError,
     handleSubmit,
+    formState: { errors },
   } = hooksFormContainer.useContainer();
 
   const {
     saveSegmentList,
   } = segmentContainer.useContainer();
+
+  const { scrollToError, setBeforeScrollCallback } = useFormErrorScrollIntoView(errors);
+
+  useEffect(() => {
+    setBeforeScrollCallback((names: string[]) => {
+      names.forEach((name) => {
+        if(name.startsWith('rule')) {
+          const id = name.split('_')[1];
+          for(let i = 0; i < rules.length; i++) {
+            if(rules[i].id === id) {
+              saveRules((rules: IRule[]) => {
+                rules[i].active = true;
+                return [...rules];
+              });
+              return;
+            }
+          }
+        }
+      });
+    });
+  }, [setBeforeScrollCallback, rules]);
 
   useEffect(() => {
     Promise.all([
@@ -331,12 +354,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     setOpen(true);
   }, [intl, publishTargeting, initialTargeting, variations, setError]);
 
-  const onError = (errors: FieldErrors) => {
-    let errorEle = document.querySelector(`[name=${Object.keys(errors)[0]}]`);
-    if(!errorEle) {
-      errorEle = document.querySelector(`#${Object.keys(errors)[0]}`);
-    }
-    errorEle?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const onError = () => {
+    scrollToError();
   };
 
   const handlePublishCancel = useCallback(() => {
