@@ -30,9 +30,7 @@ const TextLimit: React.FC<IProps> = (props) => {
   }, [ref.current]);
 
   useEffect(() => {
-    if(ref.current) {
-      setIsLong(judgeLength());
-    }
+    setIsLong(judgeLength());
   }, [ref.current?.clientWidth]);
 
   return (
