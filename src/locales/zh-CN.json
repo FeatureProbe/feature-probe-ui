@@ -95,6 +95,8 @@
   "common.lock.text": "开关已被锁定，不可编辑",
   "common.lock.by": "锁定人",
   "common.lock.time": "锁定时间",
+  "common.next.text": "下一步",
+  "common.previous.text": "上一步",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -326,6 +328,7 @@
   "tags.list.error": "获取标签列表失败",
 
   "segments.create.text": "创建人群组",
+  "segments.create.publish.text": "创建并发布",
   "segments.edit.text": "编辑人群组",
   "segments.total": "人群组",
   "segments.list.error.text": "获取人群组列表失败!",

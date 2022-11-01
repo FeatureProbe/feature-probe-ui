@@ -2,7 +2,7 @@ import request from '../utils/request';
 import API from '../constants/api';
 import qs from 'qs';
 import { ApplicationJson } from 'constants/api/contentType';
-import { IExistParams } from 'interfaces/project';
+import { IExistParams, IVersionParams } from 'interfaces/project';
 import { ISegmentInfo } from 'interfaces/segment';
 
 interface ISegmentParams {
@@ -105,6 +105,21 @@ export const checkSegmentExist = async<T> (projectKey: string, params: IExistPar
   const url = `${
     API.segmentExistURI
       .replace(':projectKey', projectKey)
+  }?${qs.stringify(params)}`;
+  
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
+export const getSegmentVersion = async<T> (projectKey: string, environmentKey: string, params: IVersionParams) => {
+  const url = `${
+    API.targetingVersionsURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
   }?${qs.stringify(params)}`;
   
   return request<T>(url, {

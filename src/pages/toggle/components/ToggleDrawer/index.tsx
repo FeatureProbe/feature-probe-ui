@@ -15,7 +15,6 @@ import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Joyride, { CallBackProps, EVENTS, Step, ACTIONS } from 'react-joyride';
-import { FieldErrors } from 'react-hook-form';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
@@ -34,7 +33,7 @@ import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'ser
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
 
 import { debounce } from 'lodash';
-import { useRequestTimeCheck } from 'hooks';
+import { useFormErrorScrollIntoView, useRequestTimeCheck } from 'hooks';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import styles from './index.module.scss';
 import { USER_GUIDE_TOGGLE } from 'constants/dictionary_keys';
@@ -133,6 +132,7 @@ const Drawer = (props: IParams) => {
   const [ stepIndex, saveStepIndex ] = useState<number>(0);
   const [ submitLoading, setSubmitLoading ] = useState<boolean>(false);
   const intl = useIntl();
+  const { scrollToError } = useFormErrorScrollIntoView(errors);
 
   const { 
     toggleInfo, 
@@ -297,12 +297,8 @@ const Drawer = (props: IParams) => {
     }
   }, [intl, isAdd, projectKey, refreshToggleList, setDrawerVisible, setError, toggleInfo, variations]);
 
-  const onError = (errors: FieldErrors) => {
-    let errorEle = document.querySelector(`[name=${Object.keys(errors)[0]}]`);
-    if(!errorEle) {
-      errorEle = document.querySelector(`#${Object.keys(errors)[0]}`);
-    }
-    errorEle?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const onError = () => {
+    scrollToError();
   };
 
   const handleAddTag = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {

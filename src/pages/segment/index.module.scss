@@ -131,6 +131,16 @@
   position: relative;
 }
 
+.table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+}
+
 .table-header {
   background: #f8f9fa;
   height: 42px;
