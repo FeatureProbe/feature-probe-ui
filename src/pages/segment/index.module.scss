@@ -130,10 +130,10 @@
   margin-top: 16px;
   flex: 1;
   position: relative;
+  overflow-x: auto;
 }
 
 .table {
-  overflow-x: auto;
 
   &::-webkit-scrollbar {
     width: 10px;
