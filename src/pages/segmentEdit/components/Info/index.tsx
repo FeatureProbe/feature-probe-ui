@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState, useCallback, useEffect, useRef } from 'react';
 import { Form, Button, PaginationProps, Loader, Dimmer, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useHistory, useParams, Prompt, useRouteMatch, useLocation } from 'react-router-dom';
+import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import moment from 'moment';
@@ -334,6 +334,7 @@ const Info = () => {
     saveTargetingDisabled(false);
     saveSelectedVersion(versions[0].version);
     saveActiveVersion(versions[0]);
+    saveCount(0);
     saveRules(versions[0].rules.map((item) => {
       item.active = true;
       return item;
