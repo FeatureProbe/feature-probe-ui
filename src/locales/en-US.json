@@ -337,7 +337,7 @@
   "segments.modal.cannot.delete.title": "Can not delete",
   "segments.modal.cannot.delete.text": "This segment is in use, can not delete",
   "segments.modal.delete.tips": "This change will take effect in {count} toggles",
-  "segments.create.success": "Created segment successfully",
+  "segments.create.success": "Created segment and publish successfully",
   "segments.create.error": "Error creating segment",
   "segments.edit.success": "Updated segment successfully",
   "segments.edit.error": "Error updating segment",
