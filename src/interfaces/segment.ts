@@ -62,4 +62,19 @@ export interface IToggleList {
 
 export interface ISegmentVersion extends IVersion {
   version: number;
+  rules: IRule[];
+}
+
+export interface ISegmentVersions {
+  totalElements: number;
+  totalPages: number;
+  sort: ISort;
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  pageable: IPageable;
+  size: number;
+  content: ISegmentVersion[];
+  number: number;
+  empty: boolean;
 }

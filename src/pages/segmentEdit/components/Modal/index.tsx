@@ -1,5 +1,5 @@
 import { SyntheticEvent, useCallback, useState } from 'react';
-import { Table, Pagination, PaginationProps, Button, Form, TextAreaProps, TextArea } from 'semantic-ui-react';
+import { Table, Pagination, PaginationProps, Button, Form, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
@@ -151,7 +151,7 @@ const ConfirmModal = (props: IProps) => {
                         );
 
                         return (
-                          <Table.Row className={listItem}>
+                          <Table.Row onClick={() => {handleGotoToggle(toggle.environmentKey, toggle.key);}} className={listItem}>
                             <Table.Cell>
                               <div className={styles['toggle-info']}>
                                 <div className={styles['toggle-info-name']}>

@@ -70,6 +70,22 @@ export const editSegment = async (projectKey: string, segmentKey: string, data?:
   });
 };
 
+export const confirmPublishSegment = async (projectKey: string, segmentKey: string, data?: ISegmentInfo & { comment: string }) => {
+  const url = `${
+    API.publishSegmentURI
+      .replace(':projectKey', projectKey)
+      .replace(':segmentKey', segmentKey)
+  }`;
+  
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getSegmentUsingToggles = async<T> (projectKey: string, segmentKey: string, params: any) => {
   const url = `${
@@ -115,11 +131,11 @@ export const checkSegmentExist = async<T> (projectKey: string, params: IExistPar
   });
 };
 
-export const getSegmentVersion = async<T> (projectKey: string, environmentKey: string, params: IVersionParams) => {
+export const getSegmentVersion = async<T> (projectKey: string, segmentKey: string, params: IVersionParams) => {
   const url = `${
-    API.targetingVersionsURI
+    API.getSegmentVersionsURI
       .replace(':projectKey', projectKey)
-      .replace(':environmentKey', environmentKey)
+      .replace(':segmentKey', segmentKey)
   }?${qs.stringify(params)}`;
   
   return request<T>(url, {
