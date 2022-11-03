@@ -41,9 +41,7 @@ interface ISearchParams {
 }
 
 const Info = () => {
-  const { search } = useLocation();
   const [ open, setOpen ] = useState<boolean>(false);
-  const currentVersion = Number(new URLSearchParams(search).get('currentVersion'));
   const [ initialSegment, saveInitialSegment ] = useState<ISegmentInfo>();
   const [ publishSegment, savePublishSegment ] = useState<ISegmentInfo>();
   const [ publishDisabled, setPublishDisabled ] = useState<boolean>(true);
@@ -334,8 +332,13 @@ const Info = () => {
 
   const quiteReviewHistory = useCallback(() => {
     saveTargetingDisabled(false);
-    saveSelectedVersion(currentVersion);
-  }, []);
+    saveSelectedVersion(versions[0].version);
+    saveActiveVersion(versions[0]);
+    saveRules(versions[0].rules.map((item) => {
+      item.active = true;
+      return item;
+    }));
+  }, [versions]);
 
   const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps) => {
     saveComment(data.value + '');
