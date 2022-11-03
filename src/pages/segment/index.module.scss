@@ -2,7 +2,8 @@
   position: relative;
   padding: 0 20px;
   min-width: 1220px;
-  overflow-x: auto;
+  height: calc(100vh - 94px);
+  overflow: auto;
 }
 
 .column-name {
@@ -132,9 +133,7 @@
 }
 
 .table {
-  display: block;
   overflow-x: auto;
-  width: 100%;
 
   &::-webkit-scrollbar {
     width: 10px;
