@@ -7,9 +7,17 @@ import cloneDeep from 'lodash/cloneDeep';
 import moment from 'moment';
 import JSONbig from 'json-bigint';
 import { v4 as uuidv4 } from 'uuid';
+import { createPatch } from 'diff';
+import { html } from 'diff2html';
+import { useFormErrorScrollIntoView } from 'hooks';
+import useResizeObserver from 'use-resize-observer';
 import message from 'components/MessageBox';
 import EventTracker from 'components/EventTracker';
 import Modal from 'components/Modal';
+import { DATETIME_TYPE } from 'components/Rule/constants';
+import TextLimit from 'components/TextLimit';
+import History from 'components/History';
+import Icon from 'components/Icon';
 import Rules from 'pages/targeting/components/Rules';
 import { useBeforeUnload } from 'pages/targeting/hooks';
 import ConfirmModal from '../Modal';
@@ -18,15 +26,8 @@ import { getSegmentDetail, confirmPublishSegment, getSegmentUsingToggles, getSeg
 import { ISegmentInfo, IToggleList, IToggle, ISegmentVersion, ISegmentVersions } from 'interfaces/segment';
 import { SEGMENT_EDIT_PATH } from 'router/routes';
 import { IRule, ICondition } from 'interfaces/targeting';
-import { DATETIME_TYPE } from 'components/Rule/constants';
-import TextLimit from 'components/TextLimit';
-import History from 'components/History';
-import Icon from 'components/Icon';
-import styles from './index.module.scss';
 import { IVersionParams } from 'interfaces/project';
-import { createPatch } from 'diff';
-import { html } from 'diff2html';
-import { useFormErrorScrollIntoView } from 'hooks';
+import styles from './index.module.scss';
 
 interface IParams {
   projectKey: string;
@@ -71,6 +72,7 @@ const Info = () => {
   const [ pageInitCount, saveCount ] = useState<number>(0);
   const [ diffContent, setDiffContent ] = useState<string>('');
   const [ comment, saveComment ] = useState<string>('');
+  const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
   const formRef = useRef();
   const intl = useIntl();
   const history = useHistory();
@@ -282,13 +284,19 @@ const Info = () => {
       setHistoryLoading(false);
       const { data, success } = res;
       if (success && data) {
-        const { content, number, totalPages, first } = data;
+        const { content, number, totalPages, version, first } = data;
         saveVersions(versions.concat(content));
         saveHistoryPageIndex(historyPageIndex + 1);
         saveHistoryHasMore((number + 1) !== totalPages);
-        if(first) {
-          saveSelectedVersion(content[0].version);
-          saveLatestVersion(content[0].version);
+        
+        if(version) {
+          saveSelectedVersion(version);
+          saveLatestVersion(version);
+        } else {
+          if(first) {
+            saveSelectedVersion(content[0].version);
+            saveLatestVersion(content[0].version);
+          }
         }
       } else {
         message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
@@ -392,7 +400,7 @@ const Info = () => {
           <FormattedMessage id='common.history.text' />
         </Button>
       </div>
-      <div className={styles.content}>
+      <div className={styles.content} ref={ref}>
         {
           isPageLoading ? (
             <Dimmer Dimmer active inverted>
@@ -489,7 +497,9 @@ const Info = () => {
         }
         {
           isHistoryOpen && (
-            <div className={styles['content-right']}>
+            <div style={{
+              height: height,
+            }} className={styles['content-right']}>
               <History 
                 versions={versions}
                 hasMore={historyHasMore}

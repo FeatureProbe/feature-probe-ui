@@ -76,5 +76,6 @@ export interface ISegmentVersions {
   size: number;
   content: ISegmentVersion[];
   number: number;
+  version: number;
   empty: boolean;
 }

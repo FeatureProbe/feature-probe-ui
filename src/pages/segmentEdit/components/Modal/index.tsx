@@ -104,7 +104,7 @@ const ConfirmModal = (props: IProps) => {
       <div>
         <div className={styles['modal-header']}>
           <span>
-            <FormattedMessage id='segments.modal.delete.header' />
+            <FormattedMessage id='targeting.publish.modal.title' />
           </span>
           <Icon customClass={styles['modal-header-icon']} type='close' onClick={(e: SyntheticEvent) => {
             e.stopPropagation();
@@ -202,6 +202,14 @@ const ConfirmModal = (props: IProps) => {
                     }
                   </Table.Body>
                 </Table>
+                {
+                  toggleList.length === 0 ? (
+                    <div className={styles['no-data']}>
+                      <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                      <div><FormattedMessage id='common.nodata.text' /></div>
+                    </div>
+                  ) : null
+                }
                 {
                   pagination.totalPages > 1 && (
                     <div className={styles.pagination}>

@@ -19,7 +19,7 @@ interface IProps {
 }
 
 const History = (props: IProps) => {
-  const { versions, hasMore, selectedVersion, isHistoryLoading, loadMore, reviewHistory } = props;
+  const { versions, hasMore, selectedVersion, latestVersion, isHistoryLoading, loadMore, reviewHistory } = props;
 
   return (
     <div className={styles.history}>
@@ -49,7 +49,7 @@ const History = (props: IProps) => {
               }
             >
               {
-                versions.length > 0 && versions.map((item, index) => {
+                versions.length > 0 && versions.map((item) => {
                   const clsRight = classNames(
                     styles['version-right'],
                     {
@@ -101,7 +101,7 @@ const History = (props: IProps) => {
                             { item.version }
                           </span>
                           {
-                            index === 0 && (
+                            item.version === latestVersion && (
                               <span className={styles.current}>
                                 (<FormattedMessage id='common.current.version.text' />)
                               </span>
