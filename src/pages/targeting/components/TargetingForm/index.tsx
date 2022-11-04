@@ -161,7 +161,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         }
       });
     });
-  }, [setBeforeScrollCallback, rules]);
+  }, [setBeforeScrollCallback, rules, saveRules]);
 
   useEffect(() => {
     Promise.all([
