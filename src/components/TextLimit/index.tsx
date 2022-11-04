@@ -27,11 +27,11 @@ const TextLimit: React.FC<IProps> = (props) => {
         return false;
       }
     }
-  }, [ref.current]);
+  }, [ref.current, text]);
 
   useEffect(() => {
     setIsLong(judgeLength());
-  }, [ref.current?.clientWidth]);
+  }, [ref.current, text]);
 
   return (
     <Popup
