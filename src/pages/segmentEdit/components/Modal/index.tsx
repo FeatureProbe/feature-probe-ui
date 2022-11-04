@@ -6,11 +6,10 @@ import classNames from 'classnames';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
 import { IToggle } from 'interfaces/segment';
-
-import styles from './index.module.scss';
-import { hooksFormContainer } from 'pages/segmentEdit/provider';
 import TextLimit from 'components/TextLimit';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
+import { hooksFormContainer } from 'pages/segmentEdit/provider';
+import styles from './index.module.scss';
 
 interface IPagination {
   pageIndex: number;

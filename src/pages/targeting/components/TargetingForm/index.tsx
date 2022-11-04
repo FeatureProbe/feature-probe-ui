@@ -40,9 +40,9 @@ import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import { getFromDictionary, saveDictionary } from 'services/dictionary';
 import { USER_GUIDE_LAYOUT, USER_GUIDE_TARGETING } from 'constants/dictionary_keys';
+import { useFormErrorScrollIntoView } from 'hooks';
 import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
-import { useFormErrorScrollIntoView } from 'hooks';
 
 interface IProps {
   disabled?: boolean;
