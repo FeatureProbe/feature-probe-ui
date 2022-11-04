@@ -8,7 +8,6 @@ import { IContainer } from 'interfaces/provider';
 import { VariationColors } from 'constants/colors';
 import { useFormErrorScrollIntoView } from 'hooks';
 import styles from './index.module.scss';
-import { useFormErrorScrollIntoView } from 'hooks';
 
 interface IAttr {
   [key: string]: string;
