@@ -59,7 +59,7 @@
 .heading {
   display: flex;
   justify-content: space-between;
-  font-family: HelveticaNeue-Medium;
+  font-family: HelveticaNeue-Medium, sans-serif;
   font-size: 20px;
   color: #212529;
   letter-spacing: 0;
@@ -82,7 +82,7 @@
 .content-right {
   width: 260px;
   overflow-y: auto;
-  background: #FFFFFF;
+  background: #fff;
   border: 1px solid rgba(206, 212, 218, 0.5);
   border-radius: 12px;
   margin-left: 12px;
@@ -91,17 +91,17 @@
 .segment-info {
   display: flex;
   padding: 16px 24px;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   border-radius: 10px;
   height: 72px;
 
-  &>.segment-info-item {
+  & > .segment-info-item {
     width: 362px;
 
-    &>.info-title {
-      font-family: HelveticaNeue;
+    & > .info-title {
+      font-family: HelveticaNeue, sans-serif;
       font-size: 13px;
-      color: #74788D;
+      color: #74788d;
       letter-spacing: 0;
       line-height: 18px;
       font-weight: normal;
@@ -111,8 +111,8 @@
       }
     }
 
-    &>.info-value {
-      font-family: HelveticaNeue-Medium;
+    & > .info-value {
+      font-family: HelveticaNeue-Medium, sans-serif;
       font-size: 13px;
       color: #495057;
       letter-spacing: 0;
@@ -173,7 +173,7 @@
 }
 
 .modal-header-text {
-  font-family: PingFangSC-Medium;
+  font-family: PingFangSC-Medium, sans-serif;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.87);
 }

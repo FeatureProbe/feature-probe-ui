@@ -1,7 +1,7 @@
 .modal-header {
   display: flex;
   justify-content: space-between;
-  font-family: PingFangSC-Medium;
+  font-family: PingFangSC-Medium, sans-serif;
   font-size: 16px;
   color: #212529;
   height: 25px;
@@ -86,29 +86,6 @@
   -moz-outline-radius: 8px;
 }
 
-.toggle-info {
-  display: flex;
-  align-items: center;
-  padding-left: 24px;
-}
-
-.toggle-info-name {
-  color: #556ee6;
-  font-size: 15px;
-  font-family: HelveticaNeue-Medium;
-}
-
-.toggle-info-description {
-  margin-top: 10px;
-  max-width: 380px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding-left: 24px;
-  font-size: 12px;
-  color: #495057;
-}
-
 .toggle-status {
   align-items: center;
   display: flex;
@@ -152,17 +129,17 @@
   height: 43px;
   justify-content: flex-end;
   align-items: flex-end;
-  border-top: 1px solid #CED4DA;
+  border-top: 1px solid #ced4da;
   margin-top: 106px;
 
-  &>button {
+  & > button {
     margin-left: 8px !important;
   }
 }
 
 .diff-box {
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.60);
+  color: rgba(0, 0, 0, 0.6);
   margin: 0 -16px -4px;
 
   :global {
@@ -184,7 +161,8 @@
       background-color: #fff5f4;
     }
 
-    .d2h-code-line del, .d2h-code-side-line del {
+    .d2h-code-line del,
+    .d2h-code-side-line del {
       background-color: #ffd4d0;
     }
 
@@ -192,7 +170,8 @@
       background-color: #effcf2;
     }
 
-    .d2h-code-line ins, .d2h-code-side-line ins {
+    .d2h-code-line ins,
+    .d2h-code-side-line ins {
       background-color: #c2f6ce;
     }
 
@@ -242,7 +221,7 @@
 .toggle-info-name {
   color: #556ee6;
   font-size: 15px;
-  font-family: HelveticaNeue-Medium;
+  font-family: HelveticaNeue-Medium, sans-serif;
 }
 
 .toggle-info-key {
@@ -274,7 +253,7 @@
 .no-data {
   text-align: center;
   line-height: 30px;
-  font-family: PingFangSC-Medium;
+  font-family: PingFangSC-Medium, sans-serif;
   font-size: 18px;
   color: #adb5bc;
 }
