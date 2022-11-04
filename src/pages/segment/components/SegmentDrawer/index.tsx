@@ -5,7 +5,7 @@ import {
   TextAreaProps,
 } from 'semantic-ui-react';
 import classNames from 'classnames';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
 import debounce from 'lodash/debounce';
 import message from 'components/MessageBox';
@@ -204,6 +204,7 @@ const SegmentDrawer = (props: IProps) => {
             value={segmentInfo?.name}
             errors={errors}
             register={register}
+            labelRender={<FormattedMessage id='segments.label.name.text' />}
             onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
               if (detail.value.length > 50 ) return;
               if (detail.value !== originSegmentInfo.name) {

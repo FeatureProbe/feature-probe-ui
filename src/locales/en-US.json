@@ -343,6 +343,7 @@
   "segments.edit.error": "Error updating segment",
   "segments.delete.success": "Successfully deleted!",
   "segments.delete.error": "Error, segment was not deleted, please retry!",
+  "segments.label.name.text": "Segment name",
 
   "toggle.connect": "Connect SDK",
   "connect.description": "Connect your application to FeatureProbe!",

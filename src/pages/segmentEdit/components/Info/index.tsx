@@ -382,7 +382,6 @@ const Info = () => {
         <span>{segmentInfo.name}</span>
         <Button 
           secondary
-          color='blue'
           type='button'
           onClick={() => {
             setHistoryOpen(!isHistoryOpen);
@@ -429,12 +428,12 @@ const Info = () => {
 
               <div className={styles['segment-info']}>
                 <div className={styles['segment-info-item']}>
-                  <div className={styles['info-title']}><FormattedMessage id='common.description.text' /></div>
-                  <div className={styles['info-value']}><TextLimit text={segmentInfo.description} /></div>
-                </div>
-                <div className={styles['segment-info-item']}>
                   <div className={styles['info-title']}><FormattedMessage id='common.key.text' /></div>
                   <div className={styles['info-value']}>{segmentKey}</div>
+                </div>
+                <div className={styles['segment-info-item']}>
+                  <div className={styles['info-title']}><FormattedMessage id='common.description.text' /></div>
+                  <div className={styles['info-value']}><TextLimit text={segmentInfo.description ? segmentInfo.description : '-'} /></div>
                 </div>
               </div>
 

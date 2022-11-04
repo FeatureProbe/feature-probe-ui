@@ -381,7 +381,6 @@ const Targeting = () => {
                 <div className={styles.history}>
                   <Button 
                     secondary
-                    color='blue'
                     type='button'
                     onClick={() => {
                       setHistoryOpen(!historyOpen);
