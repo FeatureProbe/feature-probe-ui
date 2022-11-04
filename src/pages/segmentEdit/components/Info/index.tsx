@@ -313,10 +313,20 @@ const Info = () => {
 
     saveCount(pageInitCount + 1);
     saveSelectedVersion(version?.version || 0);
-    saveRules(version.rules.map((item) => {
-      item.active = true;
-      return item;
-    }));
+    const targetRule = cloneDeep(version.rules);
+    targetRule.forEach((rule: IRule) => {
+      rule.id = uuidv4();
+      rule.conditions.forEach((condition: ICondition) => {
+        condition.id = uuidv4();
+        if (condition.type === DATETIME_TYPE && condition.objects) {
+          condition.datetime = condition.objects[0].slice(0, 19);
+          condition.timezone = condition.objects[0].slice(19);
+        }
+      });
+      rule.active = true;
+    });
+
+    saveRules(targetRule);
     if (version.version === latestVersion) {
       saveCount(0);
       saveTargetingDisabled(false);
@@ -343,10 +353,19 @@ const Info = () => {
     saveSelectedVersion(versions[0].version);
     saveActiveVersion(versions[0]);
     saveCount(0);
-    saveRules(versions[0].rules.map((item) => {
-      item.active = true;
-      return item;
-    }));
+    const targetRule = cloneDeep(versions[0].rules);
+    targetRule.forEach((rule: IRule) => {
+      rule.id = uuidv4();
+      rule.conditions.forEach((condition: ICondition) => {
+        condition.id = uuidv4();
+        if (condition.type === DATETIME_TYPE && condition.objects) {
+          condition.datetime = condition.objects[0].slice(0, 19);
+          condition.timezone = condition.objects[0].slice(19);
+        }
+      });
+      rule.active = true;
+    });
+    saveRules(targetRule);
   }, [versions]);
 
   const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps) => {
