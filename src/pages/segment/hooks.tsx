@@ -1,10 +1,3 @@
-/*
- * @Author: mayinlong
- * @Date: 2022-10-28 10:13:19
- * @LastEditTime: 2022-10-28 11:00:32
- * @FilePath: /fp-ui/src/pages/segment/hooks.tsx
- * @Description: 
- */
 import { SyntheticEvent, useState } from 'react';
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';

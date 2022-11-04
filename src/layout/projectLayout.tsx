@@ -123,8 +123,7 @@ const ProjectLayout = (props: IProps) => {
             setSegmentName(data.name);
           }
         } else {
-          console.log(res);
-          message.error(res.message || 'Get segment information error!');
+          message.error(res.message || 'Error getting segment');
         }
       });
     }

@@ -2,11 +2,11 @@ import { SyntheticEvent } from 'react';
 import { Dimmer, Loader, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import TextLimit from 'components/TextLimit';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { IVersion } from 'interfaces/targeting';
 import styles from './index.module.scss';
-import TextLimit from 'components/TextLimit';
 
 interface IProps {
   versions: IVersion[];

@@ -4,12 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Table, Button } from 'semantic-ui-react';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
+import TextLimit from 'components/TextLimit';
 import { ISegment, IToggleList } from 'interfaces/segment';
 import { deleteSegment, getSegmentUsingToggles } from 'services/segment';
 import message from 'components/MessageBox';
-import styles from './index.module.scss';
 import { segmentContainer } from '../../provider';
-import TextLimit from 'components/TextLimit';
+import styles from './index.module.scss';
 
 interface ILocationParams {
   projectKey: string;

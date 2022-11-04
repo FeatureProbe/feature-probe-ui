@@ -11,6 +11,7 @@ import {
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
+import SegmentDrawer from './components/SegmentDrawer';
 import SegmentItem from './components/SegmentItem';
 import ProjectLayout from 'layout/projectLayout';
 import message from 'components/MessageBox';
@@ -22,9 +23,8 @@ import { saveDictionary } from 'services/dictionary';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import { NOT_FOUND } from 'constants/httpCode';
 import { LAST_SEEN } from 'constants/dictionary_keys';
-import styles from './index.module.scss';
-import SegmentDrawer from './components/SegmentDrawer';
 import { Provider } from './provider';
+import styles from './index.module.scss';
 
 interface IParams {
   projectKey: string;
@@ -53,9 +53,9 @@ const Segment = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [ isAdd, setIsAdd ] = useState(true);
-  const [ isVisible, setIsVisible ] = useState(false);
-  const [ segmentKey, setSegmentKey ] = useState('');
+  const [ isAdd, setIsAdd ] = useState<boolean>(true);
+  const [ isVisible, setIsVisible ] = useState<boolean>(false);
+  const [ segmentKey, setSegmentKey ] = useState<string>('');
   const history = useHistory();
   const intl = useIntl();
 
