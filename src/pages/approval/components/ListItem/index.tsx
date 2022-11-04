@@ -175,12 +175,12 @@ const ListItem = (props: IProps) => {
                 className={styles.popup}
                 trigger={
                   <span>
-                    { approval.title }
+                    { approval.comment }
                   </span>
                 }
                 content={
                   <div className={styles['popup-content']}>
-                    { approval.title }
+                    { approval.comment }
                   </div>
                 }
                 position='top left'

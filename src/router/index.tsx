@@ -43,8 +43,6 @@ const Router = () => {
 
       window.FP = FP;
 
-      FP.start();
-    
       FP.on('ready', () => {
         const result = FP.boolValue('demo_features', false);
         localStorage.setItem('isDemo', result.toString());
@@ -56,6 +54,8 @@ const Router = () => {
         setIsLoading(false);
         initRedirectUrl();
       });
+
+      FP.start();
     }
   }, [initRedirectUrl]);
 
