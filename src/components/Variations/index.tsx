@@ -6,8 +6,8 @@ import Icon from 'components/Icon';
 import uniqBy from 'lodash/uniqBy';
 import { IVariation } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
-import styles from './index.module.scss';
 import { useFormErrorScrollIntoView } from 'hooks';
+import styles from './index.module.scss';
 interface IProps {
   disabled?: boolean;
   returnType: string;

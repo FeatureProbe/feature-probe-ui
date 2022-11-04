@@ -2,7 +2,7 @@ import request from '../utils/request';
 import API from '../constants/api';
 import qs from 'qs';
 import { ApplicationJson } from 'constants/api/contentType';
-import { IExistParams } from 'interfaces/project';
+import { IExistParams, IVersionParams } from 'interfaces/project';
 import { ISegmentInfo } from 'interfaces/segment';
 
 interface ISegmentParams {
@@ -70,6 +70,22 @@ export const editSegment = async (projectKey: string, segmentKey: string, data?:
   });
 };
 
+export const confirmPublishSegment = async (projectKey: string, segmentKey: string, data?: ISegmentInfo & { comment: string }) => {
+  const url = `${
+    API.publishSegmentURI
+      .replace(':projectKey', projectKey)
+      .replace(':segmentKey', segmentKey)
+  }`;
+  
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
+    body: JSON.stringify(data),
+  });
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getSegmentUsingToggles = async<T> (projectKey: string, segmentKey: string, params: any) => {
   const url = `${
@@ -105,6 +121,21 @@ export const checkSegmentExist = async<T> (projectKey: string, params: IExistPar
   const url = `${
     API.segmentExistURI
       .replace(':projectKey', projectKey)
+  }?${qs.stringify(params)}`;
+  
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
+export const getSegmentVersion = async<T> (projectKey: string, segmentKey: string, params: IVersionParams) => {
+  const url = `${
+    API.getSegmentVersionsURI
+      .replace(':projectKey', projectKey)
+      .replace(':segmentKey', segmentKey)
   }?${qs.stringify(params)}`;
   
   return request<T>(url, {

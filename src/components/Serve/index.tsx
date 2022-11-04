@@ -6,6 +6,7 @@ import Icon from 'components/Icon';
 import { IServe, IVariation } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import { VariationColors } from 'constants/colors';
+import { useFormErrorScrollIntoView } from 'hooks';
 import styles from './index.module.scss';
 import { useFormErrorScrollIntoView } from 'hooks';
 

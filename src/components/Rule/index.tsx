@@ -64,7 +64,6 @@ const Rule = (props: IProps) => {
         >
           <div className={styles.rule} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Accordion
-              defaultActiveIndex={0}
               activeIndex={active ? 0 : -1}
               panels={[{
                 title: {

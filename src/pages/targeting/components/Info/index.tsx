@@ -45,6 +45,7 @@ const Info = (props: IProps) => {
   const [ toggleStatus, saveToggleStatus ] = useState<string>(approvalInfo?.status || '');
   const [ diffContent, setDiffContent ] = useState<string>('');
   const [ isDiffLoading, saveIsDiffLoading ] = useState<boolean>(false);
+  const [ approvePublishLoading, setApprovePublishLoading ] = useState<boolean>(false);
 
   const { userInfo } = HeaderContainer.useContainer();
   const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
@@ -178,7 +179,9 @@ const Info = (props: IProps) => {
 
   // Publish this approval
   const handlePublish = useCallback(() => {
+    setApprovePublishLoading(true);
     publishTargetingDraft(projectKey, environmentKey, toggleKey).then(res => {
+      setApprovePublishLoading(false);
       if (res.success) {
         message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
         initTargeting();
@@ -416,7 +419,7 @@ const Info = (props: IProps) => {
                         >
                           <FormattedMessage id='targeting.approval.operation.abandon' />
                         </Button>
-                        <Button primary className={styles.btn} onClick={handlePublish}>
+                        <Button loading={approvePublishLoading} disabled={approvePublishLoading} primary className={styles.btn} onClick={handlePublish}>
                           <FormattedMessage id='targeting.approval.operation.publish' />
                         </Button>
                       </>

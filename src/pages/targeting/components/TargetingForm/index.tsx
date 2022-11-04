@@ -40,6 +40,7 @@ import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import { getFromDictionary, saveDictionary } from 'services/dictionary';
 import { USER_GUIDE_LAYOUT, USER_GUIDE_TARGETING } from 'constants/dictionary_keys';
+import { useFormErrorScrollIntoView } from 'hooks';
 import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
 import { useFormErrorScrollIntoView } from 'hooks';
@@ -208,6 +209,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             condition.timezone = condition.objects[0].slice(19);
           }
         });
+        rule.active = true;
       });
       saveRules(targetRule);
 
@@ -486,7 +488,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       </div>
       <div id='footer' className={styles.footer}>
         <EventTracker category='targeting' action='publish-toggle'>
-          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
+          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled || isLoading} primary type="submit">
             { isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} /> }
             <span className={styles['publish-btn-text']}>
               {

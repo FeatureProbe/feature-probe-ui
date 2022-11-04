@@ -113,17 +113,21 @@ export interface IMetricParams {
 
 export interface IVersion {
   projectKey: string,
-  environmentKey: string,
   comment: string,
-  content: ITarget;
   version: number,
   createdTime: string;
   createdBy: string;
   disabled: boolean;
+  [key: string]: unknown; 
+}
+
+export interface ITargetingVersion extends IVersion {
   approvalBy: string;
   approvalStatus: string;
   approvalTime: string;
   approvalComment?: string;
+  content: ITarget;
+  environmentKey: string,
 }
 
 export interface ITargetingVersions {
@@ -135,14 +139,14 @@ export interface ITargetingVersions {
   numberOfElements: number;
   pageable: IPageable;
   size: number;
-  content: IVersion[];
+  content: ITargetingVersion[];
   number: number;
   empty: boolean;
 }
 
 export interface ITargetingVersionsByVersion {
   total: number;
-  versions: IVersion[]
+  versions: ITargetingVersion[]
 }
 
 export interface IDictionary {

@@ -146,3 +146,141 @@
   margin-top: 16px;
   text-align: right;
 }
+
+.modal-footer {
+  display: flex;
+  height: 43px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border-top: 1px solid #CED4DA;
+  margin-top: 106px;
+
+  &>button {
+    margin-left: 8px !important;
+  }
+}
+
+.diff-box {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.60);
+  margin: 0 -16px -4px;
+  border-bottom: 1px solid rgba(206, 212, 218, 0.6);
+
+  :global {
+    .d2h-file-header {
+      display: none;
+    }
+
+    .d2h-info {
+      display: none;
+    }
+
+    .d2h-file-wrapper {
+      border-top: 1px solid rgba(206, 212, 218, 0.6);
+      border-bottom: 1px solid rgba(206, 212, 218, 0.6);
+      border-radius: 0;
+    }
+
+    .d2h-del {
+      background-color: #fff5f4;
+    }
+
+    .d2h-code-line del, .d2h-code-side-line del {
+      background-color: #ffd4d0;
+    }
+
+    .d2h-ins {
+      background-color: #effcf2;
+    }
+
+    .d2h-code-line ins, .d2h-code-side-line ins {
+      background-color: #c2f6ce;
+    }
+
+    .d2h-file-side-diff {
+      margin-bottom: -2px;
+      overflow-x: auto;
+    }
+
+    .d2h-files-diff {
+      max-height: 341px;
+      overflow-y: auto;
+      z-index: 1;
+      position: relative;
+    }
+  }
+}
+
+.comment {
+  margin: 0 -16px;
+  padding: 0 24px;
+  align-items: center;
+}
+
+.comment-title {
+  margin-bottom: 8px;
+  margin-top: 10px;
+}
+
+.comment-input {
+  :global {
+    .ui.input {
+      width: 100%;
+    }
+
+    .ui.input > input {
+      height: 32px;
+    }
+  }
+}
+
+.toggle-info {
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  position: relative;
+}
+
+.toggle-info-name {
+  color: #556ee6;
+  font-size: 15px;
+  font-family: HelveticaNeue-Medium;
+}
+
+.toggle-info-key {
+  margin-left: 8px;
+  height: 16px;
+  line-height: 16px;
+  background: rgba(85, 110, 230, 0.1);
+  border-radius: 4px;
+  font-size: 10px;
+  color: #556ee6;
+  padding: 0 4px;
+}
+
+.toggle-info-key-label {
+  transform: scale(0.9);
+}
+
+.toggle-info-description {
+  margin-top: 10px;
+  max-width: 380px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 32px;
+  font-size: 12px;
+  color: #495057;
+}
+
+.no-data {
+  text-align: center;
+  line-height: 30px;
+  font-family: PingFangSC-Medium;
+  font-size: 18px;
+  color: #adb5bc;
+}
+
+.no-data-image {
+  width: 230px;
+}
