@@ -56,6 +56,7 @@
   },
   "scripts": {
     "start": "semantic-ui-css-patch && craco start",
+    "start:demo": "semantic-ui-css-patch && cross-env REACT_APP_MODE=demo craco start",
     "build": "semantic-ui-css-patch && craco build",
     "test": "craco test",
     "eject": "craco eject"
