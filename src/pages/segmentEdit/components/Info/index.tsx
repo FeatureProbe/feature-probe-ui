@@ -202,7 +202,6 @@ const Info = () => {
       setLoading(false);
       if (res.success) {
         message.success(intl.formatMessage({id: 'segments.edit.success'}));
-        setPublishDisabled(true);
         saveInitialSegment(publishSegment);
 
         initHistory();

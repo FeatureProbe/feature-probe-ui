@@ -12,9 +12,8 @@ export const useRule = () => {
   const handleAddRule = () => {
     const rule: IRule = {
       id: uuidv4(),
-      name: '',
-      serve: undefined,
       conditions: [],
+      name: '',
       active: true,
     };
     rules.push(rule);
