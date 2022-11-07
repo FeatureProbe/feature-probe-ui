@@ -146,6 +146,7 @@ const MemberDrawer = (props: IParams) => {
       };
       params.accounts = data.accounts;
       params.password = data.password || DEFAULT_PASSWORD;
+      params.role = data.role;
 
       const res = await createMember(params);
       if (res.success) {
