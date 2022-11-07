@@ -6,6 +6,7 @@ import Icon from 'components/Icon';
 import uniqBy from 'lodash/uniqBy';
 import { IVariation } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
+import { useFormErrorScrollIntoView } from 'hooks';
 import styles from './index.module.scss';
 interface IProps {
   disabled?: boolean;
@@ -33,6 +34,8 @@ const Variations = (props: IProps) => {
     setError,
     clearErrors,
   } = hooksFormContainer.useContainer();
+
+  const { registerErrorName } = useFormErrorScrollIntoView();
 
   const handleDeleteVariation = useCallback((index: number, variationId?: string) => {
     unregister(`variation_${variationId}_name`);
@@ -124,7 +127,7 @@ const Variations = (props: IProps) => {
         </Button>
       </div>
       {
-        isError && <div className={styles['error-text']}>
+        isError && <div {...registerErrorName('variations_duplicated')} className={styles['error-text']}>
           {
             intl.formatMessage({
               id: 'variations.duplicated.error.text'

@@ -63,6 +63,7 @@ export const useRule = () => {
       name: '',
       serve: undefined,
       conditions: [],
+      active: true
     };
     rules.push(rule);
     saveRules([...rules]);
@@ -135,6 +136,13 @@ export const useRule = () => {
     saveRules([...rules]);
   };
 
+  const handleChangeActive = (ruleIndex: number) => {
+    saveRules((rules) => {
+      rules[ruleIndex].active = !rules[ruleIndex].active;
+      return [...rules];
+    });
+  };
+
   return { 
     rules,
     saveRules,
@@ -150,6 +158,7 @@ export const useRule = () => {
     handleChangeDateTime,
     handleChangeTimeZone,
     handleChangeServe,
+    handleChangeActive,
   };
 };
 

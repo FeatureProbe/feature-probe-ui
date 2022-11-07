@@ -174,7 +174,7 @@ const ProjectSetting = () => {
                                 <div className='environment-name-text'>{setting.environmentName}</div>
                               </div>
                             </Form.Field>
-                            <Form.Field width={12}>
+                            <Form.Field className={styles['approval-reviewers-dropdown-field']} width={12}>
                               <Dropdown
                                 {
                                   ...register(`approval-reviewers-${index}`, {
@@ -206,7 +206,7 @@ const ProjectSetting = () => {
                             <Form.Field width={2}>
                               <Popup
                                 inverted
-                                disabled={!setting.locked}
+                                disabled={OWNER.includes(userInfo.role) && !setting.locked}
                                 className={styles.popup}
                                 trigger={
                                   <Radio
@@ -221,7 +221,11 @@ const ProjectSetting = () => {
                                     disabled={!OWNER.includes(userInfo.role) || setting.locked}
                                   />
                                 }
-                                content={intl.formatMessage({ id: 'toggles.settings.approval.enable.tips' })}
+                                content={
+                                  !OWNER.includes(userInfo.role) 
+                                    ? intl.formatMessage({ id: 'toggles.settings.approval.enable.writer.tips' }) 
+                                    : intl.formatMessage({ id: 'toggles.settings.approval.enable.tips' })
+                                  }
                                 position='top left'
                                 wide
                               />

@@ -1,5 +1,5 @@
-import { useState, MouseEvent, useCallback } from 'react';
-import { Accordion, AccordionTitleProps } from 'semantic-ui-react';
+import { useState, useCallback } from 'react';
+import { Accordion } from 'semantic-ui-react';
 import { Draggable } from 'react-beautiful-dnd';
 import RuleTitle from './RuleTitle';
 import RuleContent from './RuleContent';
@@ -19,6 +19,7 @@ interface IProps {
   ruleContainer: IContainer;
   hooksFormContainer: IContainer;
   segmentContainer?: IContainer;
+  active?: boolean;
 }
 
 const Rule = (props: IProps) => {
@@ -32,10 +33,14 @@ const Rule = (props: IProps) => {
     variationContainer,
     hooksFormContainer,
     segmentContainer,
+    active,
   } = props;
 
   const [ isHover, setHover ] = useState<boolean>(false);
-  const [ active, setActive ] = useState<boolean>(false);
+
+  const {
+    handleChangeActive,
+  } = ruleContainer.useContainer();
 
   const handleMouseEnter = useCallback(() => {
     setHover(true);
@@ -45,9 +50,9 @@ const Rule = (props: IProps) => {
     setHover(false);
   }, []);
 
-  const handleTitleClick = useCallback((e: MouseEvent, data: AccordionTitleProps) => {
-    setActive(data.active || false);
-  }, []);
+  const handleTitleClick = useCallback(() => {
+    handleChangeActive(index);
+  }, [index]);
 
 	return (
     <Draggable draggableId={`rule_${rule.id}`} index={index} isDragDisabled={disabled}>
@@ -59,12 +64,12 @@ const Rule = (props: IProps) => {
         >
           <div className={styles.rule} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <Accordion
-              defaultActiveIndex={0}
+              activeIndex={active ? 0 : -1}
               panels={[{
                 title: {
                   className: styles['rule-accordion-title'],
                   icon: (
-                    active 
+                    !active 
                       ? <Icon customClass={styles['icon-accordion']} type='angle-right' />
                       : <Icon customClass={styles['icon-accordion']} type='angle-down' />
                   ),

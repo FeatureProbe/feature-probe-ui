@@ -1,8 +1,8 @@
-
 import { SyntheticEvent } from 'react';
 import { Dimmer, Loader, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import TextLimit from 'components/TextLimit';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { IVersion } from 'interfaces/targeting';
@@ -16,7 +16,6 @@ interface IProps {
   isHistoryLoading: boolean;
   loadMore(): void;
   reviewHistory(version: IVersion): void;
-  setHistoryOpen(open: boolean): void;
 }
 
 const History = (props: IProps) => {
@@ -50,7 +49,7 @@ const History = (props: IProps) => {
               }
             >
               {
-                versions.length > 0 && versions.map((item: IVersion) => {
+                versions.length > 0 && versions.map((item) => {
                   const clsRight = classNames(
                     styles['version-right'],
                     {
@@ -130,7 +129,7 @@ const History = (props: IProps) => {
                           />
                         </div>
                         {
-                          item.approvalStatus === 'PASS' && (
+                          item.approvalStatus === 'PASS' && typeof item.approvalTime === 'string' && (
                             <div className={styles.modifyBy}>
                               <span className={styles['version-title']}>
                                 <FormattedMessage id='approvals.reviewed.by' />
@@ -180,23 +179,10 @@ const History = (props: IProps) => {
                         {
                           item.comment && <div className={styles.comment}>
                             <span className={styles['version-title']}>
-                              <FormattedMessage id='targeting.publish.modal.comment' />:
+                              <FormattedMessage id='targeting.publish.modal.comment' />
                             </span>
                             :
-                            <Popup
-                              inverted
-                              style={{opacity: '0.8'}}
-                              className={styles.popup}
-                              trigger={
-                                <span className={styles['tooltip-text']}>{ item.comment }</span>
-                              }
-                              content={
-                                <div className={styles.tooltip}>
-                                  {item.comment}
-                                </div>
-                              }
-                              position='top left'
-                            />
+                            <span className={styles['tooltip-text']}><TextLimit text={ item.comment } /></span>
                           </div>
                         }
                       </div>
