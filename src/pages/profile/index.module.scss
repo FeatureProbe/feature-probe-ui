@@ -5,6 +5,8 @@
   min-height: calc(100vh - 64px);
   margin: 16px 20px 0;
   padding: 12px 24px 24px;
+  min-width: 600px;
+  overflow-x: auto;
 }
 
 .heading {
