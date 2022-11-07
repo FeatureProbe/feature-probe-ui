@@ -37,7 +37,7 @@ const MemberDrawer = (props: IParams) => {
   const [ passwordVisible, setPasswordVisible ] = useState<boolean>(false);
   const [ memberValues, setMemberValues ] = useState<string[]>([]);
   const [ dulplicateAccount, setDulplicateAccount ] = useState<string>(); 
-  const [ role, saveRole ] = useState<string>('Writer');
+  const [ role, saveRole ] = useState<string>('WRITER');
   const intl = useIntl();
 
   const {
@@ -53,8 +53,8 @@ const MemberDrawer = (props: IParams) => {
   const options = useMemo(() => {
     return [
       { 
-        key: 'Writer', 
-        value: 'Writer', 
+        key: 'WRITER', 
+        value: 'WRITER', 
         text: 'Writer',
         children: (
           <div>
@@ -66,8 +66,8 @@ const MemberDrawer = (props: IParams) => {
         )
       },
       { 
-        key: 'Owner', 
-        value: 'Owner', 
+        key: 'OWNER', 
+        value: 'OWNER', 
         text: 'Owner',
         children: (
           <div className={styles['role-item']}>
@@ -91,7 +91,7 @@ const MemberDrawer = (props: IParams) => {
       setValue('account', '');
       setValue('password', '');
     }
-    setValue('role', 'Writer');
+    setValue('role', 'WRITER');
   }, [visible, setValue, clearErrors]);
 
   useEffect(() => {
@@ -159,6 +159,7 @@ const MemberDrawer = (props: IParams) => {
       const res = await updateMember(data);
       if (res.success) {
         message.success(intl.formatMessage({id: 'members.update.success.text'}));
+        refreshMemberList(0);
         setDrawerVisible(false);
       } else {
         message.error(intl.formatMessage({id: 'members.update.error.text'}));

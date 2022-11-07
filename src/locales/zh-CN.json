@@ -95,6 +95,8 @@
   "common.lock.text": "开关已被锁定，不可编辑",
   "common.lock.by": "锁定人",
   "common.lock.time": "锁定时间",
+  "common.next.text": "下一步",
+  "common.previous.text": "上一步",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -248,6 +250,7 @@
   "toggles.settings.approval.reviewers.placeholder": "请选择审批人",
   "toggles.settings.approval.enable": "开启审批",
   "toggles.settings.approval.enable.tips": "该环境存在审批流程未结束的开关，不允许关闭",
+  "toggles.settings.approval.enable.writer.tips": "您没有操作权限",
   "toggles.settings.save.success": "保存成功",
 
   "targeting.default.rule": "默认规则",
@@ -331,6 +334,7 @@
   "tags.list.error": "获取标签列表失败",
 
   "segments.create.text": "创建人群组",
+  "segments.create.publish.text": "创建并发布",
   "segments.edit.text": "编辑人群组",
   "segments.total": "人群组",
   "segments.list.error.text": "获取人群组列表失败!",
@@ -339,12 +343,13 @@
   "segments.modal.cannot.delete.title": "无法删除",
   "segments.modal.cannot.delete.text": "该人群组正在被使用，无法删除",
   "segments.modal.delete.tips": "人群组的修改将影响{count}个开关",
-  "segments.create.success": "人群组创建成功",
+  "segments.create.success": "人群组创建并发布成功",
   "segments.create.error": "人群组创建失败",
   "segments.edit.success": "人群组更新成功",
   "segments.edit.error": "人群组更新失败",
   "segments.delete.success": "人群组删除成功",
   "segments.delete.error": "人群组删除失败，请重试",
+  "segments.label.name.text": "人群组名称",
   
   "toggle.connect": "连接SDK",
   "connect.description": "将应用程序连接到FeatureProbe！",

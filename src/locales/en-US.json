@@ -95,6 +95,8 @@
   "common.lock.text": "This toggle is locked",
   "common.lock.by": "Locked by",
   "common.lock.time": "Locked at",
+  "common.next.text": "Next",
+  "common.previous.text": "Previous",
 
   "header.getuser.error.text": "Get user info error!",
 
@@ -248,6 +250,7 @@
   "toggles.settings.approval.reviewers.placeholder": "Please select reviewers",
   "toggles.settings.approval.enable": "Enable Approval",
   "toggles.settings.approval.enable.tips": "The environment has toggles in the approval process that are not allowed to be turned off",
+  "toggles.settings.approval.enable.writer.tips": "Permission denied",
   "toggles.settings.save.success": "Successfully saved",
 
   "targeting.default.rule": "Default Rule",
@@ -331,6 +334,7 @@
   "tags.list.error": "Get tag list error",
 
   "segments.create.text": "Create a segment",
+  "segments.create.publish.text": "Create and publish",
   "segments.edit.text": "Edit segment",
   "segments.total": "segments in total",
   "segments.list.error.text": "Error getting segments list!",
@@ -338,13 +342,14 @@
   "segments.modal.delete.title": "Are you sure to delete this segment?",
   "segments.modal.cannot.delete.title": "Can not delete",
   "segments.modal.cannot.delete.text": "This segment is in use, can not delete",
-  "segments.modal.delete.tips": "The segment in {count} toggles will be changed",
-  "segments.create.success": "Created segment successfully",
+  "segments.modal.delete.tips": "This change will take effect in {count} toggles",
+  "segments.create.success": "Created segment and publish successfully",
   "segments.create.error": "Error creating segment",
   "segments.edit.success": "Updated segment successfully",
   "segments.edit.error": "Error updating segment",
   "segments.delete.success": "Successfully deleted!",
   "segments.delete.error": "Error, segment was not deleted, please retry!",
+  "segments.label.name.text": "Segment name",
 
   "toggle.connect": "Connect SDK",
   "connect.description": "Connect your application to FeatureProbe!",

@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import { ReactNode, SyntheticEvent } from 'react';
 import { Form, FormInputProps, InputOnChangeData } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UseFormRegister, FieldValues, FieldErrors } from 'react-hook-form';
@@ -11,18 +11,19 @@ interface IProps extends FormInputProps {
   className?: string;
   register: UseFormRegister<FieldValues>;
   onChange(e: SyntheticEvent, detail: InputOnChangeData): void;
+  labelRender?: ReactNode;
 }
 
 const FormItemName = (props: IProps) => {
   const intl = useIntl();
-  const { value, errors, size, className, register, onChange } = props;
+  const { value, errors, size, className, register, onChange, labelRender } = props;
 
   return (
     <div className={className}>
       <Form.Field>
         <label>
           <span className={styles['label-required']}>*</span>
-          <FormattedMessage id='common.name.text' />
+          {labelRender ?? <FormattedMessage id='common.name.text' />}
         </label>
         <Form.Input
           size={size}

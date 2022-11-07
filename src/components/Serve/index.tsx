@@ -6,6 +6,7 @@ import Icon from 'components/Icon';
 import { IServe, IVariation } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import { VariationColors } from 'constants/colors';
+import { useFormErrorScrollIntoView } from 'hooks';
 import styles from './index.module.scss';
 
 interface IAttr {
@@ -54,6 +55,7 @@ const Serve = (props: IProps) => {
     setError,
     clearErrors,
   } = hooksFormContainer.useContainer();
+  const { registerErrorName } = useFormErrorScrollIntoView();
 
   useEffect(() => {
     setVariationsInUse(cloneDeep(variations));
@@ -245,7 +247,7 @@ const Serve = (props: IProps) => {
             </div>
             {
               total !== TOTAL && (
-                <div id={`rule_${id}_serve_total`} className={styles.message}>
+                <div {...registerErrorName(id ? `rule_${id}_serve_total` : 'defaultServe_total')} className={styles.message}>
                   <Icon customClass={styles['message-iconfont']} type='remove-circle' />
                   {
                     intl.formatMessage({

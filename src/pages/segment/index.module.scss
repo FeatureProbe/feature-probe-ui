@@ -2,7 +2,8 @@
   position: relative;
   padding: 0 20px;
   min-width: 1220px;
-  overflow-x: auto;
+  height: calc(100vh - 94px);
+  overflow: auto;
 }
 
 .column-name {
@@ -129,6 +130,15 @@
   margin-top: 16px;
   flex: 1;
   position: relative;
+  overflow-x: auto;
+}
+
+.table {
+  padding: 0 1px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
 }
 
 .table-header {

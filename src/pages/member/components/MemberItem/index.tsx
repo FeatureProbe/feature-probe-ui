@@ -67,7 +67,7 @@ const MemberItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['member-role']}>
-          {member?.role}
+          {'' + member?.role.slice(0, 1) + member?.role.slice(1).toLocaleLowerCase()}
         </div>
       </Table.Cell>
       <Table.Cell>

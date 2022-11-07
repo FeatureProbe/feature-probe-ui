@@ -62,4 +62,5 @@ export interface IFormParams {
   accounts?: string[];
   password?: string;
   account?: string;
+  role?: string;
 }
