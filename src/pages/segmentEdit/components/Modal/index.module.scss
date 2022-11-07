@@ -202,10 +202,12 @@
   margin-bottom: 8px;
 }
 
-.comment-input {
+.comment-content {
   height: 190px;
   overflow: auto;
+}
 
+.comment-input {
   :global {
     .ui.input {
       width: 100%;
