@@ -7,7 +7,7 @@
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.5);
   visibility: hidden;
-  transition: all .5s cubic-bezier(0.82, 0.085, 0.395, 0.895);
+  transition: all 0.5s cubic-bezier(0.82, 0.085, 0.395, 0.895);
 }
 
 .segment-drawer-inactive {
@@ -22,8 +22,8 @@
   background-color: #fff;
   position: absolute !important;
   right: -500px;
-  box-shadow: 0 10px 20px 0px rgba(18, 38, 63, 0.03);
-  transition: right .5s cubic-bezier(0.82, 0.085, 0.395, 0.895);
+  box-shadow: 0 10px 20px 0 rgba(18, 38, 63, 0.03);
+  transition: right 0.5s cubic-bezier(0.82, 0.085, 0.395, 0.895);
 }
 
 .segment-drawer-form-inactive {
