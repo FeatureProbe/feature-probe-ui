@@ -84,7 +84,6 @@ const MemberItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         {
-          // (member?.account.toLowerCase() !== userInfo?.account.toLowerCase()) && (OWNER.includes(userInfo?.role)) ? (
           OWNER.includes(userInfo?.role) && member?.allowEdit ? (
             <div className={styles['member-operation']}>
               <div className={styles['member-operation-item']} onClick={() => handleEdit()}>
