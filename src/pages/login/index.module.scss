@@ -63,6 +63,15 @@
   margin-top: 8px;
 }
 
+.demo-tips {
+  background: #fffae0;
+  line-height: 18px;
+  font-size: 13px;
+  color: #592d00;
+  padding: 7px 20px;
+  border-radius: 8px;
+}
+
 .form {
   margin-top: 80px;
 
@@ -92,7 +101,7 @@
     }
 
     .ui.form .field {
-      margin-bottom: 0;
+      margin-bottom: 10px !important;
     }
 
     input {
@@ -134,7 +143,7 @@
 }
 
 .demo-footer {
-  margin-top: 70px;
+  margin-top: 60px;
 }
 
 .btn {

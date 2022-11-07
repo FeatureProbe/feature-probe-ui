@@ -160,6 +160,7 @@ const PageHeader = () => {
   const handleLogout = useCallback(async () => {
     localStorage.removeItem('token');
     localStorage.removeItem('organizeId');
+    localStorage.removeItem('account');
     history.push('/login');
   }, [history]);
 
@@ -278,7 +279,7 @@ const PageHeader = () => {
           position='bottom right'
           className={styles.popup}
           trigger={
-            <div onClick={(e: SyntheticEvent) => {
+            <div className={styles['user-container']} onClick={(e: SyntheticEvent) => {
               document.body.click();
               e.stopPropagation();
               setMenuOpen(true);

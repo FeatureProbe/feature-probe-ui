@@ -223,7 +223,7 @@ const ProjectCard = (props: IProps) => {
               })
             }
             {
-              !isArchived && (
+              OWNER.includes(userInfo.role) && !isArchived && (
                 <div className={styles['add-environment']} onClick={handleAddEnvironment}>
                   <Icon customClass={styles['add-environment-icon']} type='add' />
                   <FormattedMessage id='projects.menu.add.environment' />
