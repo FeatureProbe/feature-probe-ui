@@ -160,7 +160,7 @@ const Targeting = () => {
         message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
     });
-  }, [projectKey, environmentKey, toggleKey]);
+  }, [projectKey, environmentKey, toggleKey, intl]);
 
   // get specific history versions
   const getVersionsByVersion = useCallback(async () => {
@@ -206,7 +206,7 @@ const Targeting = () => {
     } else {
       message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
     }
-  }, [currentVersion, projectKey, environmentKey, toggleKey]);
+  }, [currentVersion, projectKey, environmentKey, toggleKey, intl]);
 
   useEffect(() => {
     if (currentVersion) {

@@ -79,7 +79,7 @@ const MemberDrawer = (props: IParams) => {
         )
       },
     ];
-  }, [intl]);
+  }, []);
 
   useEffect(() => {
     if (visible) {

@@ -43,13 +43,7 @@
   height: 42px;
   line-height: 42px;
   font-size: 13px;
-}
-
-.table-header > .ui.table thead th {
-  padding: 0 !important
-}
-
-.table-header {
+  
   :global {
     th {
       padding-bottom: 0 !important;
@@ -60,6 +54,10 @@
       padding-bottom: 0 !important;
     }
   }
+}
+
+.table-header > .ui.table thead th {
+  padding: 0 !important
 }
 
 .pagination {
