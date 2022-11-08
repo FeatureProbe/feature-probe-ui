@@ -512,7 +512,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
-            <Diff content={diffContent} />
+            <Diff content={diffContent} maxHeight={341} />
             <Form>
               {
                 approvalInfo?.enableApproval && (
