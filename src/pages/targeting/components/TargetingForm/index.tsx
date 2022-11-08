@@ -22,6 +22,7 @@ import Button from 'components/Button';
 import Variations from 'components/Variations';
 import SectionTitle from 'components/SectionTitle';
 import EventTracker from 'components/EventTracker';
+import Diff from 'components/Diff';
 import { saveToggle } from 'services/toggle';
 import { replaceSpace } from 'utils/tools';
 import { 
@@ -511,7 +512,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
-            <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
+            <Diff content={diffContent} maxHeight={341} />
             <Form>
               {
                 approvalInfo?.enableApproval && (

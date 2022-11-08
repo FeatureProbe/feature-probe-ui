@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
+import Diff from 'components/Diff';
 import { IToggle } from 'interfaces/segment';
 import TextLimit from 'components/TextLimit';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
@@ -101,7 +102,7 @@ const ConfirmModal = (props: IProps) => {
       width={800}
       footer={modalFooter()}
     >
-      <div>
+      <div className={styles['modal-inner-box']}>
         <div className={styles['modal-header']}>
           <span>
             <FormattedMessage id='targeting.publish.modal.title' />
@@ -237,8 +238,9 @@ const ConfirmModal = (props: IProps) => {
           steps[current] === 'diff' ? (
             <>
               <div className={styles['diff-box']}>
-                <div className="diff" dangerouslySetInnerHTML={{ __html: diff }} />
+                <Diff content={diff} maxHeight={343} />
               </div>
+              
               <Form>
                 <div className={styles['comment']}>
                   <div className={styles['comment-title']}>

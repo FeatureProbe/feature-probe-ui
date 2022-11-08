@@ -160,43 +160,45 @@ const Segment = () => {
                 </div>
               ) : (
                 <div className={styles.lists}>
-                  <Table className={styles.table} basic='very' unstackable>
-                    <Table.Header className={styles['table-header']}>
-                      <Table.Row>
-                        <Table.HeaderCell className={styles['column-name']}>
-                          <FormattedMessage id='common.name.text' />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-modify-by']}>
-                          <FormattedMessage id='common.key.text' />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-modify-time']}>
-                          <FormattedMessage id='common.description.text' />
-                        </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-operation']}>
-                          <FormattedMessage id='common.operation.text' />
-                        </Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
-                    {
-                      segmentList.length !== 0 && (
-                        <Table.Body>
-                          {
-                            segmentList?.map((segment: ISegment) => {
-                              return (
-                                <SegmentItem 
-                                  key={segment.key}
-                                  segment={segment}
-                                  fetchSegmentLists={fetchSegmentLists}
-                                  handleEdit={handleEdit}
-                                  handleClickItem={handleClickItem}
-                                />
-                              );
-                            })
-                          }
-                        </Table.Body>
-                      )
-                    }
-                  </Table>
+                  <div className={styles['table-box']}>
+                    <Table className={styles.table} basic='very' unstackable>
+                      <Table.Header className={styles['table-header']}>
+                        <Table.Row>
+                          <Table.HeaderCell className={styles['column-name']}>
+                            <FormattedMessage id='common.name.text' />
+                          </Table.HeaderCell>
+                          <Table.HeaderCell className={styles['column-modify-by']}>
+                            <FormattedMessage id='common.key.text' />
+                          </Table.HeaderCell>
+                          <Table.HeaderCell className={styles['column-modify-time']}>
+                            <FormattedMessage id='common.description.text' />
+                          </Table.HeaderCell>
+                          <Table.HeaderCell className={styles['column-operation']}>
+                            <FormattedMessage id='common.operation.text' />
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
+                      {
+                        segmentList.length !== 0 && (
+                          <Table.Body>
+                            {
+                              segmentList?.map((segment: ISegment) => {
+                                return (
+                                  <SegmentItem 
+                                    key={segment.key}
+                                    segment={segment}
+                                    fetchSegmentLists={fetchSegmentLists}
+                                    handleEdit={handleEdit}
+                                    handleClickItem={handleClickItem}
+                                  />
+                                );
+                              })
+                            }
+                          </Table.Body>
+                        )
+                      }
+                    </Table>
+                  </div>
                   {
                     segmentList.length === 0 && (
                       <div className={styles['no-data']}>
