@@ -140,58 +140,6 @@
   }
 }
 
-.diff-box {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
-  margin: 0 -16px -4px;
-
-  :global {
-    .d2h-file-header {
-      display: none;
-    }
-
-    .d2h-info {
-      display: none;
-    }
-
-    .d2h-file-wrapper {
-      border-top: 1px solid rgba(206, 212, 218, 0.6);
-      border-bottom: 1px solid rgba(206, 212, 218, 0.6);
-      border-radius: 0;
-    }
-
-    .d2h-del {
-      background-color: #fff5f4;
-    }
-
-    .d2h-code-line del,
-    .d2h-code-side-line del {
-      background-color: #ffd4d0;
-    }
-
-    .d2h-ins {
-      background-color: #effcf2;
-    }
-
-    .d2h-code-line ins,
-    .d2h-code-side-line ins {
-      background-color: #c2f6ce;
-    }
-
-    .d2h-file-side-diff {
-      margin-bottom: -2px;
-      overflow-x: auto;
-    }
-
-    .d2h-files-diff {
-      max-height: 341px;
-      overflow-y: auto;
-      z-index: 1;
-      position: relative;
-    }
-  }
-}
-
 .comment {
   margin: 24px -16px 0;
   padding: 0 24px;
@@ -274,5 +222,4 @@
   font-size: 14px;
   color: rgba(0, 0, 0, 0.6);
   margin: 0 -16px -4px;
-  height: 343px;
 }
