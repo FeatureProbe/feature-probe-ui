@@ -5,6 +5,8 @@
   min-height: calc(100vh - 64px);
   margin: 16px 20px 0;
   padding: 12px 24px 24px;
+  min-width: 600px;
+  overflow-x: auto;
 }
 
 .heading {
@@ -52,4 +54,14 @@
   transform: scale(0.83);
   transform-origin: left;
   padding-left: 12px;
+}
+
+.demo-tips {
+  margin-top: 12px;
+  background: #fffae0;
+  line-height: 18px;
+  font-size: 13px;
+  color: #592d00;
+  padding: 7px 20px;
+  border-radius: 8px;
 }

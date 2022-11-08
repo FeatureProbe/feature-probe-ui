@@ -46,6 +46,7 @@ const DemoLogin = () => {
     if (success && data) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('organizeId', String(data.organizeId));
+      localStorage.setItem('account', data.account);
       gotoHome();
     } 
     else if (res.code === FORBIDDEN) {
@@ -106,7 +107,9 @@ const DemoLogin = () => {
               />
               { errors.account && <div className={styles['error-text']}>{ errors.account.message }</div> }
             </Form.Field>
-
+            <div className={styles['demo-tips']}>
+              <FormattedMessage id='login.demo.password.tip' />
+            </div> 
             <div className={styles['demo-footer']}>
               <EventTracker category='login' action='demo-login'>
                 <Button className={styles['demo-btn']} type='submit' primary disabled={!!errors.account || !!errors.password}>

@@ -142,7 +142,7 @@ const Lists = () => {
         <Form className={styles.form}>
           <Form.Field className={styles['keywords-field']}>
             <Form.Input 
-              placeholder={intl.formatMessage({id: 'approvals.search.placeholder'})} 
+              placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
               icon={<Icon customClass={styles['icon-search']} type='search' />}
               onChange={handleSearch}
             />

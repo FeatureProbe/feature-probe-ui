@@ -4823,10 +4823,10 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-featureprobe-client-sdk-js@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/featureprobe-client-sdk-js/-/featureprobe-client-sdk-js-1.1.2.tgz#b2aa69158cf06ac89e406f57a953d1a729816217"
-  integrity sha512-e1wZ9yGPFI7xY/Pf+ygSL675AgLLZOv6l/N5hGpR68GZxSV3V2uLctUNG1KmtU2rjLLsIOv0N38e6U/5nhUniQ==
+featureprobe-client-sdk-js@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/featureprobe-client-sdk-js/-/featureprobe-client-sdk-js-1.1.3.tgz#b850f630b5a34973aa775d5a0e813ea7587f4249"
+  integrity sha512-z+GtVQNPfRgCagWMqKu0CLA5EgmY1dO8jce/lr/rQKuQX+buAUP8mxsSaI1uwOkAIz0vJ838cZusd3XHPIiQ0g==
   dependencies:
     js-base64 "^3.7.2"
     tiny-emitter "^2.1.0"
