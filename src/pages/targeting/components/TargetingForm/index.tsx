@@ -22,6 +22,7 @@ import Button from 'components/Button';
 import Variations from 'components/Variations';
 import SectionTitle from 'components/SectionTitle';
 import EventTracker from 'components/EventTracker';
+import Diff from 'components/Diff';
 import { saveToggle } from 'services/toggle';
 import { replaceSpace } from 'utils/tools';
 import { 
@@ -511,73 +512,75 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
-            <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
-            <Form>
-              {
-                approvalInfo?.enableApproval && (
-                  <div className={styles['approval']}>
-                    <div className={styles['approval-title']}>
-                      <FormattedMessage id='toggles.settings.approval.reviewers' />:
-                      <Popup
-                        inverted
-                        trigger={
-                          <Icon type='info' customClass={styles['icon-info']} />
-                        }
-                        content={intl.formatMessage({id: 'targeting.approval.tips'})}
-                        position='top center'
-                        className={styles.popup}
-                      />
-                    </div>
-                    <div className={styles['approval-content']}>
-                      <Dropdown 
-                        fluid 
-                        multiple 
-                        selection 
-                        value={approvalInfo?.reviewers}
-                        options={options} 
-                        renderLabel={renderLabel}
-                        icon={null}
-                        disabled={true}
-                        className={styles['approval-dropdown']}
-                      />
-                      <div className={styles['approval-btn']} onClick={handleGotoSetting}>
-                        <FormattedMessage id='common.toggle.appoval.settings.text' />
+            <Diff content={diffContent} maxHeight={341} />
+            <div className={styles['diff-after']}>
+              <Form>
+                {
+                  approvalInfo?.enableApproval && (
+                    <div className={styles['approval']}>
+                      <div className={styles['approval-title']}>
+                        <FormattedMessage id='toggles.settings.approval.reviewers' />:
+                        <Popup
+                          inverted
+                          trigger={
+                            <Icon type='info' customClass={styles['icon-info']} />
+                          }
+                          content={intl.formatMessage({id: 'targeting.approval.tips'})}
+                          position='top center'
+                          className={styles.popup}
+                        />
+                      </div>
+                      <div className={styles['approval-content']}>
+                        <Dropdown 
+                          fluid 
+                          multiple 
+                          selection 
+                          value={approvalInfo?.reviewers}
+                          options={options} 
+                          renderLabel={renderLabel}
+                          icon={null}
+                          disabled={true}
+                          className={styles['approval-dropdown']}
+                        />
+                        <div className={styles['approval-btn']} onClick={handleGotoSetting}>
+                          <FormattedMessage id='common.toggle.appoval.settings.text' />
+                        </div>
                       </div>
                     </div>
+                  )
+                }
+                <div className={styles['comment']}>
+                  <div className={styles['comment-title']}>
+                    { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
+                    <FormattedMessage id='targeting.publish.modal.comment' />:
                   </div>
-                )
-              }
-              <div className={styles['comment']}>
-                <div className={styles['comment-title']}>
-                  { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
-                  <FormattedMessage id='targeting.publish.modal.comment' />:
-                </div>
-                <div className={styles['comment-content']}>
-                  <Form.TextArea
-                    {
-                      ...newRegister('reason', { 
-                        required: approvalInfo?.enableApproval, 
-                      })
+                  <div className={styles['comment-content']}>
+                    <Form.TextArea
+                      {
+                        ...newRegister('reason', { 
+                          required: approvalInfo?.enableApproval, 
+                        })
+                      }
+                      error={ newFormState.errors.reason ? true : false }
+                      className={styles['comment-input']} 
+                      placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
+                      onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+                        handleInputComment(e, detail);
+                        newSetValue(detail.name, detail.value);
+                        await newTrigger('reason');
+                      }}
+                    />
+                    { 
+                      newFormState.errors.reason && (
+                        <div className={styles['error-text']}>
+                          <FormattedMessage id='common.input.placeholder' />
+                        </div> 
+                      )
                     }
-                    error={ newFormState.errors.reason ? true : false }
-                    className={styles['comment-input']} 
-                    placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
-                    onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
-                      handleInputComment(e, detail);
-                      newSetValue(detail.name, detail.value);
-                      await newTrigger('reason');
-                    }}
-                  />
-                  { 
-                    newFormState.errors.reason && (
-                      <div className={styles['error-text']}>
-                        <FormattedMessage id='common.input.placeholder' />
-                      </div> 
-                    )
-                  }
+                  </div>
                 </div>
-              </div>
-            </Form>
+              </Form>
+            </div>
           </div>
         </div>
       </Modal>

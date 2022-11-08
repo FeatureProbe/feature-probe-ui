@@ -64,6 +64,8 @@
 }
 
 .footer {
+  position: sticky;
+  bottom: 0;
   height: 56px;
   border-top: 1px solid #ebedef;
   padding: 0 24px;

@@ -130,7 +130,10 @@
   margin-top: 16px;
   flex: 1;
   position: relative;
-  overflow-x: auto;
+
+  & > .table-box {
+    overflow-x: auto;
+  }
 }
 
 .table {
