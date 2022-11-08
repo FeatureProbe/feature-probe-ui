@@ -238,7 +238,7 @@ const ConfirmModal = (props: IProps) => {
           steps[current] === 'diff' ? (
             <>
               <div className={styles['diff-box']}>
-                <Diff content={diff} height={343} />
+                <Diff content={diff} maxHeight={343} />
               </div>
               
               <Form>

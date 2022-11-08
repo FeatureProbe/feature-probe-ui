@@ -13,8 +13,8 @@ const Diff: React.FC<DiffProps> = (props) => {
 
   useEffect(() => {
     if(ref.current) {
-      if(ref.current.clientHeight === props.maxHeight) {
-        ref.current.style.height = props.maxHeight + 'px';
+      if(props.maxHeight && ref.current.clientHeight <= props.maxHeight) {
+        ref.current.style.height = ref.current.clientHeight + 'px';
       }
 
       const ySides = ref.current.getElementsByClassName('d2h-file-side-diff');
