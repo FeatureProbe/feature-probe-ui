@@ -91,6 +91,10 @@
     &>.d2h-code-wrapper {
       overflow-x: auto !important;
       width: 100%;
+
+      & .d2h-code-side-linenumber {
+        background-color: #f8f9fa;
+      }
     }
   }
   
