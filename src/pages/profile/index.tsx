@@ -70,6 +70,7 @@ const Member = () => {
   const OLD_PASSWORD = 'oldPassword';
   const NEW_PASSWORD = 'newPassword';
   const CONFIRM_NEW_PASSWORD = 'confirmNewPassword';
+  const isDemo = localStorage.getItem('isDemo') === 'true';
 
 	return (
     <SettingLayout>
@@ -97,87 +98,103 @@ const Member = () => {
                 />
               </Form.Field>
             </div>
-            
-            <div className={styles.section}>
-              <SectionTitle
-                title={intl.formatMessage({id: 'profile.change.password'})}
-                showTooltip={false}
-              />
-              <Form.Field className={styles.field}>
-                <label className={styles.label}>
-                  <FormattedMessage id='profile.password.current' />
-                </label>
-                <Form.Input
-                  type='password'
-                  placeholder={intl.formatMessage({id: 'login.password.required'})}
-                  error={ errors[OLD_PASSWORD] ? true : false }
-                  {
-                    ...register(OLD_PASSWORD, PASSWORD_REGISTER)
-                  }
-                  onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                    setValue(detail.name, detail.value);
-                    await trigger(OLD_PASSWORD);
-                  }}
-                />
-              </Form.Field>
-              { errors[OLD_PASSWORD] && <div className={styles['error-text']}>{ errors[OLD_PASSWORD].message }</div> }
 
-              <Form.Field>
-                <label className={styles.label}>
-                  <FormattedMessage id='profile.password.new' />
-                </label>
-                <Form.Input
-                  type='password'
-                  placeholder={intl.formatMessage({id: 'login.password.required'})}
-                  error={ errors[NEW_PASSWORD] ? true : false }
-                  {
-                    ...register(NEW_PASSWORD, PASSWORD_REGISTER)
-                  }
-                  onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                    setValue(detail.name, detail.value);
-                    await trigger(NEW_PASSWORD);
-                  }}
-                />
-              </Form.Field>
-              { errors[NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[NEW_PASSWORD].message }</div> }
-              <div className={styles['tip-text']}>
-                <FormattedMessage id='login.password.tips' />
-              </div>
+            {
+              isDemo ? (
+                <div className={styles.section}>
+                  <SectionTitle
+                    title={intl.formatMessage({id: 'profile.change.password'})}
+                    showTooltip={false}
+                  />
+                  <div className={styles['demo-tips']}>
+                    <FormattedMessage id='login.demo.password.tip' />
+                  </div> 
+                </div>
+              ) : (
+                <>
+                  <div className={styles.section}>
+                    <SectionTitle
+                      title={intl.formatMessage({id: 'profile.change.password'})}
+                      showTooltip={false}
+                    />
+                    <Form.Field className={styles.field}>
+                      <label className={styles.label}>
+                        <FormattedMessage id='profile.password.current' />
+                      </label>
+                      <Form.Input
+                        type='password'
+                        placeholder={intl.formatMessage({id: 'login.password.required'})}
+                        error={ errors[OLD_PASSWORD] ? true : false }
+                        {
+                          ...register(OLD_PASSWORD, PASSWORD_REGISTER)
+                        }
+                        onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                          setValue(detail.name, detail.value);
+                          await trigger(OLD_PASSWORD);
+                        }}
+                      />
+                    </Form.Field>
+                    { errors[OLD_PASSWORD] && <div className={styles['error-text']}>{ errors[OLD_PASSWORD]?.message }</div> }
 
-              <Form.Field>
-                <label className={styles.label}>
-                  <FormattedMessage id='profile.password.new.confirm' />
-                </label>
-                <Form.Input
-                  type='password'
-                  placeholder={intl.formatMessage({id: 'login.password.required'})}
-                  error={ errors[CONFIRM_NEW_PASSWORD] ? true : false }
-                  {
-                    ...register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER)
-                  }
-                  onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                    if (detail.value !== getValues()[NEW_PASSWORD]) {
-                      setError(CONFIRM_NEW_PASSWORD, {
-                        message: intl.formatMessage({id: 'profile.password.not.match'})
-                      });
-                      return;
-                    }
-                    setValue(detail.name, detail.value);
-                    await trigger(CONFIRM_NEW_PASSWORD);
-                  }}
-                />
-              </Form.Field>
-              { errors[CONFIRM_NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[CONFIRM_NEW_PASSWORD].message }</div> }
-            </div>
+                    <Form.Field>
+                      <label className={styles.label}>
+                        <FormattedMessage id='profile.password.new' />
+                      </label>
+                      <Form.Input
+                        type='password'
+                        placeholder={intl.formatMessage({id: 'login.password.required'})}
+                        error={ errors[NEW_PASSWORD] ? true : false }
+                        {
+                          ...register(NEW_PASSWORD, PASSWORD_REGISTER)
+                        }
+                        onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                          setValue(detail.name, detail.value);
+                          await trigger(NEW_PASSWORD);
+                        }}
+                      />
+                    </Form.Field>
+                    { errors[NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[NEW_PASSWORD]?.message }</div> }
+                    <div className={styles['tip-text']}>
+                      <FormattedMessage id='login.password.tips' />
+                    </div>
 
-            <Button 
-              primary 
-              type='submit'
-              className={styles.btn} 
-              disabled={ !!errors[OLD_PASSWORD] || !!errors[NEW_PASSWORD] || !!errors[CONFIRM_NEW_PASSWORD] } 
-            >
-              <FormattedMessage id='profile.password.update' />
-            </Button>
+                    <Form.Field>
+                      <label className={styles.label}>
+                        <FormattedMessage id='profile.password.new.confirm' />
+                      </label>
+                      <Form.Input
+                        type='password'
+                        placeholder={intl.formatMessage({id: 'login.password.required'})}
+                        error={ errors[CONFIRM_NEW_PASSWORD] ? true : false }
+                        {
+                          ...register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER)
+                        }
+                        onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                          if (detail.value !== getValues()[NEW_PASSWORD]) {
+                            setError(CONFIRM_NEW_PASSWORD, {
+                              message: intl.formatMessage({id: 'profile.password.not.match'})
+                            });
+                            return;
+                          }
+                          setValue(detail.name, detail.value);
+                          await trigger(CONFIRM_NEW_PASSWORD);
+                        }}
+                      />
+                    </Form.Field>
+                    { errors[CONFIRM_NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[CONFIRM_NEW_PASSWORD]?.message }</div> }
+                  </div>
+
+                  <Button 
+                    primary 
+                    type='submit'
+                    className={styles.btn} 
+                    disabled={ !!errors[OLD_PASSWORD] || !!errors[NEW_PASSWORD] || !!errors[CONFIRM_NEW_PASSWORD] } 
+                  >
+                    <FormattedMessage id='profile.password.update' />
+                  </Button>
+                </>
+              )
+            }
           </Form>
         </div>
       </div>

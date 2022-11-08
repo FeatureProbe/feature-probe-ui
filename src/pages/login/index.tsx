@@ -46,6 +46,7 @@ const Login = () => {
     if (success && data) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('organizeId', String(data.organizeId));
+      localStorage.setItem('account', String(data.account));
       gotoHome();
     } 
     else if (res.code === FORBIDDEN) {
