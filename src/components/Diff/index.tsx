@@ -14,7 +14,7 @@ const Diff: React.FC<DiffProps> = (props) => {
   useEffect(() => {
     if(ref.current) {
       if(props.maxHeight && ref.current.clientHeight <= props.maxHeight) {
-        ref.current.style.height = ref.current.clientHeight + 'px';
+        ref.current.style.height = ref.current.clientHeight + 6 + 'px';
       }
 
       const ySides = ref.current.getElementsByClassName('d2h-file-side-diff');
@@ -28,7 +28,6 @@ const Diff: React.FC<DiffProps> = (props) => {
       }
 
       const xSides = ref.current.getElementsByClassName('d2h-code-wrapper');
-      console.log(xSides[1].scrollWidth > xSides[1].clientWidth && xSides[0].scrollWidth === xSides[0].clientWidth);
 
       if(xSides[1].scrollWidth > xSides[1].clientWidth && xSides[0].scrollWidth === xSides[0].clientWidth) {
         ySides[0].setAttribute('style', 'padding-bottom: 10px');

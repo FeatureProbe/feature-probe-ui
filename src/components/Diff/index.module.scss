@@ -12,7 +12,7 @@
       display: block;
       flex-grow: 1;
       content: 'Before';
-      font-weight: 600;
+      color: #212529;
       padding: 0 24px;
     }
 
@@ -20,7 +20,7 @@
       display: block;
       flex-grow: 1;
       content: 'After';
-      font-weight: 600;
+      color: #212529;
       padding: 0 24px;
     }
   }
@@ -106,6 +106,7 @@
     padding-left: 2.2em !important;
     padding-right: 0.5em !important;
     border: 0 !important;
+    color: #303a51 !important;
   }
 
   .d2h-code-side-line {
