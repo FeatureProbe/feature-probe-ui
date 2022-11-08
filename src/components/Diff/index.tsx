@@ -37,7 +37,7 @@ const Diff: React.FC<DiffProps> = (props) => {
         ySides[1].setAttribute('style', 'padding-bottom: 10px');
       }
     }
-  }, [ref.current, props.maxHeight]);
+  }, [ref, props.maxHeight]);
 
   return (
     <div 
