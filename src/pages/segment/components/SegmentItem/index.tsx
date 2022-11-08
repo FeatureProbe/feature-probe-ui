@@ -91,7 +91,7 @@ const ToggleItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         <div className={styles['toggle-modified-time']}>
-          <TextLimit text={segment.description} maxWidth={474} />
+          <TextLimit text={segment.description ? segment.description : '-'} maxWidth={474} />
         </div>
       </Table.Cell>
       <Table.Cell>
