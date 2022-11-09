@@ -4826,7 +4826,7 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-featureprobe-client-sdk-js@^1.1.2:
+featureprobe-client-sdk-js@^1.1.3:
   version "1.1.3"
   resolved "https://registry.npmjs.org/featureprobe-client-sdk-js/-/featureprobe-client-sdk-js-1.1.3.tgz#b850f630b5a34973aa775d5a0e813ea7587f4249"
   integrity sha512-z+GtVQNPfRgCagWMqKu0CLA5EgmY1dO8jce/lr/rQKuQX+buAUP8mxsSaI1uwOkAIz0vJ838cZusd3XHPIiQ0g==

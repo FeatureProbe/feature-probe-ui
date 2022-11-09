@@ -14,8 +14,8 @@ import { addEnvironment, editEnvironment } from 'services/project';
 import { checkEnvironmentExist } from 'services/toggle';
 import { CONFLICT } from 'constants/httpCode';
 import { replaceSpace } from 'utils/tools';
-import styles from './index.module.scss';
 import { useRequestTimeCheck } from 'hooks';
+import styles from './index.module.scss';
 
 interface IProps {
   open: boolean;

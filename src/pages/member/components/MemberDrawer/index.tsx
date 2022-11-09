@@ -15,10 +15,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
+import FormItemPassword from 'components/FormItem/password';
 import { IUser, IFormParams } from 'interfaces/member';
 import { createMember, updateMember, getMember } from 'services/member';
 import styles from './index.module.scss';
-import FormItemPassword from 'components/FormItem/password';
 
 interface IParams {
   isAdd: boolean;

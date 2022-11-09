@@ -120,7 +120,7 @@ const Member = () => {
                   }}
                 />
               </Form.Field>
-              { errors[OLD_PASSWORD] && <div className={styles['error-text']}>{ errors[OLD_PASSWORD].message }</div> }
+              { errors[OLD_PASSWORD] && <div className={styles['error-text']}>{ errors[OLD_PASSWORD]?.message }</div> }
 
               <Form.Field>
                 <label className={styles.label}>
@@ -139,7 +139,7 @@ const Member = () => {
                   }}
                 />
               </Form.Field>
-              { errors[NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[NEW_PASSWORD].message }</div> }
+              { errors[NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[NEW_PASSWORD]?.message }</div> }
               <div className={styles['tip-text']}>
                 <FormattedMessage id='login.password.tips' />
               </div>
@@ -167,7 +167,7 @@ const Member = () => {
                   }}
                 />
               </Form.Field>
-              { errors[CONFIRM_NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[CONFIRM_NEW_PASSWORD].message }</div> }
+              { errors[CONFIRM_NEW_PASSWORD] && <div className={styles['error-text']}>{ errors[CONFIRM_NEW_PASSWORD]?.message }</div> }
             </div>
 
             <Button 
