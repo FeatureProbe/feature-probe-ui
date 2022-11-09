@@ -8,18 +8,22 @@ import java from 'images/java.svg';
 import rust from 'images/rust.svg';
 import go from 'images/go.svg';
 import python from 'images/python.svg';
+import node from 'images/nodejs.svg';
 import javascript from 'images/javascript.svg';
 import android from 'images/android.svg';
 import swift from 'images/swift.svg';
 import apple from 'images/apple.svg';
 import miniprogram from 'images/wechat-miniprogram.png';
 import styles from '../Steps/index.module.scss';
+import { SdkLanguage } from '../StepSecond';
 
-const SDK_LOGOS = {
+const SDK_LOGOS: {[key in SdkLanguage]: any} = {
+  '': null,
   'Java': java,
   'Rust': rust,
   'Go': go,
   'Python': python,
+  'Node.js': node,
   'JavaScript': javascript,
   'Android': android,
   'Swift': swift,
@@ -43,6 +47,10 @@ const SERVER_SIDE_SDKS = [
   {
     name: 'Rust',
     logo: rust,
+  },
+  {
+    name: 'Node.js',
+    logo: node,
   },
 ];
 
@@ -76,11 +84,11 @@ interface IOption {
 
 interface IProps {
   currentStep: number;
-  currentSDK: string;
+  currentSDK: SdkLanguage;
   clientAvailability: boolean;
   saveStep(sdk: string): void;
   goBackToStep(step: number): void;
-  saveCurrentSDK(sdk: string): void;
+  saveCurrentSDK(sdk: SdkLanguage): void;
   enableClientSideSDK(): void;
 }
 
@@ -179,7 +187,7 @@ const StepFirst = (props: IProps) => {
                           return (
                             <Dropdown.Item 
                               onClick={() => {
-                                saveCurrentSDK(sdk.name);
+                                saveCurrentSDK(sdk.name as SdkLanguage);
                               }}
                             >
                               <div className={styles['sdk-item']}>
@@ -196,7 +204,7 @@ const StepFirst = (props: IProps) => {
                           clientAvailability && CLIENT_SIDE_SDKS.map((sdk: IOption) => {
                             return (
                               <Dropdown.Item onClick={() => {
-                                saveCurrentSDK(sdk.name);
+                                saveCurrentSDK(sdk.name as SdkLanguage);
                               }}>
                                 <div className={styles['sdk-item']}>
                                   { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }

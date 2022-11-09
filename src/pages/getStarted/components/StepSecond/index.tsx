@@ -10,10 +10,12 @@ import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { IRouterParams } from 'interfaces/project';
 import { ICondition, IRule } from 'interfaces/targeting';
 import {
+  ToggleReturnType,
   getAndroidCode,
   getGoCode,
   getJavaCode,
   getJSCode,
+  getNodeCode,
   getObjCCode,
   getPythonCode,
   getRustCode,
@@ -22,11 +24,23 @@ import {
 } from '../constants';
 import styles from '../Steps/index.module.scss';
 
+export type SdkLanguage = ''
+    | 'Java'
+    | 'Python'
+    | 'Rust'
+    | 'Go'
+    | 'Node.js'
+    | 'Android'
+    | 'Swift'
+    | 'Objective-C'
+    | 'JavaScript'
+    | 'Mini Program';
+
 interface IProps {
   rules: IRule[]
   currentStep: number;
-  currentSDK: string;
-  returnType: string;
+  currentSDK: SdkLanguage;
+  returnType: ToggleReturnType;
   sdkVersion: string;
   serverSdkKey: string;
   clientSdkKey: string;
@@ -154,6 +168,23 @@ const StepSecond = (props: IProps) => {
             })
           );
           break;
+        case 'Node.js':
+          saveLanguage('node');
+          result.forEach(item => {
+            userWithCode += `.with('${item}', /* ${item} */)`;
+          });
+          saveOptions(
+            getNodeCode({
+              serverSdkKey,
+              toggleKey,
+              returnType,
+              intl,
+              userWithCode,
+              remoteUrl,
+            })
+          );
+          break;
+
         case 'Android': 
           saveLanguage('java');
           result.forEach(item => {
