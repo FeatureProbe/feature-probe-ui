@@ -43,6 +43,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-intl": "^5.25.1",
     "react-joyride": "^2.5.3",
+    "react-loadable": "^5.5.0",
     "react-router-dom": "^5.3.0",
     "react-syntax-highlighter": "^15.5.0",
     "react-toastify": "^9.0.8",
@@ -57,8 +58,8 @@
   "scripts": {
     "start": "semantic-ui-css-patch && craco start",
     "build": "semantic-ui-css-patch && craco build",
-    "test": "craco test",
-    "eject": "craco eject"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": [
@@ -95,6 +96,7 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-copy-to-clipboard": "^5.0.2",
     "@types/react-dom": "^17.0.9",
+    "@types/react-loadable": "^5.5.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-syntax-highlighter": "^15.5.3",
     "@types/uuid": "^8.3.4",
@@ -105,6 +107,7 @@
     "http-proxy-middleware": "^2.0.6",
     "prettier": "^2.7.1",
     "react-scripts": "^5.0.1",
+    "source-map-explorer": "^2.5.2",
     "webpack": "^5.72.1"
   },
   "resolutions": {

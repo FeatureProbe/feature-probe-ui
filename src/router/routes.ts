@@ -1,16 +1,18 @@
-import Project from '../pages/project';
-import Toggle from '../pages/toggle';
-import Targeting from '../pages/targeting';
-import Member from '../pages/member';
-import Profile from '../pages/profile';
-import NotFound from '../pages/notFound';
-import Login from '../pages/login';
-import DemoLogin from '../pages/login/demoLogin';
-import Segment from '../pages/segment';
-import SegmentEdit from '../pages/segmentEdit';
-import GetStarted from '../pages/getStarted';
-import Approvals from '../pages/approval';
-import ProjectSetting from '../pages/projectSetting';
+import { lazy } from 'react';
+
+const Project = lazy(() => import('../pages/project'));
+const Toggle = lazy(() => import('../pages/toggle'));
+const Targeting = lazy(() => import('../pages/targeting'));
+const Member = lazy(() => import('../pages/member'));
+const Profile = lazy(() => import('../pages/profile'));
+const NotFound = lazy(() => import('../pages/notFound'));
+const Login = lazy(() => import('../pages/login'));
+const DemoLogin = lazy(() => import('../pages/login/demoLogin'));
+const Segment = lazy(() => import('../pages/segment'));
+const SegmentEdit = lazy(() => import('../pages/segmentEdit'));
+const GetStarted = lazy(() => import('../pages/getStarted'));
+const Approvals = lazy(() => import('../pages/approval'));
+const ProjectSetting = lazy(() => import('../pages/projectSetting'));
 
 export const PROJECT_PATH = '/projects';
 export const TOGGLE_PATH = '/:projectKey/:environmentKey/toggles';
@@ -50,12 +52,12 @@ export const headerRoutes = [
   {
     path: TOGGLE_PATH,
     exact: true,
-    component: Toggle,
+    component: Toggle
   },
   {
     path: SETTING_PATH,
     exact: true,
-    component: ProjectSetting,
+    component: ProjectSetting
   },
   {
     path: GET_STARTED_PATH,
@@ -70,7 +72,7 @@ export const headerRoutes = [
   {
     path: APPROVAL_PATH,
     exact: true,
-    component: Approvals,
+    component: Approvals
   },
   {
     path: MEMBER_PATH,
