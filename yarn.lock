@@ -2180,14 +2180,6 @@
   dependencies:
     "@types/react" "^17"
 
-"@types/react-loadable@^5.5.6":
-  version "5.5.6"
-  resolved "http://registry.npm.xiaojukeji.com/@types/react-loadable/download/@types/react-loadable-5.5.6.tgz#fcf6493d5015a4602672f3773a32032ce77fedea"
-  integrity sha1-/PZJPVAVpGAmcvN3OjIDLOd/7eo=
-  dependencies:
-    "@types/react" "*"
-    "@types/webpack" "^4"
-
 "@types/react-redux@^7.1.20":
   version "7.1.24"
   resolved "https://registry.npmjs.org/@types/react-redux/-/react-redux-7.1.24.tgz"
@@ -2279,20 +2271,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/source-list-map@*":
-  version "0.1.2"
-  resolved "http://registry.npm.xiaojukeji.com/@types/source-list-map/download/@types/source-list-map-0.1.2.tgz#0078836063ffaf17412349bba364087e0ac02ec9"
-  integrity sha1-AHiDYGP/rxdBI0m7o2QIfgrALsk=
-
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.1.tgz"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
-
-"@types/tapable@^1":
-  version "1.0.8"
-  resolved "http://registry.npm.xiaojukeji.com/@types/tapable/download/@types/tapable-1.0.8.tgz#b94a4391c85666c7b73299fd3ad79d4faa435310"
-  integrity sha1-uUpDkchWZse3Mpn9OtedT6pDUxA=
 
 "@types/tern@*":
   version "0.23.4"
@@ -2306,13 +2288,6 @@
   resolved "https://registry.npmjs.org/@types/trusted-types/-/trusted-types-2.0.2.tgz"
   integrity sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==
 
-"@types/uglify-js@*":
-  version "3.13.1"
-  resolved "http://registry.npm.xiaojukeji.com/@types/uglify-js/download/@types/uglify-js-3.13.1.tgz#5e889e9e81e94245c75b6450600e1c5ea2878aea"
-  integrity sha1-XoienoHpQkXHW2RQYA4cXqKHiuo=
-  dependencies:
-    source-map "^0.6.1"
-
 "@types/unist@*":
   version "2.0.6"
   resolved "https://registry.npmjs.org/@types/unist/-/unist-2.0.6.tgz"
@@ -2322,27 +2297,6 @@
   version "8.3.4"
   resolved "https://registry.npmjs.org/@types/uuid/-/uuid-8.3.4.tgz"
   integrity sha512-c/I8ZRb51j+pYGAu5CrFMRxqZ2ke4y2grEBO5AUjgSkSk+qT2Ea+OdWElz/OiMf5MNpn2b17kuVBwZLQJXzihw==
-
-"@types/webpack-sources@*":
-  version "3.2.0"
-  resolved "http://registry.npm.xiaojukeji.com/@types/webpack-sources/download/@types/webpack-sources-3.2.0.tgz#16d759ba096c289034b26553d2df1bf45248d38b"
-  integrity sha1-FtdZuglsKJA0smVT0t8b9FJI04s=
-  dependencies:
-    "@types/node" "*"
-    "@types/source-list-map" "*"
-    source-map "^0.7.3"
-
-"@types/webpack@^4":
-  version "4.41.32"
-  resolved "http://registry.npm.xiaojukeji.com/@types/webpack/download/@types/webpack-4.41.32.tgz#a7bab03b72904070162b2f169415492209e94212"
-  integrity sha1-p7qwO3KQQHAWKy8WlBVJIgnpQhI=
-  dependencies:
-    "@types/node" "*"
-    "@types/tapable" "^1"
-    "@types/uglify-js" "*"
-    "@types/webpack-sources" "*"
-    anymatch "^3.0.0"
-    source-map "^0.6.0"
 
 "@types/ws@^8.5.1":
   version "8.5.3"
@@ -2771,7 +2725,7 @@ ansi-styles@^5.0.0:
   resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-5.2.0.tgz"
   integrity sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==
 
-anymatch@^3.0.0, anymatch@^3.0.3, anymatch@~3.1.2:
+anymatch@^3.0.3, anymatch@~3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/anymatch/-/anymatch-3.1.2.tgz"
   integrity sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg==
@@ -8421,7 +8375,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.0, prop-types@^15.5.7, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.7, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8700,13 +8654,6 @@ react-joyride@^2.5.3:
     scroll "^3.0.1"
     scrollparent "^2.0.1"
     tree-changes "^0.9.2"
-
-react-loadable@^5.5.0:
-  version "5.5.0"
-  resolved "http://registry.npm.xiaojukeji.com/react-loadable/download/react-loadable-5.5.0.tgz#582251679d3da86c32aae2c8e689c59f1196d8c4"
-  integrity sha1-WCJRZ509qGwyquLI5onFnxGW2MQ=
-  dependencies:
-    prop-types "^15.5.0"
 
 react-popper@^2.3.0:
   version "2.3.0"
