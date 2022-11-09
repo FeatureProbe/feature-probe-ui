@@ -17,7 +17,7 @@ import miniprogram from 'images/wechat-miniprogram.png';
 import styles from '../Steps/index.module.scss';
 import { SdkLanguage } from '../StepSecond';
 
-const SDK_LOGOS: {[key in SdkLanguage]: any} = {
+const SDK_LOGOS: {[key in SdkLanguage]: unknown} = {
   '': null,
   'Java': java,
   'Rust': rust,
