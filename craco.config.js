@@ -1,3 +1,5 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 module.exports = {
   plugins: [
     { plugin: require('@semantic-ui-react/craco-less') },
@@ -49,5 +51,12 @@ module.exports = {
         },
       ],
     },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: 'static/css/[name].[chunkhash:5].css',
+        chunkFilename: 'static/css/[name].chunk.[chunkhash:5].css',
+        ignoreOrder: true
+     })
+    ]
   }
 };

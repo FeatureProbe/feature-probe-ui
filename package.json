@@ -103,6 +103,7 @@
     "eslint-plugin-check-file": "^1.2.2",
     "eslint-plugin-import": "^2.26.0",
     "http-proxy-middleware": "^2.0.6",
+    "mini-css-extract-plugin": "^2.6.1",
     "prettier": "^2.7.1",
     "react-scripts": "^5.0.1",
     "source-map-explorer": "^2.5.2",
