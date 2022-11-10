@@ -1,4 +1,4 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 
 module.exports = {
   plugins: [
@@ -52,11 +52,9 @@ module.exports = {
       ],
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: 'static/css/[name].[chunkhash:5].css',
-        chunkFilename: 'static/css/[name].chunk.[chunkhash:5].css',
-        ignoreOrder: true
-     })
-    ]
+      new FilterWarningsPlugin({
+        exclude: /Conflicting order./,
+      }),
+    ],
   }
 };
