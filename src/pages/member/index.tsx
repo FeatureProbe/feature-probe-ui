@@ -10,8 +10,8 @@ import MemberItem from './components/MemberItem';
 import { getMemberList } from 'services/member';
 import { IMemberList, IMember, IUser } from 'interfaces/member';
 import { HeaderContainer } from 'layout/hooks';
-import styles from './index.module.scss';
 import { OWNER } from 'constants/auth';
+import styles from './index.module.scss';
 
 const Member = () => {
   const [memberList, setMemberList] = useState<IMember[]>();

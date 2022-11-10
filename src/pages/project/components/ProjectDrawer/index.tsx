@@ -18,9 +18,9 @@ import { addProject, checkProjectExist, editProject } from 'services/project';
 import { projectContainer, hooksFormContainer } from '../../provider';
 import { replaceSpace } from 'utils/tools';
 import { CONFLICT } from 'constants/httpCode';
+import { useRequestTimeCheck } from 'hooks';
 
 import styles from './index.module.scss';
-import { useRequestTimeCheck } from 'hooks';
 
 interface IProps {
   isAdd: boolean;

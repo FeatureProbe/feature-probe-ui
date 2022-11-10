@@ -7,9 +7,9 @@ import Modal from 'components/Modal';
 import { IMember, IUser } from 'interfaces/member';
 import { deleteMember } from 'services/member';
 import message from 'components/MessageBox';
-import styles from './index.module.scss';
 import { OWNER } from 'constants/auth';
 import { HeaderContainer } from 'layout/hooks';
+import styles from './index.module.scss';
 
 interface IProps {
   member?: IMember;

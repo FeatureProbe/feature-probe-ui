@@ -57,8 +57,8 @@
   "scripts": {
     "start": "semantic-ui-css-patch && craco start",
     "build": "semantic-ui-css-patch && craco build",
-    "test": "craco test",
-    "eject": "craco eject"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": [
@@ -105,7 +105,9 @@
     "http-proxy-middleware": "^2.0.6",
     "prettier": "^2.7.1",
     "react-scripts": "^5.0.1",
-    "webpack": "^5.72.1"
+    "source-map-explorer": "^2.5.2",
+    "webpack": "^5.72.1",
+    "webpack-filter-warnings-plugin": "^1.2.1"
   },
   "resolutions": {
     "@types/react": "17.0.43"

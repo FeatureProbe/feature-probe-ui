@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, Suspense } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { FPUser, FeatureProbe } from 'featureprobe-client-sdk-js';
 import { FormattedMessage } from 'react-intl';
@@ -73,43 +73,51 @@ const Router = () => {
             </Loader>
           </Dimmer>
           ) : (
-            <BrowserRouter>
-              <Switch>
-                {
-                  blankRoutes.map(route => (
-                    <Route
-                      key={route.path}
-                      path={route.path}
-                      exact={route.exact}
-                      render={() => (
-                        <Route key={route.path} exact path={route.path} component={route.component} />
-                      )}
-                    />
-                  ))
-                }
-                <BasicLayout>
-                  <Switch>
-                    {
-                      headerRoutes.map(route => {
-                        return (
-                          <Route
-                            key={route.path}
-                            path={route.path}
-                            exact={route.exact}
-                            render={() => (
-                              <Route key={route.path} exact path={route.path} component={route.component} />
-                            )}
-                          />
-                        );
-                      })
-                    }
-                    {
-                      redirectUrl !== '' && <Redirect from='/' to={redirectUrl} />
-                    }
-                  </Switch>
-                </BasicLayout>
-              </Switch>
-            </BrowserRouter>
+            <Suspense fallback={
+              <Dimmer active inverted>
+                <Loader size='small'>
+                  <FormattedMessage id='common.loading.text' />
+                </Loader>
+              </Dimmer>
+            }>
+              <BrowserRouter>
+                <Switch>
+                  {
+                    blankRoutes.map(route => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        exact={route.exact}
+                        render={() => (
+                          <Route key={route.path} exact path={route.path} component={route.component} />
+                        )}
+                      />
+                    ))
+                  }
+                    <BasicLayout>
+                      <Switch>
+                        {
+                          headerRoutes.map(route => {
+                            return (
+                              <Route
+                                key={route.path}
+                                path={route.path}
+                                exact={route.exact}
+                                render={() => (
+                                  <Route key={route.path} exact path={route.path} component={route.component} />
+                                )}
+                              />
+                            );
+                          })
+                        }
+                        {
+                          redirectUrl !== '' && <Redirect from='/' to={redirectUrl} />
+                        }
+                      </Switch>
+                    </BasicLayout>
+                </Switch>
+              </BrowserRouter>
+            </Suspense>
           )
       }
     </>

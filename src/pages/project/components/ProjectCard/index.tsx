@@ -5,6 +5,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
+import TextLimit from 'components/TextLimit';
 import { HeaderContainer } from 'layout/hooks';
 import EnvironmentCard from '../EnvironmentCard';
 import EnvironmentModal from '../EnvironmentModal';
@@ -15,7 +16,6 @@ import { getEnvironmentList, editProject } from 'services/project';
 import { getToggleList } from 'services/toggle';
 import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
-import TextLimit from 'components/TextLimit';
 
 interface IProps {
   project: IProject;
