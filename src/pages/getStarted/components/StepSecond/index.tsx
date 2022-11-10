@@ -169,7 +169,7 @@ const StepSecond = (props: IProps) => {
           );
           break;
         case 'Node.js':
-          saveLanguage('node');
+          saveLanguage('javascript');
           result.forEach(item => {
             userWithCode += `.with('${item}', /* ${item} */)`;
           });
