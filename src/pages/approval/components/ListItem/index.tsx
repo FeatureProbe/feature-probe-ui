@@ -25,8 +25,7 @@ const ListItem = (props: IProps) => {
     <Table.Row className={styles['list-item']}>
       <Table.Cell>
         <div className={styles['list-item-title']}>
-        <TextLimit text={approval.title} maxWidth={170} popupProps={{ position: 'top left' }} />
-          
+          <TextLimit text={approval.title} maxWidth={170} popupProps={{ position: 'top left' }} />
           {
             approval.canceled && approval.status === 'PASS' && (
               <Popup
@@ -163,32 +162,12 @@ const ListItem = (props: IProps) => {
       <Table.Cell>
         <div>{approval.approvedBy}</div>
         <div className={styles['list-item-time']}>
-          {approval.approvedBy && approval.modifiedTime ? dayjs(approval.modifiedTime).format('YYYY-MM-DD HH:mm:ss') : '-'}
+          { approval.approvedBy && approval.modifiedTime ? dayjs(approval.modifiedTime).format('YYYY-MM-DD HH:mm:ss') : '-' }
         </div>
       </Table.Cell>
       <Table.Cell>
         <div className={styles['list-item-reason']}>
-          {
-            approval.comment ? (
-              <Popup
-                inverted
-                className={styles.popup}
-                trigger={
-                  <span>
-                    { approval.title }
-                  </span>
-                }
-                content={
-                  <div className={styles['popup-content']}>
-                    { approval.title }
-                  </div>
-                }
-                position='top left'
-              />
-            ) : (
-              <span>-</span>
-            )
-          }
+          { approval.comment ? <TextLimit text={approval.comment} maxWidth={100} /> : '-' }
         </div>
       </Table.Cell>
     </Table.Row>

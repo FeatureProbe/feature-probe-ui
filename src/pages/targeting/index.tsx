@@ -13,14 +13,14 @@ import ProjectLayout from 'layout/projectLayout';
 import TargetingForm from './components/TargetingForm';
 import Metrics from './components/Metrics';
 import Info from './components/Info';
-import History from './components/History';
+import History from 'components/History';
 import { Provider } from './provider';
 import { getSegmentList } from 'services/segment';
 import { getTargeting, getToggleInfo, getTargetingVersion, getTargetingVersionsByVersion } from 'services/toggle';
 import { saveDictionary } from 'services/dictionary';
 import { ISegmentList } from 'interfaces/segment';
 import { IRouterParams, IVersionParams } from 'interfaces/project';
-import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion, IApprovalInfo, ITargeting } from 'interfaces/targeting';
+import { IToggleInfo, ITarget, IContent, IModifyInfo, ITargetingVersions, IVersion, ITargetingVersionsByVersion, IApprovalInfo, ITargeting, ITargetingVersion } from 'interfaces/targeting';
 import { NOT_FOUND } from 'constants/httpCode';
 import { LAST_SEEN } from 'constants/dictionary_keys';
 import { I18NContainer } from 'hooks';
@@ -43,7 +43,7 @@ const Targeting = () => {
   const [ initialTargeting, saveInitTargeting ] = useState<ITargeting>();
   const [ historyOpen, setHistoryOpen ] = useState<boolean>(false);
   const [ modifyInfo, saveModifyInfo ] = useState<IModifyInfo>();
-  const [ versions, saveVersions ] = useState<IVersion[]>([]);
+  const [ versions, saveVersions ] = useState<ITargetingVersion[]>([]);
   const [ historyPageIndex, saveHistoryPageIndex ] = useState<number>(0);
   const [ historyHasMore, saveHistoryHasMore ] = useState<boolean>(false);
   const [ targetingDisabled, saveTargetingDisabled ] = useState<boolean>(false);
@@ -53,7 +53,7 @@ const Targeting = () => {
   const [ rememberVersion, saveRememberVersion ] = useState<boolean>(false);
   const [ approvalInfo, saveApprovalInfo ] = useState<IApprovalInfo>();
   const [ pageInitCount, saveCount ] = useState<number>(0);
-  const [ activeVersion, saveActiveVersion ] = useState<IVersion>();
+  const [ activeVersion, saveActiveVersion ] = useState<ITargetingVersion>();
   const [ isTargetingLoading, saveIsTargetingLoading ] = useState<boolean>(true);
   const [ isInfoLoading, saveIsInfoLoading ] = useState<boolean>(true);
   const [ isHistoryLoading, saveIsHistoryLoading ] = useState<boolean>(true);
@@ -160,7 +160,7 @@ const Targeting = () => {
         message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
       }
     });
-  }, [projectKey, environmentKey, toggleKey]);
+  }, [projectKey, environmentKey, toggleKey, intl]);
 
   // get specific history versions
   const getVersionsByVersion = useCallback(async () => {
@@ -206,7 +206,7 @@ const Targeting = () => {
     } else {
       message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
     }
-  }, [currentVersion, projectKey, environmentKey, toggleKey]);
+  }, [currentVersion, projectKey, environmentKey, toggleKey, intl]);
 
   useEffect(() => {
     if (currentVersion) {
@@ -248,7 +248,7 @@ const Targeting = () => {
   }, [versions, currentVersion, rememberVersion, historyPageIndex, projectKey, environmentKey, toggleKey, intl]);
 
   // click to view history detail
-  const reviewHistory = useCallback((version: IVersion) => {
+  const reviewHistory = useCallback((version: ITargetingVersion) => {
     saveActiveVersion(version);
     if (pageInitCount === 0 && !formRef.current) {
       setPageLeaveOpen(true);
@@ -380,7 +380,7 @@ const Targeting = () => {
               activeItem === 'targeting' && (
                 <div className={styles.history}>
                   <Button 
-                    primary
+                    secondary
                     type='button'
                     onClick={() => {
                       setHistoryOpen(!historyOpen);
@@ -467,7 +467,6 @@ const Targeting = () => {
                             getVersionsList();
                           }}
                           reviewHistory={reviewHistory}
-                          setHistoryOpen={setHistoryOpen}
                         />
                       </div>
                     )

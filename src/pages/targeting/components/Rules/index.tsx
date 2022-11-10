@@ -108,6 +108,7 @@ const Rules = (props: IProps) => {
                         segmentContainer={segmentContainer}
                         hooksFormContainer={hooksFormContainer}
                         variationContainer={variationContainer}
+                        active={rule.active}
                       />
                     );
                   })

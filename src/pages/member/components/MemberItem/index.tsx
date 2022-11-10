@@ -66,6 +66,11 @@ const MemberItem = (props: IProps) => {
         </div>
       </Table.Cell>
       <Table.Cell>
+        <div className={styles['member-role']}>
+          {'' + member?.role.slice(0, 1) + member?.role.slice(1).toLocaleLowerCase()}
+        </div>
+      </Table.Cell>
+      <Table.Cell>
         <div className={styles['member-created-by']}>
           {member?.createdBy}
         </div>
@@ -79,7 +84,7 @@ const MemberItem = (props: IProps) => {
       </Table.Cell>
       <Table.Cell>
         {
-          (member?.account.toLowerCase() !== userInfo?.account.toLowerCase()) && (OWNER.includes(userInfo?.role)) ? (
+          OWNER.includes(userInfo?.role) && member?.allowEdit ? (
             <div className={styles['member-operation']}>
               <div className={styles['member-operation-item']} onClick={() => handleEdit()}>
                 <FormattedMessage id='common.edit.text' />

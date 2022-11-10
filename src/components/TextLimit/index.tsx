@@ -27,19 +27,11 @@ const TextLimit: React.FC<IProps> = (props) => {
         return false;
       }
     }
-  }, [ref.current]);
+  }, [ref.current, text]);
 
   useEffect(() => {
-    if(ref.current) {
-      if(ref.current.clientWidth === 0 && ref.current.clientHeight === 0) {
-        setTimeout(() => {
-          setIsLong(judgeLength());
-        }, 500);
-      } else {
-        setIsLong(judgeLength());
-      }
-    }
-  }, [ref.current]);
+    setIsLong(judgeLength());
+  }, [ref.current, text]);
 
   return (
     <Popup

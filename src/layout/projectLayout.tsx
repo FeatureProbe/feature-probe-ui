@@ -10,6 +10,8 @@ import Icon from 'components/Icon';
 import TextLimit from 'components/TextLimit';
 import { getProjectInfo } from 'services/project';
 import { getToggleInfo } from 'services/toggle';
+import { getSegmentDetail } from 'services/segment';
+import { ISegmentInfo } from 'interfaces/segment';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { IDictionary } from 'interfaces/targeting';
 import { IProject, IRouterParams } from 'interfaces/project';
@@ -74,7 +76,7 @@ const STEPS: Step[] = [
 ];
 
 const ProjectLayout = (props: IProps) => {
-  const { projectKey, environmentKey, toggleKey } = useParams<IRouterParams>();
+  const { projectKey, environmentKey, toggleKey, segmentKey } = useParams<IRouterParams>();
   const [ projectInfo, setProjectInfo ] = useState<IProject>({
     name: '',
     key: '',
@@ -88,6 +90,7 @@ const ProjectLayout = (props: IProps) => {
   });
   const [ envIndex, setEnvIndex ] = useState<number>(0);
   const [ toggleName, saveToggleName ] = useState<string>('');
+  const [ segmentName, setSegmentName ] = useState<string>('');
   const [ tipVisible, saveTipVisible ] = useState<boolean>(false);
   const [ isLoading, saveIsLoading ] = useState<boolean>(false);
   const [ run, saveRun ] = useState<boolean>(false);
@@ -109,6 +112,22 @@ const ProjectLayout = (props: IProps) => {
       }
     });
   }, [projectKey]);
+
+  useEffect(() => {
+    if(segmentKey) {
+      getSegmentDetail<ISegmentInfo>(projectKey, segmentKey).then(res => {
+        saveIsLoading(false);
+        if (res.success) {
+          const { data } = res;
+          if (data) {
+            setSegmentName(data.name);
+          }
+        } else {
+          message.error(res.message || 'Error getting segment');
+        }
+      });
+    }
+  }, [segmentKey]);
 
   useEffect(() => {
     if (!toggleKey) return;
@@ -301,7 +320,7 @@ const ProjectLayout = (props: IProps) => {
                 </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
-                  <FormattedMessage id='common.new.lowercase.text' />
+                  <TextLimit text={segmentName} maxWidth={190} popupProps={{ offset: [0, -12] }}  />
                 </Breadcrumb.Section>
               </>
             )
@@ -314,7 +333,7 @@ const ProjectLayout = (props: IProps) => {
                 </Breadcrumb.Section>
                 <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
-                  <FormattedMessage id='common.edit.lowercase.text' />
+                  <TextLimit text={segmentName} maxWidth={190} popupProps={{ offset: [0, -12] }}  />
                 </Breadcrumb.Section>
               </>
             )

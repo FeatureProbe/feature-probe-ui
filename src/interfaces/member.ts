@@ -10,6 +10,7 @@ export interface IMember {
   role: string;
   createdBy: string;
   visitedTime: string;
+  allowEdit: boolean;
 }
 
 export interface IMemberList {
@@ -61,4 +62,5 @@ export interface IFormParams {
   accounts?: string[];
   password?: string;
   account?: string;
+  role?: string;
 }

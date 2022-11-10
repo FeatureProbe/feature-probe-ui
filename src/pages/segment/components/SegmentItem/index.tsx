@@ -1,14 +1,14 @@
 import { SyntheticEvent, useCallback, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import dayjs from 'dayjs';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Table, Button } from 'semantic-ui-react';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
-import CopyToClipboardPopup from 'components/CopyToClipboard';
+import TextLimit from 'components/TextLimit';
 import { ISegment, IToggleList } from 'interfaces/segment';
 import { deleteSegment, getSegmentUsingToggles } from 'services/segment';
 import message from 'components/MessageBox';
+import { segmentContainer } from '../../provider';
 import styles from './index.module.scss';
 
 interface ILocationParams {
@@ -18,20 +18,29 @@ interface ILocationParams {
 
 interface IProps {
   segment: ISegment;
-  fetchSegmentLists(): void
+  fetchSegmentLists(): void;
+  handleEdit: (segmentKey: string) => void;
+  handleClickItem: (segmentKey: string) => void;
 }
 
 const ToggleItem = (props: IProps) => {
-  const { segment, fetchSegmentLists } = props;
+  const { segment, fetchSegmentLists, handleEdit, handleClickItem } = props;
   const [ open, setOpen ] = useState<boolean>(false);
   const [ canDelete, setCanDelete ] = useState<boolean>(false);
   const { projectKey, environmentKey } = useParams<ILocationParams>();
   const intl = useIntl();
   const history = useHistory();
 
-  const gotoEditing = useCallback((segmentKey: string) => {
-    history.push(`/${projectKey}/${environmentKey}/segments/${segmentKey}/targeting`);
-  }, [projectKey, environmentKey, history]);
+  const { 
+    saveSegmentInfo,
+    saveOriginSegmentInfo,
+  } = segmentContainer.useContainer();
+
+  const gotoEditing = useCallback((segment: ISegment) => {
+    saveOriginSegmentInfo(segment);
+    saveSegmentInfo(segment);
+    handleEdit(segment.key);
+  }, [projectKey, environmentKey, history, handleEdit]);
 
   const checkSegmentDelete = useCallback((segmentKey: string) => {
     getSegmentUsingToggles<IToggleList>(projectKey, segmentKey, {
@@ -66,42 +75,33 @@ const ToggleItem = (props: IProps) => {
 	return (
     <Table.Row
       className={styles['list-item']}
-      onClick={() => gotoEditing(segment.key)}
+      onClick={() => handleClickItem(segment.key)}
     >
       <Table.Cell>
         <div className={styles['toggle-info']}>
           <div className={styles['toggle-info-name']}>
             {segment.name}
           </div>
-          <div className={styles['toggle-info-key']}>
-            <CopyToClipboardPopup text={segment.key}>
-              <div onClick={(e) => {e.stopPropagation();}} className={styles['toggle-info-key-label']}>
-                {segment.key}
-              </div>
-            </CopyToClipboardPopup>
-          </div>
         </div>
-        {
-          segment.description && (
-            <div className={styles['toggle-info-description']}>
-              {segment.description}
-            </div>
-          )
-        }
       </Table.Cell>
       <Table.Cell>
         <div className={styles['toggle-modified-by']}>
-          {segment.modifiedBy}
+          {segment.key}
         </div>
       </Table.Cell>
       <Table.Cell>
         <div className={styles['toggle-modified-time']}>
-          {dayjs(segment?.modifiedTime).format('YYYY-MM-DD HH:mm:ss')}
+          <TextLimit text={segment.description ? segment.description : '-'} maxWidth={474} />
         </div>
       </Table.Cell>
       <Table.Cell>
         <div className={styles['toggle-operation']}>
-          <div className={styles['toggle-operation-item']} onClick={() => gotoEditing(segment.key)}>
+          <div 
+            className={styles['toggle-operation-item']} 
+            onClick={(e) => {
+              e.stopPropagation();
+              gotoEditing(segment);}
+            }>
             <FormattedMessage id='common.edit.text' />
           </div>
           <div 

@@ -3,7 +3,7 @@ import { Form, Radio, CheckboxProps, TextAreaProps, InputOnChangeData, Loader, D
 import { useParams, useHistory, Prompt } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import moment from 'moment';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import JSONbig from 'json-bigint';
 import { createPatch } from 'diff';
 import { html } from 'diff2html/lib/diff2html';
@@ -22,6 +22,7 @@ import Button from 'components/Button';
 import Variations from 'components/Variations';
 import SectionTitle from 'components/SectionTitle';
 import EventTracker from 'components/EventTracker';
+import Diff from 'components/Diff';
 import { saveToggle } from 'services/toggle';
 import { replaceSpace } from 'utils/tools';
 import { 
@@ -40,6 +41,7 @@ import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
 import { getFromDictionary, saveDictionary } from 'services/dictionary';
 import { USER_GUIDE_LAYOUT, USER_GUIDE_TARGETING } from 'constants/dictionary_keys';
+import { useFormErrorScrollIntoView } from 'hooks';
 import 'diff2html/bundles/css/diff2html.min.css';
 import styles from './index.module.scss';
 
@@ -134,11 +136,33 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     setValue,
     setError,
     handleSubmit,
+    formState: { errors },
   } = hooksFormContainer.useContainer();
 
   const {
     saveSegmentList,
   } = segmentContainer.useContainer();
+
+  const { scrollToError, setBeforeScrollCallback } = useFormErrorScrollIntoView(errors);
+
+  useEffect(() => {
+    setBeforeScrollCallback((names: string[]) => {
+      names.forEach((name) => {
+        if(name.startsWith('rule')) {
+          const id = name.split('_')[1];
+          for(let i = 0; i < rules.length; i++) {
+            if(rules[i].id === id) {
+              saveRules((rules: IRule[]) => {
+                rules[i].active = true;
+                return [...rules];
+              });
+              return;
+            }
+          }
+        }
+      });
+    });
+  }, [setBeforeScrollCallback, rules, saveRules]);
 
   useEffect(() => {
     Promise.all([
@@ -185,6 +209,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             condition.timezone = condition.objects[0].slice(19);
           }
         });
+        rule.active = true;
       });
       saveRules(targetRule);
 
@@ -266,6 +291,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         }
       });
       delete rule.id;
+      delete rule.active;
     });
 
     const requestVariations = cloneDeep(variations);
@@ -331,12 +357,8 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     setOpen(true);
   }, [intl, publishTargeting, initialTargeting, variations, setError]);
 
-  const onError = (errors: FieldErrors) => {
-    let errorEle = document.querySelector(`[name=${Object.keys(errors)[0]}]`);
-    if(!errorEle) {
-      errorEle = document.querySelector(`#${Object.keys(errors)[0]}`);
-    }
-    errorEle?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const onError = () => {
+    scrollToError();
   };
 
   const handlePublishCancel = useCallback(() => {
@@ -466,7 +488,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       </div>
       <div id='footer' className={styles.footer}>
         <EventTracker category='targeting' action='publish-toggle'>
-          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled} primary type="submit">
+          <Button className={styles['publish-btn']} disabled={publishDisabled || disabled || isLoading} primary type="submit">
             { isLoading && <Loader inverted active inline size='tiny' className={styles['publish-btn-loader']} /> }
             <span className={styles['publish-btn-text']}>
               {
@@ -490,73 +512,75 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
-            <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />
-            <Form>
-              {
-                approvalInfo?.enableApproval && (
-                  <div className={styles['approval']}>
-                    <div className={styles['approval-title']}>
-                      <FormattedMessage id='toggles.settings.approval.reviewers' />:
-                      <Popup
-                        inverted
-                        trigger={
-                          <Icon type='info' customClass={styles['icon-info']} />
-                        }
-                        content={intl.formatMessage({id: 'targeting.approval.tips'})}
-                        position='top center'
-                        className={styles.popup}
-                      />
-                    </div>
-                    <div className={styles['approval-content']}>
-                      <Dropdown 
-                        fluid 
-                        multiple 
-                        selection 
-                        value={approvalInfo?.reviewers}
-                        options={options} 
-                        renderLabel={renderLabel}
-                        icon={null}
-                        disabled={true}
-                        className={styles['approval-dropdown']}
-                      />
-                      <div className={styles['approval-btn']} onClick={handleGotoSetting}>
-                        <FormattedMessage id='common.toggle.appoval.settings.text' />
+            <Diff content={diffContent} maxHeight={341} />
+            <div className={styles['diff-after']}>
+              <Form>
+                {
+                  approvalInfo?.enableApproval && (
+                    <div className={styles['approval']}>
+                      <div className={styles['approval-title']}>
+                        <FormattedMessage id='toggles.settings.approval.reviewers' />:
+                        <Popup
+                          inverted
+                          trigger={
+                            <Icon type='info' customClass={styles['icon-info']} />
+                          }
+                          content={intl.formatMessage({id: 'targeting.approval.tips'})}
+                          position='top center'
+                          className={styles.popup}
+                        />
+                      </div>
+                      <div className={styles['approval-content']}>
+                        <Dropdown 
+                          fluid 
+                          multiple 
+                          selection 
+                          value={approvalInfo?.reviewers}
+                          options={options} 
+                          renderLabel={renderLabel}
+                          icon={null}
+                          disabled={true}
+                          className={styles['approval-dropdown']}
+                        />
+                        <div className={styles['approval-btn']} onClick={handleGotoSetting}>
+                          <FormattedMessage id='common.toggle.appoval.settings.text' />
+                        </div>
                       </div>
                     </div>
+                  )
+                }
+                <div className={styles['comment']}>
+                  <div className={styles['comment-title']}>
+                    { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
+                    <FormattedMessage id='targeting.publish.modal.comment' />:
                   </div>
-                )
-              }
-              <div className={styles['comment']}>
-                <div className={styles['comment-title']}>
-                  { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
-                  <FormattedMessage id='targeting.publish.modal.comment' />:
-                </div>
-                <div className={styles['comment-content']}>
-                  <Form.TextArea
-                    {
-                      ...newRegister('reason', { 
-                        required: approvalInfo?.enableApproval, 
-                      })
+                  <div className={styles['comment-content']}>
+                    <Form.TextArea
+                      {
+                        ...newRegister('reason', { 
+                          required: approvalInfo?.enableApproval, 
+                        })
+                      }
+                      error={ newFormState.errors.reason ? true : false }
+                      className={styles['comment-input']} 
+                      placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
+                      onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
+                        handleInputComment(e, detail);
+                        newSetValue(detail.name, detail.value);
+                        await newTrigger('reason');
+                      }}
+                    />
+                    { 
+                      newFormState.errors.reason && (
+                        <div className={styles['error-text']}>
+                          <FormattedMessage id='common.input.placeholder' />
+                        </div> 
+                      )
                     }
-                    error={ newFormState.errors.reason ? true : false }
-                    className={styles['comment-input']} 
-                    placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
-                    onChange={async (e: SyntheticEvent, detail: TextAreaProps) => {
-                      handleInputComment(e, detail);
-                      newSetValue(detail.name, detail.value);
-                      await newTrigger('reason');
-                    }}
-                  />
-                  { 
-                    newFormState.errors.reason && (
-                      <div className={styles['error-text']}>
-                        <FormattedMessage id='common.input.placeholder' />
-                      </div> 
-                    )
-                  }
+                  </div>
                 </div>
-              </div>
-            </Form>
+              </Form>
+            </div>
           </div>
         </div>
       </Modal>

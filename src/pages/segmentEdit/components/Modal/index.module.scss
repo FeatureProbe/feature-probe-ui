@@ -1,7 +1,11 @@
+.modal-inner-box {
+  height: 631px;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
-  font-family: PingFangSC-Medium;
+  font-family: PingFangSC-Medium, sans-serif;
   font-size: 16px;
   color: #212529;
   height: 25px;
@@ -86,29 +90,6 @@
   -moz-outline-radius: 8px;
 }
 
-.toggle-info {
-  display: flex;
-  align-items: center;
-  padding-left: 24px;
-}
-
-.toggle-info-name {
-  color: #556ee6;
-  font-size: 15px;
-  font-family: HelveticaNeue-Medium;
-}
-
-.toggle-info-description {
-  margin-top: 10px;
-  max-width: 380px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  padding-left: 24px;
-  font-size: 12px;
-  color: #495057;
-}
-
 .toggle-status {
   align-items: center;
   display: flex;
@@ -139,10 +120,106 @@
 }
 
 .toggle-status-text-enabled {
-  color: #495057;
+  color: #34c38f;
 }
 
 .pagination {
   margin-top: 16px;
   text-align: right;
+}
+
+.modal-footer {
+  display: flex;
+  height: 43px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border-top: 1px solid #ced4da;
+
+  & > button {
+    margin-left: 8px !important;
+  }
+}
+
+.comment {
+  margin: 24px -16px 0;
+  padding: 0 24px;
+  align-items: center;
+}
+
+.comment-title {
+  margin-bottom: 8px;
+}
+
+.comment-content {
+  height: 190px;
+  overflow: auto;
+}
+
+.comment-input {
+  :global {
+    .ui.input {
+      width: 100%;
+    }
+
+    .ui.input > input {
+      height: 32px;
+    }
+  }
+}
+
+.toggle-info {
+  display: flex;
+  align-items: center;
+  padding-left: 32px;
+  position: relative;
+}
+
+.toggle-info-name {
+  color: #556ee6;
+  font-size: 15px;
+  font-family: HelveticaNeue-Medium, sans-serif;
+}
+
+.toggle-info-key {
+  margin-left: 8px;
+  height: 16px;
+  line-height: 16px;
+  background: rgba(85, 110, 230, 0.1);
+  border-radius: 4px;
+  font-size: 10px;
+  color: #556ee6;
+  padding: 0 4px;
+}
+
+.toggle-info-key-label {
+  transform: scale(0.9);
+}
+
+.toggle-info-description {
+  margin-top: 10px;
+  max-width: 380px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 32px;
+  font-size: 12px;
+  color: #495057;
+}
+
+.no-data {
+  text-align: center;
+  line-height: 30px;
+  font-family: PingFangSC-Medium, sans-serif;
+  font-size: 18px;
+  color: #adb5bc;
+}
+
+.no-data-image {
+  width: 230px;
+}
+
+.diff-box {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin: 0 -16px -4px;
 }

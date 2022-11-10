@@ -7,6 +7,8 @@
   padding: 12px 24px 24px;
   min-height: 730px;
   position: relative;
+  min-width: 1200px;
+  overflow-x: auto;
 }
 
 .heading {
@@ -41,6 +43,17 @@
   height: 42px;
   line-height: 42px;
   font-size: 13px;
+  
+  :global {
+    th {
+      padding-bottom: 0 !important;
+    }
+
+    th:first-child {
+      padding-left: 24px !important;
+      padding-bottom: 0 !important;
+    }
+  }
 }
 
 .table-header > .ui.table thead th {
@@ -55,21 +68,7 @@
   padding-left: 24px;
 }
 
-.column-members {
-  padding-bottom: 0 !important;
-  padding-left: 24px !important;
-}
-
-.column-createdby {
-  padding-bottom: 0 !important;
-}
-
-.column-lastseen {
-  padding-bottom: 0 !important;
-}
-
 .column-operation {
-  padding-bottom: 0 !important;
   width: 100px;
 }
 

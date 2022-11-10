@@ -100,13 +100,16 @@ const Member = () => {
                   <Table basic='very' unstackable>
                     <Table.Header className={styles['table-header']}>
                       <Table.Row>
-                        <Table.HeaderCell className={styles['column-members']}>
+                        <Table.HeaderCell>
                           <FormattedMessage id='common.account.text' />
                         </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-createdby']}>
+                        <Table.HeaderCell>
+                          <FormattedMessage id='members.role' />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell>
                           <FormattedMessage id='members.createdby' />
                         </Table.HeaderCell>
-                        <Table.HeaderCell className={styles['column-lastseen']}>
+                        <Table.HeaderCell>
                           <FormattedMessage id='members.lastseen' />
                         </Table.HeaderCell>
                         <Table.HeaderCell className={styles['column-operation']}>

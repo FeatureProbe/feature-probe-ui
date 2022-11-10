@@ -11,6 +11,7 @@ import {
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
+import SegmentDrawer from './components/SegmentDrawer';
 import SegmentItem from './components/SegmentItem';
 import ProjectLayout from 'layout/projectLayout';
 import message from 'components/MessageBox';
@@ -22,6 +23,7 @@ import { saveDictionary } from 'services/dictionary';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import { NOT_FOUND } from 'constants/httpCode';
 import { LAST_SEEN } from 'constants/dictionary_keys';
+import { Provider } from './provider';
 import styles from './index.module.scss';
 
 interface IParams {
@@ -51,6 +53,9 @@ const Segment = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const [ isAdd, setIsAdd ] = useState<boolean>(true);
+  const [ isVisible, setIsVisible ] = useState<boolean>(false);
+  const [ segmentKey, setSegmentKey ] = useState<string>('');
   const history = useHistory();
   const intl = useIntl();
 
@@ -90,7 +95,8 @@ const Segment = () => {
   }, [fetchSegmentLists]);
 
   const handleAddSegment = useCallback(() => {
-    history.push(`/${projectKey}/${environmentKey}/segments/new`);
+    setIsAdd(true);
+    setIsVisible(true);
   }, [history, projectKey, environmentKey]);
 
   const handlePageChange = useCallback((e: SyntheticEvent, data: PaginationProps) => {
@@ -108,120 +114,144 @@ const Segment = () => {
     });
   }, [searchParams]), 300);
 
+  const handleEdit = useCallback((segmentKey: string) => {
+    setIsAdd(false);
+    setSegmentKey(segmentKey);
+    setIsVisible(true);
+  }, []);
+
+  const handleClickItem = useCallback((segmentKey: string) => {
+    history.push(`/${projectKey}/${environmentKey}/segments/${segmentKey}/targeting`);
+  }, []);
+
 	return (
     <ProjectLayout>
-      <div className={styles.segments}>
-        <div className={styles.card}>
-          <div className={styles.heading}>
-            <FormattedMessage id='common.segments.text' />
-          </div>
-          <div className={styles.add}>
-            <Form className={styles['filter-form']}>
-              <Form.Field className={styles['keywords-field']}>
-                <Form.Input 
-                  placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
-                  icon={<Icon customClass={styles['icon-search']} type='search' />}
-                  onChange={handleSearch}
-                />
-              </Form.Field>
-            </Form>
-            <EventTracker category='segment' action='create-segment'>
-              <Button primary className={styles['add-button']} onClick={handleAddSegment}>
-                <Icon customClass={styles['iconfont']} type='add' />
-                <FormattedMessage id='common.segment.text' />
-              </Button>
-            </EventTracker>
-          </div>
-          {
-            isLoading ? (
-              <div className={styles.lists}>
-                <Dimmer active inverted>
-                  <Loader size='small'>
-                    <FormattedMessage id='common.loading.text' />
-                  </Loader>
-                </Dimmer>
-              </div>
-            ) : (
-              <div className={styles.lists}>
-                <Table basic='very' unstackable>
-                  <Table.Header className={styles['table-header']}>
-                    <Table.Row>
-                      <Table.HeaderCell className={styles['column-name']}>
-                        <FormattedMessage id='common.name.text' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-modify-by']}>
-                        <FormattedMessage id='common.updated.by.text' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-modify-time']}>
-                        <FormattedMessage id='common.updated.time.text' />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-operation']}>
-                        <FormattedMessage id='common.operation.text' />
-                      </Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  {
-                    segmentList.length !== 0 && (
-                      <Table.Body>
-                        {
-                          segmentList?.map((segment: ISegment) => {
-                            return (
-                              <SegmentItem 
-                                key={segment.key}
-                                segment={segment}
-                                fetchSegmentLists={fetchSegmentLists}
-                              />
-                            );
-                          })
-                        }
-                      </Table.Body>
-                    )
-                  }
-                </Table>
-                {
-                  segmentList.length === 0 && (
-                    <div className={styles['no-data']}>
-                      <div>
-                        <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                      </div>
-                      <div>
-                        <FormattedMessage id='common.nodata.text' />
-                      </div>
-                    </div>
-                  )
-                }
-                {
-                  segmentList.length !== 0 && (
-                    <div className={styles.pagination}>
-                      <div className={styles['total']}>
-                        <span className={styles['total-count']}>{total} </span>
-                        <FormattedMessage id='segments.total' />
-                      </div>
+      <Provider>
+        <div className={styles.segments}>
+          <div className={styles.card}>
+            <div className={styles.heading}>
+              <FormattedMessage id='common.segments.text' />
+            </div>
+            <div className={styles.add}>
+              <Form className={styles['filter-form']}>
+                <Form.Field className={styles['keywords-field']}>
+                  <Form.Input 
+                    placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
+                    icon={<Icon customClass={styles['icon-search']} type='search' />}
+                    onChange={handleSearch}
+                  />
+                </Form.Field>
+              </Form>
+              <EventTracker category='segment' action='create-segment'>
+                <Button primary className={styles['add-button']} onClick={handleAddSegment}>
+                  <Icon customClass={styles['iconfont']} type='add' />
+                  <FormattedMessage id='common.segment.text' />
+                </Button>
+              </EventTracker>
+            </div>
+            {
+              isLoading ? (
+                <div className={styles.lists}>
+                  <Dimmer active inverted>
+                    <Loader size='small'>
+                      <FormattedMessage id='common.loading.text' />
+                    </Loader>
+                  </Dimmer>
+                </div>
+              ) : (
+                <div className={styles.lists}>
+                  <div className={styles['table-box']}>
+                    <Table className={styles.table} basic='very' unstackable>
+                      <Table.Header className={styles['table-header']}>
+                        <Table.Row>
+                          <Table.HeaderCell className={styles['column-name']}>
+                            <FormattedMessage id='common.name.text' />
+                          </Table.HeaderCell>
+                          <Table.HeaderCell className={styles['column-modify-by']}>
+                            <FormattedMessage id='common.key.text' />
+                          </Table.HeaderCell>
+                          <Table.HeaderCell className={styles['column-modify-time']}>
+                            <FormattedMessage id='common.description.text' />
+                          </Table.HeaderCell>
+                          <Table.HeaderCell className={styles['column-operation']}>
+                            <FormattedMessage id='common.operation.text' />
+                          </Table.HeaderCell>
+                        </Table.Row>
+                      </Table.Header>
                       {
-                        pagination.totalPages > 1 && (
-                          <Pagination 
-                            activePage={pagination.pageIndex} 
-                            totalPages={pagination.totalPages} 
-                            onPageChange={handlePageChange}
-                            firstItem={null}
-                            lastItem={null}
-                            prevItem={{
-                              content: (<Icon type='angle-left' />)
-                            }}
-                            nextItem={{
-                              content: (<Icon type='angle-right' />)
-                            }}
-                          />
+                        segmentList.length !== 0 && (
+                          <Table.Body>
+                            {
+                              segmentList?.map((segment: ISegment) => {
+                                return (
+                                  <SegmentItem 
+                                    key={segment.key}
+                                    segment={segment}
+                                    fetchSegmentLists={fetchSegmentLists}
+                                    handleEdit={handleEdit}
+                                    handleClickItem={handleClickItem}
+                                  />
+                                );
+                              })
+                            }
+                          </Table.Body>
                         )
                       }
-                    </div>
-                  )
-                }
-              </div>
-            )
-          }
+                    </Table>
+                  </div>
+                  {
+                    segmentList.length === 0 && (
+                      <div className={styles['no-data']}>
+                        <div>
+                          <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                        </div>
+                        <div>
+                          <FormattedMessage id='common.nodata.text' />
+                        </div>
+                      </div>
+                    )
+                  }
+                  {
+                    segmentList.length !== 0 && (
+                      <div className={styles.pagination}>
+                        <div className={styles['total']}>
+                          <span className={styles['total-count']}>{total} </span>
+                          <FormattedMessage id='segments.total' />
+                        </div>
+                        {
+                          pagination.totalPages > 1 && (
+                            <Pagination 
+                              activePage={pagination.pageIndex} 
+                              totalPages={pagination.totalPages} 
+                              onPageChange={handlePageChange}
+                              firstItem={null}
+                              lastItem={null}
+                              prevItem={{
+                                content: (<Icon type='angle-left' />)
+                              }}
+                              nextItem={{
+                                content: (<Icon type='angle-right' />)
+                              }}
+                            />
+                          )
+                        }
+                      </div>
+                    )
+                  }
+                </div>
+              )
+            }
+          </div>
+          <SegmentDrawer 
+            isAdd={isAdd} 
+            visible={isVisible}
+            setDrawerVisible={setIsVisible}
+            refreshSegmentsList={fetchSegmentLists}
+            segmentKey={segmentKey}
+            projectKey={projectKey}
+          />
         </div>
-      </div>
+      </Provider>
     </ProjectLayout>
 	);
 };

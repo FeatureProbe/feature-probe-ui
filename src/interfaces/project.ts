@@ -3,6 +3,7 @@ export interface IRouterParams {
   environmentKey: string;
   toggleKey: string;
   navigation: string;
+  segmentKey: string;
 }
 
 export interface IEnvironment {

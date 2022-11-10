@@ -1,8 +1,10 @@
 import { IntlShape } from 'react-intl';
 
+export type ToggleReturnType = '' | 'boolean' | 'number' | 'string' | 'json';
+
 interface IOption {
   intl: IntlShape;
-  returnType: string;
+  returnType: ToggleReturnType;
   userWithCode: string;
   remoteUrl: string;
   sdkVersion?: string;
@@ -38,10 +40,10 @@ export const getJavaCode = (options: IOption) => {
 
 private static final FeatureProbe fpClient = new FeatureProbe("${serverSdkKey}", config);
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.java.third.step'}),
-      code: 
+      code:
 `FPUser user = new FPUser()${userWithCode};
 ${returnType === 'boolean' ? `boolean boolValue = fpClient.boolValue("${toggleKey}", user, false);` : ''}${returnType === 'string' ? `String stringValue = fpClient.stringValue("${toggleKey}", user, "Test");` : ''}${returnType === 'number' ? `double numberValue = fpClient.numberValue("${toggleKey}", user, 500);` : ''}${returnType === 'json' ? `Map jsonValue = fpClient.jsonValue("${toggleKey}", user, new HashMap(), Map.class);` : ''}
 `
@@ -62,10 +64,10 @@ export const getRustCode = (options: IOption) => {
     {
       title: intl.formatMessage({id: 'getstarted.rust.first.step'}),
       code: `feature-probe-server-sdk = ${sdkVersion}`
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.rust.second.step'}),
-      code: 
+      code:
 `use feature_probe_server_sdk::{FPConfig, FPUser, FeatureProbe};
 let config = FPConfig {
     remote_url: "${remoteUrl}".to_owned(),
@@ -76,10 +78,10 @@ let config = FPConfig {
 
 let fp = match FeatureProbe::new(config).unwrap(); //should check result in production
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.rust.third.step'}),
-      code: 
+      code:
 `let user = FPUser::new();
 ${userWithCode}
 ${returnType === 'boolean' ? `let value = fp.bool_value("${toggleKey}", &user, false);` : ''}${returnType === 'number' ? `let value = fp.number_value("${toggleKey}", &user, 20.0), 12.5);` : ''}${returnType === 'string' ? `let value = fp.string_value("${toggleKey}", &user, "val".to_owned()), "value");` : ''}${returnType === 'json' ? `let value = fp.json_value("${toggleKey}", &user, json!("v"));` : ''}
@@ -101,15 +103,15 @@ export const getGoCode = (options: IOption) => {
       title: intl.formatMessage({id: 'getstarted.go.first.step.title'}),
       name: intl.formatMessage({id: 'getstarted.go.first.step.name.one'}),
       code: 'import "github.com/featureprobe/server-sdk-go"'
-    }, 
+    },
     {
       name: intl.formatMessage({id: 'getstarted.go.first.step.name.two'}),
       code: 'go get github.com/featureprobe/server-sdk-go'
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.go.second.step.title'}),
       name: intl.formatMessage({id: 'getstarted.go.second.step.name.one'}),
-      code: 
+      code:
 `config := featureprobe.FPConfig{
     RemoteUrl:       "${remoteUrl}",
     ServerSdkKey:    "${serverSdkKey}",
@@ -122,7 +124,7 @@ fp, err := featureprobe.NewFeatureProbe(config)
     {
       title: intl.formatMessage({id: 'getstarted.go.third.step.title'}),
       name: intl.formatMessage({id: 'getstarted.go.third.step.name.one'}),
-      code: 
+      code:
 `user := featureprobe.NewUser()
 ${userWithCode}
 ${returnType === 'boolean' ? `val := fp.BoolValue("${toggleKey}", user, true)` : ''}${returnType === 'string' ? `val := fp.StrValue("${toggleKey}", user, "1")` : ''}${returnType === 'number' ? `val := fp.NumberValue("${toggleKey}", user, 1.0)` : ''}${returnType === 'json' ? `val := fp.JsonValue("${toggleKey}", user, nil)` : ''}
@@ -156,7 +158,44 @@ if __name__ == '__main__':
   with fp.Client('${serverSdkKey}', config) as client:
     user = fp.User()
     ${userWithCode}
-    val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? 'False' : ''}${returnType === 'string' ? 'not connected' : ''}${returnType === 'number' ? '-1' : ''}${returnType === 'json' ? '{}' : ''})  
+    val = client.value('${toggleKey}', user, default=${returnType === 'boolean' ? 'False' : ''}${returnType === 'string' ? '\'not connected\'' : ''}${returnType === 'number' ? '-1' : ''}${returnType === 'json' ? '{}' : ''})  
+`
+    }
+  ];
+};
+
+export const getNodeCode = (options: IOption) => {
+  const { intl, serverSdkKey, userWithCode, returnType, toggleKey, remoteUrl } = options;
+
+  return [
+    {
+      title: intl.formatMessage({id: 'getstarted.node.first.step'}),
+      code: 'npm install featureprobe-server-sdk-node --save'
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.node.second.step'}),
+      code:
+`import { FeatureProbe, FPUser } from 'featureprobe-server-sdk-node'
+
+const fpClient = new FeatureProbe({
+    serverSdkKey: '${serverSdkKey}',
+    remoteUrl: '${remoteUrl}',
+    refreshInterval: 2000,
+})
+await fpClient.start();  // if you want a time limit for the initialization process, set 'startWait' as the timeout milliseconds
+`
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.node.third.step'}),
+      code:
+`const user = new FPUser()${userWithCode};
+const toggleValue = fpClient.${returnType}Value('${toggleKey}', user, ${returnType === 'boolean' ? 'false' : ''}${returnType === 'string' ? '\'not connected\'' : ''}${returnType === 'number' ? '-1' : ''}${returnType === 'json' ? '{}' : ''});
+`
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.fourth.step'}),
+      code:
+`await fpClient.close();
 `
     }
   ];
@@ -172,10 +211,10 @@ export const getAndroidCode = (options: IOption) => {
 `implementation 'com.featureprobe:client-sdk-android:${sdkVersion}@aar'
 implementation "net.java.dev.jna:jna:5.7.0@aar"
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.android.second.step'}),
-      code: 
+      code:
 `import com.featureprobe.mobile.*
 
 val url = FpUrlBuilder("${remoteUrl}").build()
@@ -184,10 +223,10 @@ ${userWithCode}
 val config = FpConfig(url!!, "${clientSdkKey}", 10u, true)
 val fp = FeatureProbe(config, user)
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.android.third.step'}),
-      code: 
+      code:
 `${returnType === 'boolean' ? `val value = fp.boolValue("${toggleKey}", false)` : ''}${returnType === 'number' ? `val value = fp.numberValue("${toggleKey}", 1.0)` : ''}${returnType === 'string' ? `val value = fp.stringValue("${toggleKey}", "s")` : ''}${returnType === 'json' ? `val value = fp.jsonValue("${toggleKey}", "{}")` : ''}`
     }
   ];
@@ -200,22 +239,22 @@ export const getSwiftCode = (options: IOption) => {
     {
       title: intl.formatMessage({id: 'getstarted.swift.first.step'}),
       name: 'Swift Package Manager:',
-      code: 
+      code:
 `1. XCode -> File -> Add Packages -> input \`https://github.com/FeatureProbe/client-sdk-ios.git\`
 2. click \`Add Package\`
 `
-    }, 
+    },
     {
       name: 'Cocoapods:',
-      code: 
+      code:
 `1. add \`pod 'FeatureProbe', :git => 'git@github.com:FeatureProbe/client-sdk-ios.git'\` to Podfile
 2. \`pod install\` or \`pod update\`
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.swift.second.step'}),
       name: '',
-      code: 
+      code:
 `import featureprobe
 let url = FpUrlBuilder(remoteUrl: "${remoteUrl}").build()
 let user = FpUser()
@@ -243,11 +282,11 @@ export const getObjCCode = (options: IOption) => {
     {
       title: intl.formatMessage({id: 'getstarted.objc.first.step'}),
       name: 'Cocoapods:',
-      code: 
+      code:
 `1. add \`pod 'FeatureProbe', :git => 'git@github.com:FeatureProbe/client-sdk-ios.git'\` to Podfile
 2. \`pod install\` or \`pod update\`
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.objc.second.step'}),
       name: '',
@@ -264,7 +303,7 @@ FpConfig *config = [[FpConfig alloc] initWithRemoteUrl: url
                                       refreshInterval: 10
                                         waitFirstResp: true];
 FeatureProbe *fp = [[FeatureProbe alloc] initWithConfig:config user:user];`
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.objc.third.step'}),
       name: '',
@@ -280,7 +319,7 @@ export const getJSCode = (options: IOption) => {
       title: intl.formatMessage({id: 'getstarted.js.first.step.title'}),
       name: 'NPM',
       code: 'npm install featureprobe-client-sdk-js --save'
-    }, 
+    },
     {
       name: intl.formatMessage({id: 'getstarted.js.second.step.or'}) + 'CDN',
       code: '<script type="text/javascript" src="https://unpkg.com/featureprobe-client-sdk-js@latest/dist/featureprobe-client-sdk-js.min.js"></script>'
@@ -288,7 +327,7 @@ export const getJSCode = (options: IOption) => {
     {
       title: intl.formatMessage({id: 'getstarted.js.second.step.title'}),
       name: 'NPM',
-      code: 
+      code:
 `import { FeatureProbe, FPUser } from "featureprobe-client-sdk-js";
 
 const user = new FPUser();
@@ -301,10 +340,10 @@ const fp = new FeatureProbe({
 
 fp.start();
 `
-    }, 
+    },
     {
       name: intl.formatMessage({id: 'getstarted.js.second.step.or'}) + 'CDN',
-      code: 
+      code:
 `const user = new featureProbe.FPUser();
 ${userWithCode}
 const fp = new featureProbe.FeatureProbe({
@@ -315,11 +354,11 @@ const fp = new featureProbe.FeatureProbe({
 
 fp.start();
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.js.third.step.title'}),
       name: intl.formatMessage({id: 'getstarted.js.third.step.name.one'}),
-      code: 
+      code:
 `fp.on("ready", function() {
     ${returnType === 'boolean' ? `const value = fp.boolValue("${toggleKey}", false);` : ''}${returnType === 'number' ? `const value = fp.numberValue("${toggleKey}", 1.0);` : ''}${returnType === 'string' ? `const value = fp.stringValue("${toggleKey}", "s");` : ''}${returnType === 'json' ? `const value = fp.jsonValue("${toggleKey}", {});` : ''}
 });
@@ -334,10 +373,10 @@ export const getMiniProgramCode = (options: IOption) => {
     {
       title: intl.formatMessage({id: 'getstarted.miniprogram.first.step.title'}),
       code: 'npm install featureprobe-client-sdk-miniprogram --save'
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.miniprogram.second.step.title'}),
-      code: 
+      code:
 `import { featureProbeClient, FPUser} from "featureprobe-client-sdk-miniprogram";
 
 const user = new FPUser();
@@ -350,18 +389,18 @@ featureProbeClient.init({
 
 featureProbeClient.start();
 `
-    }, 
+    },
     {
       title: intl.formatMessage({id: 'getstarted.miniprogram.third.step.title'}),
       name: intl.formatMessage({id: 'getstarted.miniprogram.third.step.name.one'}),
-      code: 
+      code:
 `const app = getApp();
 const value = app.globalData.toggles[${toggleKey}].value;
 `
     },
     {
       name: intl.formatMessage({id: 'getstarted.miniprogram.third.step.name.second'}),
-      code: 
+      code:
 `featureProbeClient.on("ready", function() {
     ${returnType === 'boolean' ? `const value = fp.boolValue("${toggleKey}", false);` : ''}${returnType === 'number' ? `const value = fp.numberValue("${toggleKey}", 1.0);` : ''}${returnType === 'string' ? `const value = fp.stringValue("${toggleKey}", "s");` : ''}${returnType === 'json' ? `const value = fp.jsonValue("${toggleKey}", {});` : ''}
 });

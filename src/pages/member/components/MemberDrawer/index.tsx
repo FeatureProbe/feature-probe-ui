@@ -29,12 +29,16 @@ interface IParams {
 }
 
 const DEFAULT_PASSWORD = 'Pass1234';
+const EMAIL_REG = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/i;
+const isDemo = localStorage.getItem('isDemo') === 'true';
 
 const MemberDrawer = (props: IParams) => {
   const { isAdd, visible, editUser, setDrawerVisible, refreshMemberList } = props;
   const [ passwordVisible, setPasswordVisible ] = useState<boolean>(false);
   const [ memberValues, setMemberValues ] = useState<string[]>([]);
   const [ dulplicateAccount, setDulplicateAccount ] = useState<string>(); 
+  const [ role, saveRole ] = useState<string>('WRITER');
+  const intl = useIntl();
 
   const {
     formState: { errors },
@@ -46,7 +50,36 @@ const MemberDrawer = (props: IParams) => {
     clearErrors,
   } = useForm();
 
-  const intl = useIntl();
+  const options = useMemo(() => {
+    return [
+      { 
+        key: 'WRITER',
+        value: 'WRITER',
+        text: 'Writer',
+        children: (
+          <div>
+            <div className={styles['role-title']}>Writer</div>
+            <div className={styles['role-desc']}>
+              <FormattedMessage id='members.writer.auth.text' />
+            </div>
+          </div>
+        )
+      },
+      { 
+        key: 'OWNER',
+        value: 'OWNER',
+        text: 'Owner',
+        children: (
+          <div className={styles['role-item']}>
+            <div className={styles['role-title']}>Owner</div>
+            <div className={styles['role-desc']}>
+              <FormattedMessage id='members.owner.auth.text' />
+            </div>
+          </div>
+        )
+      },
+    ];
+  }, []);
 
   useEffect(() => {
     if (visible) {
@@ -58,6 +91,7 @@ const MemberDrawer = (props: IParams) => {
       setValue('account', '');
       setValue('password', '');
     }
+    setValue('role', 'WRITER');
   }, [visible, setValue, clearErrors]);
 
   useEffect(() => {
@@ -78,6 +112,10 @@ const MemberDrawer = (props: IParams) => {
 
   useEffect(() => {
     setValue('account', editUser?.account);
+    setValue('role', editUser?.role);
+    if (editUser?.role) {
+      saveRole(editUser?.role);
+    }
   }, [editUser, setValue]);
 
   const renderLabel = useCallback((label: DropdownItemProps) => {
@@ -87,6 +125,7 @@ const MemberDrawer = (props: IParams) => {
     });
   }, []);
 
+  // Add accounts
   const handleChange = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
     // @ts-ignore detail value
     setMemberValues(detail.value);
@@ -107,6 +146,7 @@ const MemberDrawer = (props: IParams) => {
       };
       params.accounts = data.accounts;
       params.password = data.password || DEFAULT_PASSWORD;
+      params.role = data.role;
 
       const res = await createMember(params);
       if (res.success) {
@@ -120,6 +160,7 @@ const MemberDrawer = (props: IParams) => {
       const res = await updateMember(data);
       if (res.success) {
         message.success(intl.formatMessage({id: 'members.update.success.text'}));
+        refreshMemberList(0);
         setDrawerVisible(false);
       } else {
         message.error(intl.formatMessage({id: 'members.update.error.text'}));
@@ -137,16 +178,24 @@ const MemberDrawer = (props: IParams) => {
     });
   }, [memberValues]);
 
+  // Confirm add account
   const handleAddAccount = useCallback(async(event: SyntheticEvent, data: DropdownProps) => {
+    // @ts-ignore detail value
+    const account: string = data.value;
+
+    if (isDemo && !EMAIL_REG.test(account)) {
+      message.error(intl.formatMessage({id: 'login.email.invalid.text'}));
+      setDulplicateAccount(account);
+      return;
+    }
+
     const res = await getMember({
-      // @ts-ignore detail value
-      account: data.value,
+      account,
     });
 
     if (res.success) {
       message.error(intl.formatMessage({id: 'members.add.dulplicate.error.text'}));
-      // @ts-ignore detail value
-      setDulplicateAccount(data.value);
+      setDulplicateAccount(account);
     }
   }, [intl]);
   
@@ -183,18 +232,21 @@ const MemberDrawer = (props: IParams) => {
           <div className={styles['title-left']}>
             { isAdd ? intl.formatMessage({id: 'members.add.members'}) : intl.formatMessage({id: 'members.edit.member'}) }
           </div>
-          <Button size='mini' basic type='reset' className={styles['btn-cancel']} onClick={() => {setDrawerVisible(false);}}>
-            <FormattedMessage id='common.cancel.text' />
-          </Button>
           <Button size='mini' primary type='submit'>
-            {
-              isAdd ? intl.formatMessage({id: 'common.add.text'}) : intl.formatMessage({id: 'common.save.text'})
-            }
+            { isAdd ? intl.formatMessage({id: 'common.add.text'}) : intl.formatMessage({id: 'common.save.text'}) }
           </Button>
           <div className={styles.divider}></div>
           <Icon customClass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
+        {
+          isDemo && (
+            <div className={styles['demo-tips']}>
+              <FormattedMessage id='login.demo.password.tip' />
+            </div> 
+          )
+        }
         <div className={styles['member-drawer-form-content']}>
+          {/* Account */}
           {
             isAdd ? (
               <>
@@ -212,36 +264,40 @@ const MemberDrawer = (props: IParams) => {
                     floating
                     options={valueOptions}
                     size='mini'
+                    icon={null}
                     value={memberValues}
+                    noResultsMessage={null}
                     error={ errors.accounts ? true : false }
+                    className={`${styles['dropdown']}`}
+                    placeholder={intl.formatMessage({id: 'members.add.members.placeholder'})}
                     {
                       ...register('accounts', { 
                         required: intl.formatMessage({id: 'members.add.members.placeholder'}),
                       })
                     }
-                    className={`${styles['dropdown']}`}
-                    placeholder={intl.formatMessage({id: 'members.add.members.placeholder'})}
-                    onChange={(e: SyntheticEvent, detail: DropdownProps) => handleChange(e, detail)}
                     renderLabel={renderLabel}
-                    noResultsMessage={null}
-                    icon={null}
                     onAddItem={handleAddAccount}
+                    onChange={(e: SyntheticEvent, detail: DropdownProps) => handleChange(e, detail)}
                   />
                 </Form.Field>
                 { errors.accounts && <div className={styles['error-text']}>{ errors.accounts.message }</div> }
 
-                <FormField>
-                  <Checkbox 
-                    checked={ !passwordVisible } 
-                    label={intl.formatMessage({id: 'members.defalut.password'})}
-                    onChange={handleCheckboxChange} 
-                  />
-                  <div>
-                    <div className={styles.password}>
-                      { DEFAULT_PASSWORD }
-                    </div>
-                  </div>
-                </FormField>
+                {
+                  !isDemo && (
+                    <FormField>
+                      <Checkbox 
+                        checked={ !passwordVisible } 
+                        label={intl.formatMessage({id: 'members.defalut.password'})}
+                        onChange={handleCheckboxChange} 
+                      />
+                      <div>
+                        <div className={styles.password}>
+                          { DEFAULT_PASSWORD }
+                        </div>
+                      </div>
+                    </FormField>
+                  )
+                }
               </>
             ) : (
               <>
@@ -273,20 +329,50 @@ const MemberDrawer = (props: IParams) => {
             )
           }
           
+          {/* Password */}
           {
-            (!isAdd || passwordVisible) && (
-              <>
-                <FormItemPassword 
-                  errors={errors}
-                  register={register}
-                  onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
-                    setValue(detail.name, detail.value);
-                    await trigger('password');
-                  }}
-                />
-              </>
+            (!isAdd || passwordVisible) && !isDemo && (
+              <FormItemPassword 
+                errors={errors}
+                register={register}
+                onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
+                  setValue(detail.name, detail.value);
+                  await trigger('password');
+                }}
+              />
             )
           }
+
+          {/* Role */}
+          <Form.Field className={`${styles.joyride} joyride-return-type`}>
+            <label>
+              <span className={styles['label-required']}>*</span>
+              <FormattedMessage id='members.role' />
+            </label>
+            <Dropdown 
+              fluid
+              floating
+              selection 
+              clearable
+              value={ role }
+              error={ errors.role ? true : false }
+              options={options} 
+              placeholder={intl.formatMessage({id: 'toggles.returntype.placeholder'})}
+              icon={ <Icon customClass={styles['angle-down']} type='angle-down' /> }
+              {
+                ...register('role', { 
+                  required: intl.formatMessage({id: 'members.select.role.placeholder'}), 
+                })
+              }
+              onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
+                setValue(detail.name, detail.value);
+                // @ts-ignore detail.value
+                saveRole(detail.value);
+                await trigger('role');
+              }}
+            />
+          </Form.Field>
+          { errors.role && <div className={styles['error-text']}>{ errors.role.message }</div> }
         </div>
       </Form>
     </div>

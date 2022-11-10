@@ -1,4 +1,4 @@
-import { IRule } from './targeting'
+import { IRule, IVersion } from './targeting';
 import { ISort, IPageable } from './toggle';
 
 export interface ISegment {
@@ -57,5 +57,25 @@ export interface IToggleList {
   size: number;
   content: IToggle[];
   number: number;
+  empty: boolean;
+}
+
+export interface ISegmentVersion extends IVersion {
+  version: number;
+  rules: IRule[];
+}
+
+export interface ISegmentVersions {
+  totalElements: number;
+  totalPages: number;
+  sort: ISort;
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  pageable: IPageable;
+  size: number;
+  content: ISegmentVersion[];
+  number: number;
+  version: number;
   empty: boolean;
 }
