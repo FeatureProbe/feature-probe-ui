@@ -328,7 +328,7 @@ const Targeting = () => {
                 <div 
                   className={styles['permanent-warning-message']}
                 >
-                  <Icon type='warning-circle' customClass={styles['warning-icon']} />
+                  <Icon type='warning-circle' customclass={styles['warning-icon']} />
                   <FormattedMessage id='toggles.permanent.tips' values={{ useDays: toggleInfo?.useDays }} />
                 </div>
               </div>
@@ -392,8 +392,8 @@ const Targeting = () => {
                   >
                     {
                       historyOpen 
-                        ? <Icon type='put-up' customClass={styles['put-away']} /> 
-                        : <Icon type='put-away' customClass={styles['put-away']} /> 
+                        ? <Icon type='put-up' customclass={styles['put-away']} /> 
+                        : <Icon type='put-away' customclass={styles['put-away']} /> 
                     }
                     <FormattedMessage id='common.history.text' />
                   </Button>
@@ -425,7 +425,7 @@ const Targeting = () => {
                                     <FormattedMessage id='common.version.text' />:
                                     { selectedVersion }
                                   </span>
-                                  <Icon type='close' customClass={styles['close-icon']} onClick={() => quiteReviewHistory()} />
+                                  <Icon type='close' customclass={styles['close-icon']} onClick={() => quiteReviewHistory()} />
                                 </div>
                               </div>
                             )
@@ -483,7 +483,7 @@ const Targeting = () => {
           >
             <div>
               <div className={styles['modal-header']}>
-                <Icon customClass={styles['warning-circle']} type='warning-circle' />
+                <Icon customclass={styles['warning-circle']} type='warning-circle' />
                 <span className={styles['modal-header-text']}>
                   <FormattedMessage id='sidebar.modal.title' />
                 </span>

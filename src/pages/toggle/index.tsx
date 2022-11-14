@@ -230,7 +230,7 @@ const Toggle = () => {
   const renderLabel = useCallback((label: DropdownItemProps) => {
     return ({
       content: label.text,
-      removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
+      removeIcon: <Icon customclass={styles['dropdown-remove-icon']} type='close' />,
     });
   }, []);
 
@@ -330,7 +330,7 @@ const Toggle = () => {
                   <div className={styles['heading-archive']}>
                     <Icon 
                       type='back' 
-                      customClass={styles['icon-back']} 
+                      customclass={styles['icon-back']} 
                       onClick={() => { 
                         setArchived(false); 
                         handleSearchArchivedList(false);
@@ -362,8 +362,8 @@ const Toggle = () => {
                       options={evaluationOptions} 
                       icon={
                         searchParams.visitFilter
-                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
-                          : <Icon customClass={styles['angle-down']} type='angle-down' />
+                          ? <Icon customclass={styles['angle-down']} type='remove-circle' />
+                          : <Icon customclass={styles['angle-down']} type='angle-down' />
                       }
                       onChange={handleEvaluationChange}
                     />
@@ -383,8 +383,8 @@ const Toggle = () => {
                       options={statusOptions} 
                       icon={
                         typeof searchParams.disabled === 'boolean'
-                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
-                          : <Icon customClass={styles['angle-down']} type='angle-down' />
+                          ? <Icon customclass={styles['angle-down']} type='remove-circle' />
+                          : <Icon customclass={styles['angle-down']} type='angle-down' />
                       }
                       onChange={handleStatusChange}
                     />
@@ -407,8 +407,8 @@ const Toggle = () => {
                       onChange={handleTagsChange}
                       icon={
                         searchParams.tags && searchParams.tags.length > 0
-                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
-                          : <Icon customClass={styles['angle-down']} type='angle-down' />
+                          ? <Icon customclass={styles['angle-down']} type='remove-circle' />
+                          : <Icon customclass={styles['angle-down']} type='angle-down' />
                       }
                     />
                   </Form.Field>
@@ -427,8 +427,8 @@ const Toggle = () => {
                       options={permanentOptions} 
                       icon={
                         typeof searchParams.permanent === 'boolean'
-                          ? <Icon customClass={styles['angle-down']} type='remove-circle' />
-                          : <Icon customClass={styles['angle-down']} type='angle-down' />
+                          ? <Icon customclass={styles['angle-down']} type='remove-circle' />
+                          : <Icon customclass={styles['angle-down']} type='angle-down' />
                       }
                       onChange={handlePermanentChange}
                     />
@@ -436,7 +436,7 @@ const Toggle = () => {
                   <Form.Field className={styles['keywords-field']}>
                     <Form.Input 
                       placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
-                      icon={<Icon customClass={styles['icon-search']} type='search' />}
+                      icon={<Icon customclass={styles['icon-search']} type='search' />}
                       onChange={handleSearch}
                     />
                   </Form.Field>
@@ -445,7 +445,7 @@ const Toggle = () => {
                   !isArchived && (
                     <EventTracker category='toggle' action='create-toggle'>
                       <Button primary className={styles['add-button']} onClick={handleAddToggle}>
-                        <Icon customClass={styles['iconfont']} type='add' />
+                        <Icon customclass={styles['iconfont']} type='add' />
                         <FormattedMessage id='common.toggle.text' />
                       </Button>
                     </EventTracker>
@@ -466,7 +466,7 @@ const Toggle = () => {
                       }}
                       className={styles['toggle-menu']}
                     >
-                      <Icon customClass={styles['menu-angle-down']} type='angle-down' />
+                      <Icon customclass={styles['menu-angle-down']} type='angle-down' />
                     </div>
                   }
                 >
@@ -535,7 +535,7 @@ const Toggle = () => {
                                       trigger={
                                         <Icon 
                                           type='filter' 
-                                          customClass={`${styles['icon-filter']} ${releaseStatusList.length > 0 && styles['icon-filter-selected']}`} 
+                                          customclass={`${styles['icon-filter']} ${releaseStatusList.length > 0 && styles['icon-filter-selected']}`} 
                                           onClick={(e: SyntheticEvent) => {
                                             document.body.click();
                                             e.stopPropagation();

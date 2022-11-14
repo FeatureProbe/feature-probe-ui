@@ -24,6 +24,38 @@ const Login = () => {
     EventTrack.pageView(location.pathname);
   }, [location.pathname]);
 
+  useEffect(() => {
+    register('account', { 
+      required: {
+        value: true,
+        message: intl.formatMessage({id: 'login.account.required'})
+      },
+      maxLength: {
+        value: 30,
+        message: intl.formatMessage({id: 'login.account.maxlength'})
+      },
+    });
+
+    register('password', { 
+      required: {
+        value: true,
+        message: intl.formatMessage({id: 'login.password.required'})
+      },
+      minLength: {
+        value: 4,
+        message: intl.formatMessage({id: 'login.password.minlength'})
+      },
+      maxLength: {
+        value: 20,
+        message: intl.formatMessage({id: 'login.password.maxlength'})
+      },
+      pattern: {
+        value: /^[A-Z0-9._-]+$/i,
+        message: intl.formatMessage({id: 'login.password.invalid'})
+      }
+    });
+  }, []);
+
   const {
     formState: { errors },
     register,
@@ -77,19 +109,8 @@ const Login = () => {
               </label>
               <Form.Input
                 placeholder={intl.formatMessage({id: 'login.account.required'})}
+                name='account'
                 error={ errors.account ? true : false }
-                {
-                  ...register('account', { 
-                    required: {
-                      value: true,
-                      message: intl.formatMessage({id: 'login.account.required'})
-                    },
-                    maxLength: {
-                      value: 30,
-                      message: intl.formatMessage({id: 'login.account.maxlength'})
-                    },
-                  })
-                }
                 onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                   setValue(detail.name, detail.value);
                   await trigger('account');
@@ -108,27 +129,8 @@ const Login = () => {
               <Form.Input
                 placeholder={intl.formatMessage({id: 'login.password.required'})}
                 type='password'
+                name='password'
                 error={ errors.password ? true : false }
-                {
-                  ...register('password', { 
-                    required: {
-                      value: true,
-                      message: intl.formatMessage({id: 'login.password.required'})
-                    },
-                    minLength: {
-                      value: 4,
-                      message: intl.formatMessage({id: 'login.password.minlength'})
-                    },
-                    maxLength: {
-                      value: 20,
-                      message: intl.formatMessage({id: 'login.password.maxlength'})
-                    },
-                    pattern: {
-                      value: /^[A-Z0-9._-]+$/i,
-                      message: intl.formatMessage({id: 'login.password.invalid'})
-                    }
-                  })
-                }
                 onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                   setValue(detail.name, detail.value);
                   await trigger('password');

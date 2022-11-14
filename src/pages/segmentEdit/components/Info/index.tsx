@@ -411,8 +411,8 @@ const Info = () => {
         >
           {
             isHistoryOpen 
-              ? <Icon type='put-up' customClass={styles['put-away']} /> 
-              : <Icon type='put-away' customClass={styles['put-away']} /> 
+              ? <Icon type='put-up' customclass={styles['put-away']} /> 
+              : <Icon type='put-away' customclass={styles['put-away']} /> 
           }
           <FormattedMessage id='common.history.text' />
         </Button>
@@ -420,7 +420,7 @@ const Info = () => {
       <div className={styles.content} ref={ref}>
         {
           isPageLoading ? (
-            <Dimmer Dimmer active inverted>
+            <Dimmer active inverted>
               <Loader size='small'>
                 <FormattedMessage id='common.loading.text' />
               </Loader>
@@ -438,7 +438,7 @@ const Info = () => {
                         <FormattedMessage id='common.version.text' />:
                         { selectedVersion }
                       </span>
-                      <Icon type='close' customClass={styles['close-icon']} onClick={() => quiteReviewHistory()} />
+                      <Icon type='close' customclass={styles['close-icon']} onClick={() => quiteReviewHistory()} />
                     </div>
                   </div>
                 )
@@ -494,7 +494,7 @@ const Info = () => {
               >
                 <div>
                   <div className={styles['modal-header']}>
-                    <Icon customClass={styles['warning-circle']} type='warning-circle' />
+                    <Icon customclass={styles['warning-circle']} type='warning-circle' />
                     <span className={styles['modal-header-text']}>
                       <FormattedMessage id='sidebar.modal.title' />
                     </span>

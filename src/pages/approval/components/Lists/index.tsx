@@ -143,7 +143,7 @@ const Lists = () => {
           <Form.Field className={styles['keywords-field']}>
             <Form.Input 
               placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
-              icon={<Icon customClass={styles['icon-search']} type='search' />}
+              icon={<Icon customclass={styles['icon-search']} type='search' />}
               onChange={handleSearch}
             />
           </Form.Field>
@@ -200,7 +200,8 @@ const Lists = () => {
                 {
                   approvalList?.map((approval: IApproval) => {
                     return (
-                      <ListItem 
+                      <ListItem
+                        key={approval.createdTime}
                         type={type}
                         approval={approval}
                       />

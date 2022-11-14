@@ -107,7 +107,7 @@ const ConfirmModal = (props: IProps) => {
           <span>
             <FormattedMessage id='targeting.publish.modal.title' />
           </span>
-          <Icon customClass={styles['modal-header-icon']} type='close' onClick={(e: SyntheticEvent) => {
+          <Icon customclass={styles['modal-header-icon']} type='close' onClick={(e: SyntheticEvent) => {
             e.stopPropagation();
             setOpen(false);
           }} />
@@ -116,7 +116,7 @@ const ConfirmModal = (props: IProps) => {
           steps[current] === 'toggle' ? (
             <>
               <div className={styles['modal-tips']}>
-                <Icon type='info-circle' customClass={styles['modal-info-circle']} />
+                <Icon type='info-circle' customclass={styles['modal-info-circle']} />
                 {
                   intl.formatMessage({
                     id: 'segments.modal.delete.tips',

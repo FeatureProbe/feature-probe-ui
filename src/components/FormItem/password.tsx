@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UseFormRegister, FieldValues, FieldErrors } from 'react-hook-form';
@@ -14,6 +14,24 @@ const FormItemPassword = (props: IProps) => {
   const intl = useIntl();
   const { errors, register, onChange } = props;
 
+  useEffect(() => {
+    register('password', { 
+      required: intl.formatMessage({id: 'login.password.required'}),
+      minLength: {
+        value: 4,
+        message: intl.formatMessage({id: 'login.password.minlength'}),
+      },
+      maxLength: {
+        value: 20,
+        message: intl.formatMessage({id: 'login.password.maxlength'})
+      },
+      pattern: {
+        value: /^[A-Z0-9._-]+$/i,
+        message: intl.formatMessage({id: 'login.password.invalid'})
+      }
+    });
+  }, []);
+
   return (
     <>
       <Form.Field>
@@ -23,27 +41,11 @@ const FormItemPassword = (props: IProps) => {
         </label>
 
         <Form.Input
+          name='password'
           className={styles.input}
           type='password'
           placeholder={intl.formatMessage({id: 'login.password.required'})} 
           error={ errors.password ? true : false }
-          {
-            ...register('password', { 
-              required: intl.formatMessage({id: 'login.password.required'}),
-              minLength: {
-                value: 4,
-                message: intl.formatMessage({id: 'login.password.minlength'}),
-              },
-              maxLength: {
-                value: 20,
-                message: intl.formatMessage({id: 'login.password.maxlength'})
-              },
-              pattern: {
-                value: /^[A-Z0-9._-]+$/i,
-                message: intl.formatMessage({id: 'login.password.invalid'})
-              }
-            })
-          }
           onChange={onChange}
         />
       </Form.Field>

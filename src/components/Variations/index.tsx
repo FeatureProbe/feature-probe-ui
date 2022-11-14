@@ -119,7 +119,7 @@ const Variations = (props: IProps) => {
           className={styles['variation-add-btn']} 
         >
           <>
-            <Icon customClass={styles['iconfont']} type='add' />
+            <Icon customclass={styles['iconfont']} type='add' />
             <span className={styles['variation-add-btn-text']}>
               <FormattedMessage id='variations.add.text' />
             </span>

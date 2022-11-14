@@ -43,8 +43,8 @@ const PutAway = () => {
       <div className={putAwayDividerCls}></div>
       {
         isPutAway 
-          ? <Icon customClass={styles.iconfont} type='put-up' /> 
-          : <Icon customClass={styles.iconfont} type='put-away' />
+          ? <Icon customclass={styles.iconfont} type='put-up' /> 
+          : <Icon customclass={styles.iconfont} type='put-away' />
       }
       {
         !isPutAway && <span className={styles.menu}>

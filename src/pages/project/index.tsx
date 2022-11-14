@@ -66,7 +66,7 @@ const Project = () => {
                 <div>
                   <EventTracker category='project' action='create-project'>
                     <Button primary onClick={handleAddProject}>
-                      <Icon customClass={styles.iconfont} type='add' />
+                      <Icon customclass={styles.iconfont} type='add' />
                       <FormattedMessage id='common.project.text' />
                     </Button>
                   </EventTracker>

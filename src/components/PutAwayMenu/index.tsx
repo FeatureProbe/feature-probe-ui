@@ -23,13 +23,13 @@ const PutAwayMemu = (props: IProps) => {
               content={title} 
               style={{opacity: 0.8}}
               trigger={
-                <Icon customClass={styles['iconfont']} type={type} />
+                <Icon customclass={styles['iconfont']} type={type} />
               } 
             />
           </>
         ) : (
           <>
-            <Icon customClass={styles['iconfont']} type={type} />
+            <Icon customclass={styles['iconfont']} type={type} />
             <span className={styles.menu}>
               {title}
             </span>

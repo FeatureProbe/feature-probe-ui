@@ -285,7 +285,7 @@ const StepSecond = (props: IProps) => {
           currentStep > CURRENT && (
             <>
               <div className={styles.checked}>
-                <Icon type='check-circle' customClass={styles['checked-circle']} />
+                <Icon type='check-circle' customclass={styles['checked-circle']} />
               </div>
               <div className={styles.lineSelected}></div>
             </>
@@ -302,9 +302,9 @@ const StepSecond = (props: IProps) => {
               <>
                 <div>
                   {
-                    options.map((item: ICodeOption) => {
+                    options.map((item: ICodeOption, index: number) => {
                       return (
-                        <div>
+                        <div key={index}>
                           {
                             item.title && (
                               <div className={styles['code-step-title']}>
@@ -368,7 +368,7 @@ const StepSecond = (props: IProps) => {
                 <div className={styles['card-right']}>
                   <Icon
                     type='view'
-                    customClass={styles.iconfont}
+                    customclass={styles.iconfont}
                     onClick={() => {
                       goBackToStep(CURRENT);
                     }}

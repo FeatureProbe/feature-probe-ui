@@ -244,11 +244,11 @@ const ProjectLayout = (props: IProps) => {
         {
           tipVisible && (localStorage.getItem('isDemo') === 'true') && (
             <div className={styles['platform-tips']}>
-              <Icon type='error-circle' customClass={styles['platform-tips-error']} />
+              <Icon type='error-circle' customclass={styles['platform-tips-error']} />
               <span className={styles['platform-tips-text']}>
                 <FormattedMessage id='platform.warning.text' />
               </span>
-              <Icon type='close' customClass={styles['platform-tips-close']} onClick={() => {hideTip();}} />
+              <Icon type='close' customclass={styles['platform-tips-close']} onClick={() => {hideTip();}} />
             </div>
           )
         }
@@ -256,7 +256,7 @@ const ProjectLayout = (props: IProps) => {
           <Breadcrumb.Section link onClick={gotoProjects}>
             <FormattedMessage id='common.projects.text' />
           </Breadcrumb.Section>
-          <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+          <Breadcrumb.Divider icon={<Icon customclass={styles['breadcrumb-icon']} type='angle-right' />} />
           {
             match.path === TARGETING_PATH && (
               <>
@@ -269,7 +269,7 @@ const ProjectLayout = (props: IProps) => {
                     }} 
                   />
                 </Breadcrumb.Section>
-                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Divider icon={<Icon customclass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   <TextLimit text={toggleName} maxWidth={190} popupProps={{ offset: [0, -12] }} />
                 </Breadcrumb.Section>
@@ -282,11 +282,11 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Section link onClick={gotoToggle}>
                   <TextLimit text={projectInfo.name} maxWidth={190} popupProps={{ offset: [0, -12] }}  />
                 </Breadcrumb.Section>
-                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Divider icon={<Icon customclass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section link onClick={gotoTargeting}>
                   <TextLimit text={toggleName} maxWidth={190} popupProps={{ offset: [0, -12] }}  />
                 </Breadcrumb.Section>
-                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Divider icon={<Icon customclass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   <FormattedMessage id='common.get.started.text' />
                 </Breadcrumb.Section>
@@ -318,7 +318,7 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Section link onClick={gotoSegments}>
                   <FormattedMessage id='common.segments.text' />
                 </Breadcrumb.Section>
-                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Divider icon={<Icon customclass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   <TextLimit text={segmentName} maxWidth={190} popupProps={{ offset: [0, -12] }}  />
                 </Breadcrumb.Section>
@@ -331,7 +331,7 @@ const ProjectLayout = (props: IProps) => {
                 <Breadcrumb.Section link onClick={gotoSegments}>
                   <FormattedMessage id='common.segments.text' />
                 </Breadcrumb.Section>
-                <Breadcrumb.Divider icon={<Icon customClass={styles['breadcrumb-icon']} type='angle-right' />} />
+                <Breadcrumb.Divider icon={<Icon customclass={styles['breadcrumb-icon']} type='angle-right' />} />
                 <Breadcrumb.Section active>
                   <TextLimit text={segmentName} maxWidth={190} popupProps={{ offset: [0, -12] }}  />
                 </Breadcrumb.Section>

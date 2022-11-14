@@ -1,4 +1,4 @@
-import { SyntheticEvent, useCallback, useState, useMemo } from 'react';
+import { SyntheticEvent, useCallback, useState, useMemo, useEffect } from 'react';
 import { DropdownProps, Form, InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
@@ -57,9 +57,46 @@ const VariationItem = (props: IProps) => {
   const {
     formState: { errors },
     register,
+    unregister,
     setValue,
     trigger,
   } = hooksFormContainer.useContainer();
+
+  useEffect(() => {
+    register(`variation_${id}_name`, {
+      required: {
+        value: true,
+        message: intl.formatMessage({id: 'common.input.placeholder'})
+      }
+    });
+
+    if (returnType !== 'boolean') {
+      register(`variation_${id}`, {
+        required: {
+          value: true,
+          message: intl.formatMessage({id: 'common.input.placeholder'})
+        },
+        validate: {
+          isNumber: (v: string) => {
+            const reg = /^(-?\d+)(\.\d+)?$/i;
+            if (v && returnType === 'number' && !reg.test(v)) {
+              return intl.formatMessage({id: 'common.number.invalid'});
+            }
+            return true;
+          },
+          isJSON: (v: string) => {
+            if (v && returnType === 'json' && !isJSON(v)) {
+              return intl.formatMessage({id: 'common.json.invalid'});
+            }
+            return true;
+          }
+        }
+      });
+
+    } else {
+      unregister(`variation_${id}`);
+    }
+  }, [id, returnType]);
 
   const handleChange = useCallback(value => {
     setJsonValue(value);
@@ -124,6 +161,7 @@ const VariationItem = (props: IProps) => {
               index={index}
               placeholder={intl.formatMessage({id: 'common.name.lowercase.text'})}
               disabled={disabled}
+              name={`variation_${id}_name`}
               label={(
                 <span className={styles['label-text']}>
                   <span className={styles['label-required']}>*</span>
@@ -131,14 +169,6 @@ const VariationItem = (props: IProps) => {
                 </span>
               )}
               error={errors?.[`variation_${id}_name`] ? true : false}
-              {
-                ...register(`variation_${id}_name`, {
-                  required: {
-                    value: true,
-                    message: intl.formatMessage({id: 'common.input.placeholder'})
-                  }
-                })
-              }
               onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                 handleInput(e, detail);
                 setValue(detail.name, detail.value);
@@ -159,6 +189,7 @@ const VariationItem = (props: IProps) => {
                   value={value}
                   customname='value'
                   index={index}
+                  name={`variation_${id}`}
                   label={(
                     <span className={styles['label-text']}>
                       <span className={styles['label-required']}>*</span>
@@ -168,29 +199,6 @@ const VariationItem = (props: IProps) => {
                   placeholder={intl.formatMessage({id: 'common.value.text'})}
                   error={errors?.[`variation_${id}`] ? true : false}
                   disabled={disabled}
-                  {
-                    ...register(`variation_${id}`, {
-                      required: {
-                        value: true,
-                        message: intl.formatMessage({id: 'common.input.placeholder'})
-                      },
-                      validate: {
-                        isNumber: (v: string) => {
-                          const reg = /^(-?\d+)(\.\d+)?$/i;
-                          if (v && returnType === 'number' && !reg.test(v)) {
-                            return intl.formatMessage({id: 'common.number.invalid'});
-                          }
-                          return true;
-                        },
-                        isJSON: (v: string) => {
-                          if (v && returnType === 'json' && !isJSON(v)) {
-                            return intl.formatMessage({id: 'common.json.invalid'});
-                          }
-                          return true;
-                        }
-                      }
-                    })
-                  }
                   onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                     handleInput(e, detail);
                     setValue(detail.name, detail.value);
@@ -198,7 +206,7 @@ const VariationItem = (props: IProps) => {
                   }}
                   icon={
                     returnType === 'json' && (
-                      <Icon customClass={styles['icon-evaluate']} type='code' onClick={() => setOpen(true)} />
+                      <Icon customclass={styles['icon-evaluate']} type='code' onClick={() => setOpen(true)} />
                     )
                   }
                 />
@@ -209,6 +217,7 @@ const VariationItem = (props: IProps) => {
                   floating
                   value={value}
                   customname='value'
+                  name={`variation_${id}_normal`}
                   className={styles['status-dropdown']}
                   selectOnBlur={false}
                   options={booleanOption} 
@@ -220,21 +229,12 @@ const VariationItem = (props: IProps) => {
                   )}
                   disabled={disabled}
                   placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})} 
-                  icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
-                  error={errors?.[`variation_${id}`] ? true : false}
-                  {
-                    ...register(`variation_${id}`, {
-                      required: {
-                        value: true,
-                        message: intl.formatMessage({id: 'common.dropdown.placeholder'})
-                      },
-                      validate: {}
-                    })
-                  }
+                  icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
+                  error={errors[`variation_${id}_normal`] ? true : false}
                   onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                     handleChangeBoolean(e, detail);
                     setValue(detail.name, detail.value);
-                    await trigger(`variation_${id}`);
+                    await trigger(`variation_${id}_normal`);
                   }}
                 />
               )
@@ -267,7 +267,7 @@ const VariationItem = (props: IProps) => {
       {
         index !== 0 && total !== 2 && !disabled ? (
           <div className={styles.operation}>
-            <Icon customClass={styles.iconfont} type='minus' onClick={() => handleDelete(index)} />
+            <Icon customclass={styles.iconfont} type='minus' onClick={() => handleDelete(index)} />
           </div>
           ) : (
           <div className={styles['operation-holder']}></div>
@@ -285,7 +285,7 @@ const VariationItem = (props: IProps) => {
             <span>
               <FormattedMessage id='common.value.text' />
             </span>
-            <Icon customClass={styles['modal-header-icon']} type='close' onClick={handleCancel} />
+            <Icon customclass={styles['modal-header-icon']} type='close' onClick={handleCancel} />
           </div>
           <div className={modalContentCls}>
             <JsonEditor 

@@ -10,7 +10,7 @@ interface IProps extends FormTextAreaProps {
   onChange(e: SyntheticEvent, detail: TextAreaProps): void;
 }
 
-const FormItemName = (props: IProps) => {
+const FormItemDescription = (props: IProps) => {
   const intl = useIntl();
   const { value, className, onChange } = props;
 
@@ -31,4 +31,4 @@ const FormItemName = (props: IProps) => {
   );
 };
 
-export default FormItemName;
+export default FormItemDescription;

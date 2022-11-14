@@ -49,7 +49,7 @@ const CopyToClipboardPopup = (props: IProps) => {
       content={
         isCopySuccess ? (
           <span>
-            <Icon customClass={styles['icon-success']} type='success-circle' />
+            <Icon customclass={styles['icon-success']} type='success-circle' />
             <FormattedMessage id='common.copy.success.text' />
           </span>
           ) : (

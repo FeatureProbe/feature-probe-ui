@@ -132,7 +132,7 @@ const Metrics = () => {
                   className={styles['title-select']}
                   options={getOption(intl)}
                   onChange={handleSelectChange}
-                  icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                  icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
                 />
               </div>
             </div>

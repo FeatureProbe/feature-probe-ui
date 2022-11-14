@@ -217,7 +217,7 @@ const Steps = () => {
                 <span className={styles['intro-title']}>
                   <FormattedMessage id='common.get.started.text' />
                 </span>
-                <Icon type='info-circle' customClass={styles['intro-icon']} />
+                <Icon type='info-circle' customclass={styles['intro-icon']} />
                 <span className={styles['intro-desc']}>
                   <FormattedMessage id='connect.description' />
                 </span>

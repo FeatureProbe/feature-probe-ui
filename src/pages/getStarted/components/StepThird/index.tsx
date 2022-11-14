@@ -79,7 +79,7 @@ const StepThird = (props: IProps) => {
                 {
                   toggleAccess ? (
                     <div className={styles['connect-success']}>
-                      <Icon type='success-circle' customClass={styles['success-circle']} />
+                      <Icon type='success-circle' customclass={styles['success-circle']} />
                       <FormattedMessage id='connect.fourth.success' />
                     </div>
                   ) : (
@@ -100,7 +100,7 @@ const StepThird = (props: IProps) => {
                     ) : (
                       <div className={styles['connect-failed']}>
                         <div>
-                          <Icon type='error-circle' customClass={styles['error-circle']} />
+                          <Icon type='error-circle' customclass={styles['error-circle']} />
                           <FormattedMessage id='connect.fourth.failed' />
                           <a 
                             className={styles['error-link']}

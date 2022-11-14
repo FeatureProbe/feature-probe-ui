@@ -1,4 +1,4 @@
-import { useCallback, SyntheticEvent } from 'react';
+import { useCallback, SyntheticEvent, useEffect } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -24,6 +24,12 @@ const Member = () => {
 
   const intl = useIntl();
   const { userInfo } = HeaderContainer.useContainer();
+
+  useEffect(() => {
+    register(OLD_PASSWORD, PASSWORD_REGISTER);
+    register(NEW_PASSWORD, PASSWORD_REGISTER);
+    register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER);
+  }, []);
 
   const onSubmit = useCallback(async (data) => {
     const res = await modifyPassword({
@@ -123,11 +129,9 @@ const Member = () => {
                       </label>
                       <Form.Input
                         type='password'
+                        name={OLD_PASSWORD}
                         placeholder={intl.formatMessage({id: 'login.password.required'})}
                         error={ errors[OLD_PASSWORD] ? true : false }
-                        {
-                          ...register(OLD_PASSWORD, PASSWORD_REGISTER)
-                        }
                         onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                           setValue(detail.name, detail.value);
                           await trigger(OLD_PASSWORD);
@@ -142,11 +146,9 @@ const Member = () => {
                       </label>
                       <Form.Input
                         type='password'
+                        name={NEW_PASSWORD}
                         placeholder={intl.formatMessage({id: 'login.password.required'})}
                         error={ errors[NEW_PASSWORD] ? true : false }
-                        {
-                          ...register(NEW_PASSWORD, PASSWORD_REGISTER)
-                        }
                         onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                           setValue(detail.name, detail.value);
                           await trigger(NEW_PASSWORD);
@@ -164,11 +166,9 @@ const Member = () => {
                       </label>
                       <Form.Input
                         type='password'
+                        name={CONFIRM_NEW_PASSWORD}
                         placeholder={intl.formatMessage({id: 'login.password.required'})}
                         error={ errors[CONFIRM_NEW_PASSWORD] ? true : false }
-                        {
-                          ...register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER)
-                        }
                         onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                           if (detail.value !== getValues()[NEW_PASSWORD]) {
                             setError(CONFIRM_NEW_PASSWORD, {

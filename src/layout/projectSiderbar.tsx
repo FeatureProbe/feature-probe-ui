@@ -135,7 +135,7 @@ const ProjectSiderbar = (props: IProps) => {
                 selection 
                 floating
                 fluid 
-                icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
                 onChange={handleChangeEnv}
               />
             </div>
@@ -177,7 +177,7 @@ const ProjectSiderbar = (props: IProps) => {
       >
         <div>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='sidebar.modal.title' />
             </span>

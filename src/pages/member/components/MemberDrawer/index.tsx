@@ -56,7 +56,7 @@ const MemberDrawer = (props: IParams) => {
         key: 'WRITER',
         value: 'WRITER',
         text: 'Writer',
-        children: (
+        content: (
           <div>
             <div className={styles['role-title']}>Writer</div>
             <div className={styles['role-desc']}>
@@ -69,7 +69,7 @@ const MemberDrawer = (props: IParams) => {
         key: 'OWNER',
         value: 'OWNER',
         text: 'Owner',
-        children: (
+        content: (
           <div className={styles['role-item']}>
             <div className={styles['role-title']}>Owner</div>
             <div className={styles['role-desc']}>
@@ -83,7 +83,6 @@ const MemberDrawer = (props: IParams) => {
 
   useEffect(() => {
     if (visible) {
-      clearErrors();
       setMemberValues([]);
       setPasswordVisible(false);
     } else {
@@ -91,24 +90,38 @@ const MemberDrawer = (props: IParams) => {
       setValue('account', '');
       setValue('password', '');
     }
+    clearErrors();
     setValue('role', 'WRITER');
   }, [visible, setValue, clearErrors]);
 
   useEffect(() => {
     if (isAdd) {
+      register('accounts', { 
+        required: intl.formatMessage({id: 'members.add.members.placeholder'}),
+      });
       unregister('account',
         { keepIsValid: true }
       );
-    }
-  }, [isAdd, unregister]);
-
-  useEffect(() => {
-    if (visible && !passwordVisible) {
-      unregister('password',
+    } else {
+      register('account', { 
+        required: intl.formatMessage({id: 'login.account.required'}),
+      });
+      unregister('accounts',
         { keepIsValid: true }
       );
     }
-  }, [visible, passwordVisible, unregister]);
+    register('role', { 
+      required: intl.formatMessage({id: 'members.select.role.placeholder'}), 
+    });
+  }, [isAdd, unregister]);
+
+  useEffect(() => {
+    if (!isDemo && (!isAdd || passwordVisible)) {
+      register('password');
+    } else {
+      unregister('password', { keepIsValid: true });
+    }
+  }, [isAdd, passwordVisible, isDemo, unregister]);
 
   useEffect(() => {
     setValue('account', editUser?.account);
@@ -121,7 +134,7 @@ const MemberDrawer = (props: IParams) => {
   const renderLabel = useCallback((label: DropdownItemProps) => {
     return ({
       content: label.text,
-      removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
+      removeIcon: <Icon customclass={styles['dropdown-remove-icon']} type='close' />,
     });
   }, []);
 
@@ -236,7 +249,7 @@ const MemberDrawer = (props: IParams) => {
             { isAdd ? intl.formatMessage({id: 'common.add.text'}) : intl.formatMessage({id: 'common.save.text'}) }
           </Button>
           <div className={styles.divider}></div>
-          <Icon customClass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
+          <Icon customclass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
         {
           isDemo && (
@@ -262,19 +275,15 @@ const MemberDrawer = (props: IParams) => {
                     selection
                     allowAdditions
                     floating
-                    options={valueOptions}
                     size='mini'
+                    name='accounts'
                     icon={null}
+                    options={valueOptions}
                     value={memberValues}
                     noResultsMessage={null}
                     error={ errors.accounts ? true : false }
-                    className={`${styles['dropdown']}`}
+                    className={styles.dropdown}
                     placeholder={intl.formatMessage({id: 'members.add.members.placeholder'})}
-                    {
-                      ...register('accounts', { 
-                        required: intl.formatMessage({id: 'members.add.members.placeholder'}),
-                      })
-                    }
                     renderLabel={renderLabel}
                     onAddItem={handleAddAccount}
                     onChange={(e: SyntheticEvent, detail: DropdownProps) => handleChange(e, detail)}
@@ -308,15 +317,11 @@ const MemberDrawer = (props: IParams) => {
                   </label>
                   <Form.Input
                     disabled
+                    name='account'
                     className={styles.input}
-                    value={ editUser?.account }
+                    value={ editUser?.account || '' }
                     placeholder={intl.formatMessage({id: 'login.account.required'})}
                     error={ errors.account ? true : false }
-                    {
-                      ...register('account', { 
-                        required: intl.formatMessage({id: 'login.account.required'}),
-                      })
-                    }
                     onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                       if (detail.value.length > 50 ) return;
                       setValue(detail.name, detail.value);
@@ -355,15 +360,11 @@ const MemberDrawer = (props: IParams) => {
               selection 
               clearable
               value={ role }
+              name='role'
               error={ errors.role ? true : false }
               options={options} 
               placeholder={intl.formatMessage({id: 'toggles.returntype.placeholder'})}
-              icon={ <Icon customClass={styles['angle-down']} type='angle-down' /> }
-              {
-                ...register('role', { 
-                  required: intl.formatMessage({id: 'members.select.role.placeholder'}), 
-                })
-              }
+              icon={ <Icon customclass={styles['angle-down']} type='angle-down' /> }
               onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                 setValue(detail.name, detail.value);
                 // @ts-ignore detail.value

@@ -137,14 +137,14 @@ const Segment = () => {
                 <Form.Field className={styles['keywords-field']}>
                   <Form.Input 
                     placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
-                    icon={<Icon customClass={styles['icon-search']} type='search' />}
+                    icon={<Icon customclass={styles['icon-search']} type='search' />}
                     onChange={handleSearch}
                   />
                 </Form.Field>
               </Form>
               <EventTracker category='segment' action='create-segment'>
                 <Button primary className={styles['add-button']} onClick={handleAddSegment}>
-                  <Icon customClass={styles['iconfont']} type='add' />
+                  <Icon customclass={styles['iconfont']} type='add' />
                   <FormattedMessage id='common.segment.text' />
                 </Button>
               </EventTracker>

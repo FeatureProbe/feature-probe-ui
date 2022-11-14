@@ -329,6 +329,12 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     saveOptions(options);
   }, [approvalInfo]);
 
+  useEffect(() => {
+    newRegister('reason', { 
+      required: approvalInfo?.enableApproval, 
+    });
+  }, [newRegister, approvalInfo]);
+
   const onSubmit = useCallback(() => {
     let isError = false;
     const clonevariations: IVariation[] = cloneDeep(variations);
@@ -498,7 +504,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
           </Button>
         </EventTracker>
       </div>
-      <Modal 
+      <Modal
         open={open}
         width={800}
         handleCancel={handlePublishCancel}
@@ -509,7 +515,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='targeting.publish.modal.title' />
             </span>
-            <Icon customClass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
+            <Icon customclass={styles['modal-close-icon']} type='close' onClick={handlePublishCancel} />
           </div>
           <div className={styles['modal-content']}>
             <Diff content={diffContent} maxHeight={341} />
@@ -523,7 +529,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                         <Popup
                           inverted
                           trigger={
-                            <Icon type='info' customClass={styles['icon-info']} />
+                            <Icon type='info' customclass={styles['icon-info']} />
                           }
                           content={intl.formatMessage({id: 'targeting.approval.tips'})}
                           position='top center'
@@ -534,7 +540,6 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                         <Dropdown 
                           fluid 
                           multiple 
-                          selection 
                           value={approvalInfo?.reviewers}
                           options={options} 
                           renderLabel={renderLabel}
@@ -556,11 +561,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                   </div>
                   <div className={styles['comment-content']}>
                     <Form.TextArea
-                      {
-                        ...newRegister('reason', { 
-                          required: approvalInfo?.enableApproval, 
-                        })
-                      }
+                      name='reason'
                       error={ newFormState.errors.reason ? true : false }
                       className={styles['comment-input']} 
                       placeholder={intl.formatMessage({id: 'common.input.placeholder'})}

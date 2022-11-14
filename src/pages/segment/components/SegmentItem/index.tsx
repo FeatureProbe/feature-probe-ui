@@ -132,7 +132,7 @@ const ToggleItem = (props: IProps) => {
       >
         <div>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               {
                 canDelete ? <FormattedMessage id='segments.modal.delete.title' /> : <FormattedMessage id='segments.modal.cannot.delete.title' />

@@ -124,7 +124,7 @@ const EnvironmentCard = (props: IProps) => {
                       setMenuOpen(true);
                     }}
                   >
-                    <Icon customClass={styles.iconfont} type='more' />
+                    <Icon customclass={styles.iconfont} type='more' />
                   </div>
                 }
               >
@@ -212,7 +212,7 @@ const EnvironmentCard = (props: IProps) => {
       >
         <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='projects.environment.archive.title' />
             </span>
@@ -238,7 +238,7 @@ const EnvironmentCard = (props: IProps) => {
       >
         <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='projects.environment.restore.title' />
             </span>

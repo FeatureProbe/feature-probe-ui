@@ -346,7 +346,7 @@
   "segments.create.success": "Created segment and publish successfully",
   "segments.create.error": "Error creating segment",
   "segments.edit.success": "Published segment successfully",
-  "segments.edit.error": "Error Published segment",
+  "segments.edit.error": "Error publishing segment",
   "segments.delete.success": "Successfully deleted!",
   "segments.delete.error": "Error, segment was not deleted, please retry!",
   "segments.label.name.text": "Segment name",

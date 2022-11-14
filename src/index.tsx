@@ -18,13 +18,13 @@ dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <I18NContainer.Provider>
       <Intl>
         <Router />
       </Intl>
       <ToastContainer theme='colored' />
-    </I18NContainer.Provider>
-  </React.StrictMode>,
+    </I18NContainer.Provider>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );

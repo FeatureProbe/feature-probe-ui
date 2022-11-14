@@ -222,7 +222,7 @@ const Serve = (props: IProps) => {
               setValue(detail.name, detail.value);
               await trigger(id ? `rule_${id}_serve`: 'defaultServe');
             }}
-            icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+            icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
           />
           { errors[id ? `rule_${id}_serve`: 'defaultServe'] && <div className={styles['error-text']}>
             { intl.formatMessage({id: 'targeting.serve.required'}) }
@@ -248,7 +248,7 @@ const Serve = (props: IProps) => {
             {
               total !== TOTAL && (
                 <div {...registerErrorName(id ? `rule_${id}_serve_total` : 'defaultServe_total')} className={styles.message}>
-                  <Icon customClass={styles['message-iconfont']} type='remove-circle' />
+                  <Icon customclass={styles['message-iconfont']} type='remove-circle' />
                   {
                     intl.formatMessage({
                       id: 'targeting.serve.percentage.error.text'
@@ -263,19 +263,19 @@ const Serve = (props: IProps) => {
               {
                 variationsInUse?.map((item: IVariation, index: number) => {
                   return (
-                    <div className={styles['variation-item']}>
+                    <div key={item.id} className={styles['variation-item']}>
                       <Input 
                         size='mini'
                         className={styles['variation-item-input']}
-                        value={item.inputValue}
+                        value={item.inputValue ?? ''}
                         disabled={disabled}
                         onChange={(e: ChangeEvent) => handleInputChange(e, index)}
                         icon={
                           <div>
                             <span className={styles['input-percentage']}>%</span>
                             <span className={styles['input-operation']}>
-                              <Icon customClass={styles['iconfont']} type='angle-up' onClick={() => handleAdd(index)} />
-                              <Icon customClass={styles['iconfont']} type='angle-down' onClick={() => handleMinus(index)} />
+                              <Icon customclass={styles['iconfont']} type='angle-up' onClick={() => handleAdd(index)} />
+                              <Icon customclass={styles['iconfont']} type='angle-down' onClick={() => handleMinus(index)} />
                             </span>
                           </div>
                         }
