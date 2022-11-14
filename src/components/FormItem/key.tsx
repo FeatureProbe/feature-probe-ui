@@ -37,7 +37,7 @@ const FormItemKey = (props: IProps) => {
         message: intl.formatMessage({id: 'common.key.invalid'})
       }
     });
-  }, []);
+  }, [intl, register]);
 
   return (
     <div className={className}>

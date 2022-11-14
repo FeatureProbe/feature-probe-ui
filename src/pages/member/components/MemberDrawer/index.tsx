@@ -113,7 +113,7 @@ const MemberDrawer = (props: IParams) => {
     register('role', { 
       required: intl.formatMessage({id: 'members.select.role.placeholder'}), 
     });
-  }, [isAdd, register, unregister]);
+  }, [isAdd, intl, register, unregister]);
 
   useEffect(() => {
     if (!isDemo && (!isAdd || passwordVisible)) {
@@ -121,7 +121,7 @@ const MemberDrawer = (props: IParams) => {
     } else {
       unregister('password', { keepIsValid: true });
     }
-  }, [isAdd, passwordVisible, isDemo, unregister]);
+  }, [isAdd, passwordVisible, isDemo, register, unregister]);
 
   useEffect(() => {
     setValue('account', editUser?.account);

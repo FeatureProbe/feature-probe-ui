@@ -47,7 +47,7 @@ const DemoLogin = () => {
         message: intl.formatMessage({id: 'login.email.invalid.text'})
       }
     });
-  }, [register]);
+  }, [intl, register]);
 
   const gotoHome = useCallback(async () => {
     const redirectUrl = await getRedirectUrl('/notfound');

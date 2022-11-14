@@ -1,4 +1,4 @@
-import { useCallback, SyntheticEvent, useEffect } from 'react';
+import { useCallback, SyntheticEvent, useEffect, useMemo } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -48,24 +48,26 @@ const Member = () => {
     }
   }, [intl, setError]);
 
-  const PASSWORD_REGISTER = { 
-    required: {
-      value: true,
-      message: intl.formatMessage({id: 'login.password.required'})
-    },
-    minLength: {
-      value: 4,
-      message: intl.formatMessage({id: 'login.password.minlength'})
-    },
-    maxLength: {
-      value: 20,
-      message: intl.formatMessage({id: 'login.password.maxlength'})
-    },
-    pattern: {
-      value: /^[A-Z0-9._-]+$/i,
-      message: intl.formatMessage({id: 'login.password.invalid'})
-    }
-  };
+  const PASSWORD_REGISTER = useMemo(() => {
+    return {
+      required: {
+        value: true,
+        message: intl.formatMessage({id: 'login.password.required'})
+      },
+      minLength: {
+        value: 4,
+        message: intl.formatMessage({id: 'login.password.minlength'})
+      },
+      maxLength: {
+        value: 20,
+        message: intl.formatMessage({id: 'login.password.maxlength'})
+      },
+      pattern: {
+        value: /^[A-Z0-9._-]+$/i,
+        message: intl.formatMessage({id: 'login.password.invalid'})
+      }
+    };
+  }, [intl]);
 
   useEffect(() => {
     register(OLD_PASSWORD, PASSWORD_REGISTER);

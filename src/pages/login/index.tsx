@@ -62,7 +62,7 @@ const Login = () => {
         message: intl.formatMessage({id: 'login.password.invalid'})
       }
     });
-  }, [register]);
+  }, [intl, register]);
 
   const gotoHome = useCallback(async () => {
     const redirectUrl = await getRedirectUrl('/notfound');
