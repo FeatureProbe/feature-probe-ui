@@ -289,7 +289,7 @@ const Info = (props: IProps) => {
                       }
                       content={
                         <span>
-                          <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers.join(', ')}
+                          <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers?.join(', ')}
                         </span>
                       }
                       position='top center'
