@@ -113,7 +113,7 @@ const MemberDrawer = (props: IParams) => {
     register('role', { 
       required: intl.formatMessage({id: 'members.select.role.placeholder'}), 
     });
-  }, [isAdd, unregister]);
+  }, [isAdd, register, unregister]);
 
   useEffect(() => {
     if (!isDemo && (!isAdd || passwordVisible)) {

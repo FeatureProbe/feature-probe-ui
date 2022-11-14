@@ -84,7 +84,7 @@ const Info = (props: IProps) => {
     register('reason', { 
       required: status !== 'PASS' && status !== 'CANCEL', 
     });
-  }, [status]);
+  }, [status, register]);
 
   // Refresh initial targeting to make new diff
   const refreshInitialTargeting = useCallback(async () => {

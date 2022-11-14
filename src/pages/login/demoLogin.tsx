@@ -20,6 +20,14 @@ const DemoLogin = () => {
   const intl = useIntl();
   const location = useLocation();
 
+  const {
+    formState: { errors },
+    register,
+    handleSubmit,
+    setValue,
+    trigger,
+  } = useForm();
+
   useEffect(() => {
     EventTrack.pageView(location.pathname);
   }, [location.pathname]);
@@ -39,15 +47,7 @@ const DemoLogin = () => {
         message: intl.formatMessage({id: 'login.email.invalid.text'})
       }
     });
-  }, []);
-
-  const {
-    formState: { errors },
-    register,
-    handleSubmit,
-    setValue,
-    trigger,
-  } = useForm();
+  }, [register]);
 
   const gotoHome = useCallback(async () => {
     const redirectUrl = await getRedirectUrl('/notfound');

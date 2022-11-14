@@ -22,7 +22,7 @@ const FormItemName = (props: IProps) => {
     register('name', { 
       required: intl.formatMessage({id: 'common.name.required'}),
     });
-  }, []);
+  }, [register]);
 
   return (
     <div className={className}>

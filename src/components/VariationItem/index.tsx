@@ -96,7 +96,7 @@ const VariationItem = (props: IProps) => {
     } else {
       unregister(`variation_${id}`);
     }
-  }, [id, returnType]);
+  }, [id, returnType, register, unregister]);
 
   const handleChange = useCallback(value => {
     setJsonValue(value);

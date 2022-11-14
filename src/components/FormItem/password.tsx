@@ -30,7 +30,7 @@ const FormItemPassword = (props: IProps) => {
         message: intl.formatMessage({id: 'login.password.invalid'})
       }
     });
-  }, []);
+  }, [register]);
 
   return (
     <>

@@ -25,12 +25,6 @@ const Member = () => {
   const intl = useIntl();
   const { userInfo } = HeaderContainer.useContainer();
 
-  useEffect(() => {
-    register(OLD_PASSWORD, PASSWORD_REGISTER);
-    register(NEW_PASSWORD, PASSWORD_REGISTER);
-    register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER);
-  }, []);
-
   const onSubmit = useCallback(async (data) => {
     const res = await modifyPassword({
       'oldPassword': data[OLD_PASSWORD],
@@ -72,6 +66,12 @@ const Member = () => {
       message: intl.formatMessage({id: 'login.password.invalid'})
     }
   };
+
+  useEffect(() => {
+    register(OLD_PASSWORD, PASSWORD_REGISTER);
+    register(NEW_PASSWORD, PASSWORD_REGISTER);
+    register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER);
+  }, [register, PASSWORD_REGISTER]);
 
   const OLD_PASSWORD = 'oldPassword';
   const NEW_PASSWORD = 'newPassword';

@@ -264,7 +264,7 @@ const Drawer = (props: IParams) => {
     register('disabledServe', { 
       required: true, 
     });
-  }, []);
+  }, [register]);
 
   const onSubmit = useCallback(async () => {
     setSubmitLoading(true);
