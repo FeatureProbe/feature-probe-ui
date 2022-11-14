@@ -121,7 +121,7 @@ const MemberDrawer = (props: IParams) => {
     } else {
       unregister('password', { keepIsValid: true });
     }
-  }, [isAdd, passwordVisible, isDemo, register, unregister]);
+  }, [isAdd, passwordVisible, register, unregister]);
 
   useEffect(() => {
     setValue('account', editUser?.account);
