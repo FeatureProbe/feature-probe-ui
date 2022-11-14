@@ -2,6 +2,7 @@ import { SyntheticEvent, useCallback, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Table, Button } from 'semantic-ui-react';
+import { cloneDeep } from 'lodash';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
 import TextLimit from 'components/TextLimit';
@@ -37,8 +38,8 @@ const ToggleItem = (props: IProps) => {
   } = segmentContainer.useContainer();
 
   const gotoEditing = useCallback((segment: ISegment) => {
-    saveOriginSegmentInfo(segment);
-    saveSegmentInfo(segment);
+    saveOriginSegmentInfo(cloneDeep(segment));
+    saveSegmentInfo(cloneDeep(segment));
     handleEdit(segment.key);
   }, [projectKey, environmentKey, history, handleEdit]);
 

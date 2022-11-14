@@ -198,46 +198,46 @@ const Segment = () => {
                         )
                       }
                     </Table>
+                    {
+                      segmentList.length === 0 && (
+                        <div className={styles['no-data']}>
+                          <div>
+                            <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                          </div>
+                          <div>
+                            <FormattedMessage id='common.nodata.text' />
+                          </div>
+                        </div>
+                      )
+                    }
+                    {
+                      segmentList.length !== 0 && (
+                        <div className={styles.pagination}>
+                          <div className={styles['total']}>
+                            <span className={styles['total-count']}>{total} </span>
+                            <FormattedMessage id='segments.total' />
+                          </div>
+                          {
+                            pagination.totalPages > 1 && (
+                              <Pagination 
+                                activePage={pagination.pageIndex} 
+                                totalPages={pagination.totalPages} 
+                                onPageChange={handlePageChange}
+                                firstItem={null}
+                                lastItem={null}
+                                prevItem={{
+                                  content: (<Icon type='angle-left' />)
+                                }}
+                                nextItem={{
+                                  content: (<Icon type='angle-right' />)
+                                }}
+                              />
+                            )
+                          }
+                        </div>
+                      )
+                    }
                   </div>
-                  {
-                    segmentList.length === 0 && (
-                      <div className={styles['no-data']}>
-                        <div>
-                          <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                        </div>
-                        <div>
-                          <FormattedMessage id='common.nodata.text' />
-                        </div>
-                      </div>
-                    )
-                  }
-                  {
-                    segmentList.length !== 0 && (
-                      <div className={styles.pagination}>
-                        <div className={styles['total']}>
-                          <span className={styles['total-count']}>{total} </span>
-                          <FormattedMessage id='segments.total' />
-                        </div>
-                        {
-                          pagination.totalPages > 1 && (
-                            <Pagination 
-                              activePage={pagination.pageIndex} 
-                              totalPages={pagination.totalPages} 
-                              onPageChange={handlePageChange}
-                              firstItem={null}
-                              lastItem={null}
-                              prevItem={{
-                                content: (<Icon type='angle-left' />)
-                              }}
-                              nextItem={{
-                                content: (<Icon type='angle-right' />)
-                              }}
-                            />
-                          )
-                        }
-                      </div>
-                    )
-                  }
                 </div>
               )
             }

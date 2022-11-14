@@ -202,7 +202,7 @@ const Serve = (props: IProps) => {
         </span>
         <Form.Field className={styles['serve-form-field']} style={customStyle}>
           <Dropdown
-            placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})}
+            placeholder={intl.formatMessage({id: 'targeting.serve.required'})}
             className={styles['serve-dropdown']}
             style={customStyle}
             selection

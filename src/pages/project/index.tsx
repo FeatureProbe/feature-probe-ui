@@ -59,7 +59,7 @@ const Project = () => {
               <span className={styles.title}>
                 <FormattedMessage id='common.projects.text' />
               </span>
-              <span className={styles.count}>{projectList.length}</span>
+              { projectList.length > 0 && <span className={styles.count}>{projectList.length}</span> }
             </div>
             {
               OWNER.includes(userInfo.role) && (
