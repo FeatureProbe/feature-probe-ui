@@ -52,7 +52,7 @@ const Rule = (props: IProps) => {
 
   const handleTitleClick = useCallback(() => {
     handleChangeActive(index);
-  }, [index]);
+  }, [handleChangeActive, index]);
 
 	return (
     <Draggable draggableId={`rule_${rule.id}`} index={index} isDragDisabled={disabled}>

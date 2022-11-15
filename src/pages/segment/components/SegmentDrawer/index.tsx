@@ -134,11 +134,11 @@ const SegmentDrawer = (props: IProps) => {
 
   const checkNameExist = useCallback(async (type: string, value: string) => {
     await debounceNameExist(type, value);
-  }, [debounceNameExist, projectKey]);
+  }, [debounceNameExist]);
 
   const checkKeyExist = useCallback(async (type: string, value: string) => {
     await debounceKeyExist(type, value);
-  }, [debounceKeyExist, projectKey]);
+  }, [debounceKeyExist]);
 
   const onSubmit = useCallback(async () => {
     let res;
@@ -177,7 +177,7 @@ const SegmentDrawer = (props: IProps) => {
         : intl.formatMessage({id: 'segments.edit.error'})
       );
     }
-  }, [isAdd, segmentInfo, segmentKey, setError, intl, setDrawerVisible, refreshSegmentsList]);
+  }, [segmentInfo, isAdd, setError, intl, projectKey, segmentKey, refreshSegmentsList, setDrawerVisible]);
 
 	return (
     <div className={drawerCls}>

@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState, useCallback, useEffect, useRef } from 'react';
 import { Form, Button, PaginationProps, Loader, Dimmer, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useHistory, useParams, Prompt, useRouteMatch } from 'react-router-dom';
+import { useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import moment from 'moment';
@@ -46,7 +46,7 @@ const Info = () => {
   const [ initialSegment, saveInitialSegment ] = useState<ISegmentInfo>();
   const [ publishSegment, savePublishSegment ] = useState<ISegmentInfo>();
   const [ publishDisabled, setPublishDisabled ] = useState<boolean>(true);
-  const { projectKey, environmentKey, segmentKey } = useParams<IParams>();
+  const { projectKey, segmentKey } = useParams<IParams>();
   const [ searchParams, setSearchParams ] = useState<ISearchParams>({
     pageIndex: 0,
     pageSize: 5,
@@ -75,7 +75,6 @@ const Info = () => {
   const { ref, height = 1 } = useResizeObserver<HTMLDivElement>();
   const formRef = useRef();
   const intl = useIntl();
-  const history = useHistory();
   const match = useRouteMatch();
   const { rules, saveRules } = ruleContainer.useContainer();
   const { 
@@ -128,10 +127,10 @@ const Info = () => {
           saveRules(targetRule);
         } else {
           message.error(res.message || intl.formatMessage({id: 'toggles.targeting.error.text'}));
-      }
+        }
       });
     }
-  }, [match.path, projectKey, segmentKey, saveSegmentInfo, saveOriginSegmentInfo, saveRules]);
+  }, [match.path, projectKey, segmentKey, saveSegmentInfo, saveOriginSegmentInfo, saveRules, intl]);
 
   useEffect(() => {
     const requestRules = cloneDeep(rules);
@@ -188,9 +187,47 @@ const Info = () => {
     setPublishDisabled(isSame);
   }, [initialSegment, publishSegment]);
 
-  const handleGoBack = useCallback(() => {
-    history.push(`/${projectKey}/${environmentKey}/segments`);
-  }, [history, projectKey, environmentKey]);
+  const getVersionsList = useCallback(async (page?: number) => {
+    const params: IVersionParams = {
+      pageIndex: page ?? historyPageIndex,
+      pageSize: 10,
+    };
+    
+    getSegmentVersion<ISegmentVersions>(
+      projectKey, 
+      segmentKey, 
+      params,
+    ).then(res => {
+      setHistoryLoading(false);
+      const { data, success } = res;
+      if (success && data) {
+        const { content, number, totalPages, version, first } = data;
+        saveVersions(versions.concat(content));
+        saveHistoryPageIndex(historyPageIndex + 1);
+        saveHistoryHasMore((number + 1) !== totalPages);
+        
+        if(version) {
+          saveSelectedVersion(version);
+          saveLatestVersion(version);
+        } else {
+          if(first) {
+            saveSelectedVersion(content[0].version);
+            saveLatestVersion(content[0].version);
+          }
+        }
+      } else {
+        message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
+      }
+    });
+  }, [historyPageIndex, intl, projectKey, segmentKey, versions]);
+
+  const initHistory = useCallback(() => {
+    saveVersions([]);
+    saveHistoryPageIndex(0);
+    getVersionsList(0);
+  // NOTICE: Do not add getVersionsList as dependency, or there will be a bug 
+  // eslint-disable-next-line
+  }, []);
 
   const confirmEditSegment = useCallback(async () => {
     if(publishSegment) {
@@ -209,13 +246,7 @@ const Info = () => {
         message.error(intl.formatMessage({id: 'segments.edit.error'}));
       }
     }
-  }, [intl, projectKey, segmentKey, publishSegment, comment]);
-
-  const initHistory = useCallback(() => {
-    saveVersions([]);
-    saveHistoryPageIndex(0);
-    getVersionsList(0);
-  }, []);
+  }, [publishSegment, projectKey, segmentKey, comment, intl, initHistory]);
 
   const fetchToggleList = useCallback(async () => {
     return await getSegmentUsingToggles<IToggleList>(projectKey, segmentKey, searchParams).then((res) => {
@@ -249,7 +280,7 @@ const Info = () => {
       }
       setLoading(false);
     });
-  }, [match.path, publishSegment, projectKey, segmentKey, searchParams, intl, handleGoBack, confirmEditSegment]);
+  }, [projectKey, segmentKey, searchParams, initialSegment, publishSegment, intl]);
 
   const onSubmit = useCallback(async () => {
     setLoading(true);
@@ -263,45 +294,11 @@ const Info = () => {
       ...searchParams,
       pageIndex: Number(data.activePage) - 1
     });
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     fetchToggleList();
-  }, [searchParams]);
-
-  const getVersionsList = useCallback(async (page?: number) => {
-    const params: IVersionParams = {
-      pageIndex: page ?? historyPageIndex,
-      pageSize: 10,
-    };
-    
-    getSegmentVersion<ISegmentVersions>(
-      projectKey, 
-      segmentKey, 
-      params,
-    ).then(res => {
-      setHistoryLoading(false);
-      const { data, success } = res;
-      if (success && data) {
-        const { content, number, totalPages, version, first } = data;
-        saveVersions(versions.concat(content));
-        saveHistoryPageIndex(historyPageIndex + 1);
-        saveHistoryHasMore((number + 1) !== totalPages);
-        
-        if(version) {
-          saveSelectedVersion(version);
-          saveLatestVersion(version);
-        } else {
-          if(first) {
-            saveSelectedVersion(content[0].version);
-            saveLatestVersion(content[0].version);
-          }
-        }
-      } else {
-        message.error(res.message || intl.formatMessage({id: 'targeting.get.versions.error'}));
-      }
-    });
-  }, [historyPageIndex]);
+  }, [fetchToggleList, searchParams]);
 
   const reviewHistory = useCallback((version: ISegmentVersion) => {
     saveActiveVersion(version);
@@ -332,7 +329,7 @@ const Info = () => {
     } else {
       saveTargetingDisabled(true);
     }
-  }, [publishDisabled, pageInitCount, latestVersion]);
+  }, [pageInitCount, publishDisabled, saveRules, latestVersion]);
 
   const confirmReviewHistory = useCallback(() => {
     if (activeVersion) {
@@ -345,7 +342,7 @@ const Info = () => {
     saveCount(pageInitCount + 1);
     saveTargetingDisabled(true);
     setPageLeaveOpen(false);
-  }, [activeVersion]);
+  }, [activeVersion, pageInitCount, saveRules]);
 
   const quiteReviewHistory = useCallback(() => {
     saveTargetingDisabled(false);
@@ -365,7 +362,7 @@ const Info = () => {
       rule.active = true;
     });
     saveRules(targetRule);
-  }, [versions]);
+  }, [saveRules, versions]);
 
   const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps) => {
     saveComment(data.value + '');
@@ -388,7 +385,7 @@ const Info = () => {
         }
       });
     });
-  }, [setBeforeScrollCallback, rules]);
+  }, [setBeforeScrollCallback, rules, saveRules]);
 
   const onError = () => {
     scrollToError();

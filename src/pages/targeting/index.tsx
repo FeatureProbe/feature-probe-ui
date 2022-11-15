@@ -306,7 +306,8 @@ const Targeting = () => {
     saveHistoryPageIndex(0);
     saveRememberVersion(false);
     getVersionsList();
-    // eslint-disable-next-line
+  // NOTICE: Do not add getVersionsList as dependency, or there will be a bug 
+  // eslint-disable-next-line
   }, []);
 
   const handleItemClick = useCallback((e: SyntheticEvent, value: MenuItemProps) => {

@@ -54,7 +54,7 @@ const ConfirmModal = (props: IProps) => {
 
   const next = useCallback(() => {
     setCurrent((current) => current + 1 < steps.length ? current + 1 : current);
-  }, []);
+  }, [steps.length]);
 
   const prev = useCallback(() => {
     setCurrent((current) => current - 1 >= 0 ? current - 1 : current);
@@ -64,7 +64,7 @@ const ConfirmModal = (props: IProps) => {
     e.stopPropagation();
     setOpen(false);
     setCurrent(0);
-  }, []);
+  }, [setOpen]);
 
   const modalFooter = () => {
     if(current === 0) {

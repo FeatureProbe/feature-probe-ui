@@ -34,6 +34,7 @@ const Lists = () => {
 		}
 		saveStatusList(['PENDING']);
     savePageIndex(0);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [window.location.pathname]);
 
 	const init = useCallback(() => {

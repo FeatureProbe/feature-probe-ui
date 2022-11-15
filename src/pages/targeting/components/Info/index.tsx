@@ -21,7 +21,6 @@ import { IToggleInfo, IModifyInfo, IApprovalInfo, ITargetingDiff, ITargeting, IC
 import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
-
 interface IProps {
   toggleInfo?: IToggleInfo;
   modifyInfo?: IModifyInfo;

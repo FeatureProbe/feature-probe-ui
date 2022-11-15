@@ -127,7 +127,7 @@ const ProjectLayout = (props: IProps) => {
         }
       });
     }
-  }, [segmentKey]);
+  }, [projectKey, segmentKey]);
 
   useEffect(() => {
     if (!toggleKey) return;
