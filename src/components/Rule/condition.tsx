@@ -117,6 +117,7 @@ const RuleContent = (props: IProps) => {
         required: true, 
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rule.id, condition.id, condition.type, register]);
 
   useEffect(() => {

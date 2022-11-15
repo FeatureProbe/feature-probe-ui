@@ -97,7 +97,7 @@ const Segment = () => {
   const handleAddSegment = useCallback(() => {
     setIsAdd(true);
     setIsVisible(true);
-  }, [history, projectKey, environmentKey]);
+  }, []);
 
   const handlePageChange = useCallback((e: SyntheticEvent, data: PaginationProps) => {
     setSearchParams({
@@ -122,7 +122,7 @@ const Segment = () => {
 
   const handleClickItem = useCallback((segmentKey: string) => {
     history.push(`/${projectKey}/${environmentKey}/segments/${segmentKey}/targeting`);
-  }, []);
+  }, [environmentKey, history, projectKey]);
 
 	return (
     <ProjectLayout>

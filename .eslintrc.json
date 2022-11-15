@@ -15,8 +15,8 @@
 	},
 	"plugins":[
     "@typescript-eslint",
-    "check-file",
-    "import"
+    "import",
+    "react-hooks"
 	],
 	"rules":{
     "import/extensions": [
@@ -42,6 +42,8 @@
     "@typescript-eslint/ban-ts-comment": [
       "warn",
       {"ts-ignore": "allow-with-description"}
-    ]
+    ],
+    "react-hooks/rules-of-hooks": "error", 
+    "react-hooks/exhaustive-deps": "warn"
   }
 }
