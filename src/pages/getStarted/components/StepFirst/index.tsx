@@ -136,7 +136,7 @@ const StepFirst = (props: IProps) => {
           currentStep > CURRENT && (
             <>
               <div className={styles.checked}>
-                <Icon type='check-circle' customClass={styles['checked-circle']} />
+                <Icon type='check-circle' customclass={styles['checked-circle']} />
               </div>
               <div className={styles.lineSelected}></div>
             </>
@@ -157,11 +157,11 @@ const StepFirst = (props: IProps) => {
                     <FormattedMessage id='connect.second.sdk' />
                   </label>
                   <Dropdown
-                    fluid 
-                    selection
                     floating
-                    className={styles['dropdown']}
-                    icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                    labeled
+                    basic
+                    className={styles['dropdown-com']}
+                    icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
                     trigger={
                       <div className={styles.dropdown}>
                         {
@@ -179,13 +179,14 @@ const StepFirst = (props: IProps) => {
                       </div>
                     }
                   >
-                    <Dropdown.Menu>
+                    <Dropdown.Menu className={styles['dropdown-menu']}>
                       <Dropdown.Header content={intl.formatMessage({id: 'connect.second.server.sdks'})} />
                       <Dropdown.Divider />
                       {
                         SERVER_SIDE_SDKS.map((sdk: IOption) => {
                           return (
-                            <Dropdown.Item 
+                            <Dropdown.Item
+                              key={sdk.name}
                               onClick={() => {
                                 saveCurrentSDK(sdk.name as SdkLanguage);
                               }}
@@ -203,9 +204,12 @@ const StepFirst = (props: IProps) => {
                         {
                           clientAvailability && CLIENT_SIDE_SDKS.map((sdk: IOption) => {
                             return (
-                              <Dropdown.Item onClick={() => {
-                                saveCurrentSDK(sdk.name as SdkLanguage);
-                              }}>
+                              <Dropdown.Item
+                                key={sdk.name}
+                                onClick={() => {
+                                  saveCurrentSDK(sdk.name as SdkLanguage);
+                                }}
+                              >
                                 <div className={styles['sdk-item']}>
                                   { sdk.logo && <img className={styles['sdk-logo']} src={sdk.logo} alt='logo' /> }
                                   { sdk.name }
@@ -217,7 +221,7 @@ const StepFirst = (props: IProps) => {
                         {
                           !clientAvailability && (
                             <div className={styles['client-sdk-usage']}>
-                              <Icon type='warning-circle' customClass={styles['warning-circle']}></Icon>
+                              <Icon type='warning-circle' customclass={styles['warning-circle']}></Icon>
                               <FormattedMessage id='connect.first.client.sdk.tip' />
                               <span className={styles['client-sdk-usage-link']} onClick={(e: SyntheticEvent) => {
                                 e.stopPropagation();
@@ -259,7 +263,7 @@ const StepFirst = (props: IProps) => {
                 <div className={styles['card-right']}>
                   <Icon 
                     type='edit' 
-                    customClass={styles.iconfont}
+                    customclass={styles.iconfont}
                     onClick={() => {
                       goBackToStep(CURRENT);
                     }} 

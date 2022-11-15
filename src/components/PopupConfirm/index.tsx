@@ -19,7 +19,7 @@ const PopupConfirm = (props: IProps) => {
   return (
     <Popup open={open} trigger={children} flowing hoverable on='click' className={styles.popup}>
       <div className={styles.content}>
-        <Icon customClass={styles.iconfont} type='error-circle' />
+        <Icon customclass={styles.iconfont} type='error-circle' />
         <span>
           { text }
         </span>

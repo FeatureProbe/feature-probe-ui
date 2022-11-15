@@ -21,7 +21,6 @@ import { IToggleInfo, IModifyInfo, IApprovalInfo, ITargetingDiff, ITargeting, IC
 import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
 
-
 interface IProps {
   toggleInfo?: IToggleInfo;
   modifyInfo?: IModifyInfo;
@@ -79,6 +78,12 @@ const Info = (props: IProps) => {
       saveEnableApproval(false);
     }
   }, [targetingDisabled, saveEnableApproval]);
+
+  useEffect(() => {
+    register('reason', { 
+      required: status !== 'PASS' && status !== 'CANCEL', 
+    });
+  }, [status, register]);
 
   // Refresh initial targeting to make new diff
   const refreshInitialTargeting = useCallback(async () => {
@@ -250,7 +255,7 @@ const Info = (props: IProps) => {
                       className={styles.popup}
                       trigger={
                         <span className={styles['toggle-lock-bg']}>
-                          <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                          <Icon type='lock' customclass={styles['toggle-lock']}></Icon>
                         </span>
                       }
                       content={
@@ -277,13 +282,13 @@ const Info = (props: IProps) => {
                       className={styles.popup}
                       trigger={
                         <div className={`${styles['status-pending']} ${styles.status}`}>
-                          <Icon type='pending' customClass={styles['status-icon']} />
+                          <Icon type='pending' customclass={styles['status-icon']} />
                           <FormattedMessage id='approvals.status.pending' />
                         </div>
                       }
                       content={
                         <span>
-                          <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers.join(', ')}
+                          <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers?.join(', ')}
                         </span>
                       }
                       position='top center'
@@ -293,7 +298,7 @@ const Info = (props: IProps) => {
                 {
                   (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP')) && (
                     <div className={`${styles['status-publish']} ${styles.status}`}>
-                      <Icon type='wait' customClass={styles['status-icon']} />
+                      <Icon type='wait' customclass={styles['status-icon']} />
                       <FormattedMessage id='approvals.status.unpublished' />
                     </div>
                   )
@@ -305,7 +310,7 @@ const Info = (props: IProps) => {
                       className={styles.popup}
                       trigger={
                         <div className={`${styles['status-reject']} ${styles.status}`}>
-                          <Icon type='reject' customClass={styles['status-icon']} />
+                          <Icon type='reject' customclass={styles['status-icon']} />
                           <FormattedMessage id='approvals.status.declined' />
                         </div>
                       }
@@ -322,7 +327,7 @@ const Info = (props: IProps) => {
               <div className={styles['info-title-right']}>
                 {!toggleInfo?.archived && (
                   <div className={styles['connect-sdk']} onClick={gotoGetStarted}>
-                    <Icon type='connect-sdk' customClass={styles['icon-connect-sdk']} />
+                    <Icon type='connect-sdk' customclass={styles['icon-connect-sdk']} />
                     <FormattedMessage id='toggle.connect' />
                   </div>
                 ) }
@@ -513,7 +518,7 @@ const Info = (props: IProps) => {
               { status === 'JUMP' && <FormattedMessage id='targeting.approval.operation.skip.approval' /> }
               { status === 'CANCEL' && <FormattedMessage id='targeting.approval.operation.abandon' /> }
             </span>
-            <Icon customClass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
+            <Icon customclass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
           </div>
           <div className={styles['modal-content']}>
             <Form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
@@ -546,13 +551,9 @@ const Info = (props: IProps) => {
                   <FormattedMessage id='targeting.approval.modal.reason' />:
                 </label>
                 
-                <Form.TextArea 
-                  {
-                    ...register('reason', { 
-                      required: status !== 'PASS' && status !== 'CANCEL', 
-                    })
-                  }
-                  error={ errors.reason ? true : false }
+                <Form.TextArea
+                  name='reason'
+                  error={errors.reason ? true : false}
                   value={comment} 
                   placeholder={intl.formatMessage({id: 'targeting.approval.modal.reason.placeholder'})}
                   className={styles.input}
@@ -594,7 +595,7 @@ const Info = (props: IProps) => {
             <span className={styles['diff-modal-header-text']}>
               <FormattedMessage id='common.changes.text' />
             </span>
-            <Icon customClass={styles['diff-modal-close-icon']} type='close' onClick={() => { saveDiffOpen(false); }} />
+            <Icon customclass={styles['diff-modal-close-icon']} type='close' onClick={() => { saveDiffOpen(false); }} />
           </div>
           <div className={styles['diff-modal-content']}>
             <div className="diff" dangerouslySetInnerHTML={{ __html: diffContent }} />

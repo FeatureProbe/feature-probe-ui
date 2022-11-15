@@ -90,7 +90,7 @@ const Member = () => {
                         setIsAdd(true);
                         setDrawerVisible(true);
                       }}>
-                        <Icon customClass={styles['iconfont']} type='add' />
+                        <Icon customclass={styles['iconfont']} type='add' />
                         <FormattedMessage id='common.member.text' />
                       </Button>
                     </div>

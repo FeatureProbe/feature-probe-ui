@@ -19,7 +19,7 @@ const ConfirmModal = (props: IProps) => {
 
   return (
     <Modal
-      unstackable
+      // unstackable
       size={'mini'}
       open={open}
       onClose={handleCancel}

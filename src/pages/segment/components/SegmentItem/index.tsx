@@ -1,7 +1,8 @@
 import { SyntheticEvent, useCallback, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Table, Button } from 'semantic-ui-react';
+import { cloneDeep } from 'lodash';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
 import TextLimit from 'components/TextLimit';
@@ -27,9 +28,8 @@ const ToggleItem = (props: IProps) => {
   const { segment, fetchSegmentLists, handleEdit, handleClickItem } = props;
   const [ open, setOpen ] = useState<boolean>(false);
   const [ canDelete, setCanDelete ] = useState<boolean>(false);
-  const { projectKey, environmentKey } = useParams<ILocationParams>();
+  const { projectKey } = useParams<ILocationParams>();
   const intl = useIntl();
-  const history = useHistory();
 
   const { 
     saveSegmentInfo,
@@ -37,10 +37,10 @@ const ToggleItem = (props: IProps) => {
   } = segmentContainer.useContainer();
 
   const gotoEditing = useCallback((segment: ISegment) => {
-    saveOriginSegmentInfo(segment);
-    saveSegmentInfo(segment);
+    saveOriginSegmentInfo(cloneDeep(segment));
+    saveSegmentInfo(cloneDeep(segment));
     handleEdit(segment.key);
-  }, [projectKey, environmentKey, history, handleEdit]);
+  }, [saveOriginSegmentInfo, saveSegmentInfo, handleEdit]);
 
   const checkSegmentDelete = useCallback((segmentKey: string) => {
     getSegmentUsingToggles<IToggleList>(projectKey, segmentKey, {
@@ -132,7 +132,7 @@ const ToggleItem = (props: IProps) => {
       >
         <div>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               {
                 canDelete ? <FormattedMessage id='segments.modal.delete.title' /> : <FormattedMessage id='segments.modal.cannot.delete.title' />

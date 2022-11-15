@@ -90,7 +90,7 @@ const DisabledServe = (props: IProps) => {
             setValue(detail.name, detail.value);
             await trigger('disabledServe');
           }}
-          icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+          icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
         />
       </div>
       { errors.disabledServe && <div className={styles['error-text']}>

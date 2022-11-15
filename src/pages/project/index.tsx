@@ -59,14 +59,14 @@ const Project = () => {
               <span className={styles.title}>
                 <FormattedMessage id='common.projects.text' />
               </span>
-              <span className={styles.count}>{projectList.length}</span>
+              { projectList.length > 0 && <span className={styles.count}>{projectList.length}</span> }
             </div>
             {
               OWNER.includes(userInfo.role) && (
                 <div>
                   <EventTracker category='project' action='create-project'>
                     <Button primary onClick={handleAddProject}>
-                      <Icon customClass={styles.iconfont} type='add' />
+                      <Icon customclass={styles.iconfont} type='add' />
                       <FormattedMessage id='common.project.text' />
                     </Button>
                   </EventTracker>

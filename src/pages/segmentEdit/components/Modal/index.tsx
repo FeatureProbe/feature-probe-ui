@@ -1,4 +1,4 @@
-import { SyntheticEvent, useCallback, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { Table, Pagination, PaginationProps, Button, Form, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -20,12 +20,12 @@ interface IPagination {
 interface IProps {
   open: boolean;
   total: number;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  diff: string;
   toggleList: IToggle[];
   pagination: IPagination;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   handlePageChange(e: SyntheticEvent, data: PaginationProps): void;
   confirmEditSegment(): Promise<void>;
-  diff: string;
   handleInputComment: (e: SyntheticEvent, data: TextAreaProps) => void;
 }
 
@@ -48,13 +48,17 @@ const ConfirmModal = (props: IProps) => {
     trigger
   } = hooksFormContainer.useContainer();
 
+  useEffect(() => {
+    register('reason');
+  }, [register]);
+
   const handleGotoToggle = useCallback((envKey: string, toggleKey: string) => {
     window.open(`/${projectKey}/${envKey}/${toggleKey}/targeting`);
   }, [projectKey]);
 
   const next = useCallback(() => {
     setCurrent((current) => current + 1 < steps.length ? current + 1 : current);
-  }, []);
+  }, [steps.length]);
 
   const prev = useCallback(() => {
     setCurrent((current) => current - 1 >= 0 ? current - 1 : current);
@@ -64,7 +68,7 @@ const ConfirmModal = (props: IProps) => {
     e.stopPropagation();
     setOpen(false);
     setCurrent(0);
-  }, []);
+  }, [setOpen]);
 
   const modalFooter = () => {
     if(current === 0) {
@@ -89,7 +93,7 @@ const ConfirmModal = (props: IProps) => {
               setCurrent(0);
             }}
           >
-              <FormattedMessage id='common.confirm.text' />
+            <FormattedMessage id='common.confirm.text' />
           </Button>
         </div>
       );
@@ -104,19 +108,17 @@ const ConfirmModal = (props: IProps) => {
     >
       <div className={styles['modal-inner-box']}>
         <div className={styles['modal-header']}>
-          <span>
-            <FormattedMessage id='targeting.publish.modal.title' />
-          </span>
-          <Icon customClass={styles['modal-header-icon']} type='close' onClick={(e: SyntheticEvent) => {
+          <span><FormattedMessage id='targeting.publish.modal.title' /></span>
+          <Icon customclass={styles['modal-header-icon']} type='close' onClick={(e: SyntheticEvent) => {
             e.stopPropagation();
             setOpen(false);
           }} />
         </div>
         {
-          steps[current] === 'toggle' ? (
+          steps[current] === 'toggle' && (
             <>
               <div className={styles['modal-tips']}>
-                <Icon type='info-circle' customClass={styles['modal-info-circle']} />
+                <Icon type='info-circle' customclass={styles['modal-info-circle']} />
                 {
                   intl.formatMessage({
                     id: 'segments.modal.delete.tips',
@@ -151,7 +153,11 @@ const ConfirmModal = (props: IProps) => {
                         );
 
                         return (
-                          <Table.Row onClick={() => {handleGotoToggle(toggle.environmentKey, toggle.key);}} className={listItem}>
+                          <Table.Row 
+                            key={toggle.key} 
+                            className={listItem}
+                            onClick={() => {handleGotoToggle(toggle.environmentKey, toggle.key);}} 
+                          >
                             <Table.Cell>
                               <div className={styles['toggle-info']}>
                                 <div className={styles['toggle-info-name']}>
@@ -204,12 +210,12 @@ const ConfirmModal = (props: IProps) => {
                   </Table.Body>
                 </Table>
                 {
-                  toggleList.length === 0 ? (
+                  toggleList.length === 0 && (
                     <div className={styles['no-data']}>
                       <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
                       <div><FormattedMessage id='common.nodata.text' /></div>
                     </div>
-                  ) : null
+                  )
                 }
                 {
                   pagination.totalPages > 1 && (
@@ -232,10 +238,10 @@ const ConfirmModal = (props: IProps) => {
                 }
               </div>
             </>
-          ) : null
+          )
         }
         {
-          steps[current] === 'diff' ? (
+          steps[current] === 'diff' && (
             <>
               <div className={styles['diff-box']}>
                 <Diff content={diff} maxHeight={343} />
@@ -248,9 +254,7 @@ const ConfirmModal = (props: IProps) => {
                     </div>
                   <div className={styles['comment-content']}>
                     <Form.TextArea
-                      {
-                        ...register('reason')
-                      }
+                      name='reason'
                       error={ formState.errors.reason ? true : false }
                       className={styles['comment-input']} 
                       placeholder={intl.formatMessage({id: 'common.input.placeholder'})}
@@ -271,7 +275,7 @@ const ConfirmModal = (props: IProps) => {
                 </div>
               </Form>
             </>
-          ) : null
+          )
         }
       </div>
     </Modal>

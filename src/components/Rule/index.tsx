@@ -52,7 +52,7 @@ const Rule = (props: IProps) => {
 
   const handleTitleClick = useCallback(() => {
     handleChangeActive(index);
-  }, [index]);
+  }, [handleChangeActive, index]);
 
 	return (
     <Draggable draggableId={`rule_${rule.id}`} index={index} isDragDisabled={disabled}>
@@ -66,12 +66,13 @@ const Rule = (props: IProps) => {
             <Accordion
               activeIndex={active ? 0 : -1}
               panels={[{
+                key: rule.id,
                 title: {
                   className: styles['rule-accordion-title'],
                   icon: (
                     !active 
-                      ? <Icon customClass={styles['icon-accordion']} type='angle-right' />
-                      : <Icon customClass={styles['icon-accordion']} type='angle-down' />
+                      ? <Icon customclass={styles['icon-accordion']} type='angle-right' />
+                      : <Icon customclass={styles['icon-accordion']} type='angle-down' />
                   ),
                   content: (
                     <RuleTitle

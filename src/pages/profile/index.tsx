@@ -1,4 +1,4 @@
-import { useCallback, SyntheticEvent } from 'react';
+import { useCallback, SyntheticEvent, useEffect, useMemo } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -48,24 +48,32 @@ const Member = () => {
     }
   }, [intl, setError]);
 
-  const PASSWORD_REGISTER = { 
-    required: {
-      value: true,
-      message: intl.formatMessage({id: 'login.password.required'})
-    },
-    minLength: {
-      value: 4,
-      message: intl.formatMessage({id: 'login.password.minlength'})
-    },
-    maxLength: {
-      value: 20,
-      message: intl.formatMessage({id: 'login.password.maxlength'})
-    },
-    pattern: {
-      value: /^[A-Z0-9._-]+$/i,
-      message: intl.formatMessage({id: 'login.password.invalid'})
-    }
-  };
+  const PASSWORD_REGISTER = useMemo(() => {
+    return {
+      required: {
+        value: true,
+        message: intl.formatMessage({id: 'login.password.required'})
+      },
+      minLength: {
+        value: 4,
+        message: intl.formatMessage({id: 'login.password.minlength'})
+      },
+      maxLength: {
+        value: 20,
+        message: intl.formatMessage({id: 'login.password.maxlength'})
+      },
+      pattern: {
+        value: /^[A-Z0-9._-]+$/i,
+        message: intl.formatMessage({id: 'login.password.invalid'})
+      }
+    };
+  }, [intl]);
+
+  useEffect(() => {
+    register(OLD_PASSWORD, PASSWORD_REGISTER);
+    register(NEW_PASSWORD, PASSWORD_REGISTER);
+    register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER);
+  }, [register, PASSWORD_REGISTER]);
 
   const OLD_PASSWORD = 'oldPassword';
   const NEW_PASSWORD = 'newPassword';
@@ -123,11 +131,9 @@ const Member = () => {
                       </label>
                       <Form.Input
                         type='password'
+                        name={OLD_PASSWORD}
                         placeholder={intl.formatMessage({id: 'login.password.required'})}
                         error={ errors[OLD_PASSWORD] ? true : false }
-                        {
-                          ...register(OLD_PASSWORD, PASSWORD_REGISTER)
-                        }
                         onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                           setValue(detail.name, detail.value);
                           await trigger(OLD_PASSWORD);
@@ -142,11 +148,9 @@ const Member = () => {
                       </label>
                       <Form.Input
                         type='password'
+                        name={NEW_PASSWORD}
                         placeholder={intl.formatMessage({id: 'login.password.required'})}
                         error={ errors[NEW_PASSWORD] ? true : false }
-                        {
-                          ...register(NEW_PASSWORD, PASSWORD_REGISTER)
-                        }
                         onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                           setValue(detail.name, detail.value);
                           await trigger(NEW_PASSWORD);
@@ -164,11 +168,9 @@ const Member = () => {
                       </label>
                       <Form.Input
                         type='password'
+                        name={CONFIRM_NEW_PASSWORD}
                         placeholder={intl.formatMessage({id: 'login.password.required'})}
                         error={ errors[CONFIRM_NEW_PASSWORD] ? true : false }
-                        {
-                          ...register(CONFIRM_NEW_PASSWORD, PASSWORD_REGISTER)
-                        }
                         onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                           if (detail.value !== getValues()[NEW_PASSWORD]) {
                             setError(CONFIRM_NEW_PASSWORD, {
