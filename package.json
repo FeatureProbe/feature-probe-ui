@@ -16,6 +16,9 @@
     "node": "16.x"
   },
   "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/react-test-renderer": "^18.0.0",
     "chart.js": "^3.7.1",
     "chartjs-plugin-annotation": "^1.4.0",
     "classnames": "^2.3.1",
@@ -58,6 +61,7 @@
     "start": "semantic-ui-css-patch && craco start",
     "build": "semantic-ui-css-patch && craco build",
     "test": "craco test",
+    "test:cov": "craco test --coverage --no-cache --watchAll --collectCoverageFrom=src/components/**/*.tsx --coveragePathIgnorePatterns=src/components/utils/*",
     "eject": "craco eject"
   },
   "eslintConfig": {
@@ -82,6 +86,7 @@
     "@craco/craco": "^5.9.0",
     "@semantic-ui-react/craco-less": "^2.0.2",
     "@semantic-ui-react/css-patch": "^1.0.0",
+    "@testing-library/react": "12.1.5",
     "@types/codemirror": "^5.60.5",
     "@types/diff": "^5.0.2",
     "@types/diff2html": "^3.0.0",
@@ -105,10 +110,11 @@
     "http-proxy-middleware": "^2.0.6",
     "prettier": "^2.7.1",
     "react-scripts": "^5.0.1",
+    "react-test-renderer": "17.0.2",
     "webpack": "^5.72.1"
   },
   "resolutions": {
     "@types/react": "17.0.43"
   },
-  "proxy": "https://featureprobe.io/"
+  "proxy": "http://featureprobe-df.intra.xiaojukeji.com/"
 }
