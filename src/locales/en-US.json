@@ -121,6 +121,7 @@
   "login.email.invalid.text": "Invalid email address",
 
   "members.role": "Role",
+  "members.role.tips": "After the role is changed, the member needs to log out and sign in again to make the new role effective.",
   "members.createdby": "Created by",
   "members.lastseen": "Last seen",
   "members.total": "members in total",

@@ -374,6 +374,9 @@ const MemberDrawer = (props: IParams) => {
             />
           </Form.Field>
           { errors.role && <div className={styles['error-text']}>{ errors.role.message }</div> }
+          {
+            !isAdd && <div className={styles['role-tips']}><FormattedMessage id='members.role.tips' /></div>
+          }
         </div>
       </Form>
     </div>
