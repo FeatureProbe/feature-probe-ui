@@ -212,7 +212,7 @@ const RuleContent = (props: IProps) => {
               </>
             }
             name={`rule_${rule.id}_condition_${condition.id}_predicate`}
-            error={ !!errors[`rule_${rule.id}_condition_${condition.id}_predicate`] }
+            error={ errors[`rule_${rule.id}_condition_${condition.id}_predicate`] ? true : false }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
               // @ts-ignore detail value
               if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value)) {
