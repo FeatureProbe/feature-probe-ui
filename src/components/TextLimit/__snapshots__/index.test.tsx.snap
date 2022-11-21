@@ -36,7 +36,7 @@ exports[`TextLimit text maxLenth test 1`] = `
     style="display: flex; position: absolute; left: 0px; top: 0px; bottom: 0px; transform: translate(0px, 0px);"
   >
     <div
-      class="ui top left very wide inverted popup transition visible popup"
+      class="ui top left very wide inverted popup transition visible popup-override"
       style="position: initial;"
     >
       <div

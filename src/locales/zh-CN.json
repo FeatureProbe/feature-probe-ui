@@ -101,6 +101,7 @@
   "common.event.text": "事件",
   "common.dingding.text": "钉钉",
   "common.weixin.text": "微信",
+  "common.total": "总数",
 
   "header.getuser.error.text": "无法获取用户信息!",
 

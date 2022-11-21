@@ -2,14 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
+import classNames from 'classnames';
 import SectionTitle from 'components/SectionTitle';
 import Icon from 'components/Icon';
 import Rule from 'components/Rule';
 import { ICondition, IOption, IRule } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import styles from './index.module.scss';
-import classNames from 'classnames';
-const MAX_RULES = 30;
 
 interface IProps {
   disabled?: boolean;
@@ -19,6 +18,8 @@ interface IProps {
   hooksFormContainer: IContainer;
   segmentContainer?: IContainer;
 }
+
+const MAX_RULES = 30;
 
 const Rules = (props: IProps) => {
   const intl = useIntl();

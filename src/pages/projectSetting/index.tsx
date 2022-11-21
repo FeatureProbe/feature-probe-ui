@@ -1,7 +1,7 @@
 
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import  { Radio, CheckboxProps, Form, Dropdown, DropdownProps, DropdownItemProps, Dimmer, Loader, Popup } from 'semantic-ui-react';
+import  { Radio, CheckboxProps, Form, Dropdown, DropdownProps, DropdownItemProps, Popup } from 'semantic-ui-react';
 import { useParams } from 'react-router-dom';
 import { cloneDeep, isEqual } from 'lodash';
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { HeaderContainer } from 'layout/hooks';
 import Icon from 'components/Icon';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
+import Loading from 'components/Loading';
 import { getMemberList } from 'services/member';
 import { getProjectApprovalSettings, saveSettings } from 'services/project';
 import { IApprovalSetting } from 'interfaces/approval';
@@ -129,13 +130,7 @@ const ProjectSetting = () => {
     <ProjectLayout>
       <div className={styles.setting}>
         {
-          isLoading ? (
-            <Dimmer active inverted>
-              <Loader size='small'>
-                <FormattedMessage id='common.loading.text' />
-              </Loader>
-            </Dimmer>
-          ) : (
+          isLoading ? <Loading /> : (
             <>
               <div className={styles.content}>
                 <div className={styles.title}>
@@ -197,8 +192,7 @@ const ProjectSetting = () => {
                                 icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
                                 noResultsMessage={null}
                                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
-                                  // @ts-ignore detail value
-                                  handleChangeApproval(setting.environmentKey, detail.value, index);
+                                  handleChangeApproval(setting.environmentKey, detail.value as string[], index);
                                 }}
                               />
                               { errors[`approval-reviewers-${index}`] && <div className={styles['error-text']}>{ intl.formatMessage({ id: 'toggles.settings.approval.reviewers.placeholder' }) }</div> }
@@ -207,7 +201,7 @@ const ProjectSetting = () => {
                               <Popup
                                 inverted
                                 disabled={OWNER.includes(userInfo.role) && !setting.locked}
-                                className={styles.popup}
+                                className='popup-override'
                                 trigger={
                                   <Radio
                                     size='mini'

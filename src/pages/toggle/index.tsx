@@ -1,7 +1,6 @@
 import { SyntheticEvent, useEffect, useState, useCallback, useMemo } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { 
-  Pagination, 
   Table, 
   Form, 
   Popup,
@@ -10,8 +9,6 @@ import {
   DropdownItemProps, 
   DropdownProps, 
   InputOnChangeData,
-  Dimmer,
-  Loader,
   Checkbox,
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -23,6 +20,10 @@ import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import EventTracker from 'components/EventTracker';
+import Pagination from 'components/Pagination';
+import NoData from 'components/NoData';
+import Loading from 'components/Loading';
+import Filter from 'components/Filter';
 import { I18NContainer } from 'hooks';
 import { getToggleList, getTags } from 'services/toggle';
 import { getEnvironment } from 'services/project';
@@ -32,6 +33,7 @@ import { IToggle, IToggleList,  } from 'interfaces/toggle';
 import { IEnvironment, ITag, ITagOption } from 'interfaces/project';
 import { NOT_FOUND } from 'constants/httpCode';
 import { LAST_SEEN } from 'constants/dictionary_keys';
+
 import styles from './index.module.scss';
 
 interface IParams {
@@ -47,7 +49,7 @@ interface ISearchParams {
   visitFilter?: string;
   disabled?: number;
   tags?: string[];
-  keyword?: number;
+  keyword?: string;
   archived?: boolean;
   releaseStatusList?: string[];
   permanent?: boolean;
@@ -237,24 +239,21 @@ const Toggle = () => {
   const handleEvaluationChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore detail value
-      visitFilter: data.value
+      visitFilter: data.value as string
     });
   }, [searchParams]);
 
   const handleStatusChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore detail value
-      disabled: data.value
+      disabled: data.value as number
     });
   }, [searchParams]);
 
   const handlePermanentChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore detail value
-      permanent: data.value
+      permanent: data.value as boolean
     });
   }, [searchParams]);
 
@@ -268,16 +267,14 @@ const Toggle = () => {
   const handleTagsChange = useCallback((e: SyntheticEvent, data: DropdownProps) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore detail value
-      tags: data.value,
+      tags: data.value as string[]
     });
   }, [searchParams]);
 
   const handleSearch = debounce(useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore detail value
-      keyword: data.value,
+      keyword: data.value as string
     });
   }, [searchParams]), 300);
 
@@ -500,15 +497,7 @@ const Toggle = () => {
               {
                 isLoading ? (
                   <div className={styles.lists}>
-                    {
-                      isLoading && (
-                        <Dimmer active inverted>
-                          <Loader size='small'>
-                            <FormattedMessage id='common.loading.text' />
-                          </Loader>
-                        </Dimmer>
-                      )
-                    }
+                    { isLoading && <Loading /> }
                   </div>
                 ) : (
                   <>
@@ -526,86 +515,61 @@ const Toggle = () => {
                                     <span>
                                       <FormattedMessage id='toggles.table.publishing.status' />
                                     </span>
-                                    <Popup
-                                      basic
-                                      open={popupOpen}
-                                      on='click'
-                                      position='bottom right'
-                                      className={styles.popup}
-                                      trigger={
-                                        <Icon 
-                                          type='filter' 
-                                          customclass={`${styles['icon-filter']} ${releaseStatusList.length > 0 && styles['icon-filter-selected']}`} 
-                                          onClick={(e: SyntheticEvent) => {
-                                            document.body.click();
-                                            e.stopPropagation();
-                                            savePopupOpen(true);
-                                          }} 
-                                        />
-                                      }
+                                    <Filter 
+                                      handleConfirm={() => {
+                                        setSearchParams({
+                                          ...searchParams,
+                                          pageIndex: 0,
+                                          releaseStatusList,
+                                        });
+                                      }}
+                                      handleClear={() => {
+                                        saveReleaseStatusList([]);
+                                      }}
                                     >
-                                      <div onClick={(e) => e.stopPropagation()}>
-                                        <div className={styles['menu']}>
-                                          <div className={styles['menu-item']}>
-                                            <Checkbox 
-                                              label={intl.formatMessage({id: 'approvals.status.pending'})}
-                                              checked={releaseStatusList.includes('PENDING_APPROVAL')}
-                                              onChange={(e: SyntheticEvent) => {
-                                                e.stopPropagation();
-                                                handleChange('PENDING_APPROVAL');
-                                              }}
-                                            />
-                                          </div>
-                                          <div className={styles['menu-item']}>
-                                            <Checkbox 
-                                              label={intl.formatMessage({id: 'approvals.status.unpublished'})}
-                                              checked={releaseStatusList.includes('PENDING_RELEASE')}
-                                              onChange={(e: SyntheticEvent) => {
-                                                e.stopPropagation();
-                                                handleChange('PENDING_RELEASE');
-                                              }}
-                                            />
-                                          </div>
-                                          <div className={styles['menu-item']}>
-                                            <Checkbox 
-                                              label={intl.formatMessage({id: 'approvals.status.declined'})}
-                                              checked={releaseStatusList.includes('REJECT')}
-                                              onChange={(e: SyntheticEvent) => {
-                                                e.stopPropagation();
-                                                handleChange('REJECT');
-                                              }}
-                                            />
-                                          </div>
-                                          <div className={styles['menu-item']}>
-                                            <Checkbox 
-                                              label={intl.formatMessage({id: 'approvals.status.published'})}
-                                              checked={releaseStatusList.includes('RELEASE')}
-                                              onChange={(e: SyntheticEvent) => {
-                                                e.stopPropagation();
-                                                handleChange('RELEASE');
-                                              }}
-                                            />
-                                          </div>
+                                      <div className={styles['menu']}>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.pending'})}
+                                            checked={releaseStatusList.includes('PENDING_APPROVAL')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('PENDING_APPROVAL');
+                                            }}
+                                          />
                                         </div>
-                                        <div className={styles['popup-footer']}>
-                                          <span className={styles['popup-footer-clear']} onClick={() => { 
-                                            saveReleaseStatusList([]);
-                                          }}>
-                                            <FormattedMessage id='common.clear.text' />
-                                          </span>
-                                          <span className={styles['popup-footer-confirm']} onClick={() => {
-                                            setSearchParams({
-                                              ...searchParams,
-                                              pageIndex: 0,
-                                              releaseStatusList,
-                                            });
-                                            savePopupOpen(false);
-                                          }}>
-                                            <FormattedMessage id='common.confirm.text' />
-                                          </span>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.unpublished'})}
+                                            checked={releaseStatusList.includes('PENDING_RELEASE')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('PENDING_RELEASE');
+                                            }}
+                                          />
+                                        </div>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.declined'})}
+                                            checked={releaseStatusList.includes('REJECT')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('REJECT');
+                                            }}
+                                          />
+                                        </div>
+                                        <div className={styles['menu-item']}>
+                                          <Checkbox 
+                                            label={intl.formatMessage({id: 'approvals.status.published'})}
+                                            checked={releaseStatusList.includes('RELEASE')}
+                                            onChange={(e: SyntheticEvent) => {
+                                              e.stopPropagation();
+                                              handleChange('RELEASE');
+                                            }}
+                                          />
                                         </div>
                                       </div>
-                                    </Popup>
+                                    </Filter>
                                   </div>
                                 </Table.HeaderCell>
                               )
@@ -628,15 +592,7 @@ const Toggle = () => {
                         {
                           isLoading ? (
                             <div className={styles.lists}>
-                              {
-                                isLoading && (
-                                  <Dimmer active inverted>
-                                    <Loader size='small'>
-                                      <FormattedMessage id='common.loading.text' />
-                                    </Loader>
-                                  </Dimmer>
-                                )
-                              }
+                              { isLoading && <Loading /> }
                             </div>
                           ) : (
                             <>
@@ -666,43 +622,14 @@ const Toggle = () => {
                         }
                       </Table>
                       {
-                        toggleList.length === 0 && (
-                          <div className={styles['no-data']}>
-                            <div>
-                              <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                            </div>
-                            <div>
-                              <FormattedMessage id='common.nodata.text' />
-                            </div>
-                          </div>
-                        )
-                      }
-                      {
-                        toggleList.length !== 0 && (
-                          <div className={styles.pagination}>
-                            <div className={styles['total']}>
-                              <span className={styles['total-count']}>{total} </span>
-                              <FormattedMessage id='toggles.total' />
-                            </div>
-                            {
-                              pagination.totalPages > 1 && (
-                                <Pagination 
-                                  activePage={pagination.pageIndex} 
-                                  totalPages={pagination.totalPages} 
-                                  onPageChange={handlePageChange}
-                                  firstItem={null}
-                                  lastItem={null}
-                                  prevItem={{
-                                    content: (<Icon type='angle-left' />)
-                                  }}
-                                  nextItem={{
-                                    content: (<Icon type='angle-right' />)
-                                  }}
-                                />
-                              )
-                            }
-                          </div>
-                        )
+                        toggleList.length !== 0 ? (
+                          <Pagination
+                            total={total}
+                            text={intl.formatMessage({id: 'toggles.total'})}
+                            pagination={pagination}
+                            handlePageChange={handlePageChange}
+                          />
+                        ) : <NoData />
                       }
                     </div>
                   </>

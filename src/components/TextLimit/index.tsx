@@ -49,7 +49,7 @@ const TextLimit: React.FC<IProps> = (props) => {
         </span>
       }
       content={popupRender ??  text }
-      className={styles.popup}
+      className='popup-override'
       wide='very'
       {...popupProps}
     />

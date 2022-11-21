@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState, SyntheticEvent } from 'react';
-import { Popup, Dimmer, Loader } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
 import TextLimit from 'components/TextLimit';
+import Loading from 'components/Loading';
 import { HeaderContainer } from 'layout/hooks';
 import EnvironmentCard from '../EnvironmentCard';
 import EnvironmentModal from '../EnvironmentModal';
@@ -198,13 +199,7 @@ const ProjectCard = (props: IProps) => {
         </div>
       </div>
       {
-        isLoading ? (
-          <Dimmer active inverted style={{background: 'transparent'}}>
-            <Loader size='small'>
-              <FormattedMessage id='common.loading.text' />
-            </Loader>
-          </Dimmer>
-        ) : (
+        isLoading ? <Loading style={{background: 'transparent'}} /> : (
           <div className={styles.content}>
             {
               environments.length > 0 && environments.map((env: IEnvironment, index: number) => {

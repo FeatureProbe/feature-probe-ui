@@ -30,7 +30,7 @@ const ListItem = (props: IProps) => {
             approval.canceled && approval.status === 'PASS' && (
               <Popup
                 inverted
-                className={styles.popup}
+                className='popup-override'
                 trigger={
                   <span className={styles['cancel-publish']}>
                     <FormattedMessage id='approvals.table.header.abandoned' />
@@ -59,7 +59,7 @@ const ListItem = (props: IProps) => {
               approval.locked && (
                 <Popup
                   inverted
-                  className={styles.popup}
+                  className='popup-override'
                   trigger={
                     <span className={styles['toggle-lock-bg']}>
                       <Icon type='lock' customclass={styles['toggle-lock']}></Icon>

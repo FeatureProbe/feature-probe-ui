@@ -60,11 +60,11 @@ interface IProps {
 const STEPS: Step[] = [
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.toggle.targeting.step1.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li>
             <FormattedMessage id='guide.toggle.targeting.step1.off' />
           </li>
@@ -72,7 +72,7 @@ const STEPS: Step[] = [
             <FormattedMessage id='guide.toggle.targeting.step1.on' />
           </li>
         </ul>
-        <div className={styles['joyride-pagination']}>1/2</div>
+        <div className='joyride-pagination'>1/2</div>
       </div>
     ),
     spotlightPadding: 20,
@@ -82,16 +82,16 @@ const STEPS: Step[] = [
   },
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.toggle.targeting.step2.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li>
             <FormattedMessage id='guide.toggle.targeting.step2.default' />
           </li>
         </ul>
-        <div className={styles['joyride-pagination']}>2/2</div>
+        <div className='joyride-pagination'>2/2</div>
       </div>
     ),
     spotlightPadding: 4,
@@ -405,8 +405,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, [disabledServe.select, variations]);
 
   const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps | InputOnChangeData) => {
-    // @ts-ignore detail value
-    setComment(data.value);
+    setComment(data.value as string);
   }, []);
 
   const renderLabel = useCallback((label: DropdownItemProps) => {
@@ -533,7 +532,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                           }
                           content={intl.formatMessage({id: 'targeting.approval.tips'})}
                           position='top center'
-                          className={styles.popup}
+                          className='popup-override'
                         />
                       </div>
                       <div className={styles['approval-content']}>

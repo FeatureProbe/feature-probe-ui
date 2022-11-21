@@ -1,5 +1,5 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Grid, Form, TextAreaProps, Popup, Dimmer, Loader } from 'semantic-ui-react';
+import { Grid, Form, TextAreaProps, Popup, Loader } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -14,6 +14,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import message from 'components/MessageBox';
 import TextLimit from 'components/TextLimit';
+import Loading from 'components/Loading';
 import { HeaderContainer } from 'layout/hooks';
 import { updateApprovalStatus, publishTargetingDraft, cancelTargetingDraft } from 'services/approval';
 import { getTargeting, getTargetingDiff } from 'services/toggle';
@@ -231,20 +232,13 @@ const Info = (props: IProps) => {
 
   // Save comment info
   const handleChangeComment = useCallback((e: SyntheticEvent, detail: TextAreaProps) => {
-    // @ts-ignore detail value
-    saveComment(detail.value);
+    saveComment(detail.value as string);
   }, []);
 
 	return (
     <div className={styles.info}>
       {
-        isInfoLoading ? (
-          <Dimmer active inverted>
-            <Loader size='small'>
-              <FormattedMessage id='common.loading.text' />
-            </Loader>
-          </Dimmer>
-        ) : (
+        isInfoLoading ? <Loading /> : (
           <>
             <div className={styles['info-title']}>
               <div className={styles['info-title-left']}>
@@ -252,7 +246,7 @@ const Info = (props: IProps) => {
                   approvalInfo?.locked && enableApproval && (
                     <Popup
                       inverted
-                      className={styles.popup}
+                      className='popup-override'
                       trigger={
                         <span className={styles['toggle-lock-bg']}>
                           <Icon type='lock' customclass={styles['toggle-lock']}></Icon>
@@ -279,7 +273,7 @@ const Info = (props: IProps) => {
                   enableApproval && toggleStatus === 'PENDING' && (
                     <Popup
                       inverted
-                      className={styles.popup}
+                      className='popup-override'
                       trigger={
                         <div className={`${styles['status-pending']} ${styles.status}`}>
                           <Icon type='pending' customclass={styles['status-icon']} />
@@ -307,7 +301,7 @@ const Info = (props: IProps) => {
                   enableApproval && toggleStatus === 'REJECT' && (
                     <Popup
                       inverted
-                      className={styles.popup}
+                      className='popup-override'
                       trigger={
                         <div className={`${styles['status-reject']} ${styles.status}`}>
                           <Icon type='reject' customclass={styles['status-icon']} />

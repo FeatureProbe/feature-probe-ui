@@ -121,8 +121,7 @@ const VariationItem = (props: IProps) => {
   }, []);
 
   const handleChangeBoolean = useCallback((e: SyntheticEvent, detail: DropdownProps) => {
-    // @ts-ignore detail value
-    handleChangeVariation(index, detail.value);
+    handleChangeVariation(index, detail.value as string);
   }, [index, handleChangeVariation]);
 
   const modalContentCls = classNames(
@@ -177,7 +176,7 @@ const VariationItem = (props: IProps) => {
               }}
             />
             { 
-              errors[`variation_${id}_name`] && <div className={styles[`${prefix ? (prefix + '-') : ''}error-text`]}>
+              errors[`variation_${id}_name`] && <div className={prefix ? 'error-text-transform' : 'error-text-normal'}>
                 { errors[`variation_${id}_name`].message }
               </div> 
             }
@@ -241,7 +240,7 @@ const VariationItem = (props: IProps) => {
               )
             }
             { 
-              errors[`variation_${id}`] && <div className={styles[`${prefix ? (prefix + '-') : ''}error-text`]}>
+              errors[`variation_${id}`] && <div className={prefix ? 'error-text-transform' : 'error-text-normal'}>
                 { errors[`variation_${id}`].message }
               </div> 
             }
@@ -294,7 +293,7 @@ const VariationItem = (props: IProps) => {
               onChange={handleChange}
             />
             { 
-              !canSave && <div className={styles[`${prefix ? (prefix + '-') : ''}error-text`]}>
+              !canSave && <div className={prefix ? 'error-text-transform' : 'error-text-normal'}>
                 <FormattedMessage id='common.json.invalid' />
               </div> 
             }
