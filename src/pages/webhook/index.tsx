@@ -10,6 +10,7 @@ import { cloneDeep } from 'lodash';
 import { IWebHook } from 'interfaces/webhook';
 import sleep from 'utils/sleep';
 import WebHookDrawer from './components/WebHookDrawer';
+import { Provider } from './provider';
 
 const webHookItemData: IWebHook = {
   key: 1,
@@ -71,105 +72,107 @@ const WebHook = () => {
 
   return (
     <WebHookLayout>
-      <div className={styles.card}>
-        <div className={styles.title}>
-          <FormattedMessage id="common.webhook.text" />
-        </div>
-        <div className={styles['action-line']}>
-          <Form>
-            <Form.Field className={styles['keywords-field']}>
-              <Form.Input
-                placeholder={intl.formatMessage({ id: 'toggles.filter.search.placeholder' })}
-                icon={<Icon customclass={styles['icon-search']} type="search" />}
-                onChange={handleSearch}
-              />
-            </Form.Field>
-          </Form>
-          <div className={styles.buttons}>
-            <Button primary className={styles['add-button']} onClick={handleAddWebHook}>
-              <Icon customclass={styles['iconfont']} type="add" />
-              <FormattedMessage id="common.webhook.text" />
-            </Button>
+      <Provider>
+        <div className={styles.card}>
+          <div className={styles.title}>
+            <FormattedMessage id="common.webhook.text" />
           </div>
-        </div>
-
-        {isLoading ? (
-          <div className={styles.load}>
-            {isLoading && (
-              <Dimmer active inverted>
-                <Loader size="small">
-                  <FormattedMessage id="common.loading.text" />
-                </Loader>
-              </Dimmer>
-            )}
-          </div>
-        ) : (
-          <>
-            <div className={styles['table-box']}>
-              <Table basic="very" unstackable>
-                <Table.Header className={styles['table-header']}>
-                  <Table.Row>
-                    <Table.HeaderCell className={styles['column-brief']}>
-                      <FormattedMessage id="common.name.text" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell className={styles['column-description']}>
-                      <FormattedMessage id="common.description.text" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell className={styles['column-type']}>
-                      <FormattedMessage id="toggles.filter.status" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell className={styles['column-tags']}>
-                      <FormattedMessage id="webhook.application.text" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell className={styles['column-url']}>
-                      <FormattedMessage id="webhook.url.text" />
-                    </Table.HeaderCell>
-                    <Table.HeaderCell className={styles['column-operation']}>
-                      <FormattedMessage id="common.operation.text" />
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body className={styles['table-body']}>
-                  {list.map((item) => {
-                    return (
-                      <WebHookItem
-                        handleEdit={() => {
-                          setDrawerVisible(true);
-                          setIsAdd(false);
-                        }}
-                        key={item.key}
-                        webhook={item}
-                      />
-                    );
-                  })}
-                </Table.Body>
-              </Table>
-            </div>
-            <div className={styles.pagination}>
-              <div className={styles['total']}>
-                <span className={styles['total-count']}>{webHookList.length} </span>
-                <FormattedMessage id="toggles.total" />
-              </div>
-              {
-                <Pagination
-                  activePage={pagination.pageIndex}
-                  totalPages={pagination.totalPages}
-                  onPageChange={handlePageChange}
-                  firstItem={null}
-                  lastItem={null}
-                  prevItem={{
-                    content: <Icon type="angle-left" />,
-                  }}
-                  nextItem={{
-                    content: <Icon type="angle-right" />,
-                  }}
+          <div className={styles['action-line']}>
+            <Form>
+              <Form.Field className={styles['keywords-field']}>
+                <Form.Input
+                  placeholder={intl.formatMessage({ id: 'toggles.filter.search.placeholder' })}
+                  icon={<Icon customclass={styles['icon-search']} type="search" />}
+                  onChange={handleSearch}
                 />
-              }
+              </Form.Field>
+            </Form>
+            <div className={styles.buttons}>
+              <Button primary className={styles['add-button']} onClick={handleAddWebHook}>
+                <Icon customclass={styles['iconfont']} type="add" />
+                <FormattedMessage id="common.webhook.text" />
+              </Button>
             </div>
-          </>
-        )}
-        <WebHookDrawer setDrawerVisible={setDrawerVisible} isAdd={isAdd} visible={isDrawerVisible} />
-      </div>
+          </div>
+
+          {isLoading ? (
+            <div className={styles.load}>
+              {isLoading && (
+                <Dimmer active inverted>
+                  <Loader size="small">
+                    <FormattedMessage id="common.loading.text" />
+                  </Loader>
+                </Dimmer>
+              )}
+            </div>
+          ) : (
+            <>
+              <div className={styles['table-box']}>
+                <Table basic="very" unstackable>
+                  <Table.Header className={styles['table-header']}>
+                    <Table.Row>
+                      <Table.HeaderCell className={styles['column-brief']}>
+                        <FormattedMessage id="common.name.text" />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-description']}>
+                        <FormattedMessage id="common.description.text" />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-type']}>
+                        <FormattedMessage id="toggles.filter.status" />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-tags']}>
+                        <FormattedMessage id="webhook.application.text" />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-url']}>
+                        <FormattedMessage id="webhook.url.text" />
+                      </Table.HeaderCell>
+                      <Table.HeaderCell className={styles['column-operation']}>
+                        <FormattedMessage id="common.operation.text" />
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body className={styles['table-body']}>
+                    {list.map((item) => {
+                      return (
+                        <WebHookItem
+                          handleEdit={() => {
+                            setDrawerVisible(true);
+                            setIsAdd(false);
+                          }}
+                          key={item.key}
+                          webhook={item}
+                        />
+                      );
+                    })}
+                  </Table.Body>
+                </Table>
+              </div>
+              <div className={styles.pagination}>
+                <div className={styles['total']}>
+                  <span className={styles['total-count']}>{webHookList.length} </span>
+                  <FormattedMessage id="toggles.total" />
+                </div>
+                {
+                  <Pagination
+                    activePage={pagination.pageIndex}
+                    totalPages={pagination.totalPages}
+                    onPageChange={handlePageChange}
+                    firstItem={null}
+                    lastItem={null}
+                    prevItem={{
+                      content: <Icon type="angle-left" />,
+                    }}
+                    nextItem={{
+                      content: <Icon type="angle-right" />,
+                    }}
+                  />
+                }
+              </div>
+            </>
+          )}
+          <WebHookDrawer setDrawerVisible={setDrawerVisible} isAdd={isAdd} visible={isDrawerVisible} />
+        </div>
+      </Provider>
     </WebHookLayout>
   );
 };

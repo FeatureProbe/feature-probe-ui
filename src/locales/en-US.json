@@ -98,6 +98,9 @@
   "common.next.text": "Next",
   "common.previous.text": "Previous",
   "common.webhook.text": "WebHook",
+  "common.event.text": "event",
+  "common.dingding.text": "Ding Talk",
+  "common.weixin.text": "WeChat",
 
   "header.getuser.error.text": "Error getting user profile",
 
@@ -470,5 +473,12 @@
   "guide.last": "Previous",
   "guide.done": "Done",
 
-  "webhook.seat.text": "占位"
+  "webhook.seat.text": "seat",
+  "webhook.application.text": "application",
+  "webhook.url.text": "URL",
+  "webhook.name.text": "WebHook Name",
+  "webhook.all.text": "All",
+  "webhook.custom.text": "Custom",
+  "webhook.url.required": "Please input url",
+  "webhook.application.required": "Please select application"
 }

@@ -87,3 +87,17 @@
 .formItem {
   margin-bottom: 16px;
 }
+
+.radio-group {
+  display: flex;
+}
+
+.radio-group-item {
+  margin-right: 20px !important;
+  margin-bottom: 0 !important;
+
+  :global .ui.checkbox {
+    font-size: 13px !important;
+  }
+
+}
