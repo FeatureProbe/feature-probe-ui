@@ -124,7 +124,7 @@ test('Serve select', (done) => {
     await userEvent.keyboard('{ctrl}{a}');
 
     await userEvent.keyboard('50');
-    expect(mockHandleChangeServe).toHaveBeenLastCalledWith(expect.objectContaining({ split: [5000, 5000] }));
+    expect(mockHandleChangeServe).toHaveBeenLastCalledWith(expect.objectContaining({ split: [0, 10000] }));
 
     done();
   })();
