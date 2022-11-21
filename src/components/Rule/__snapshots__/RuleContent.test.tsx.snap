@@ -127,7 +127,7 @@ exports[`RuleContent opt 1`] = `
                             class="divider text"
                             role="alert"
                           >
-                            Please select
+                            Please select serve
                           </div>
                           <span
                             class="iconfont icon-angle-down angle-down"
@@ -340,7 +340,7 @@ exports[`RuleContent opt 2`] = `
                       >
                         <div
                           aria-expanded="false"
-                          class="ui floating search dropdown rule-item-subject-dropdown"
+                          class="ui floating search selection dropdown rule-item-subject-dropdown"
                           name="test-name-1251"
                           role="combobox"
                         >
@@ -372,7 +372,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-1738"
+                          name="test-name-1748"
                           role="listbox"
                           tabindex="0"
                         >
@@ -488,7 +488,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating multiple search selection dropdown"
-                          name="test-name-3145"
+                          name="test-name-3155"
                           role="combobox"
                         >
                           <input
@@ -544,8 +544,8 @@ exports[`RuleContent opt 2`] = `
                       >
                         <div
                           aria-expanded="false"
-                          class="ui floating search dropdown rule-item-subject-dropdown"
-                          name="test-name-3929"
+                          class="ui floating search selection dropdown rule-item-subject-dropdown"
+                          name="test-name-3939"
                           role="combobox"
                         >
                           <input
@@ -576,7 +576,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-4416"
+                          name="test-name-4436"
                           role="listbox"
                           tabindex="0"
                         >
@@ -636,7 +636,7 @@ exports[`RuleContent opt 2`] = `
                       </div>
                       <div
                         class="six wide field rule-item-datetime"
-                        name="test-name-5243"
+                        name="test-name-5263"
                       >
                         <div
                           class="rdt"
@@ -1092,7 +1092,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating search selection dropdown"
-                          name="test-name-9359"
+                          name="test-name-9379"
                           role="combobox"
                         >
                           <input
@@ -1475,8 +1475,8 @@ exports[`RuleContent opt 2`] = `
                       >
                         <div
                           aria-expanded="false"
-                          class="ui floating search dropdown rule-item-subject-dropdown"
-                          name="test-name-13731"
+                          class="ui floating search selection dropdown rule-item-subject-dropdown"
+                          name="test-name-13751"
                           role="combobox"
                         >
                           <input
@@ -1507,7 +1507,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-14218"
+                          name="test-name-14248"
                           role="listbox"
                           tabindex="0"
                         >
@@ -1623,7 +1623,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating multiple search selection dropdown"
-                          name="test-name-15625"
+                          name="test-name-15655"
                           role="combobox"
                         >
                           <input
@@ -1680,8 +1680,8 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-disabled="true"
                           aria-expanded="false"
-                          class="ui disabled floating search dropdown rule-item-subject-dropdown"
-                          name="test-name-16409"
+                          class="ui disabled floating search selection dropdown rule-item-subject-dropdown"
+                          name="test-name-16439"
                           role="combobox"
                         >
                           <input
@@ -1712,7 +1712,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-16919"
+                          name="test-name-16959"
                           role="listbox"
                           tabindex="0"
                         >
@@ -1774,9 +1774,9 @@ exports[`RuleContent opt 2`] = `
                         class="six wide field"
                       >
                         <div
-                          aria-expanded="false"
-                          class="ui floating multiple search selection dropdown"
-                          name="test-name-17794"
+                          aria-expanded="true"
+                          class="ui active visible floating multiple search selection dropdown"
+                          name="test-name-17834"
                           role="combobox"
                         >
                           <input
@@ -1805,7 +1805,7 @@ exports[`RuleContent opt 2`] = `
                           />
                           <div
                             aria-multiselectable="true"
-                            class="menu transition"
+                            class="visible menu transition"
                             role="listbox"
                           />
                         </div>
@@ -1853,9 +1853,9 @@ exports[`RuleContent opt 2`] = `
                         style="width: 308px;"
                       >
                         <div
-                          aria-expanded="true"
-                          class="ui active visible floating selection dropdown serve-dropdown"
-                          name="test-name-18874"
+                          aria-expanded="false"
+                          class="ui floating selection dropdown serve-dropdown"
+                          name="test-name-18936"
                           role="listbox"
                           style="width: 308px;"
                           tabindex="0"
@@ -1866,7 +1866,7 @@ exports[`RuleContent opt 2`] = `
                             class="divider text"
                             role="alert"
                           >
-                            name
+                            Please select serve
                           </div>
                           <span
                             class="iconfont icon-angle-down angle-down"
@@ -1874,7 +1874,7 @@ exports[`RuleContent opt 2`] = `
                             type="angle-down"
                           />
                           <div
-                            class="visible menu transition"
+                            class="menu transition"
                           >
                             <div
                               aria-checked="false"
@@ -2107,90 +2107,6 @@ exports[`RuleContent snapshot 2`] = `
                     />
                     Add
                   </button>
-                </div>
-                <div
-                  class="serve"
-                >
-                  <div
-                    class="serve-select"
-                  >
-                    <span
-                      class="serve-text"
-                    >
-                      <span
-                        class="label-required"
-                      >
-                        *
-                      </span>
-                      Serve
-                    </span>
-                    <div
-                      class="field serve-form-field"
-                      style="width: 308px;"
-                    >
-                      <div
-                        aria-disabled="true"
-                        aria-expanded="false"
-                        class="ui disabled floating selection dropdown serve-dropdown"
-                        name="rule_testId1_serve"
-                        role="listbox"
-                        style="width: 308px;"
-                        tabindex="-1"
-                      >
-                        <div
-                          aria-atomic="true"
-                          aria-live="polite"
-                          class="divider text"
-                          role="alert"
-                        >
-                          Please select
-                        </div>
-                        <span
-                          class="iconfont icon-angle-down angle-down"
-                          customclass="angle-down"
-                          type="angle-down"
-                        />
-                        <div
-                          class="menu transition"
-                        >
-                          <div
-                            aria-checked="false"
-                            aria-selected="true"
-                            class="selected item"
-                            role="option"
-                            style="pointer-events: all;"
-                          >
-                            <div
-                              class="text dropdown-variation"
-                            >
-                              <span
-                                class="dropdown-variation-color"
-                                style="background: rgb(85, 110, 230);"
-                              />
-                              <span
-                                class="dropdown-variation-text"
-                              >
-                                name
-                              </span>
-                            </div>
-                          </div>
-                          <div
-                            aria-checked="false"
-                            aria-selected="false"
-                            class="item"
-                            role="option"
-                            style="pointer-events: all;"
-                          >
-                            <span
-                              class="text"
-                            >
-                              a percentage rollout
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

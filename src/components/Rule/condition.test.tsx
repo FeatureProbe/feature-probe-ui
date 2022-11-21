@@ -8,6 +8,7 @@ import { IntlWrapper } from 'components/utils/wrapper';
 import { useEffect } from 'react';
 import { Form } from 'semantic-ui-react';
 import { ISegmentList } from 'interfaces/segment';
+import { variationContainer } from 'pages/toggle/provider';
 
 const ruleData = {
   id: 'test-id',
@@ -33,53 +34,53 @@ const Wrapper: React.FC = ({ children }) => {
   );
 };
 
-const UseHookWrapper: React.FC = ({ children }) => {
-  const { saveRules } = ruleContainer.useContainer();
-  const { saveSegmentList } = segmentContainer.useContainer();
-
-  const segmentList: ISegmentList = {
-    content: [
-      {
-        name: 'test',
-        key: 'key',
-        description: '',
-        createdTime: '',
-        createdBy: '',
-        modifiedBy: '',
-        modifiedTime: '',
-      },
-    ],
-    totalElements: 1,
-    totalPages: 1,
+const segmentList: ISegmentList = {
+  content: [
+    {
+      name: 'test',
+      key: 'key',
+      description: '',
+      createdTime: '',
+      createdBy: '',
+      modifiedBy: '',
+      modifiedTime: '',
+    },
+  ],
+  totalElements: 1,
+  totalPages: 1,
+  sort: {
+    sorted: true,
+    unsorted: false,
+    empty: false,
+  },
+  first: true,
+  last: true,
+  size: 1,
+  empty: false,
+  numberOfElements: 1,
+  number: 1,
+  pageable: {
     sort: {
       sorted: true,
       unsorted: false,
       empty: false,
     },
-    first: true,
-    last: true,
-    size: 1,
-    empty: false,
-    numberOfElements: 1,
-    number: 1,
-    pageable: {
-      sort: {
-        sorted: true,
-        unsorted: false,
-        empty: false,
-      },
-      pageNumber: 1,
-      pageSize: 1,
-      paged: true,
-      unpaged: false,
-      offset: 0,
-    },
-  };
+    pageNumber: 1,
+    pageSize: 1,
+    paged: true,
+    unpaged: false,
+    offset: 0,
+  },
+};
+
+const UseHookWrapper: React.FC = ({ children }) => {
+  const { saveRules } = ruleContainer.useContainer();
+  const { saveSegmentList } = segmentContainer.useContainer();
 
   useEffect(() => {
     saveRules([ruleData]);
     saveSegmentList(segmentList);
-  }, []);
+  }, [saveRules, saveSegmentList]);
 
   return <>{children}</>;
 };
@@ -102,6 +103,34 @@ it('RuleContent snapshot', (done) => {
     );
 
     expect(asFragment()).toMatchSnapshot();
+
+    done();
+  })();
+});
+
+it('RuleContent snapshot 2', (done) => {
+  (async () => {
+    const { asFragment } = render(
+      <Condition
+        rule={ruleData}
+        ruleIndex={0}
+        conditionIndex={0}
+        condition={{} as ICondition}
+        subjectOptions={[]}
+        ruleContainer={ruleContainer}
+        hooksFormContainer={hooksFormContainer}
+        disabled
+        segmentContainer={segmentContainer}
+        useSegment
+        variationContainer={variationContainer}
+      />,
+      {
+        wrapper: Wrapper,
+      }
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+
     done();
   })();
 });
@@ -181,7 +210,9 @@ test('RuleContent number input', (done) => {
 
     await userEvent.keyboard('100');
     await userEvent.keyboard('{Enter}');
-    expect(screen.queryByText('100')).not.toBeUndefined();
+
+    await userEvent.keyboard('200');
+    await userEvent.keyboard('{Enter}');
 
     expect(asFragment()).toMatchSnapshot();
     done();

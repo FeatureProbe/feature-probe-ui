@@ -82,7 +82,7 @@ test('Serve select', (done) => {
         wrapper: Wrapper,
       }
     );
-    const selectEle = screen.getByText('Please select');
+    const selectEle = screen.getByText('Please select serve');
     await userEvent.click(selectEle);
     const options = screen.getAllByRole('option');
     await userEvent.click(options[0]);

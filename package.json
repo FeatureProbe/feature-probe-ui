@@ -15,6 +15,16 @@
   "engines": {
     "node": "16.x"
   },
+  "jest": {
+    "resetMocks": false,
+    "collectCoverageFrom": [
+      "src/components/**/*.tsx"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/components/utils/*",
+      "src/components/EventTracker/*"
+    ]
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^14.4.3",
@@ -61,8 +71,9 @@
     "start": "semantic-ui-css-patch && craco start",
     "build": "semantic-ui-css-patch && craco build",
     "test": "craco test",
-    "test:cov": "craco test --coverage --no-cache --watchAll --collectCoverageFrom=src/components/**/*.tsx --coveragePathIgnorePatterns=src/components/utils/*",
-    "eject": "craco eject"
+    "test:cov": "craco test --coverage --no-cache --watchAll",
+    "eject": "craco eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": [

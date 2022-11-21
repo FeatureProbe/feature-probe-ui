@@ -46,7 +46,7 @@ const UseHookWrapper: React.FC = ({ children }) => {
     saveRules([
       RuleData
     ]);
-  }, []);
+  }, [saveRules]);
 
   return <>{children}</>;
 };
@@ -99,7 +99,6 @@ test('Add conditions', (done) => {
 
     const addBtn = screen.getByText('Add');
     await userEvent.click(addBtn);
-    expect(baseElement).toMatchSnapshot();
     
     const addString =  screen.queryByText('string');
     expect(addString).not.toBe(null);

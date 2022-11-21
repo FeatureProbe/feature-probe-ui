@@ -68,7 +68,7 @@ const UseHookWrapper: React.FC<{ children: ReactElement }> = ({ children }) => {
         description: '',
       },
     ]);
-  }, []);
+  }, [saveRules, saveVariations]);
 
   return <>{reChildren}</>;
 };
@@ -100,7 +100,7 @@ it('RuleContent snapshot', (done) => {
       subjectOptions={[]}
       disabled={true}
       active={true}
-      variationContainer={variationContainer}
+      useSegment
     />
   );
 

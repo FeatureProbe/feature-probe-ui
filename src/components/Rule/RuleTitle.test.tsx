@@ -46,6 +46,7 @@ const Wrapper: React.FC = ({ children }) => {
 
 const UseHookWrapper: React.FC = ({ children }) => {
   const { saveRules } = ruleContainer.useContainer();
+  const { setValue } = hooksFormContainer.useContainer();
 
   useEffect(() => {
     const rule: IRule = {
@@ -56,7 +57,8 @@ const UseHookWrapper: React.FC = ({ children }) => {
       active: true,
     };
     saveRules([rule, { ...rule, id: 'test_id2' }]);
-  }, []);
+    setValue('test_value_key', 'test_value');
+  }, [saveRules, setValue]);
 
   return <>{children}</>;
 };
@@ -85,7 +87,6 @@ it('RuleTitle snapshot', (done) => {
       ruleContainer={ruleContainer}
       hooksFormContainer={hooksFormContainer}
       disabled={true}
-      variationContainer={variationContainer}
     />
   );
 
@@ -108,10 +109,11 @@ test('RuleTitle opt', (done) => {
       }
     );
 
-    await userEvent.hover(screen.getByPlaceholderText('Rule 1'));
-    await userEvent.click(screen.getByPlaceholderText('Rule 1'));
+    const ruleTextbox = screen.getByPlaceholderText('Rule 1');
+    await userEvent.hover(ruleTextbox);
+    await userEvent.click(ruleTextbox);
     await userEvent.keyboard('test rule');
-    await userEvent.keyboard('test rule long long long long long long long long long long long long long long long');
+    await userEvent.type(ruleTextbox, 'test rule long long long long long long long long long long long long long long long');
 
     const del = document.querySelector('span.icon-archive');
     del && (await userEvent.click(del));

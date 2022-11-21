@@ -23,7 +23,7 @@ const Wrapper: React.FC = (props) => {
 
 it('VariationItem snapshot', (done) => {
   (async () => {
-    const { asFragment } = render(
+    const { asFragment, rerender } = render(
       <VariationItem
         total={1}
         item={{ index: 1 }}
@@ -39,6 +39,20 @@ it('VariationItem snapshot', (done) => {
       }
     );
     expect(asFragment()).toMatchSnapshot();
+
+    rerender(
+      <VariationItem
+        total={1}
+        item={{ index: 1 }}
+        returnType="boolean"
+        hooksFormContainer={hooksFormContainer}
+        handleDelete={jest.fn()}
+        handleChangeVariation={jest.fn()}
+        handleInput={jest.fn()}
+      />
+    );
+    expect(asFragment()).toMatchSnapshot();
+
     done();
   })();
 });
@@ -63,7 +77,7 @@ test('VariationItem delete', (done) => {
     );
 
     const ele = screen.getAllByRole('generic').pop();
-    if(ele) await userEvent.click(ele);
+    if (ele) await userEvent.click(ele);
 
     expect(mockHandleDelete).toBeCalled();
     done();
@@ -90,9 +104,11 @@ test('VariationItem input', (done) => {
       }
     );
 
-    await userEvent.click(screen.getByPlaceholderText('name'));
+    const nameTextbox = screen.getByPlaceholderText('name');
+    await userEvent.click(nameTextbox);
     await userEvent.keyboard('t');
     expect(mockHandleInput).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ value: 't' }));
+    await userEvent.clear(nameTextbox);
 
     await userEvent.click(screen.getByPlaceholderText('description'));
     await userEvent.keyboard('d');
@@ -106,15 +122,15 @@ test('VariationItem input', (done) => {
       <VariationItem
         total={1}
         item={{ index: 1 }}
-        returnType='string'
-        prefix='drawer'
+        returnType="string"
+        prefix="drawer"
         hooksFormContainer={hooksFormContainer}
         handleDelete={jest.fn()}
         handleChangeVariation={mockHandleChange}
         handleInput={mockHandleInput}
       />
     );
-    
+
     await userEvent.click(screen.getByPlaceholderText('value'));
     await userEvent.keyboard('v');
     expect(mockHandleInput).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ value: 'v' }));
@@ -180,12 +196,20 @@ test('VariationItem json modal', (done) => {
     const jsonModalOpen = document.getElementsByClassName('icon-code')[0];
     expect(jsonModalOpen).not.toBeUndefined();
     await userEvent.click(jsonModalOpen);
-    
-    await userEvent.click(screen.getByText('Confirm'));
+
+    await userEvent.click(screen.getByText('Cancel'));
 
     await userEvent.click(jsonModalOpen);
 
-    await userEvent.click(screen.getByText('Cancel'));
+    const textbox = screen.getAllByRole('textbox')[3];
+    await userEvent.type(textbox, 'error text{{{{');
+    expect(screen.getByText('Confirm')).toBeDisabled();
+
+    await userEvent.clear(textbox);
+    await userEvent.type(textbox, '{{}');
+
+    await userEvent.click(screen.getByText('Confirm'));
+    expect(mockHandleChange).toHaveBeenLastCalledWith(1, '{}');
 
     done();
   })();

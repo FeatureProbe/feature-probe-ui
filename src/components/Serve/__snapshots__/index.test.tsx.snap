@@ -264,7 +264,7 @@ exports[`Serve snapshot 1`] = `
             class="divider text"
             role="alert"
           >
-            Please select
+            Please select serve
           </div>
           <span
             class="iconfont icon-angle-down angle-down"
@@ -329,7 +329,7 @@ exports[`Serve snapshot 2`] = `
             class="divider text"
             role="alert"
           >
-            Please select
+            Please select serve
           </div>
           <span
             class="iconfont icon-angle-down angle-down"
