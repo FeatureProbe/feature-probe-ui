@@ -15,6 +15,7 @@ import {
   DATETIME_TYPE,
   SEGMENT_TYPE,
   SEMVER_TYPE,
+  STRING_TYPE,
   NUMBER_TYPE,
 } from './constants';
 import styles from './index.module.scss';
@@ -53,7 +54,7 @@ const RuleContent = (props: IProps) => {
 
   const intl = useIntl();
   const [ options, setOption ] = useState<IOption[]>([]);
-  const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
+  const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;
 
   const {
     handleChangeAttr,
@@ -332,11 +333,27 @@ const RuleContent = (props: IProps) => {
                       return;
                     } 
                   }
+                  else if (condition.type === STRING_TYPE && condition.predicate.includes('regex')) {
+                    // @ts-ignore detail value
+                    result = detail.value.every((item) => {
+                      try {
+                        new RegExp(item);
+                        return true;
+                      } catch (e) {
+                        return false;
+                      }
+                    });
+
+                    // @ts-ignore detail value
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                      return;
+                    }
+                  }
+
                   if (!result) {
                     message.error(intl.formatMessage({id: 'targeting.invalid.value.text'}));
-                    handleChangeValue(ruleIndex, conditionIndex, []);
                     return;
-                  };
+                  }
 
                   setValue(detail.name, detail.value);
                   handleChangeValue(ruleIndex, conditionIndex, detail.value);
