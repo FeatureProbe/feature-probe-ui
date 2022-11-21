@@ -214,8 +214,7 @@ const RuleContent = (props: IProps) => {
             name={`rule_${rule.id}_condition_${condition.id}_predicate`}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_predicate`] ? true : false }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
-              // @ts-ignore detail value
-              if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value)) {
+              if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value as string)) {
                 handleChangeValue(ruleIndex, conditionIndex, []);
               } 
 
@@ -316,24 +315,20 @@ const RuleContent = (props: IProps) => {
                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                   let result = true;
                   if (condition.type === NUMBER_TYPE) {
-                    // @ts-ignore detail value
-                    result = detail.value.every((item) => {
+                    result = (detail.value as string[]).every((item) => {
                       return NUMBER_REG.test(item);
                     });
 
-                    // @ts-ignore detail value
-                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && (detail.value as string[]).length > 1) {
                       return;
                     } 
                   } 
                   else if (condition.type === SEMVER_TYPE) {
-                    // @ts-ignore detail value
-                    result = detail.value.every((item) => {
+                    result = (detail.value as string[]).every((item) => {
                       return SEMVER_REG.test(item);
                     });
 
-                    // @ts-ignore detail value
-                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && (detail.value as string[]).length > 1) {
                       return;
                     } 
                   }

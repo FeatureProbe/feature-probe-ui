@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState, useCallback, useEffect, useRef } from 'react';
-import { Form, Button, PaginationProps, Loader, Dimmer, TextAreaProps } from 'semantic-ui-react';
+import { Form, Button, PaginationProps, Loader, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams, Prompt, useRouteMatch } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
@@ -18,6 +18,7 @@ import { DATETIME_TYPE } from 'components/Rule/constants';
 import TextLimit from 'components/TextLimit';
 import History from 'components/History';
 import Icon from 'components/Icon';
+import Loading from 'components/Loading';
 import Rules from 'pages/targeting/components/Rules';
 import { useBeforeUnload } from 'pages/targeting/hooks';
 import ConfirmModal from '../Modal';
@@ -416,13 +417,7 @@ const Info = () => {
       </div>
       <div className={styles.content} ref={ref}>
         {
-          isPageLoading ? (
-            <Dimmer active inverted>
-              <Loader size='small'>
-                <FormattedMessage id='common.loading.text' />
-              </Loader>
-            </Dimmer>
-          ) : (
+          isPageLoading ? <Loading /> : (
             <Form className={styles['filter-form']} autoComplete='off' onSubmit={handleSubmit(onSubmit, onError)} ref={formRef}>
 
               {
@@ -475,12 +470,12 @@ const Info = () => {
               <ConfirmModal 
                 open={open}
                 total={total}
-                setOpen={setOpen}
+                diff={diffContent}
                 toggleList={toggleList}
                 pagination={pagination}
+                setOpen={setOpen}
                 handlePageChange={handlePageChange}
                 confirmEditSegment={confirmEditSegment}
-                diff={diffContent}
                 handleInputComment={handleInputComment}
               />
               <Modal 
@@ -511,18 +506,17 @@ const Info = () => {
         }
         {
           isHistoryOpen && (
-            <div style={{
-              height: height,
-            }} className={styles['content-right']}>
+            <div 
+              style={{ height: height }} 
+              className={styles['content-right']}
+            >
               <History 
                 versions={versions}
                 hasMore={historyHasMore}
                 isHistoryLoading={isHistoryLoading}
                 latestVersion={latestVersion}
                 selectedVersion={selectedVersion}
-                loadMore={() => {
-                  getVersionsList();
-                }}
+                loadMore={() => { getVersionsList(); }}
                 reviewHistory={reviewHistory}
               />
             </div>

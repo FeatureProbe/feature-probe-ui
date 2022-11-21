@@ -4,7 +4,6 @@ import {
   Popup,
   Dropdown,
   Select,
-  FormField,
   DropdownProps,
   InputOnChangeData,
   TextAreaProps,
@@ -15,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import cloneDeep from 'lodash/cloneDeep';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Joyride, { CallBackProps, EVENTS, Step, ACTIONS } from 'react-joyride';
+import { debounce } from 'lodash';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Variations from 'components/Variations';
@@ -32,11 +32,11 @@ import { ITag, ITagOption } from 'interfaces/project';
 import { createToggle, getTags, addTag, editToggle, checkToggleExist } from 'services/toggle';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
 
-import { debounce } from 'lodash';
 import { useFormErrorScrollIntoView, useRequestTimeCheck } from 'hooks';
 import { commonConfig, floaterStyle, tourStyle } from 'constants/tourConfig';
-import styles from './index.module.scss';
 import { USER_GUIDE_TOGGLE } from 'constants/dictionary_keys';
+import styles from './index.module.scss';
+
 interface IParams {
   isAdd: boolean;
   visible: boolean;
@@ -53,14 +53,14 @@ interface ILocationParams {
 const STEPS: Step[] = [
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.creat.toggle.step1.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li><FormattedMessage id='guide.creat.toggle.step1.sdk1' /></li>
         </ul>
-        <div className={styles['joyride-pagination']}>1/3</div>
+        <div className='joyride-pagination'>1/3</div>
       </div>
     ),
     placement: 'left',
@@ -70,11 +70,11 @@ const STEPS: Step[] = [
   },
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.creat.toggle.step2.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li>
             <FormattedMessage id='guide.creat.toggle.step2.type1' />
           </li>
@@ -82,7 +82,7 @@ const STEPS: Step[] = [
             <FormattedMessage id='guide.creat.toggle.step2.type2' />
           </li>
         </ul>
-        <div className={styles['joyride-pagination']}>2/3</div>
+        <div className='joyride-pagination'>2/3</div>
       </div>
     ),
     placement: 'left',
@@ -92,16 +92,16 @@ const STEPS: Step[] = [
   },
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.creat.toggle.step3.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li>
             <FormattedMessage id='guide.creat.toggle.step3.type'/>
           </li>
         </ul>
-        <div className={styles['joyride-pagination']}>3/3</div>
+        <div className='joyride-pagination'>3/3</div>
       </div>
     ),
     placement: 'left',
@@ -419,6 +419,7 @@ const Drawer = (props: IParams) => {
           <Icon customclass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
         <div className={styles['toggle-drawer-form-content']}>
+          {/* Toggle Name */}
           <FormItemName
             className={styles.input}
             value={toggleInfo?.name}
@@ -447,6 +448,7 @@ const Drawer = (props: IParams) => {
             }}
           />
 
+          {/* Toggle Key */}
           <FormItemKey
             size='mini'
             className={styles.input}
@@ -465,6 +467,7 @@ const Drawer = (props: IParams) => {
             }}
           />
 
+          {/* Toggle Description */}
           <FormItemDescription
             size='mini'
             className={styles.input}
@@ -478,6 +481,7 @@ const Drawer = (props: IParams) => {
             }}
           />
 
+          {/* Toggle Tags */}
           <Form.Field>
             <label>
               <FormattedMessage id='common.tags.text' />
@@ -503,6 +507,7 @@ const Drawer = (props: IParams) => {
             />
           </Form.Field>
 
+          {/* Toggle SDK Type */}
           <Form.Field className={`${styles.joyride} joyride-sdk-type`}>
             <label>
               <FormattedMessage id='toggles.sdk.type' />
@@ -525,6 +530,7 @@ const Drawer = (props: IParams) => {
             </div>
           </Form.Field>
           
+          {/* Toggle Return Type */}
           <Form.Field className={`${styles.joyride} joyride-return-type`}>
             <label>
               <span className={styles['label-required']}>*</span>
@@ -536,7 +542,7 @@ const Drawer = (props: IParams) => {
                 }
                 content={intl.formatMessage({id: 'toggles.returntype.tips'})}
                 position='top center'
-                className={styles.popup}
+                className='popup-override'
               />
             </label>
             <Select 
@@ -567,7 +573,8 @@ const Drawer = (props: IParams) => {
             )
           }
 
-          <FormField>
+          {/* Toggle Variations */}
+          <Form.Field>
             <label>
               <span className={styles['label-required']}>*</span>
               <FormattedMessage id='common.variations.text' />
@@ -578,7 +585,7 @@ const Drawer = (props: IParams) => {
                 }
                 content={intl.formatMessage({id: 'toggles.variations.tips'})}
                 position='top center'
-                className={styles.popup}
+                className='popup-override'
               />
             </label>
             <Variations
@@ -587,8 +594,9 @@ const Drawer = (props: IParams) => {
               variationContainer={variationContainer}
               hooksFormContainer={hooksFormContainer}
             />
-          </FormField>
+          </Form.Field>
 
+          {/* Toggle Disabled Return Value */}
           <Form.Field className={`${styles.joyride} joyride-disabled-return-value`}>
             <label>
               <span className={styles['label-required']}>*</span>
@@ -598,7 +606,7 @@ const Drawer = (props: IParams) => {
                 trigger={<Icon customclass={styles['icon-question']} type='question' />}
                 content={intl.formatMessage({id: 'toggles.disabled.return.type.tips'})}
                 position='top center'
-                className={styles.popup}
+                className='popup-override'
               />
             </label>
             <Dropdown
@@ -620,6 +628,8 @@ const Drawer = (props: IParams) => {
               }
             />
           </Form.Field>
+
+          {/* Toggle Permanent */}
           <Form.Field>
             <label>
               <FormattedMessage id='toggles.permanent.type' />
@@ -628,7 +638,7 @@ const Drawer = (props: IParams) => {
                 trigger={<Icon customclass={styles['icon-question']} type='question' />}
                 content={intl.formatMessage({id: 'toggles.permanent.type.tips'})}
                 position='top center'
-                className={styles.popup}
+                className='popup-override'
                 wide={true}
               />
             </label>

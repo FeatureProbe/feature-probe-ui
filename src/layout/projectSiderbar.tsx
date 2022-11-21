@@ -1,16 +1,17 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory, useRouteMatch } from 'react-router-dom';
-import { Dropdown, DropdownProps, Dimmer, Loader } from 'semantic-ui-react';
+import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import PutAwayMemu from 'components/PutAwayMenu';
+import TextLimit from 'components/TextLimit';
+import Loading from 'components/Loading';
 import { IRouterParams, IProject, IEnvironment } from 'interfaces/project';
 import { TOGGLE_PATH, TARGETING_PATH, SEGMENT_PATH, SEGMENT_ADD_PATH, SEGMENT_EDIT_PATH, GET_STARTED_PATH, SETTING_PATH } from 'router/routes';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
-import TextLimit from 'components/TextLimit';
 
 interface IProps {
   isLoading: boolean;
@@ -74,11 +75,8 @@ const ProjectSiderbar = (props: IProps) => {
 
   const handleChangeEnv = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
     setOpen(true);
-
-    // @ts-ignore detail value
-    setEnv(detail.value);
-    // @ts-ignore envName
-    setEnvName(e.target.innerText);
+    setEnv(detail.value as string);
+    setEnvName((e.target as HTMLElement).innerText);
   }, []);
 
   const gotoPage = useCallback(() => {
@@ -90,6 +88,8 @@ const ProjectSiderbar = (props: IProps) => {
       url = `/${projectKey}/${env}/${toggleKey}/${navigation}`;
     } else if (match.path === SEGMENT_PATH) {
       url = `/${projectKey}/${env}/segments`;
+    } else if (match.path === SETTING_PATH) {
+      url = `/${projectKey}/${env}/settings`;
     }
     history.push(url);
   }, [history, projectKey, toggleKey, navigation, env, match.path]);
@@ -109,13 +109,7 @@ const ProjectSiderbar = (props: IProps) => {
   return (
     <div className={sidebarCls}>
       {
-         isLoading ? (
-          <Dimmer Dimmer active inverted style={{backgroundColor: 'transparent'}}>
-            <Loader size='small'>
-              <FormattedMessage id='common.loading.text' />
-            </Loader>
-          </Dimmer>
-        ) : (
+         isLoading ? <Loading style={{backgroundColor: 'transparent'}} /> : (
           <>
             <div className={styles['project-name']}>
               <TextLimit 

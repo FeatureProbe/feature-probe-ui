@@ -1,8 +1,9 @@
 import { SyntheticEvent } from 'react';
-import { Dimmer, Loader, Popup } from 'semantic-ui-react';
+import { Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import TextLimit from 'components/TextLimit';
+import Loading from 'components/Loading';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { IVersion } from 'interfaces/targeting';
@@ -30,13 +31,7 @@ const History = (props: IProps) => {
       </div>
       <div className={styles.lists} id='scrollableDiv'>
         {
-          isHistoryLoading ? (
-            <Dimmer active inverted>
-              <Loader size='small'>
-                <FormattedMessage id='common.loading.text' />
-              </Loader>
-            </Dimmer>
-          ) : (
+          isHistoryLoading ? <Loading /> : (
             <InfiniteScroll
               dataLength={versions.length}
               next={loadMore}

@@ -1,32 +1,71 @@
-body {
-  margin: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC', 'Heiti SC', 'Hiragino Sans GB', 'Microsoft YaHei', sanf-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+// common style for form item
+.label-required {
+  color: #ff5f57;
+  font-size: 20px;
+  margin-right: 4px;
+  height: 16px;
+  display: inline-block;
+  position: relative;
+  top: 7px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.error-text {
+  color: #f46a6a;
+  margin-top: -15px;
+  margin-bottom: 15px;
+  font-size: 12px;
+  transform: scale(0.83);
+  transform-origin: left;
 }
 
-:root {
-  --toastify-text-color-info: #0a70f5;
-  --toastify-text-color-success: #00b365;
-  --toastify-text-color-warning: #592d00;
-  --toastify-text-color-error: #660E16;
-
-  --toastify-color-info: #eff8ff;
-  --toastify-color-success: #effcf2;
-  --toastify-color-warning: #fffae0;
-  --toastify-color-error: #fff5f4;
-
-  --toastify-toast-min-height: 36px;
-  --toastify-toast-max-height: 80px;
-
-  --toastify-toast-width: auto;
+.error-text-normal {
+  color: #f46a6a;
+  font-size: 12px;
 }
 
-.Toastify__toast-container--top-center {
-  top: 48px !important;
+.error-text-transform {
+  color: #f46a6a;
+  // margin-left: 32px;
+  transform: scale(0.83);
+  transform-origin: left center;
+}
+
+// common style for dropdown icon
+.angle-down {
+  position: absolute;
+  right: 10px;
+  color: #74788d;
+  top: 8px;
+}
+
+.angle-down-transform {
+  position: absolute;
+  right: 10px;
+  color: #74788d;
+  top: 6px;
+}
+
+// common style for user guide
+.joyride-title {
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: #212529;
+}
+
+.joyride-item {
+  padding-left: 18px;
+  font-size: 14px;
+  color: #74788d;
+}
+
+.joyride-pagination {
+  position: absolute;
+  bottom: 18px;
+  font-size: 14px;
+  color: #74788d;
+}
+
+// common css for popup opacity 
+.popup-override {
+  opacity: 0.8;
 }

@@ -16,8 +16,8 @@ import logo from 'images/logo.svg';
 import logoWhite from 'images/logo-white.svg';
 import { HeaderContainer } from './hooks';
 import { EventTrack } from 'utils/track';
-import styles from './pageHeader.module.scss';
 import serviceManualSvg from 'images/service-manual.svg';
+import styles from './pageHeader.module.scss';
 
 const PROJECT_NAV = 'projects';
 const SETTING_NAV = 'settings';

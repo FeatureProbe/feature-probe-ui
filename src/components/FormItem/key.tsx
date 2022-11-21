@@ -49,7 +49,7 @@ const FormItemKey = (props: IProps) => {
             showPopup && (
               <Popup
                 inverted
-                className={styles.popup}
+                className='popup-override'
                 trigger={
                   <Icon customclass={styles['icon-question']} type='question' />
                 }

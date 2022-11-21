@@ -1,9 +1,8 @@
 import { useEffect, useCallback, useState, Suspense } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { FPUser, FeatureProbe } from 'featureprobe-client-sdk-js';
-import { FormattedMessage } from 'react-intl';
-import { Dimmer, Loader } from 'semantic-ui-react';
 import { headerRoutes, blankRoutes } from './routes';
+import Loading from 'components/Loading';
 import { getRedirectUrl } from 'utils/getRedirectUrl';
 import BasicLayout from 'layout/BasicLayout';
 import { EventTrack } from 'utils/track';
@@ -66,20 +65,8 @@ const Router = () => {
   return (
     <>
       {
-        isLoading ? (
-          <Dimmer active inverted>
-            <Loader size='small'>
-              <FormattedMessage id='common.loading.text' />
-            </Loader>
-          </Dimmer>
-          ) : (
-            <Suspense fallback={
-              <Dimmer active inverted>
-                <Loader size='small'>
-                  <FormattedMessage id='common.loading.text' />
-                </Loader>
-              </Dimmer>
-            }>
+        isLoading ? <Loading /> : (
+            <Suspense fallback={<Loading />}>
               <BrowserRouter>
                 <Switch>
                   {

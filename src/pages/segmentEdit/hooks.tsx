@@ -6,6 +6,10 @@ import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { ICondition, IRule, IServe } from 'interfaces/targeting';
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 
+interface IInfo {
+  [key: string]: string;
+}
+
 export const useRule = () => {
   const [rules, saveRules] = useState<IRule[]>([]);
 
@@ -112,22 +116,20 @@ export const useRule = () => {
 };
 
 export const useSegmentInfo = () => {
-  const [ segmentInfo, saveSegmentInfo ] = useState({
+  const [ segmentInfo, saveSegmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
     description: '',
   });
 
-  const [ originSegmentInfo, saveOriginSegmentInfo ] = useState({
+  const [ originSegmentInfo, saveOriginSegmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
     description: '',
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
-    const { value } = detail;
-    // @ts-ignore detail value
-    segmentInfo[type] = value;
+    segmentInfo[type] = detail.value as string;
     saveSegmentInfo({...segmentInfo});
   };
 

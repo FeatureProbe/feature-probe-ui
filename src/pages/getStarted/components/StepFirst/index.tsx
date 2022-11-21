@@ -17,8 +17,8 @@ import miniprogram from 'images/wechat-miniprogram.png';
 import styles from '../Steps/index.module.scss';
 import { SdkLanguage } from '../StepSecond';
 
-const SDK_LOGOS: {[key in SdkLanguage]: unknown} = {
-  '': null,
+const SDK_LOGOS: {[key in SdkLanguage]: string} = {
+  // 'null': null,
   'Java': java,
   'Rust': rust,
   'Go': go,
@@ -108,7 +108,6 @@ const StepFirst = (props: IProps) => {
 
   useEffect(() => {
     if (currentSDK) {
-      // @ts-ignore currentSDK
       saveSelectedSDKLogo(SDK_LOGOS[currentSDK]);
     }
   }, [currentSDK]);

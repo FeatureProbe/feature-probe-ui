@@ -61,7 +61,7 @@ export const createChartOptions = (metric: IMetric[], projectKey: string, enviro
           color: '#f55043',
           content: () => intl.formatMessage({id: 'common.version.change.text'}),
           position: 'start',
-          xAdjust: lang === 'en-US' ? 33 : 29,
+          xAdjust: lang === 'en-US' ? 33 : 29,  // TODO: A better way
           yAdjust: -8,
           borderRadius: {
             topLeft: 0,

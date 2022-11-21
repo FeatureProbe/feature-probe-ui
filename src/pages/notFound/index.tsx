@@ -32,7 +32,7 @@ const NotFound = () => {
 		<div className={styles['not-found']}>
       <div className={styles.content}>
         <div className={styles.image}>
-          <img src={require('../../images/not-found.png')}  alt='404' />
+          <img src={require('images/not-found.png')}  alt='404' />
         </div>
         <div className={styles.description}>
           <div className={styles.title}>404</div>

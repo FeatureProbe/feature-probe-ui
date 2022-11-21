@@ -13,18 +13,17 @@ import 'react-datetime/css/react-datetime.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'dayjs/locale/zh-cn';
 import './index.scss';
+import './global.scss';
 
 dayjs.extend(relativeTime);
 dayjs.extend(updateLocale);
 
 ReactDOM.render(
-  // <React.StrictMode>
-    <I18NContainer.Provider>
-      <Intl>
-        <Router />
-      </Intl>
-      <ToastContainer theme='colored' />
-    </I18NContainer.Provider>,
-  // </React.StrictMode>,
+  <I18NContainer.Provider>
+    <Intl>
+      <Router />
+    </Intl>
+    <ToastContainer theme='colored' />
+  </I18NContainer.Provider>,
   document.getElementById('root')
 );

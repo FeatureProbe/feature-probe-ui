@@ -2,23 +2,25 @@ import { SyntheticEvent, useState } from 'react';
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 
+interface IInfo {
+  [key: string]: string;
+}
+
 export const useSegmentInfo = () => {
-  const [ segmentInfo, saveSegmentInfo ] = useState({
+  const [ segmentInfo, saveSegmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
     description: '',
   });
 
-  const [ originSegmentInfo, saveOriginSegmentInfo ] = useState({
+  const [ originSegmentInfo, saveOriginSegmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
     description: '',
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
-    const { value } = detail;
-    // @ts-ignore detail value
-    segmentInfo[type] = value;
+    segmentInfo[type] = detail.value as string;
     saveSegmentInfo({...segmentInfo});
   };
 
@@ -32,20 +34,18 @@ export const useSegmentInfo = () => {
 };
 
 export const useEnvironmentInfo = () => {
-  const [ environmentInfo, saveEnvironmentInfo ] = useState({
+  const [ environmentInfo, saveEnvironmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
   });
 
-  const [ originEnvironmentInfo, saveOriginEnvironmentInfo ] = useState({
+  const [ originEnvironmentInfo, saveOriginEnvironmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
-    const { value } = detail;
-    // @ts-ignore detail value
-    environmentInfo[type] = value;
+    environmentInfo[type] = detail.value as string;
     saveEnvironmentInfo({...environmentInfo});
   };
 
