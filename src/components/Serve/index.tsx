@@ -86,17 +86,17 @@ const Serve = (props: IProps) => {
   }, [intl, variationsInUse]);
 
   useEffect(() => {
-    if (serve && serve.split) {
+    if (serve?.split) {
       setPercentageShow(true);
       saveValue(variationsInUse.length);
       let total = 0;
       variationsInUse?.forEach((variation: IVariation, index: number) => {
-        variation.inputValue = ((serve && serve.split && serve.split[index]) || 0) / TOTAL;
+        variation.inputValue = (serve.split?.[index] ?? 0) / TOTAL;
         variation.percentage = variation.inputValue + '%';
         total += Number(variation.inputValue);
       });
       setTotal(total);
-    } else if (serve && serve.select !== undefined) {
+    } else if (serve?.select !== undefined) {
       setPercentageShow(false);
       if (serve.select >= variationsInUse.length) {
         saveValue(-1);
@@ -141,8 +141,19 @@ const Serve = (props: IProps) => {
   }, [variations.length, variationsInUse, handleChangeServe]);
 
   const changePercentage = useCallback((index: number, value: number) => {
+    if (value < 0) {
+      value = 0;
+    } else if (value > TOTAL) {
+      value = TOTAL;
+    }
+
     let total = 0;
     variationsInUse[index].inputValue = value;
+
+    if (variationsInUse.length == 2) {
+      // auto adjustment to keep the total rollout is 100%
+      variationsInUse[1 - index].inputValue = TOTAL - value;
+    }
 
     variationsInUse.forEach(variation => {
       if (variation.inputValue) {
