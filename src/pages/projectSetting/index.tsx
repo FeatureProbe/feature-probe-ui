@@ -79,7 +79,7 @@ const ProjectSetting = () => {
     const cantRemove: boolean = setting.reviewers.length === 1 && setting.enable === true;
     return ({
       content: label.text,
-      removeIcon: !cantRemove && <Icon type='close' customClass={styles['dropdown-remove-icon']} />
+      removeIcon: !cantRemove && <Icon type='close' customclass={styles['dropdown-remove-icon']} />
     });
   }, []);
 
@@ -142,7 +142,7 @@ const ProjectSetting = () => {
                   <FormattedMessage id='common.toggle.appoval.settings.text' />
                 </div>
                 <div className={styles.tips}>
-                  <Icon type='warning-circle' customClass={styles['warning-circle']}></Icon>
+                  <Icon type='warning-circle' customclass={styles['warning-circle']}></Icon>
                   <FormattedMessage id='toggles.settings.tips' />
                 </div>
                 <div>
@@ -167,7 +167,7 @@ const ProjectSetting = () => {
                     {
                       approvalSetting.map((setting: IApprovalSetting, index: number) => {
                         return (
-                          <Form.Group className={styles.group}>
+                          <Form.Group className={styles.group} key={setting.environmentKey}>
                             <Form.Field width={2}>
                               <div className={styles['environment-name-box']}>
                                 <div className={styles['color-square']} style={{background: EnvironmentColors[index % 5]}}/>
@@ -194,7 +194,7 @@ const ProjectSetting = () => {
                                   return renderLabel(label, setting);
                                 }}
                                 disabled={!OWNER.includes(userInfo.role)}
-                                icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                                icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
                                 noResultsMessage={null}
                                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                                   // @ts-ignore detail value

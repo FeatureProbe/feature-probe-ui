@@ -5,6 +5,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
+import TextLimit from 'components/TextLimit';
 import { HeaderContainer } from 'layout/hooks';
 import EnvironmentCard from '../EnvironmentCard';
 import EnvironmentModal from '../EnvironmentModal';
@@ -15,7 +16,6 @@ import { getEnvironmentList, editProject } from 'services/project';
 import { getToggleList } from 'services/toggle';
 import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
-import TextLimit from 'components/TextLimit';
 
 interface IProps {
   project: IProject;
@@ -141,7 +141,7 @@ const ProjectCard = (props: IProps) => {
                   });
                   handleEditProject(project.key);
                 }}>
-                  <Icon customClass={styles['iconfont']} type="edit" />
+                  <Icon customclass={styles['iconfont']} type="edit" />
                 </div>
                 <Popup
                   basic
@@ -153,7 +153,7 @@ const ProjectCard = (props: IProps) => {
                     <div onClick={() => {
                       setMenuOpen(true);
                     }}>
-                      <Icon id={`${project.key}-icon-more`} customClass={styles['iconfont']} type='more' />
+                      <Icon id={`${project.key}-icon-more`} customclass={styles['iconfont']} type='more' />
                     </div>
                   }
                 >
@@ -225,7 +225,7 @@ const ProjectCard = (props: IProps) => {
             {
               !isArchived && OWNER.includes(userInfo.role) && (
                 <div className={styles['add-environment']} onClick={handleAddEnvironment}>
-                  <Icon customClass={styles['add-environment-icon']} type='add' />
+                  <Icon customclass={styles['add-environment-icon']} type='add' />
                   <FormattedMessage id='projects.menu.add.environment' />
                 </div>
               )
@@ -265,7 +265,7 @@ const ProjectCard = (props: IProps) => {
       >
         <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='projects.delete.title' />
             </span>
@@ -283,7 +283,7 @@ const ProjectCard = (props: IProps) => {
       >
         <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='projects.cannot.delete.title' />
             </span>

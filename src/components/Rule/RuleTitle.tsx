@@ -69,7 +69,7 @@ const RuleTitle = (props: IProps) => {
 	return (
     <div className={styles['rule-title']}>
       <Form.Group className={styles['rule-title-input']} widths='equal'>
-        <Form.Field fluid>
+        <Form.Field>
           <Form.Input
             className={styles['rule-input']}
             onClick={handleInputClick} 
@@ -86,7 +86,7 @@ const RuleTitle = (props: IProps) => {
       {
         isHover && !disabled && (
           <span className={styles['rule-title-operation']}>
-            <Icon customClass={styles['icon-drag']} type='drag' />
+            <Icon customclass={styles['icon-drag']} type='drag' />
             <PopConfirm
               open={open}
               handleConfirm={(e: SyntheticEvent) => {
@@ -102,7 +102,7 @@ const RuleTitle = (props: IProps) => {
             >
               <Icon 
                 type='archive' 
-                customClass={styles['icon-archive']} 
+                customclass={styles['icon-archive']} 
                 onClick={(e: SyntheticEvent) => {
                   setOpen(true);
                   e.stopPropagation();

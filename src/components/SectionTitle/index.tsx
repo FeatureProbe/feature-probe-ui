@@ -19,7 +19,7 @@ const SectionTitle = (props: IProp) => {
           <Popup
             inverted
             style={{ opacity: 0.8 }}
-            trigger={<Icon type='question' customClass={styles['icon-question']} />}
+            trigger={<Icon type='question' customclass={styles['icon-question']} />}
             content={ tooltipText }
             position='top center'
           />

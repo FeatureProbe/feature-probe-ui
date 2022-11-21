@@ -14,8 +14,8 @@ import { addEnvironment, editEnvironment } from 'services/project';
 import { checkEnvironmentExist } from 'services/toggle';
 import { CONFLICT } from 'constants/httpCode';
 import { replaceSpace } from 'utils/tools';
-import styles from './index.module.scss';
 import { useRequestTimeCheck } from 'hooks';
+import styles from './index.module.scss';
 
 interface IProps {
   open: boolean;
@@ -174,7 +174,7 @@ const EnvironmentModal = (props: IProps) => {
           <span className={styles['modal-header-text']}>
             {isAdd ? intl.formatMessage({ id: 'projects.create.environment' }) : intl.formatMessage({ id: 'projects.edit.environment' })}
           </span>
-          <Icon customClass={styles['modal-close-icon']} type='close' onClick={handleCancel} />
+          <Icon customclass={styles['modal-close-icon']} type='close' onClick={handleCancel} />
         </div>
         <div className={styles['modal-content']}>
           <Form

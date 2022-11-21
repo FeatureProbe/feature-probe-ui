@@ -7,9 +7,9 @@ import Modal from 'components/Modal';
 import { IMember, IUser } from 'interfaces/member';
 import { deleteMember } from 'services/member';
 import message from 'components/MessageBox';
-import styles from './index.module.scss';
 import { OWNER } from 'constants/auth';
 import { HeaderContainer } from 'layout/hooks';
+import styles from './index.module.scss';
 
 interface IProps {
   member?: IMember;
@@ -107,7 +107,7 @@ const MemberItem = (props: IProps) => {
       >
         <div>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='members.delete.modal.title' />
             </span>

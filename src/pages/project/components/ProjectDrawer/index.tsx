@@ -18,9 +18,9 @@ import { addProject, checkProjectExist, editProject } from 'services/project';
 import { projectContainer, hooksFormContainer } from '../../provider';
 import { replaceSpace } from 'utils/tools';
 import { CONFLICT } from 'constants/httpCode';
+import { useRequestTimeCheck } from 'hooks';
 
 import styles from './index.module.scss';
-import { useRequestTimeCheck } from 'hooks';
 
 interface IProps {
   isAdd: boolean;
@@ -189,13 +189,13 @@ const ProjectDrawer = (props: IProps) => {
           <div className={styles['title-left']}>
             { isAdd ? intl.formatMessage({id: 'projects.create.project'}) : intl.formatMessage({id: 'projects.edit.project'}) }
           </div>
-          <Button loading={submitLoading} size='mini' primary type='submit' disabled={errors.name || errors.key || submitLoading}>
+          <Button loading={submitLoading} size='mini' primary type='submit' disabled={!!errors.name || !!errors.key || submitLoading}>
             {
               isAdd ? intl.formatMessage({id: 'common.create.text'}) : intl.formatMessage({id: 'common.save.text'})
             }
           </Button>
           <div className={styles.divider}></div>
-          <Icon customClass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
+          <Icon customclass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
         <div className={styles['project-drawer-form-content']}>
           <FormItemName

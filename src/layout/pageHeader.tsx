@@ -221,7 +221,7 @@ const PageHeader = () => {
               className={styles['language-popup']}
             >
               {i18n === 'en-US' ? 'English' : '中文'}
-              <Icon customClass={styles['angle-down']} type='angle-down' />
+              <Icon customclass={styles['angle-down']} type='angle-down' />
             </div>
           }
         >
@@ -285,7 +285,7 @@ const PageHeader = () => {
               setMenuOpen(true);
             }}>
              <span className={'user-circle'}>
-                <Icon customClass={styles['icon-avatar']} type='avatar' />
+                <Icon customclass={styles['icon-avatar']} type='avatar' />
               </span>
               <span className={styles.username}>{ account }</span>
             </div>

@@ -11,12 +11,11 @@ import { IContainer } from 'interfaces/provider';
 import { ISegment, ISegmentList } from 'interfaces/segment';
 import { 
   getAttrOptions,
-  // attributeOptions,
-  // getSubjectSegmentOptions,
   timezoneOptions,
   DATETIME_TYPE,
   SEGMENT_TYPE,
   SEMVER_TYPE,
+  STRING_TYPE,
   NUMBER_TYPE,
 } from './constants';
 import styles from './index.module.scss';
@@ -54,8 +53,8 @@ const RuleContent = (props: IProps) => {
   } = props;
 
   const intl = useIntl();
-  const [ options, setOption ] = useState<IOption[]>();
-  const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;;
+  const [ options, setOption ] = useState<IOption[]>([]);
+  const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;
 
   const {
     handleChangeAttr,
@@ -89,9 +88,38 @@ const RuleContent = (props: IProps) => {
   const renderLabel = useCallback((label: DropdownItemProps) => {
     return ({
       content: label.text,
-      removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
+      removeIcon: <Icon customclass={styles['dropdown-remove-icon']} type='close' />,
     });
   }, []);
+
+  useEffect(() => {
+    if (condition.type !== SEGMENT_TYPE) {
+      register(`rule_${rule.id}_condition_${condition.id}_subject`, { 
+        required: {
+          value: true,
+          message: intl.formatMessage({id: 'targeting.rule.subject.required'})
+        }, 
+      });
+    }
+
+    register(`rule_${rule.id}_condition_${condition.id}_predicate`, { 
+      required: true, 
+    });
+
+    if (condition.type === DATETIME_TYPE) {
+      register(`rule_${rule.id}_condition_${condition.id}_datetime`, { 
+        required: true, 
+      });
+      register(`rule_${rule.id}_condition_${condition.id}_timezone`, { 
+        required: true, 
+      });
+    } else {
+      register(`rule_${rule.id}_condition_${condition.id}_objects`, { 
+        required: true, 
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rule.id, condition.id, condition.type, register]);
 
   useEffect(() => {
     if (segmentList) {
@@ -113,7 +141,7 @@ const RuleContent = (props: IProps) => {
       text: val,
       value: val,
     };
-  });
+  }) || [];
 
   const inputProps = {
     placeholder: intl.formatMessage({id: 'common.dropdown.placeholder'}),
@@ -140,6 +168,7 @@ const RuleContent = (props: IProps) => {
             placeholder={intl.formatMessage({id: 'targeting.rule.subject.placeholder'})}
             search
             floating
+            selection
             allowAdditions
             options={subjectOptions}
             value={condition.subject}
@@ -148,15 +177,8 @@ const RuleContent = (props: IProps) => {
             noResultsMessage={null}
             disabled={condition.type === SEGMENT_TYPE || disabled}
             icon={null}
-            error={ errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false }
-            {
-              ...register(`rule_${rule.id}_condition_${condition.id}_subject`, { 
-                required: {
-                  value: true,
-                  message: intl.formatMessage({id: 'targeting.rule.subject.required'})
-                }, 
-              })
-            }
+            name={`rule_${rule.id}_condition_${condition.id}_subject`}
+            error={errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false}
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
               handleChangeAttr(ruleIndex, conditionIndex, detail.value);
               setValue(detail.name, detail.value);
@@ -176,7 +198,7 @@ const RuleContent = (props: IProps) => {
             floating
             className={styles['rule-item-operator-dropdown']}
             value={condition.predicate}
-            options={getAttrOptions(intl, condition.type)}
+            options={getAttrOptions(intl, condition.type) ?? []}
             placeholder={intl.formatMessage({id: 'targeting.rule.operator.placeholder'})}
             openOnFocus={false}
             disabled={disabled}
@@ -187,15 +209,11 @@ const RuleContent = (props: IProps) => {
                     {condition.type}
                   </div>
                 </div>
-                <Icon customClass={styles['angle-down']} type='angle-down' />
+                <Icon customclass={styles['angle-down']} type='angle-down' />
               </>
             }
+            name={`rule_${rule.id}_condition_${condition.id}_predicate`}
             error={ errors[`rule_${rule.id}_condition_${condition.id}_predicate`] ? true : false }
-            {
-              ...register(`rule_${rule.id}_condition_${condition.id}_predicate`, { 
-                required: true, 
-              })
-            }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
               // @ts-ignore detail value
               if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value)) {
@@ -223,11 +241,7 @@ const RuleContent = (props: IProps) => {
                 disabled={disabled}
                 className={styles['rule-item-datetime']}
                 error={ errors[`rule_${rule.id}_condition_${condition.id}_datetime`] ? true : false  }
-                {
-                  ...register(`rule_${rule.id}_condition_${condition.id}_datetime`, { 
-                    required: true, 
-                  })
-                }
+                name={`rule_${rule.id}_condition_${condition.id}_datetime`}
               >
                 <Datetime
                   timeFormat='HH:mm:ss'
@@ -260,14 +274,10 @@ const RuleContent = (props: IProps) => {
                   value={condition.timezone || moment().format().slice(-6)}
                   openOnFocus={false}
                   renderLabel={renderLabel}
-                  icon={<Icon customClass={styles['angle-down']} type='angle-down' />}
+                  icon={<Icon customclass={styles['angle-down']} type='angle-down' />}
+                  name={`rule_${rule.id}_condition_${condition.id}_timezone`}
                   error={ errors[`rule_${rule.id}_condition_${condition.id}_timezone`] ? true : false }
                   noResultsMessage={null}
-                  {
-                    ...register(`rule_${rule.id}_condition_${condition.id}_timezone`, { 
-                      required: true, 
-                    })
-                  }
                   onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                     handleChangeTimeZone(ruleIndex, conditionIndex, detail.value);
                     setValue(detail.name, detail.value);
@@ -295,19 +305,15 @@ const RuleContent = (props: IProps) => {
                 multiple
                 floating
                 disabled={disabled}
-                allowAdditions={condition.type !== SEGMENT_TYPE }
+                allowAdditions={condition.type !== SEGMENT_TYPE}
                 options={condition.type !== SEGMENT_TYPE ? valuesOptions : options}
-                value={condition.objects}
+                value={condition.objects ?? []}
                 openOnFocus={false}
                 renderLabel={renderLabel}
-                icon={condition.type === SEGMENT_TYPE  && <Icon customClass={styles['angle-down']} type='angle-down' />}
+                icon={condition.type === SEGMENT_TYPE  && <Icon customclass={styles['angle-down']} type='angle-down' />}
                 error={ errors[`rule_${rule.id}_condition_${condition.id}_objects`] ? true : false }
                 noResultsMessage={null}
-                {
-                  ...register(`rule_${rule.id}_condition_${condition.id}_objects`, { 
-                    required: true, 
-                  })
-                }
+                name={`rule_${rule.id}_condition_${condition.id}_objects`}
                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                   let result = true;
                   if (condition.type === NUMBER_TYPE) {
@@ -332,11 +338,27 @@ const RuleContent = (props: IProps) => {
                       return;
                     } 
                   }
+                  else if (condition.type === STRING_TYPE && condition.predicate.includes('regex')) {
+                    // @ts-ignore detail value
+                    result = detail.value.every((item) => {
+                      try {
+                        new RegExp(item);
+                        return true;
+                      } catch (e) {
+                        return false;
+                      }
+                    });
+
+                    // @ts-ignore detail value
+                    if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && detail.value.length > 1) {
+                      return;
+                    }
+                  }
+
                   if (!result) {
                     message.error(intl.formatMessage({id: 'targeting.invalid.value.text'}));
-                    handleChangeValue(ruleIndex, conditionIndex, []);
                     return;
-                  };
+                  }
 
                   setValue(detail.name, detail.value);
                   handleChangeValue(ruleIndex, conditionIndex, detail.value);
@@ -359,7 +381,7 @@ const RuleContent = (props: IProps) => {
       </Form.Group>
       {
         !disabled && <Icon 
-          customClass={styles['icon-minus']} type='minus'
+          customclass={styles['icon-minus']} type='minus'
           onClick={() => handleDelete(ruleIndex, conditionIndex, rule.id)}
         />
       }

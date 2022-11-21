@@ -62,7 +62,7 @@ const ListItem = (props: IProps) => {
                   className={styles.popup}
                   trigger={
                     <span className={styles['toggle-lock-bg']}>
-                      <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                      <Icon type='lock' customclass={styles['toggle-lock']}></Icon>
                     </span>   
                   }
                   content={

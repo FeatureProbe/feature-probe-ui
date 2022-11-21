@@ -60,7 +60,8 @@ const RuleContent = (props: IProps) => {
       {
         rule.conditions?.map((condition: ICondition, index: number) => {
           return (
-            <Condition 
+            <Condition
+              key={condition.id}
               rule={rule}
               disabled={disabled}
               ruleIndex={ruleIndex}
@@ -86,7 +87,7 @@ const RuleContent = (props: IProps) => {
           className={styles.popup}
           trigger={
             <Button type='button' secondary className={styles['rule-add-btn']} disabled={disabled}>
-              <Icon type='add' customClass={styles.iconfont} />
+              <Icon type='add' customclass={styles.iconfont} />
               <FormattedMessage id='common.add.text' />
             </Button>
           }

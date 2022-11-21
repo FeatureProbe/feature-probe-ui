@@ -10,8 +10,8 @@ import MemberItem from './components/MemberItem';
 import { getMemberList } from 'services/member';
 import { IMemberList, IMember, IUser } from 'interfaces/member';
 import { HeaderContainer } from 'layout/hooks';
-import styles from './index.module.scss';
 import { OWNER } from 'constants/auth';
+import styles from './index.module.scss';
 
 const Member = () => {
   const [memberList, setMemberList] = useState<IMember[]>();
@@ -90,7 +90,7 @@ const Member = () => {
                         setIsAdd(true);
                         setDrawerVisible(true);
                       }}>
-                        <Icon customClass={styles['iconfont']} type='add' />
+                        <Icon customclass={styles['iconfont']} type='add' />
                         <FormattedMessage id='common.member.text' />
                       </Button>
                     </div>

@@ -97,7 +97,7 @@ const Segment = () => {
   const handleAddSegment = useCallback(() => {
     setIsAdd(true);
     setIsVisible(true);
-  }, [history, projectKey, environmentKey]);
+  }, []);
 
   const handlePageChange = useCallback((e: SyntheticEvent, data: PaginationProps) => {
     setSearchParams({
@@ -122,7 +122,7 @@ const Segment = () => {
 
   const handleClickItem = useCallback((segmentKey: string) => {
     history.push(`/${projectKey}/${environmentKey}/segments/${segmentKey}/targeting`);
-  }, []);
+  }, [environmentKey, history, projectKey]);
 
 	return (
     <ProjectLayout>
@@ -137,14 +137,14 @@ const Segment = () => {
                 <Form.Field className={styles['keywords-field']}>
                   <Form.Input 
                     placeholder={intl.formatMessage({id: 'toggles.filter.search.placeholder'})} 
-                    icon={<Icon customClass={styles['icon-search']} type='search' />}
+                    icon={<Icon customclass={styles['icon-search']} type='search' />}
                     onChange={handleSearch}
                   />
                 </Form.Field>
               </Form>
               <EventTracker category='segment' action='create-segment'>
                 <Button primary className={styles['add-button']} onClick={handleAddSegment}>
-                  <Icon customClass={styles['iconfont']} type='add' />
+                  <Icon customclass={styles['iconfont']} type='add' />
                   <FormattedMessage id='common.segment.text' />
                 </Button>
               </EventTracker>
@@ -198,46 +198,46 @@ const Segment = () => {
                         )
                       }
                     </Table>
+                    {
+                      segmentList.length === 0 && (
+                        <div className={styles['no-data']}>
+                          <div>
+                            <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
+                          </div>
+                          <div>
+                            <FormattedMessage id='common.nodata.text' />
+                          </div>
+                        </div>
+                      )
+                    }
+                    {
+                      segmentList.length !== 0 && (
+                        <div className={styles.pagination}>
+                          <div className={styles['total']}>
+                            <span className={styles['total-count']}>{total} </span>
+                            <FormattedMessage id='segments.total' />
+                          </div>
+                          {
+                            pagination.totalPages > 1 && (
+                              <Pagination 
+                                activePage={pagination.pageIndex} 
+                                totalPages={pagination.totalPages} 
+                                onPageChange={handlePageChange}
+                                firstItem={null}
+                                lastItem={null}
+                                prevItem={{
+                                  content: (<Icon type='angle-left' />)
+                                }}
+                                nextItem={{
+                                  content: (<Icon type='angle-right' />)
+                                }}
+                              />
+                            )
+                          }
+                        </div>
+                      )
+                    }
                   </div>
-                  {
-                    segmentList.length === 0 && (
-                      <div className={styles['no-data']}>
-                        <div>
-                          <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                        </div>
-                        <div>
-                          <FormattedMessage id='common.nodata.text' />
-                        </div>
-                      </div>
-                    )
-                  }
-                  {
-                    segmentList.length !== 0 && (
-                      <div className={styles.pagination}>
-                        <div className={styles['total']}>
-                          <span className={styles['total-count']}>{total} </span>
-                          <FormattedMessage id='segments.total' />
-                        </div>
-                        {
-                          pagination.totalPages > 1 && (
-                            <Pagination 
-                              activePage={pagination.pageIndex} 
-                              totalPages={pagination.totalPages} 
-                              onPageChange={handlePageChange}
-                              firstItem={null}
-                              lastItem={null}
-                              prevItem={{
-                                content: (<Icon type='angle-left' />)
-                              }}
-                              nextItem={{
-                                content: (<Icon type='angle-right' />)
-                              }}
-                            />
-                          )
-                        }
-                      </div>
-                    )
-                  }
                 </div>
               )
             }

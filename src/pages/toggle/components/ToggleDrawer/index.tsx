@@ -256,6 +256,16 @@ const Drawer = (props: IParams) => {
     }
   }, [isAdd, toggleInfo.returnType, saveVariations]);
 
+  useEffect(() => {
+    register('returnType', { 
+      required: true, 
+    });
+
+    register('disabledServe', { 
+      required: true, 
+    });
+  }, [register]);
+
   const onSubmit = useCallback(async () => {
     setSubmitLoading(true);
     let res;
@@ -316,7 +326,7 @@ const Drawer = (props: IParams) => {
   const renderLabel = useCallback((label: DropdownItemProps) => {
     return ({
       content: label.text,
-      removeIcon: <Icon customClass={styles['dropdown-remove-icon']} type='close' />,
+      removeIcon: <Icon customclass={styles['dropdown-remove-icon']} type='close' />,
     });
   }, []);
 
@@ -406,7 +416,7 @@ const Drawer = (props: IParams) => {
             }
           </Button>
           <div className={styles.divider}></div>
-          <Icon customClass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
+          <Icon customclass={styles['title-close']} type='close' onClick={() => setDrawerVisible(false)} />
         </div>
         <div className={styles['toggle-drawer-form-content']}>
           <FormItemName
@@ -485,7 +495,7 @@ const Drawer = (props: IParams) => {
               options={tagsOptions}
               value={toggleInfo?.tags}
               icon={
-                <Icon customClass={styles['angle-down']} type='angle-down' />
+                <Icon customclass={styles['angle-down']} type='angle-down' />
               }
               onAddItem={handleAddTag}
               onChange={(e: SyntheticEvent, detail: DropdownProps) => handleChange(e, detail, 'tags')}
@@ -522,7 +532,7 @@ const Drawer = (props: IParams) => {
               <Popup
                 inverted
                 trigger={
-                  <Icon customClass={styles['icon-question']} type='question' />
+                  <Icon customclass={styles['icon-question']} type='question' />
                 }
                 content={intl.formatMessage({id: 'toggles.returntype.tips'})}
                 position='top center'
@@ -531,12 +541,8 @@ const Drawer = (props: IParams) => {
             </label>
             <Select 
               floating
+              name='returnType'
               placeholder={intl.formatMessage({id: 'toggles.returntype.placeholder'})}
-              {
-                ...register('returnType', { 
-                  required: true, 
-                })
-              }
               className={styles['dropdown']}
               disabled={!isAdd}
               error={ errors.returnType ? true : false }
@@ -549,7 +555,7 @@ const Drawer = (props: IParams) => {
               value={toggleInfo?.returnType}
               options={returnTypeOptions} 
               icon={
-                <Icon customClass={styles['angle-down']} type='angle-down' />
+                <Icon customclass={styles['angle-down']} type='angle-down' />
               }
             />
           </Form.Field>
@@ -568,7 +574,7 @@ const Drawer = (props: IParams) => {
               <Popup
                 inverted
                 trigger={
-                  <Icon customClass={styles['icon-question']} type='question' />
+                  <Icon customclass={styles['icon-question']} type='question' />
                 }
                 content={intl.formatMessage({id: 'toggles.variations.tips'})}
                 position='top center'
@@ -589,7 +595,7 @@ const Drawer = (props: IParams) => {
               <FormattedMessage id='common.disabled.return.type.text' />
               <Popup
                 inverted
-                trigger={<Icon customClass={styles['icon-question']} type='question' />}
+                trigger={<Icon customclass={styles['icon-question']} type='question' />}
                 content={intl.formatMessage({id: 'toggles.disabled.return.type.tips'})}
                 position='top center'
                 className={styles.popup}
@@ -598,13 +604,9 @@ const Drawer = (props: IParams) => {
             <Dropdown
               floating
               selection
+              name='disabledServe'
               value={toggleInfo?.disabledServe}
               error={ errors.disabledServe ? true : false }
-              {
-                ...register('disabledServe', { 
-                  required: true, 
-                })
-              }
               onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                 handleChange(e, detail, 'disabledServe');
                 setValue(detail.name, detail.value);
@@ -614,7 +616,7 @@ const Drawer = (props: IParams) => {
               options={options} 
               placeholder={intl.formatMessage({id: 'common.dropdown.placeholder'})}
               icon={
-                <Icon customClass={styles['angle-down']} type='angle-down' />
+                <Icon customclass={styles['angle-down']} type='angle-down' />
               }
             />
           </Form.Field>
@@ -623,7 +625,7 @@ const Drawer = (props: IParams) => {
               <FormattedMessage id='toggles.permanent.type' />
               <Popup
                 inverted
-                trigger={<Icon customClass={styles['icon-question']} type='question' />}
+                trigger={<Icon customclass={styles['icon-question']} type='question' />}
                 content={intl.formatMessage({id: 'toggles.permanent.type.tips'})}
                 position='top center'
                 className={styles.popup}

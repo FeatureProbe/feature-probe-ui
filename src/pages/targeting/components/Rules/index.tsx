@@ -129,7 +129,7 @@ const Rules = (props: IProps) => {
           handleAddRule();
         }}
       >
-        <Icon customClass={styles['iconfont']} type='add' />
+        <Icon customclass={styles['iconfont']} type='add' />
         <FormattedMessage id='targeting.rule.add.text'/>
       </div>
 		</div>

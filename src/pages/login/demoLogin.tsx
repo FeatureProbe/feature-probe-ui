@@ -20,10 +20,6 @@ const DemoLogin = () => {
   const intl = useIntl();
   const location = useLocation();
 
-  useEffect(() => {
-    EventTrack.pageView(location.pathname);
-  }, [location.pathname]);
-
   const {
     formState: { errors },
     register,
@@ -31,6 +27,27 @@ const DemoLogin = () => {
     setValue,
     trigger,
   } = useForm();
+
+  useEffect(() => {
+    EventTrack.pageView(location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    register('account', { 
+      required: {
+        value: true,
+        message: intl.formatMessage({id: 'common.email.placeholder.text'})
+      },
+      maxLength: {
+        value: 30,
+        message: intl.formatMessage({id: 'common.email.placeholder.text'})
+      },
+      pattern: {
+        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/i,
+        message: intl.formatMessage({id: 'login.email.invalid.text'})
+      }
+    });
+  }, [intl, register]);
 
   const gotoHome = useCallback(async () => {
     const redirectUrl = await getRedirectUrl('/notfound');
@@ -83,23 +100,8 @@ const DemoLogin = () => {
               </label>
               <Form.Input
                 placeholder={intl.formatMessage({id: 'common.email.placeholder.text'})}
+                name='account'
                 error={ errors.account ? true : false }
-                {
-                  ...register('account', { 
-                    required: {
-                      value: true,
-                      message: intl.formatMessage({id: 'common.email.placeholder.text'})
-                    },
-                    maxLength: {
-                      value: 30,
-                      message: intl.formatMessage({id: 'common.email.placeholder.text'})
-                    },
-                    pattern: {
-                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/i,
-                      message: intl.formatMessage({id: 'login.email.invalid.text'})
-                    }
-                  })
-                }
                 onChange={async (e: SyntheticEvent, detail: InputOnChangeData) => {
                   setValue(detail.name, detail.value);
                   await trigger('account');

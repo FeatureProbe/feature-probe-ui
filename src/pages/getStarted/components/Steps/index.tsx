@@ -5,7 +5,7 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import StepFirst from '../StepFirst';
-import StepSecond from '../StepSecond';
+import StepSecond, { SdkLanguage } from '../StepSecond';
 import StepThird from '../StepThird';
 import { saveDictionary, getFromDictionary } from 'services/dictionary';
 import { getSdkVersion } from 'services/misc';
@@ -15,6 +15,7 @@ import { getEnvironment } from 'services/project';
 import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
+import { ToggleReturnType } from '../constants';
 
 interface IStepDetail {
   done: boolean;
@@ -53,11 +54,11 @@ const ANDROID_SDK_VERSION = 'android_sdk_version';
 
 const Steps = () => {
   const [ currentStep, saveCurrentStep ] = useState<number>(2);
-  const [ currentSDK, saveCurrentSDK ] = useState<string>('');
+  const [ currentSDK, saveCurrentSDK ] = useState<SdkLanguage>('');
   const [ serverSdkKey, saveServerSDKKey ] = useState<string>('');
   const [ clientSdkKey, saveClientSdkKey ] = useState<string>('');
   const [ sdkVersion, saveSDKVersion ] = useState<string>('');
-  const [ returnType, saveReturnType ] = useState<string>('');
+  const [ returnType, saveReturnType ] = useState<ToggleReturnType>('');
   const [ toggleAccess, saveToggleAccess ] = useState<boolean>(false);
   const [ projectName, saveProjectName ] = useState<string>('');
   const [ environmentName, saveEnvironmentName ] = useState<string>('');
@@ -112,7 +113,7 @@ const Steps = () => {
       }
 
       if (res[2].success && res[2].data) {
-        saveReturnType(res[2].data.returnType);
+        saveReturnType(res[2].data.returnType as ToggleReturnType);
         saveClientAvailability(res[2].data.clientAvailability);
         saveToggleName(res[2].data.name);
       }
@@ -216,7 +217,7 @@ const Steps = () => {
                 <span className={styles['intro-title']}>
                   <FormattedMessage id='common.get.started.text' />
                 </span>
-                <Icon type='info-circle' customClass={styles['intro-icon']} />
+                <Icon type='info-circle' customclass={styles['intro-icon']} />
                 <span className={styles['intro-desc']}>
                   <FormattedMessage id='connect.description' />
                 </span>

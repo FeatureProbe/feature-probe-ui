@@ -2,14 +2,14 @@ import React from 'react';
 
 interface IProps extends React.HTMLProps<HTMLSpanElement> {
   type: string;
-  customClass?: string;
+  customclass?: string;
 }
 
 const Icon = (props: IProps) => {
-  const { type, customClass } = props;
+  const { type, customclass } = props;
 
   return (
-   <span {...props} className={`iconfont icon-${type} ${customClass}`} ></span>
+   <span {...props} className={`iconfont icon-${type} ${customclass}`} ></span>
   );
 };
   

@@ -1,8 +1,10 @@
 import { SyntheticEvent, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { v4 as uuidv4 } from 'uuid';
 import { Table, Popup } from 'semantic-ui-react';
 import dayjs from 'dayjs';
+import { cloneDeep } from 'lodash';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import message from 'components/MessageBox';
@@ -11,7 +13,7 @@ import TextLimit from 'components/TextLimit';
 import TagsList from 'components/TagsList';
 import { editToggle, getToggleInfo } from 'services/toggle';
 import { IToggle } from 'interfaces/toggle';
-import { IToggleInfo } from 'interfaces/targeting';
+import { IToggleInfo, IVariation } from 'interfaces/targeting';
 import { variationContainer, toggleInfoContainer } from '../../provider';
 import styles from './index.module.scss';
 
@@ -63,7 +65,12 @@ const ToggleItem = (props: IProps) => {
         const { name, key, returnType, disabledServe, desc, tags, clientAvailability, permanent } = data;
         setDrawerVisible(true);
         setIsAdd(false);
-        saveVariations(data.variations || []);
+
+        const cloneVariations = cloneDeep(data.variations) || [];
+        cloneVariations.forEach((variation: IVariation) => {
+          variation.id = uuidv4();
+        });
+        saveVariations(cloneVariations);
   
         saveToggleInfo({
           name,
@@ -132,7 +139,7 @@ const ToggleItem = (props: IProps) => {
                 className={styles.popup}
                 trigger={
                   <span className={styles['toggle-lock-bg']}>
-                    <Icon type='lock' customClass={styles['toggle-lock']}></Icon>
+                    <Icon type='lock' customclass={styles['toggle-lock']}></Icon>
                   </span>
                 }
                 content={
@@ -268,7 +275,7 @@ const ToggleItem = (props: IProps) => {
           toggle.visitedTime ? (
             <div className={styles['toggle-evaluated']}>
               <div>
-                <Icon type='evaluate' customClass={styles['icon-evaluate']} />
+                <Icon type='evaluate' customclass={styles['icon-evaluate']} />
                 <span>
                   {
                     intl.formatMessage({id: 'toggles.evaluated.text'}, {
@@ -350,7 +357,7 @@ const ToggleItem = (props: IProps) => {
       >
         <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='toggles.archive.title' />
             </span>
@@ -376,7 +383,7 @@ const ToggleItem = (props: IProps) => {
       >
         <div onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
           <div className={styles['modal-header']}>
-            <Icon customClass={styles['warning-circle']} type='warning-circle' />
+            <Icon customclass={styles['warning-circle']} type='warning-circle' />
             <span className={styles['modal-header-text']}>
               <FormattedMessage id='toggles.restore.title' />
             </span>

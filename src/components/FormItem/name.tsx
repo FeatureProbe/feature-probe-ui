@@ -1,4 +1,4 @@
-import { ReactNode, SyntheticEvent } from 'react';
+import { ReactNode, SyntheticEvent, useEffect } from 'react';
 import { Form, FormInputProps, InputOnChangeData } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { UseFormRegister, FieldValues, FieldErrors } from 'react-hook-form';
@@ -18,6 +18,12 @@ const FormItemName = (props: IProps) => {
   const intl = useIntl();
   const { value, errors, size, className, register, onChange, labelRender } = props;
 
+  useEffect(() => {
+    register('name', { 
+      required: intl.formatMessage({id: 'common.name.required'}),
+    });
+  }, [intl, register]);
+
   return (
     <div className={className}>
       <Form.Field>
@@ -26,16 +32,12 @@ const FormItemName = (props: IProps) => {
           {labelRender ?? <FormattedMessage id='common.name.text' />}
         </label>
         <Form.Input
+          name='name'
           size={size}
           className={styles.input}
           value={value}
           placeholder={intl.formatMessage({id: 'common.name.required'})}
           error={ errors.name ? true : false }
-          {
-            ...register('name', { 
-              required: intl.formatMessage({id: 'common.name.required'}),
-            })
-          }
           onChange={onChange}
         />
       </Form.Field>
