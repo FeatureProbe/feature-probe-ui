@@ -13,6 +13,7 @@ const SegmentEdit = lazy(() => import('../pages/segmentEdit'));
 const GetStarted = lazy(() => import('../pages/getStarted'));
 const Approvals = lazy(() => import('../pages/approval'));
 const ProjectSetting = lazy(() => import('../pages/projectSetting'));
+const WebHook = lazy(() => import('../pages/webhook'));
 
 export const PROJECT_PATH = '/projects';
 export const TOGGLE_PATH = '/:projectKey/:environmentKey/toggles';
@@ -25,6 +26,9 @@ export const GET_STARTED_PATH = '/:projectKey/:environmentKey/:toggleKey/get-sta
 export const MEMBER_PATH = '/settings/members';
 export const PROFILE_PATH = '/settings/profile';
 export const APPROVAL_PATH = '/approvals/:navigation';
+export const WEBHOOK_LIST_PATH = '/webHook/list';
+export const WEBHOOK_SEAT_PATH = '/webHook/seat';
+
 
 const isDemo = localStorage.getItem('isDemo') === 'true';
 
@@ -83,6 +87,11 @@ export const headerRoutes = [
     path: PROFILE_PATH,
     exact: true,
     component: Profile
+  },
+  {
+    path: WEBHOOK_LIST_PATH,
+    exact: true,
+    component: WebHook
   }
 ];
 

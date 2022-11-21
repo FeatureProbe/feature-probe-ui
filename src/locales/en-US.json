@@ -97,6 +97,7 @@
   "common.lock.time": "Locked at",
   "common.next.text": "Next",
   "common.previous.text": "Previous",
+  "common.webhook.text": "WebHook",
 
   "header.getuser.error.text": "Error getting user profile",
 
@@ -467,5 +468,7 @@
 
   "guide.next": "Next",
   "guide.last": "Previous",
-  "guide.done": "Done"
+  "guide.done": "Done",
+
+  "webhook.seat.text": "占位"
 }
