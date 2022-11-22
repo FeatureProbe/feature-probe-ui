@@ -104,7 +104,7 @@ const VariationItem = (props: IProps) => {
       setValue(`variation_${id}_normal`, value);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, returnType, register, unregister]);
+  }, [id, returnType, register, unregister, setValue, value]);
 
   const handleChange = useCallback(value => {
     setJsonValue(value);
