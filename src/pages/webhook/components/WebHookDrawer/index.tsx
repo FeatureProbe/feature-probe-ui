@@ -55,6 +55,31 @@ const WebHookDrawer = (props: IProps) => {
 
   const { webHookInfo, handleChange } = webHookInfoContainer.useContainer();
 
+  useEffect(() => {
+    register('application', { 
+      required: {
+        value: true,
+        message: intl.formatMessage({ id: 'webhook.application.required' })
+      }, 
+    });
+    register('url', {
+      required: {
+        message: intl.formatMessage({ id: 'webhook.url.required' }),
+        value: true,
+      },
+      pattern: {
+        message: 'test url',
+        value: /^((ht|f)tps?):\/\/[\w-]+(.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?$/,
+      },
+    });
+    register('name', {
+      required: {
+        message: intl.formatMessage({ id: 'common.name.required' }),
+        value: true,
+      },
+    });
+  }, [register, intl]);
+
   const drawerCls = classNames(styles['webhook-drawer'], {
     [styles['webhook-drawer-inactive']]: visible,
   });
@@ -111,12 +136,7 @@ const WebHookDrawer = (props: IProps) => {
           <FormItem error={errors.name} label={<FormattedMessage id="common.name.text" />} required>
             <Form.Input
               className={styles.input}
-              {...register('name', {
-                required: {
-                  message: intl.formatMessage({ id: 'common.name.required' }),
-                  value: true,
-                },
-              })}
+              name='name'
               placeholder={intl.formatMessage({ id: 'common.name.required' })}
               error={errors.name ? true : false}
               onChange={(e, detail) => {
@@ -147,12 +167,7 @@ const WebHookDrawer = (props: IProps) => {
           >
             <Select
               floating
-              {...register('application', {
-                required: {
-                  value: true,
-                  message: intl.formatMessage({ id: 'webhook.application.required' }),
-                },
-              })}
+              name='application'
               placeholder={intl.formatMessage({ id: 'toggles.returntype.placeholder' })}
               className={styles['dropdown']}
               disabled={!isAdd}
@@ -168,16 +183,7 @@ const WebHookDrawer = (props: IProps) => {
           </FormItem>
           <FormItem error={errors.url} label={<FormattedMessage id="webhook.url.text" />} required>
             <Form.Input
-              {...register('url', {
-                required: {
-                  message: intl.formatMessage({ id: 'webhook.url.required' }),
-                  value: true,
-                },
-                pattern: {
-                  message: 'test url',
-                  value: /^((ht|f)tps?):\/\/[\w-]+(.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?$/,
-                },
-              })}
+              name='url'
               className={styles.input}
               placeholder={intl.formatMessage({ id: 'common.description.required' })}
               error={errors.url ? true : false}
@@ -187,6 +193,7 @@ const WebHookDrawer = (props: IProps) => {
                 trigger('url');
               }}
             />
+            <div>Enter the URL from one of your application incoming webhooks.</div>
           </FormItem>
           <FormItem label={<FormattedMessage id="common.event.text" />} required>
             <div className={styles['radio-group']}>
