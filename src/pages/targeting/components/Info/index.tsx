@@ -21,6 +21,7 @@ import { getTargeting, getTargetingDiff } from 'services/toggle';
 import { IToggleInfo, IModifyInfo, IApprovalInfo, ITargetingDiff, ITargeting, IContent } from 'interfaces/targeting';
 import { IRouterParams } from 'interfaces/project';
 import styles from './index.module.scss';
+import { OWNER } from 'constants/auth';
 
 interface IProps {
   toggleInfo?: IToggleInfo;
@@ -274,6 +275,7 @@ const Info = (props: IProps) => {
                     <Popup
                       inverted
                       className='popup-override'
+                      position='top center'
                       trigger={
                         <div className={`${styles['status-pending']} ${styles.status}`}>
                           <Icon type='pending' customclass={styles['status-icon']} />
@@ -285,12 +287,14 @@ const Info = (props: IProps) => {
                           <FormattedMessage id='toggles.settings.approval.reviewers' />: {approvalInfo?.reviewers?.join(', ')}
                         </span>
                       }
-                      position='top center'
                     />
                   )
                 }
                 {
-                  (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP')) && (
+                  (
+                    enableApproval && 
+                    (toggleStatus === 'PASS' || toggleStatus === 'JUMP')
+                  ) && (
                     <div className={`${styles['status-publish']} ${styles.status}`}>
                       <Icon type='wait' customclass={styles['status-icon']} />
                       <FormattedMessage id='approvals.status.unpublished' />
@@ -343,31 +347,34 @@ const Info = (props: IProps) => {
                     enableApproval && toggleStatus === 'PENDING' && (
                       <>
                         {/* Button Skip Approval */}
-                        {/* Button Withdraw */}
                         {
                           approvalInfo?.submitBy === userInfo.account && (
-                            <>
-                              <Button 
-                                secondary 
-                                className={styles['dangerous-btn']} 
-                                onClick={() => { 
-                                  saveOpen(true);
-                                  saveStatus('JUMP');
-                                }}
-                              >
-                                <FormattedMessage id='targeting.approval.operation.skip.approval' />
-                              </Button>
-                              <Button 
-                                secondary 
-                                className={styles['dangerous-btn']}
-                                onClick={() => { 
-                                  saveOpen(true);
-                                  saveStatus('REVOKE');
-                                }}
-                              >
-                                <FormattedMessage id='targeting.approval.operation.withdraw' />
-                              </Button>
-                            </>
+                            <Button 
+                              secondary 
+                              className={styles['dangerous-btn']} 
+                              onClick={() => { 
+                                saveOpen(true);
+                                saveStatus('JUMP');
+                              }}
+                            >
+                              <FormattedMessage id='targeting.approval.operation.skip.approval' />
+                            </Button>
+                          )
+                        }
+
+                        {/* Button Withdraw */}
+                        {
+                          (approvalInfo?.submitBy === userInfo.account || OWNER.includes(userInfo.role)) && (
+                            <Button 
+                              secondary 
+                              className={styles['dangerous-btn']}
+                              onClick={() => { 
+                                saveOpen(true);
+                                saveStatus('REVOKE');
+                              }}
+                            >
+                              <FormattedMessage id='targeting.approval.operation.withdraw' />
+                            </Button>
                           )
                         }
 
@@ -406,7 +413,11 @@ const Info = (props: IProps) => {
                   {/* Button Abandon */}
                   {/* Button Publish */}
                   {
-                    (enableApproval && (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && approvalInfo?.submitBy === userInfo.account) && (
+                    (
+                      enableApproval && 
+                      (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && 
+                      (approvalInfo?.submitBy === userInfo.account || OWNER.includes(userInfo.role))
+                    ) && (
                       <>
                         <Button 
                           secondary 
@@ -429,7 +440,11 @@ const Info = (props: IProps) => {
                   {/* Button Abandon */}
                   {/* Button Modify */}
                   {
-                    enableApproval && toggleStatus === 'REJECT' && approvalInfo?.submitBy === userInfo.account && (
+                    (
+                      enableApproval && 
+                      toggleStatus === 'REJECT' && 
+                      (approvalInfo?.submitBy === userInfo.account || OWNER.includes(userInfo.role))
+                    ) && (
                       <>
                         <Button secondary className={styles['dangerous-btn']} onClick={() => { handleAbandon(); }}>
                           <FormattedMessage id='targeting.approval.operation.abandon' />
