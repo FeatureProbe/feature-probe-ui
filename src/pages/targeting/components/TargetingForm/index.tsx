@@ -130,6 +130,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     trigger: newTrigger,
     register: newRegister,
     setValue: newSetValue,
+    clearErrors
   } = useForm();
 
   const {
@@ -370,7 +371,9 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const handlePublishCancel = useCallback(() => {
     setOpen(false);
     setComment('');
-  }, []);
+    setValue('reason', '');
+    clearErrors();
+  }, [setValue, clearErrors]);
 
   const handlePublishConfirm = useCallback(async () => {
     if (approvalInfo && approvalInfo?.enableApproval && comment === '') {
@@ -393,9 +396,10 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         initTargeting();
         setComment('');
       }
+      newSetValue('reason', '');
       setLoading(false);
     }
-  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, approvalInfo, initTargeting, newTrigger]);
+  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, approvalInfo, initTargeting, newTrigger, newSetValue]);
 
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {

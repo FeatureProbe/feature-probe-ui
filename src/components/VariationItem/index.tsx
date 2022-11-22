@@ -95,6 +95,13 @@ const VariationItem = (props: IProps) => {
 
     } else {
       unregister(`variation_${id}`);
+      register(`variation_${id}_normal`, {
+        required: {
+          value: true,
+          message: intl.formatMessage({id: 'common.input.placeholder'})
+        },
+      });
+      setValue(`variation_${id}_normal`, value);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, returnType, register, unregister]);
