@@ -60,11 +60,11 @@ interface IProps {
 const STEPS: Step[] = [
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.toggle.targeting.step1.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li>
             <FormattedMessage id='guide.toggle.targeting.step1.off' />
           </li>
@@ -72,7 +72,7 @@ const STEPS: Step[] = [
             <FormattedMessage id='guide.toggle.targeting.step1.on' />
           </li>
         </ul>
-        <div className={styles['joyride-pagination']}>1/2</div>
+        <div className='joyride-pagination'>1/2</div>
       </div>
     ),
     spotlightPadding: 20,
@@ -82,16 +82,16 @@ const STEPS: Step[] = [
   },
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.toggle.targeting.step2.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li>
             <FormattedMessage id='guide.toggle.targeting.step2.default' />
           </li>
         </ul>
-        <div className={styles['joyride-pagination']}>2/2</div>
+        <div className='joyride-pagination'>2/2</div>
       </div>
     ),
     spotlightPadding: 4,
@@ -130,6 +130,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     trigger: newTrigger,
     register: newRegister,
     setValue: newSetValue,
+    clearErrors
   } = useForm();
 
   const {
@@ -370,7 +371,9 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   const handlePublishCancel = useCallback(() => {
     setOpen(false);
     setComment('');
-  }, []);
+    setValue('reason', '');
+    clearErrors();
+  }, [setValue, clearErrors]);
 
   const handlePublishConfirm = useCallback(async () => {
     if (approvalInfo && approvalInfo?.enableApproval && comment === '') {
@@ -393,9 +396,10 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         initTargeting();
         setComment('');
       }
+      newSetValue('reason', '');
       setLoading(false);
     }
-  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, approvalInfo, initTargeting, newTrigger]);
+  }, [intl, comment, projectKey, environmentKey, toggleKey, publishTargeting, approvalInfo, initTargeting, newTrigger, newSetValue]);
 
   const disabledText = useMemo(() => {
     if (variations[disabledServe.select]) {
@@ -405,8 +409,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
   }, [disabledServe.select, variations]);
 
   const handleInputComment = useCallback((e: SyntheticEvent, data: TextAreaProps | InputOnChangeData) => {
-    // @ts-ignore detail value
-    setComment(data.value);
+    setComment(data.value as string);
   }, []);
 
   const renderLabel = useCallback((label: DropdownItemProps) => {
@@ -533,7 +536,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                           }
                           content={intl.formatMessage({id: 'targeting.approval.tips'})}
                           position='top center'
-                          className={styles.popup}
+                          className='popup-override'
                         />
                       </div>
                       <div className={styles['approval-content']}>
@@ -556,7 +559,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                 }
                 <div className={styles['comment']}>
                   <div className={styles['comment-title']}>
-                    { approvalInfo?.enableApproval && <span className={styles['label-required']}>*</span> }
+                    { approvalInfo?.enableApproval && <span className='label-required'>*</span> }
                     <FormattedMessage id='targeting.publish.modal.comment' />:
                   </div>
                   <div className={styles['comment-content']}>
@@ -573,7 +576,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
                     />
                     { 
                       newFormState.errors.reason && (
-                        <div className={styles['error-text']}>
+                        <div className='error-text'>
                           <FormattedMessage id='common.input.placeholder' />
                         </div> 
                       )

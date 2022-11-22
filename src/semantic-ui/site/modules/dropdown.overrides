@@ -10,6 +10,7 @@
   pointer-events: inherit;
   cursor: not-allowed;
   color: #adb5bc;
+  border-radius: 6px;
 }
 
 .ui.multiple.dropdown > .label {

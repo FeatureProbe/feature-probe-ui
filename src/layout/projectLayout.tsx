@@ -40,15 +40,15 @@ const STEPS: Step[] = [
   {
     content: (
       <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.global.step1.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li><FormattedMessage id='guide.global.step1.project' /></li>
           <li><FormattedMessage id='guide.global.step1.env' /></li>
           <li><FormattedMessage id='guide.global.step1.enter' /></li>
         </ul>
-        <div className={styles['joyride-pagination']}>1/2</div>
+        <div className='joyride-pagination'>1/2</div>
       </div>
     ),
     placement: 'bottom',
@@ -58,14 +58,14 @@ const STEPS: Step[] = [
   },
   {
     content: (
-      <div className={styles['joyride-content']}>
-        <div className={styles['joyride-title']}>
+      <div>
+        <div className='joyride-title'>
           <FormattedMessage id='guide.global.step2.title' />
         </div>
-        <ul className={styles['joyride-item']} >
+        <ul className='joyride-item'>
           <li><FormattedMessage id='guide.global.step2.env' /></li>
         </ul>
-        <div className={styles['joyride-pagination']}>2/2</div>
+        <div className='joyride-pagination'>2/2</div>
       </div>
     ),
     placement: 'right',

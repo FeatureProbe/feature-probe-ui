@@ -24,8 +24,8 @@ import {
 } from '../constants';
 import styles from '../Steps/index.module.scss';
 
-export type SdkLanguage = ''
-    | 'Java'
+export type SdkLanguage = 'Java'
+    // | 'Java'
     | 'Python'
     | 'Rust'
     | 'Go'

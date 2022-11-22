@@ -1,13 +1,10 @@
 import { SyntheticEvent, useEffect, useState, useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { 
-  Pagination,
   Table,
   Form,
   PaginationProps,
   InputOnChangeData,
-  Dimmer,
-  Loader,
 } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { debounce } from 'lodash';
@@ -18,6 +15,9 @@ import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import EventTracker from 'components/EventTracker';
+import NoData from 'components/NoData';
+import Pagination from 'components/Pagination';
+import Loading from 'components/Loading';
 import { getSegmentList } from 'services/segment';
 import { saveDictionary } from 'services/dictionary';
 import { ISegment, ISegmentList } from 'interfaces/segment';
@@ -37,7 +37,7 @@ interface ISearchParams {
   sortBy?: string;
   disabled?: number;
   tags?: string[];
-  keyword?: number;
+  keyword?: string;
 }
 
 const Segment = () => {
@@ -109,8 +109,7 @@ const Segment = () => {
   const handleSearch = debounce(useCallback((e: SyntheticEvent, data: InputOnChangeData) => {
     setSearchParams({
       ...searchParams,
-      // @ts-ignore detail value
-      keyword: data.value,
+      keyword: data.value as string,
     });
   }, [searchParams]), 300);
 
@@ -152,11 +151,7 @@ const Segment = () => {
             {
               isLoading ? (
                 <div className={styles.lists}>
-                  <Dimmer active inverted>
-                    <Loader size='small'>
-                      <FormattedMessage id='common.loading.text' />
-                    </Loader>
-                  </Dimmer>
+                  <Loading />
                 </div>
               ) : (
                 <div className={styles.lists}>
@@ -199,43 +194,14 @@ const Segment = () => {
                       }
                     </Table>
                     {
-                      segmentList.length === 0 && (
-                        <div className={styles['no-data']}>
-                          <div>
-                            <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                          </div>
-                          <div>
-                            <FormattedMessage id='common.nodata.text' />
-                          </div>
-                        </div>
-                      )
-                    }
-                    {
-                      segmentList.length !== 0 && (
-                        <div className={styles.pagination}>
-                          <div className={styles['total']}>
-                            <span className={styles['total-count']}>{total} </span>
-                            <FormattedMessage id='segments.total' />
-                          </div>
-                          {
-                            pagination.totalPages > 1 && (
-                              <Pagination 
-                                activePage={pagination.pageIndex} 
-                                totalPages={pagination.totalPages} 
-                                onPageChange={handlePageChange}
-                                firstItem={null}
-                                lastItem={null}
-                                prevItem={{
-                                  content: (<Icon type='angle-left' />)
-                                }}
-                                nextItem={{
-                                  content: (<Icon type='angle-right' />)
-                                }}
-                              />
-                            )
-                          }
-                        </div>
-                      )
+                      segmentList.length !== 0 ? (
+                        <Pagination
+                          total={total}
+                          text={intl.formatMessage({id: 'segments.total'})}
+                          pagination={pagination}
+                          handlePageChange={handlePageChange}
+                        />
+                      ) : <NoData />
                     }
                   </div>
                 </div>

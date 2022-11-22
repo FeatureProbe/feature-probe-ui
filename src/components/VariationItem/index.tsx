@@ -95,9 +95,16 @@ const VariationItem = (props: IProps) => {
 
     } else {
       unregister(`variation_${id}`);
+      register(`variation_${id}_normal`, {
+        required: {
+          value: true,
+          message: intl.formatMessage({id: 'common.input.placeholder'})
+        },
+      });
+      setValue(`variation_${id}_normal`, value);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, returnType, register, unregister]);
+  }, [id, returnType, register, unregister, setValue, value]);
 
   const handleChange = useCallback(value => {
     setJsonValue(value);
@@ -121,8 +128,7 @@ const VariationItem = (props: IProps) => {
   }, []);
 
   const handleChangeBoolean = useCallback((e: SyntheticEvent, detail: DropdownProps) => {
-    // @ts-ignore detail value
-    handleChangeVariation(index, detail.value);
+    handleChangeVariation(index, detail.value as string);
   }, [index, handleChangeVariation]);
 
   const modalContentCls = classNames(
@@ -177,7 +183,7 @@ const VariationItem = (props: IProps) => {
               }}
             />
             { 
-              errors[`variation_${id}_name`] && <div className={styles[`${prefix ? (prefix + '-') : ''}error-text`]}>
+              errors[`variation_${id}_name`] && <div className={prefix ? 'error-text-transform' : 'error-text-normal'}>
                 { errors[`variation_${id}_name`].message }
               </div> 
             }
@@ -241,7 +247,7 @@ const VariationItem = (props: IProps) => {
               )
             }
             { 
-              errors[`variation_${id}`] && <div className={styles[`${prefix ? (prefix + '-') : ''}error-text`]}>
+              errors[`variation_${id}`] && <div className={prefix ? 'error-text-transform' : 'error-text-normal'}>
                 { errors[`variation_${id}`].message }
               </div> 
             }
@@ -294,7 +300,7 @@ const VariationItem = (props: IProps) => {
               onChange={handleChange}
             />
             { 
-              !canSave && <div className={styles[`${prefix ? (prefix + '-') : ''}error-text`]}>
+              !canSave && <div className={prefix ? 'error-text-transform' : 'error-text-normal'}>
                 <FormattedMessage id='common.json.invalid' />
               </div> 
             }

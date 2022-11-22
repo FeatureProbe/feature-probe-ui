@@ -1,11 +1,13 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Table, Pagination, PaginationProps, Button, Form, TextAreaProps } from 'semantic-ui-react';
+import { Table, PaginationProps, Button, Form, TextAreaProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
 import Modal from 'components/Modal';
 import Icon from 'components/Icon';
 import Diff from 'components/Diff';
+import Pagination from 'components/Pagination';
+import NoData from 'components/NoData';
 import { IToggle } from 'interfaces/segment';
 import TextLimit from 'components/TextLimit';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
@@ -210,31 +212,15 @@ const ConfirmModal = (props: IProps) => {
                   </Table.Body>
                 </Table>
                 {
-                  toggleList.length === 0 && (
-                    <div className={styles['no-data']}>
-                      <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                      <div><FormattedMessage id='common.nodata.text' /></div>
-                    </div>
-                  )
-                }
-                {
-                  pagination.totalPages > 1 && (
-                    <div className={styles.pagination}>
-                      <Pagination 
-                        activePage={pagination.pageIndex} 
-                        totalPages={pagination.totalPages} 
-                        onPageChange={handlePageChange}
-                        firstItem={null}
-                        lastItem={null}
-                        prevItem={{
-                          content: (<Icon type='angle-left' />)
-                        }}
-                        nextItem={{
-                          content: (<Icon type='angle-right' />)
-                        }}
-                      />
-                    </div>
-                  )
+                  toggleList.length !== 0 ? (
+                    <Pagination
+                      total={total}
+                      pagination={pagination}
+                      hideTotal={true}
+                      text={intl.formatMessage({id: 'segments.total'})}
+                      handlePageChange={handlePageChange}
+                    />
+                  ) : <NoData />
                 }
               </div>
             </>

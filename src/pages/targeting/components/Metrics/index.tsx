@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useCallback, useState, SyntheticEvent, useRef } from 'react';
-import { Select, DropdownProps, Dimmer, Loader } from 'semantic-ui-react';
+import { Select, DropdownProps } from 'semantic-ui-react';
 import { Line } from 'react-chartjs-2';
 import annotationPlugin from 'chartjs-plugin-annotation';
 import { useHistory, useParams } from 'react-router-dom';
@@ -18,6 +18,7 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
+import Loading from 'components/Loading';
 import { VariationColors } from 'constants/colors';
 import { createChartOptions } from './chartOption';
 import { createChartData } from './chartData';
@@ -85,8 +86,7 @@ const Metrics = () => {
   }, [metrics, summary]);
 
   const handleSelectChange = useCallback((e: SyntheticEvent, detail: DropdownProps) => {
-    // @ts-ignore detail value
-    setFilterValue(detail.value || '24');
+    setFilterValue(detail.value as string || '24');
   }, []);
 
   const handleGotoSDK = useCallback(() => {
@@ -104,13 +104,7 @@ const Metrics = () => {
 	return (
 		<div className={styles.metrics}>
       {
-        isLoading ? (
-          <Dimmer active inverted>
-            <Loader size='small'>
-              <FormattedMessage id='common.loading.text' />
-            </Loader>
-          </Dimmer>
-        ) : (
+        isLoading ? <Loading /> : (
           <>
             <div className={styles.title}>
               <div className={styles['title-text']}>

@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState, SyntheticEvent } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table, Pagination, PaginationProps, Dimmer, Loader } from 'semantic-ui-react';
+import { Table, PaginationProps } from 'semantic-ui-react';
 import SettingLayout from 'layout/settingLayout';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import Loading from 'components/Loading';
 import MemberDrawer from './components/MemberDrawer';
 import MemberItem from './components/MemberItem';
+import NoData from 'components/NoData';
+import Pagination from 'components/Pagination';
 import { getMemberList } from 'services/member';
 import { IMemberList, IMember, IUser } from 'interfaces/member';
 import { HeaderContainer } from 'layout/hooks';
@@ -72,13 +75,7 @@ const Member = () => {
       <>
         <div className={styles.member}>
           {
-            isLoading ? (
-              <Dimmer active inverted>
-                <Loader size='small'>
-                  <FormattedMessage id='common.loading.text' />
-                </Loader>
-              </Dimmer>
-            ) : (
+            isLoading ? <Loading /> : (
               <>
                 <div className={styles.heading}>
                   <FormattedMessage id='common.members.text' />
@@ -138,45 +135,16 @@ const Member = () => {
                       )
                     }
                   </Table>
-                  {
-                    memberList?.length === 0 && (
-                      <div className={styles['no-data']}>
-                        <div>
-                          <img className={styles['no-data-image']} src={require('images/no-data.png')} alt='no-data' />
-                        </div>
-                        <div>
-                          <FormattedMessage id='common.nodata.text' />
-                        </div>
-                      </div>
-                    )
-                  }
                 </div>
                 {
-                  memberList?.length !== 0 && (
-                    <div className={styles.pagination}>
-                      <div className={styles['total']}>
-                        <span className={styles['total-count']}>{total} </span>
-                        <FormattedMessage id='members.total' />
-                      </div>
-                      {
-                        pagination.totalPages > 1 && (
-                          <Pagination 
-                            activePage={pagination.pageIndex} 
-                            totalPages={pagination.totalPages} 
-                            onPageChange={handlePageChange}
-                            firstItem={null}
-                            lastItem={null}
-                            prevItem={{
-                              content: (<Icon type='angle-left' />)
-                            }}
-                            nextItem={{
-                              content: (<Icon type='angle-right' />)
-                            }}
-                          />
-                        )
-                      }
-                    </div>
-                  )
+                  memberList?.length !== 0 ? (
+                    <Pagination 
+                      total={total}
+                      text={intl.formatMessage({id: 'members.total'})}
+                      pagination={pagination}
+                      handlePageChange={handlePageChange}
+                    />
+                  ) : <NoData />
                 }
               </>
             )

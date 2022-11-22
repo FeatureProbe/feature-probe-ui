@@ -61,7 +61,7 @@ const TagsList = (props: IProps) => {
               {
                 popupTags.map((val: string) => {
                   return (
-                    <div className={styles.tags}>
+                    <div className={styles.tags} key={val}>
                       <span className={styles['tags-text']}>
                         { val }
                       </span>

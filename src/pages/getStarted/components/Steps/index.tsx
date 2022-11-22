@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { Dimmer, Loader } from 'semantic-ui-react';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
+import Loading from 'components/Loading';
 import StepFirst from '../StepFirst';
 import StepSecond, { SdkLanguage } from '../StepSecond';
 import StepThird from '../StepThird';
@@ -14,8 +14,8 @@ import { getProjectInfo } from 'services/project';
 import { getEnvironment } from 'services/project';
 import { IDictionary, IToggleInfo, IContent, IRule } from 'interfaces/targeting';
 import { IProject, IEnvironment, IRouterParams } from 'interfaces/project';
-import styles from './index.module.scss';
 import { ToggleReturnType } from '../constants';
+import styles from './index.module.scss';
 
 interface IStepDetail {
   done: boolean;
@@ -54,7 +54,7 @@ const ANDROID_SDK_VERSION = 'android_sdk_version';
 
 const Steps = () => {
   const [ currentStep, saveCurrentStep ] = useState<number>(2);
-  const [ currentSDK, saveCurrentSDK ] = useState<SdkLanguage>('');
+  const [ currentSDK, saveCurrentSDK ] = useState<SdkLanguage>('Java');
   const [ serverSdkKey, saveServerSDKKey ] = useState<string>('');
   const [ clientSdkKey, saveClientSdkKey ] = useState<string>('');
   const [ sdkVersion, saveSDKVersion ] = useState<string>('');
@@ -202,16 +202,9 @@ const Steps = () => {
 
   return (
     <div className={styles.page}>
-      
       <div className={styles.intro}>
         {
-          isInfoLoading ? (
-            <Dimmer active inverted>
-              <Loader size='small'>
-                <FormattedMessage id='common.loading.text' />
-              </Loader>
-            </Dimmer>
-          ) : (
+          isInfoLoading ? <Loading /> : (
             <>
               <div className={styles['intro-header']}>
                 <span className={styles['intro-title']}>
@@ -257,13 +250,7 @@ const Steps = () => {
       </div>
       <div className={styles.steps}>
         {
-          isStepLoading ? (
-            <Dimmer active inverted>
-              <Loader size='small'>
-                <FormattedMessage id='common.loading.text' />
-              </Loader>
-            </Dimmer>
-          ) : (
+          isStepLoading ? <Loading /> : (
             <>
               <StepFirst 
                 currentStep={currentStep}

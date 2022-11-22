@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Dimmer, Loader } from 'semantic-ui-react';
 import { getProjectList } from 'services/project';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
 import Icon from 'components/Icon';
+import Loading from 'components/Loading';
 import { HeaderContainer } from 'layout/hooks';
 import ProjectCard from './components/ProjectCard';
 import ProjectDrawer from './components/ProjectDrawer';
@@ -76,13 +76,7 @@ const Project = () => {
           </div>
           <div className={styles.content}>
             {
-              isLoading ? (
-                <Dimmer active inverted style={{background: 'transparent'}}>
-                  <Loader size='small'>
-                    <FormattedMessage id='common.loading.text' />
-                  </Loader>
-                </Dimmer>
-              ) : (
+              isLoading ? <Loading style={{background: 'transparent'}} /> : (
                 <>
                   {
                     projectList.map((item: IProject) => {

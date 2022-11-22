@@ -2,23 +2,25 @@ import { SyntheticEvent, useState } from 'react';
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 
+interface IInfo {
+  [key: string]: string;
+}
+
 export const useProjectInfo = () => {
-  const [ projectInfo, saveProjectInfo ] = useState({
+  const [ projectInfo, saveProjectInfo ] = useState<IInfo>({
     name: '',
     key: '',
     description: '',
   });
 
-  const [ originProjectInfo, saveOriginProjectInfo ] = useState({
+  const [ originProjectInfo, saveOriginProjectInfo ] = useState<IInfo>({
     name: '',
     key: '',
     description: '',
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
-    const { value } = detail;
-    // @ts-ignore detail value
-    projectInfo[type] = value;
+    projectInfo[type] = detail.value as string;
     saveProjectInfo({...projectInfo});
   };
 
@@ -32,20 +34,18 @@ export const useProjectInfo = () => {
 };
 
 export const useEnvironmentInfo = () => {
-  const [ environmentInfo, saveEnvironmentInfo ] = useState({
+  const [ environmentInfo, saveEnvironmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
   });
 
-  const [ originEnvironmentInfo, saveOriginEnvironmentInfo ] = useState({
+  const [ originEnvironmentInfo, saveOriginEnvironmentInfo ] = useState<IInfo>({
     name: '',
     key: '',
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps , type: string) => {
-    const { value } = detail;
-    // @ts-ignore detail value
-    environmentInfo[type] = value;
+    environmentInfo[type] = detail.value as string;
     saveEnvironmentInfo({...environmentInfo});
   };
 

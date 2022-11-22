@@ -140,14 +140,12 @@ const MemberDrawer = (props: IParams) => {
 
   // Add accounts
   const handleChange = useCallback(async (e: SyntheticEvent, detail: DropdownProps) => {
-    // @ts-ignore detail value
-    setMemberValues(detail.value);
+    setMemberValues(detail.value as string[]);
     setValue(detail.name, detail.value);
     await trigger('accounts');
   }, [trigger, setValue]);
 
   const handleCheckboxChange = useCallback((e: SyntheticEvent, detail: CheckboxProps) => {
-    // @ts-ignore detail checked
     setPasswordVisible(!detail.checked);
   }, []);
 
@@ -193,8 +191,7 @@ const MemberDrawer = (props: IParams) => {
 
   // Confirm add account
   const handleAddAccount = useCallback(async(event: SyntheticEvent, data: DropdownProps) => {
-    // @ts-ignore detail value
-    const account: string = data.value;
+    const account: string = data.value as string;
 
     if (isDemo && !EMAIL_REG.test(account)) {
       message.error(intl.formatMessage({id: 'login.email.invalid.text'}));
@@ -367,13 +364,15 @@ const MemberDrawer = (props: IParams) => {
               icon={ <Icon customclass={styles['angle-down']} type='angle-down' /> }
               onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
                 setValue(detail.name, detail.value);
-                // @ts-ignore detail.value
-                saveRole(detail.value);
+                saveRole(detail.value as string);
                 await trigger('role');
               }}
             />
           </Form.Field>
           { errors.role && <div className={styles['error-text']}>{ errors.role.message }</div> }
+          {
+            !isAdd && <div className={styles['role-tips']}><FormattedMessage id='members.role.tips' /></div>
+          }
         </div>
       </Form>
     </div>

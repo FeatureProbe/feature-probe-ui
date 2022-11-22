@@ -97,6 +97,7 @@
   "common.lock.time": "锁定时间",
   "common.next.text": "下一步",
   "common.previous.text": "上一步",
+  "common.total": "总数",
 
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -121,6 +122,7 @@
   "login.email.invalid.text": "无效的邮箱地址",
 
   "members.role": "角色",
+  "members.role.tips": "角色变更后，需要该成员退出并重新登录系统，新角色才能生效。",
   "members.createdby": "创建人",
   "members.lastseen": "最后登录时间",
   "members.total": "个成员",

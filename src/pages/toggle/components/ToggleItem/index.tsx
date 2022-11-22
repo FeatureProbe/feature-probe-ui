@@ -136,7 +136,7 @@ const ToggleItem = (props: IProps) => {
             toggle.locked && (
               <Popup
                 inverted
-                className={styles.popup}
+                className='popup-override'
                 trigger={
                   <span className={styles['toggle-lock-bg']}>
                     <Icon type='lock' customclass={styles['toggle-lock']}></Icon>
@@ -168,7 +168,7 @@ const ToggleItem = (props: IProps) => {
               <div className={styles['toggle-permanent-bg']}>
                 <Popup
                   inverted
-                  className={styles.popup}
+                  className='popup-override'
                   trigger={
                     <span>
                       <Icon type='timeout' />

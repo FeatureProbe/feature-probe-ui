@@ -97,6 +97,7 @@
   "common.lock.time": "Locked at",
   "common.next.text": "Next",
   "common.previous.text": "Previous",
+  "common.total": " in total",
 
   "header.getuser.error.text": "Error getting user profile",
 
@@ -121,6 +122,7 @@
   "login.email.invalid.text": "Invalid email address",
 
   "members.role": "Role",
+  "members.role.tips": "After the role is changed, the member needs to log out and sign in again to make the new role effective.",
   "members.createdby": "Created by",
   "members.lastseen": "Last seen",
   "members.total": "members in total",
@@ -251,7 +253,7 @@
   "toggles.settings.approval.enable": "Enable Approval",
   "toggles.settings.approval.enable.tips": "The environment has toggles in the approval process that are not allowed to be turned off",
   "toggles.settings.approval.enable.writer.tips": "Permission denied",
-  "toggles.settings.save.success": "saved successfully",
+  "toggles.settings.save.success": "Saved successfully",
 
   "targeting.default.rule": "Default Rule",
   "targeting.default.rule.tips": "Define the return value when no rule is matched.",

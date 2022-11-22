@@ -1,6 +1,6 @@
 import { SyntheticEvent, useEffect, useState, useCallback, useRef } from 'react';
 import { useHistory, useParams, useLocation } from 'react-router-dom';
-import { Menu, MenuItemProps, Dimmer, Loader } from 'semantic-ui-react';
+import { Menu, MenuItemProps } from 'semantic-ui-react';
 import useResizeObserver from 'use-resize-observer';
 import { FormattedMessage, useIntl } from 'react-intl';
 import cloneDeep from 'lodash/cloneDeep';
@@ -11,6 +11,7 @@ import Button from 'components/Button';
 import Icon from 'components/Icon';
 import ProjectLayout from 'layout/projectLayout';
 import TargetingForm from './components/TargetingForm';
+import Loading from 'components/Loading';
 import Metrics from './components/Metrics';
 import Info from './components/Info';
 import History from 'components/History';
@@ -326,9 +327,7 @@ const Targeting = () => {
           {
             toggleInfo?.useDays && !toggleInfo.archived && (
               <div className={styles['permanent-message-box']}>
-                <div 
-                  className={styles['permanent-warning-message']}
-                >
+                <div className={styles['permanent-warning-message']}>
                   <Icon type='warning-circle' customclass={styles['warning-icon']} />
                   <FormattedMessage id='toggles.permanent.tips' values={{ useDays: toggleInfo?.useDays }} />
                 </div>
@@ -404,13 +403,7 @@ const Targeting = () => {
           </div>
           <div className={styles.content}>
             {
-              isTargetingLoading ? (
-                <Dimmer active inverted>
-                  <Loader size='small'>
-                    <FormattedMessage id='common.loading.text' />
-                  </Loader>
-                </Dimmer>
-              ) : (
+              isTargetingLoading ? <Loading /> : (
                 <>
                   <div className={styles['content-left']}>
                     {

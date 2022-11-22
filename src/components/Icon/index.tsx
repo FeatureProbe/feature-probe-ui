@@ -9,7 +9,7 @@ const Icon = (props: IProps) => {
   const { type, customclass } = props;
 
   return (
-   <span {...props} className={`iconfont icon-${type} ${customclass}`} ></span>
+   <span {...props} className={`iconfont icon-${type} ${customclass}`}></span>
   );
 };
   

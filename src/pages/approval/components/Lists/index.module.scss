@@ -82,23 +82,6 @@
   width: 240px !important;
 }
 
-.pagination {
-  margin: 16px 0;
-  text-align: right;
-  display: flex;
-  justify-content: space-between;
-  padding-left: 24px;
-}
-
-.total {
-  color: #74788d;
-  font-size: 12px;
-}
-
-.total-count {
-  font-size: 14px;
-}
-
 .icon-filter {
   font-weight: normal !important;
   color: #919aac !important;
@@ -148,16 +131,4 @@
   color: #353a40;
   margin-right: 12px;
   cursor: pointer;
-}
-
-.no-data {
-  text-align: center;
-  font-family: PingFangSC-Medium;
-  font-size: 18px;
-  color: #7d7d7d;
-}
-
-.no-data-image {
-  width: 165px;
-  margin: 150px 0 8px;
 }
