@@ -110,6 +110,7 @@ const Info = (props: IProps) => {
   }, [projectKey, environmentKey, toggleKey, approvalInfo, saveApprovalInfo, saveInitTargeting]);
 
   const onSubmit = useCallback(async () => {
+    setValue('reason', '');
     saveOpen(false);
 
     // Cancel publish
@@ -159,7 +160,7 @@ const Info = (props: IProps) => {
         message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
       }
     }
-  }, [intl, isReEdit, status, comment, projectKey, environmentKey, toggleKey, refreshInitialTargeting, initTargeting]);
+  }, [setValue, status, projectKey, environmentKey, toggleKey, comment, intl, isReEdit, refreshInitialTargeting, initTargeting]);
 
   // Abandon this approval
   const handleAbandon = useCallback(async () => {
@@ -527,7 +528,10 @@ const Info = (props: IProps) => {
               { status === 'JUMP' && <FormattedMessage id='targeting.approval.operation.skip.approval' /> }
               { status === 'CANCEL' && <FormattedMessage id='targeting.approval.operation.abandon' /> }
             </span>
-            <Icon customclass={styles['modal-header-icon']} type='close' onClick={() => { saveOpen(false); }} />
+            <Icon customclass={styles['modal-header-icon']} type='close' onClick={() => { 
+              setValue('reason', '');
+              saveOpen(false); }} 
+            />
           </div>
           <div className={styles['modal-content']}>
             <Form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
@@ -581,7 +585,10 @@ const Info = (props: IProps) => {
                 )
               }
               <div className={styles['footer']} onClick={(e: SyntheticEvent) => { e.stopPropagation(); }}>
-                <Button size='mini' basic type='reset' onClick={() => { saveOpen(false); }}>
+                <Button size='mini' basic type='reset' onClick={() => { 
+                  setValue('reason', '');
+                  saveOpen(false); 
+                }}>
                   <FormattedMessage id='common.cancel.text' />
                 </Button>
                 <Button size='mini' className={styles['footer-btn']} type='submit' primary>
