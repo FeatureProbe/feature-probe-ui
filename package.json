@@ -71,7 +71,7 @@
     "start": "semantic-ui-css-patch && craco start",
     "build": "semantic-ui-css-patch && craco build",
     "test": "craco test",
-    "test:cov": "craco test --coverage --no-cache --watchAll",
+    "test:cov": "craco test --coverage --no-cache --watchAll=false",
     "eject": "craco eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
