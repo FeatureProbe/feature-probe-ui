@@ -11,7 +11,7 @@ import message from 'components/MessageBox';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import TextLimit from 'components/TextLimit';
 import TagsList from 'components/TagsList';
-import { editToggle, getToggleInfo } from 'services/toggle';
+import { getToggleInfo, offlineToggle, restoreToggle } from 'services/toggle';
 import { IToggle } from 'interfaces/toggle';
 import { IToggleInfo, IVariation } from 'interfaces/targeting';
 import { variationContainer, toggleInfoContainer } from '../../provider';
@@ -98,9 +98,7 @@ const ToggleItem = (props: IProps) => {
   }, [projectKey, environmentKey, saveToggleInfo, saveOriginToggleInfo, saveVariations, setIsAdd, setDrawerVisible]);
 
   const confirmArchiveToggle = useCallback(async () => {
-    const res = await editToggle(projectKey, toggle.key, {
-      archived: true,
-    });
+    const res = await offlineToggle(projectKey, toggle.key);
 
     if (res.success) {
       message.success(intl.formatMessage({id: 'toggles.archive.success'}));
@@ -111,9 +109,7 @@ const ToggleItem = (props: IProps) => {
   }, [toggle.key, projectKey, intl, refreshToggleList]);
 
   const confirmRestoreToggle = useCallback(async () => {
-    const res = await editToggle(projectKey, toggle.key, {
-      archived: false,
-    });
+    const res = await restoreToggle(projectKey, toggle.key);
 
     if (res.success) {
       message.success(intl.formatMessage({id: 'toggles.restore.success'}));

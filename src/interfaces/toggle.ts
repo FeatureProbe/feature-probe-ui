@@ -34,7 +34,6 @@ export interface IToggle {
 }
 
 export interface IEditToggleParams {
-  archived?: boolean;
   name?: string;
   key?: string;
   returnType?: string;

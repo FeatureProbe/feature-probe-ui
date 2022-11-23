@@ -186,6 +186,7 @@
   "projects.delete.title": "确认删除项目？",
   "projects.delete.content": "项目和项目中的环境都将被永久删除",
   "projects.delete.error": "删除项目失败",
+  "projects.delete.success": "删除项目成功！",
   "projects.cannot.delete.title": "无法删除",
   "projects.cannot.delete.content": "请先下线项目下的开关",
   "projects.environment.archive.title": "确认下线环境？",

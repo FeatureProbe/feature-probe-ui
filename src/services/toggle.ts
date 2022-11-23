@@ -100,6 +100,36 @@ export const editToggle = async (projectKey: string, toggleKey: string, data: IE
   });
 };
 
+export const offlineToggle = async (projectKey: string, toggleKey: string) => {
+  const url = `${
+    API.offlineToggleURI
+      .replace(':projectKey', projectKey)
+      .replace(':toggleKey', toggleKey)
+  }`;
+
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
+export const restoreToggle = async (projectKey: string, toggleKey: string) => {
+  const url = `${
+    API.restoreToggleURI
+      .replace(':projectKey', projectKey)
+      .replace(':toggleKey', toggleKey)
+  }`;
+
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
 export const getTags = async<T> (projectKey: string) => {
   const url = `${
     API.tagsURI

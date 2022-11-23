@@ -186,6 +186,7 @@
   "projects.delete.title": "Are you sure to delete this project?",
   "projects.delete.content": "The project and the environments in the project will be permanently deleted.",
   "projects.delete.error": "Error deleting project",
+  "projects.delete.success": "Successfully deleting project!",
   "projects.cannot.delete.title": "Can not delete",
   "projects.cannot.delete.content": "Please archive toggles first.",
   "projects.environment.archive.title": "Are you sure to archive this environment?",
