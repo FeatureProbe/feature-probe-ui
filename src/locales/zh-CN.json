@@ -255,6 +255,7 @@
   "toggles.settings.approval.enable.tips": "该环境存在审批流程未结束的开关，不允许关闭",
   "toggles.settings.approval.enable.writer.tips": "您没有操作权限",
   "toggles.settings.save.success": "保存成功",
+  "toggles.settings.save.error": "保存失败",
 
   "targeting.default.rule": "默认规则",
   "targeting.default.rule.tips": "指定上面所有规则都不命中时的返回分组",

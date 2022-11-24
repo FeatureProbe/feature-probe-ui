@@ -255,6 +255,7 @@
   "toggles.settings.approval.enable.tips": "The environment has toggles in the approval process that are not allowed to be turned off",
   "toggles.settings.approval.enable.writer.tips": "Permission denied",
   "toggles.settings.save.success": "Saved successfully",
+  "toggles.settings.save.error": "Saved failed",
 
   "targeting.default.rule": "Default Rule",
   "targeting.default.rule.tips": "Define the return value when no rule is matched.",

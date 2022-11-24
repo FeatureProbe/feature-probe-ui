@@ -12,7 +12,7 @@ const ProjectURI = {
   getProjectInfoURI: `${origin}/projects/:projectKey`,
   projectExistURI: `${origin}/projects/exists`,
   projectApprovalSetting: `${origin}/projects/:projectKey/approvalSettings`,
-  projectSetting: `${origin}/projects/:projectKey/approval`,
+  projectSetting: `${origin}/projects/:projectKey/approvalSettings`,
 };
 
 export default ProjectURI;
