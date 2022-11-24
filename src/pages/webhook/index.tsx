@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Dimmer, Form, Loader, Pagination, PaginationProps, Table } from 'semantic-ui-react';
+import { Button, Dimmer, Form, InputOnChangeData, Loader, Pagination, PaginationProps, Table } from 'semantic-ui-react';
 
 import Icon from 'components/Icon';
 import WebHookLayout from 'layout/webHookLayout';
 import styles from './index.module.scss';
 import WebHookItem from './components/webHookItem';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, debounce } from 'lodash';
 import { IWebHook, IWebHookListResponse } from 'interfaces/webhook';
 import WebHookDrawer from './components/WebHookDrawer';
 import { Provider } from './provider';
@@ -17,7 +17,7 @@ import NoData from 'components/NoData';
 const WebHook = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pagination, setPagination] = useState({
-    pageIndex: 1,
+    pageIndex: 0,
     totalPages: 1,
     totalItems: 0,
   });
@@ -25,11 +25,12 @@ const WebHook = () => {
   const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false);
   const [isAdd, setIsAdd] = useState<boolean>(true);
   const [drawerValue, saveDrawerValue] = useState<IWebHook>();
+  const [search, saveSearch] = useState<string>('');
   const intl = useIntl();
 
-  const handleSearch = useCallback(() => {
-    //do something
-  }, []);
+  const handleSearch = debounce(useCallback((e, data: InputOnChangeData) => {
+    saveSearch(data.value);
+  }, []), 500);
 
   const handleAddWebHook = useCallback(() => {
     setIsAdd(true);
@@ -38,7 +39,7 @@ const WebHook = () => {
 
   const handlePageChange = useCallback((e, data: PaginationProps) => {
     setPagination((pagination) => {
-      pagination.pageIndex = typeof data.activePage == 'number' ? data.activePage : 0;
+      pagination.pageIndex = typeof data.activePage == 'number' ? data.activePage - 1 : 0;
       return cloneDeep(pagination);
     });
   }, []);
@@ -46,7 +47,11 @@ const WebHook = () => {
   const fetchWebHookList = useCallback(async () => {
     try {
       setIsLoading(true);
-      const res = await getWebHookList<IWebHookListResponse>();
+      const res = await getWebHookList<IWebHookListResponse>({
+        pageIndex: pagination.pageIndex,
+        pageSize: 10,
+        nameLike: search ? search : undefined
+      });
       if (res.success && res.data) {
         saveList(res.data.content);
         setPagination({
@@ -60,7 +65,7 @@ const WebHook = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [intl, pagination.pageIndex]);
+  }, [intl, pagination.pageIndex, search]);
 
   useEffect(() => {
     fetchWebHookList();
@@ -159,7 +164,7 @@ const WebHook = () => {
                 </div>
                 {
                   <Pagination
-                    activePage={pagination.pageIndex}
+                    activePage={pagination.pageIndex + 1}
                     totalPages={pagination.totalPages}
                     onPageChange={handlePageChange}
                     firstItem={null}

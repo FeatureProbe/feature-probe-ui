@@ -44,3 +44,9 @@ export interface IWebHookListResponse {
   totalPages: number;
   totalElements: number;
 }
+
+export interface IWebHookListParam {
+  nameLike?: string;
+  pageIndex: number;
+  pageSize: number;
+}

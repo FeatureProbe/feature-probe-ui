@@ -1,21 +1,11 @@
 import request from '../utils/request';
 import API from '../constants/api';
 import { ApplicationJson } from 'constants/api/contentType';
-import { IWebHookInfo, IWebHookParam } from 'interfaces/webhook';
+import { IWebHookInfo, IWebHookListParam, IWebHookParam } from 'interfaces/webhook';
+import qs from 'qs';
 
-export const getProjectList = async <T>() => {
-  const url = API.getProjectListURI;
-
-  return request<T>(url, {
-    method: 'GET',
-    headers: {
-      ...ApplicationJson(),
-    },
-  });
-};
-
-export const getWebHookList = async <T>() => {
-  const url = API.getWebHookListURI;
+export const getWebHookList = async <T>(params: IWebHookListParam) => {
+  const url = API.getWebHookListURI + `?${qs.stringify(params)}`;
 
   return request<T>(url, {
     method: 'GET',
