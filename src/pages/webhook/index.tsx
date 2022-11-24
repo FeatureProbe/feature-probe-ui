@@ -12,6 +12,7 @@ import WebHookDrawer from './components/WebHookDrawer';
 import { Provider } from './provider';
 import { getWebHookList } from 'services/webhook';
 import message from 'components/MessageBox';
+import NoData from 'components/NoData';
 
 const WebHook = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -145,6 +146,11 @@ const WebHook = () => {
                     })}
                   </Table.Body>
                 </Table>
+                {!list.length && (
+                  <div className={styles['nodata-box']}>
+                    <NoData />
+                  </div>
+                )}
               </div>
               <div className={styles.pagination}>
                 <div className={styles['total']}>

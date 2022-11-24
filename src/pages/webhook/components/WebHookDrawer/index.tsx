@@ -141,7 +141,6 @@ const WebHookDrawer = (props: IProps) => {
           <FormItem error={errors.name} label={<FormattedMessage id="common.name.text" />} required>
             <Form.Input
               className={styles.input}
-              disabled={!isAdd}
               name="name"
               value={webHookInfo.name}
               placeholder={intl.formatMessage({ id: 'common.name.required' })}
@@ -156,7 +155,6 @@ const WebHookDrawer = (props: IProps) => {
           <FormItem label={<FormattedMessage id="common.description.text" />}>
             <Form.Input
               name="description"
-              disabled={!isAdd}
               className={styles.input}
               value={webHookInfo.description}
               placeholder={intl.formatMessage({ id: 'common.description.required' })}
