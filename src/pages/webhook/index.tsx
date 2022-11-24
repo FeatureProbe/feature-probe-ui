@@ -5,7 +5,7 @@ import { Button, Dimmer, Form, Loader, Pagination, PaginationProps, Table } from
 import Icon from 'components/Icon';
 import WebHookLayout from 'layout/webHookLayout';
 import styles from './index.module.scss';
-import WebHookItem from './components/WebHookItem';
+import WebHookItem from './components/webHookItem';
 import { cloneDeep } from 'lodash';
 import { IWebHook, IWebHookListResponse } from 'interfaces/webhook';
 import WebHookDrawer from './components/WebHookDrawer';
