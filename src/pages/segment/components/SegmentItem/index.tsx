@@ -1,10 +1,8 @@
 import { SyntheticEvent, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table, Button } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
-import Modal from 'components/Modal';
-import Icon from 'components/Icon';
 import TextLimit from 'components/TextLimit';
 import { ISegment, IToggleList } from 'interfaces/segment';
 import { deleteSegment, getSegmentUsingToggles } from 'services/segment';

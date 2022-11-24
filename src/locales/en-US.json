@@ -102,6 +102,8 @@
   "common.dingding.text": "Ding Talk",
   "common.weixin.text": "WeChat",
   "common.total": " in total",
+  "common.success.text": "success",
+  "common.fail.text": "fail",
 
   "header.getuser.error.text": "Error getting user profile",
 
@@ -484,5 +486,16 @@
   "webhook.all.text": "All",
   "webhook.custom.text": "Custom",
   "webhook.url.required": "Please input url",
-  "webhook.application.required": "Please select application"
+  "webhook.url.error.text": "Please enter the correct url",
+  "webhook.url.normal.text": "Enter the URL from one of your application incoming webhooks.",
+  "webhook.application.required": "Please select application",
+  "webhook.recent.text": "Recently pushed",
+  "webhook.create.success": "Successfully created",
+  "webhook.create.failed": "Failed created",
+  "webhook.update.success": "Successfully updated",
+  "webhook.update.failed": "Failed updated",
+  "webhook.delete.success": "Successfully deleted",
+  "webhook.delete.failed": "Failed deleted",
+  "webhook.delete.tips.title": "Tips",
+  "webhook.delete.tips.content": "Are you sure you want to delete this WebHook?"
 }

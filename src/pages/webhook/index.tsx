@@ -7,38 +7,23 @@ import WebHookLayout from 'layout/webHookLayout';
 import styles from './index.module.scss';
 import WebHookItem from './components/WebHookItem';
 import { cloneDeep } from 'lodash';
-import { IWebHook } from 'interfaces/webhook';
-import sleep from 'utils/sleep';
+import { IWebHook, IWebHookListResponse } from 'interfaces/webhook';
 import WebHookDrawer from './components/WebHookDrawer';
 import { Provider } from './provider';
-
-const webHookItemData: IWebHook = {
-  key: 1,
-  name: '这是名字',
-  description: '这是描述',
-  status: true,
-  application: '这是应用',
-  url: 'http://localhost:3000/webHook/list',
-};
-
-const webHookList = new Array(112).fill(webHookItemData).map((item, index) => {
-  const cloneObj = cloneDeep<IWebHook>(item);
-  cloneObj.key += index;
-  cloneObj.name += cloneObj.key;
-  cloneObj.status = index % 2 === 0;
-  cloneObj.description = index % 2 ? '' : cloneObj.description + 'long long long long long';
-  return cloneObj;
-});
+import { getWebHookList } from 'services/webhook';
+import message from 'components/MessageBox';
 
 const WebHook = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pagination, setPagination] = useState({
     pageIndex: 1,
-    totalPages: Math.ceil(webHookList.length / 10),
+    totalPages: 1,
+    totalItems: 0,
   });
   const [list, saveList] = useState<IWebHook[]>([]);
   const [isDrawerVisible, setDrawerVisible] = useState<boolean>(false);
   const [isAdd, setIsAdd] = useState<boolean>(true);
+  const [drawerValue, saveDrawerValue] = useState<IWebHook>();
   const intl = useIntl();
 
   const handleSearch = useCallback(() => {
@@ -57,18 +42,28 @@ const WebHook = () => {
     });
   }, []);
 
-  const mockWebHookList = async (page: number) => {
-    setIsLoading(true);
-    await sleep(1000);
-    setIsLoading(false);
-    return webHookList.slice((page - 1) * 10, page * 10);
-  };
+  const fetchWebHookList = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const res = await getWebHookList<IWebHookListResponse>();
+      if (res.success && res.data) {
+        saveList(res.data.content);
+        setPagination({
+          pageIndex: pagination.pageIndex,
+          totalPages: res.data.totalPages,
+          totalItems: res.data.totalElements,
+        });
+      }
+    } catch {
+      message.error(intl.formatMessage({ id: 'webhook.create.failed' }));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [intl, pagination.pageIndex]);
 
   useEffect(() => {
-    (async () => {
-      saveList(await mockWebHookList(pagination.pageIndex));
-    })();
-  }, [pagination.pageIndex]);
+    fetchWebHookList();
+  }, [fetchWebHookList]);
 
   return (
     <WebHookLayout>
@@ -121,7 +116,7 @@ const WebHook = () => {
                         <FormattedMessage id="toggles.filter.status" />
                       </Table.HeaderCell>
                       <Table.HeaderCell className={styles['column-tags']}>
-                        <FormattedMessage id="webhook.application.text" />
+                        <FormattedMessage id="webhook.recent.text" />
                       </Table.HeaderCell>
                       <Table.HeaderCell className={styles['column-url']}>
                         <FormattedMessage id="webhook.url.text" />
@@ -132,14 +127,18 @@ const WebHook = () => {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body className={styles['table-body']}>
-                    {list.map((item) => {
+                    {list.map((item, index) => {
                       return (
                         <WebHookItem
+                          index={index}
+                          saveList={saveList}
+                          refresh={fetchWebHookList}
                           handleEdit={() => {
+                            saveDrawerValue(item);
                             setDrawerVisible(true);
                             setIsAdd(false);
                           }}
-                          key={item.key}
+                          key={item.id}
                           webhook={item}
                         />
                       );
@@ -149,7 +148,7 @@ const WebHook = () => {
               </div>
               <div className={styles.pagination}>
                 <div className={styles['total']}>
-                  <span className={styles['total-count']}>{webHookList.length} </span>
+                  <span className={styles['total-count']}>{pagination.totalItems} </span>
                   <FormattedMessage id="toggles.total" />
                 </div>
                 {
@@ -170,7 +169,16 @@ const WebHook = () => {
               </div>
             </>
           )}
-          <WebHookDrawer setDrawerVisible={setDrawerVisible} isAdd={isAdd} visible={isDrawerVisible} />
+          <WebHookDrawer
+            refresh={fetchWebHookList}
+            onClose={() => {
+              setDrawerVisible(false);
+              saveDrawerValue(undefined);
+            }}
+            defaultValue={drawerValue}
+            isAdd={isAdd}
+            visible={isDrawerVisible}
+          />
         </div>
       </Provider>
     </WebHookLayout>

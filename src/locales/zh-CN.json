@@ -102,7 +102,9 @@
   "common.dingding.text": "钉钉",
   "common.weixin.text": "微信",
   "common.total": "总数",
-
+  "common.success.text": "成功",
+  "common.fail.text": "失败",
+  
   "header.getuser.error.text": "无法获取用户信息!",
 
   "sidebar.modal.title": "离开当前页面?",
@@ -484,5 +486,16 @@
   "webhook.all.text": "全部",
   "webhook.custom.text": "自定义",
   "webhook.url.required": "请输入url",
-  "webhook.application.required": "请选择应用"
+  "webhook.url.error.text": "请输入正确的url",
+  "webhook.url.normal.text": "输入应用程序传入webhook中的URL。",
+  "webhook.application.required": "请选择应用",
+  "webhook.recent.text": "最近推送",
+  "webhook.create.success": "创建成功",
+  "webhook.create.failed": "创建失败",
+  "webhook.update.success": "更新成功",
+  "webhook.update.failed": "更新失败",
+  "webhook.delete.success": "删除成功",
+  "webhook.delete.failed": "删除失败",
+  "webhook.delete.tips.title": "提示",
+  "webhook.delete.tips.content": "确定要删除该WebHook吗？"
 }

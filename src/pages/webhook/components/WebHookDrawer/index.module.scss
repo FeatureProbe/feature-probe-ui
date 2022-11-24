@@ -5,9 +5,9 @@
   bottom: 0;
   left: 0;
   z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.50);
+  background-color: rgba(0, 0, 0, 0.5);
   visibility: hidden;
-  transition: all .5s cubic-bezier(0.820, 0.085, 0.395, 0.895);
+  transition: all 0.5s cubic-bezier(0.82, 0.085, 0.395, 0.895);
 }
 
 .webhook-drawer-inactive {
@@ -23,7 +23,7 @@
   position: absolute !important;
   right: -500px;
   box-shadow: 0px 10px 20px 0px rgba(18, 38, 63, 0.03);
-  transition: right .5s cubic-bezier(0.820, 0.085, 0.395, 0.895);
+  transition: right 0.5s cubic-bezier(0.82, 0.085, 0.395, 0.895);
 }
 
 .webhook-drawer-form-inactive {
@@ -99,5 +99,15 @@
   :global .ui.checkbox {
     font-size: 13px !important;
   }
+}
 
+.url-normal-tips {
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  color: #74788d;
+  letter-spacing: 0;
+  line-height: 14px;
+  font-weight: 400;
+  margin-left: 12px;
+  margin-top: -12px;
 }

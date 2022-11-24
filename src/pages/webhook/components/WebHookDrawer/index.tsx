@@ -1,43 +1,30 @@
-import { SyntheticEvent, useEffect, useCallback, useState, useMemo, FormEvent } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import {
   Checkbox,
-  CheckboxProps,
-  Dropdown,
   Form,
-  FormField,
-  InputOnChangeData,
-  Popup,
-  Select,
-  TextAreaProps,
 } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
-import cloneDeep from 'lodash/cloneDeep';
-import debounce from 'lodash/debounce';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
-import FormItemName from 'components/FormItem/name';
-import FormItemKey from 'components/FormItem/key';
-import FormItemDescription from 'components/FormItem/description';
-import { addProject, checkProjectExist, editProject } from 'services/project';
-import { replaceSpace } from 'utils/tools';
-import { CONFLICT } from 'constants/httpCode';
-import { useRequestTimeCheck } from 'hooks';
 
 import styles from './index.module.scss';
 import { hooksFormContainer, webHookInfoContainer } from 'pages/webhook/provider';
 import FormItem from 'components/FormItem';
+import { IWebHook, WebHookStatus } from 'interfaces/webhook';
+import { createWebHook, updateWebHook } from 'services/webhook';
 
 interface IProps {
+  defaultValue?: IWebHook;
   isAdd: boolean;
   visible: boolean;
-  setDrawerVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
+  refresh: () => void;
 }
 
 const WebHookDrawer = (props: IProps) => {
-  const { isAdd, visible, setDrawerVisible } = props;
-  const [isKeyEdit, saveKeyEdit] = useState<boolean>(false);
+  const { isAdd, visible, onClose, defaultValue, refresh } = props;
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const intl = useIntl();
 
@@ -47,28 +34,19 @@ const WebHookDrawer = (props: IProps) => {
     handleSubmit,
     setValue,
     trigger,
-    setError,
-    clearErrors,
-    getValues,
-    reset,
+    clearErrors
   } = hooksFormContainer.useContainer();
 
-  const { webHookInfo, handleChange } = webHookInfoContainer.useContainer();
+  const { webHookInfo, handleChange, saveWebHookInfo, saveOriginWebHookInfo } = webHookInfoContainer.useContainer();
 
   useEffect(() => {
-    register('application', { 
-      required: {
-        value: true,
-        message: intl.formatMessage({ id: 'webhook.application.required' })
-      }, 
-    });
     register('url', {
       required: {
         message: intl.formatMessage({ id: 'webhook.url.required' }),
         value: true,
       },
       pattern: {
-        message: 'test url',
+        message: intl.formatMessage({ id: 'webhook.url.error.text' }),
         value: /^((ht|f)tps?):\/\/[\w-]+(.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?$/,
       },
     });
@@ -89,14 +67,40 @@ const WebHookDrawer = (props: IProps) => {
   });
 
   const onSubmit = useCallback(() => {
-    console.log(webHookInfo);
-  }, [webHookInfo]);
+    (async () => {
+      try {
+        let res;
+        setSubmitLoading(true);
+        if(isAdd) {
+          res = await createWebHook(webHookInfo);
+        } else {
+          res = await updateWebHook('' + defaultValue?.id, webHookInfo);
+        }
+        if(res.success) {
+          message.success(intl.formatMessage({id: 'webhook.create.success'}));
+          refresh();
+          onClose();
+        } else {
+          message.error(res.message || intl.formatMessage({id: 'webhook.create.failed'}));
+        }
+      } catch(err) {
+        message.error(intl.formatMessage({id: 'webhook.create.failed'}));
+      } finally {
+        setSubmitLoading(false);
+      }
+    })();
+  }, [isAdd, webHookInfo, defaultValue?.id, intl, refresh, onClose]);
 
-  const applicationOptions = [
-    { key: 'slack', value: 'slack', text: 'Slack' },
-    { key: 'dd', value: 'dd', text: intl.formatMessage({ id: 'common.dingding.text' }) },
-    { key: 'wx', value: 'wx', text: intl.formatMessage({ id: 'common.weixin.text' }) },
-  ];
+  useEffect(() => {
+    if(visible && defaultValue) {
+      saveOriginWebHookInfo(defaultValue);
+      saveWebHookInfo(defaultValue);
+      setValue('name', defaultValue.name);
+      setValue('description', defaultValue.description);
+      setValue('application', defaultValue.application);
+      setValue('url', defaultValue.url);
+    }
+  }, [visible, webHookInfo, defaultValue, saveOriginWebHookInfo, saveWebHookInfo, setValue]);
 
   return (
     <div className={drawerCls}>
@@ -107,7 +111,7 @@ const WebHookDrawer = (props: IProps) => {
               ? intl.formatMessage({ id: 'projects.create.project' })
               : intl.formatMessage({ id: 'projects.edit.project' })}
           </div>
-          <Button disabled={Object.keys(errors).length !== 0} loading={submitLoading} size="mini" primary type="submit">
+          <Button disabled={Object.keys(errors).length !== 0 || submitLoading} loading={submitLoading} size="mini" primary type="submit">
             {isAdd ? intl.formatMessage({ id: 'common.create.text' }) : intl.formatMessage({ id: 'common.save.text' })}
           </Button>
           <div className={styles.divider}></div>
@@ -115,7 +119,8 @@ const WebHookDrawer = (props: IProps) => {
             customclass={styles['title-close']}
             type="close"
             onClick={() => {
-              setDrawerVisible(false);
+              clearErrors();
+              onClose();
             }}
           />
         </div>
@@ -127,7 +132,7 @@ const WebHookDrawer = (props: IProps) => {
             </label>
             <div className={styles['webhook-info-status']}>
               <Checkbox
-                checked={webHookInfo.status}
+                checked={webHookInfo.status === WebHookStatus.ENABLE}
                 toggle
                 onChange={(e, detail) => handleChange(e, detail, 'status')}
               />
@@ -136,7 +141,9 @@ const WebHookDrawer = (props: IProps) => {
           <FormItem error={errors.name} label={<FormattedMessage id="common.name.text" />} required>
             <Form.Input
               className={styles.input}
-              name='name'
+              disabled={!isAdd}
+              name="name"
+              value={webHookInfo.name}
               placeholder={intl.formatMessage({ id: 'common.name.required' })}
               error={errors.name ? true : false}
               onChange={(e, detail) => {
@@ -149,7 +156,9 @@ const WebHookDrawer = (props: IProps) => {
           <FormItem label={<FormattedMessage id="common.description.text" />}>
             <Form.Input
               name="description"
+              disabled={!isAdd}
               className={styles.input}
+              value={webHookInfo.description}
               placeholder={intl.formatMessage({ id: 'common.description.required' })}
               error={errors.description ? true : false}
               onChange={(e, detail) => {
@@ -157,34 +166,11 @@ const WebHookDrawer = (props: IProps) => {
               }}
             />
           </FormItem>
-          <FormItem
-            errorCss={{
-              marginTop: 0,
-            }}
-            error={errors.application}
-            label={<FormattedMessage id="webhook.application.text" />}
-            required
-          >
-            <Select
-              floating
-              name='application'
-              placeholder={intl.formatMessage({ id: 'toggles.returntype.placeholder' })}
-              className={styles['dropdown']}
-              disabled={!isAdd}
-              options={applicationOptions}
-              error={errors.application ? true : false}
-              icon={<Icon customclass={styles['angle-down']} type="angle-down" />}
-              onChange={(e, detail) => {
-                setValue('application', detail.value);
-                handleChange(e, detail, 'application');
-                trigger('application');
-              }}
-            />
-          </FormItem>
           <FormItem error={errors.url} label={<FormattedMessage id="webhook.url.text" />} required>
             <Form.Input
-              name='url'
+              name="url"
               className={styles.input}
+              value={webHookInfo.url}
               placeholder={intl.formatMessage({ id: 'common.description.required' })}
               error={errors.url ? true : false}
               onChange={(e, detail) => {
@@ -193,28 +179,10 @@ const WebHookDrawer = (props: IProps) => {
                 trigger('url');
               }}
             />
-            <div>Enter the URL from one of your application incoming webhooks.</div>
           </FormItem>
-          <FormItem label={<FormattedMessage id="common.event.text" />} required>
-            <div className={styles['radio-group']}>
-              <Form.Radio
-                name="webhook-all"
-                label={intl.formatMessage({ id: 'webhook.all.text' })}
-                className={styles['radio-group-item']}
-                checked={webHookInfo.event === 'all'}
-                value="all"
-                onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'event')}
-              />
-              <Form.Radio
-                name="webhook-custom"
-                label={intl.formatMessage({ id: 'webhook.custom.text' })}
-                className={styles['radio-group-item']}
-                checked={webHookInfo.event === 'custom'}
-                value="custom"
-                onChange={(e: FormEvent, detail: CheckboxProps) => handleChange(e, detail, 'event')}
-              />
+          <div className={styles['url-normal-tips']}>
+              <FormattedMessage id='webhook.url.normal.text' />
             </div>
-          </FormItem>
         </div>
       </Form>
     </div>

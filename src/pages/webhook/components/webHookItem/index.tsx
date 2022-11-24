@@ -1,37 +1,26 @@
-import { SyntheticEvent, useState, useCallback } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useState, useCallback } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { v4 as uuidv4 } from 'uuid';
 import { Table, Popup, Checkbox } from 'semantic-ui-react';
-import dayjs from 'dayjs';
-import { cloneDeep } from 'lodash';
-import Icon from 'components/Icon';
-import Modal from 'components/Modal';
 import message from 'components/MessageBox';
-import CopyToClipboardPopup from 'components/CopyToClipboard';
 import TextLimit from 'components/TextLimit';
-import TagsList from 'components/TagsList';
-import { editToggle, getToggleInfo } from 'services/toggle';
-import { IToggle } from 'interfaces/toggle';
-import { IToggleInfo, IVariation } from 'interfaces/targeting';
 import styles from './index.module.scss';
-import { IWebHook } from 'interfaces/webhook';
+import { IWebHook, WebHookStatus } from 'interfaces/webhook';
 import DeleteTipsModal from 'components/DeleteTipsModal';
-
-interface ILocationParams {
-  projectKey: string;
-  environmentKey: string;
-}
+import { deleteWebHook, updateWebHook } from 'services/webhook';
+import { cloneDeep } from 'lodash';
 
 interface IProps {
   webhook: IWebHook;
   handleEdit: (key: number) => void;
+  refresh: () => void;
+  saveList: React.Dispatch<React.SetStateAction<IWebHook[]>>;
+  index: number;
 }
 
 const WebHookItem = (props: IProps) => {
-  const { webhook, handleEdit } = props;
+  const { webhook, handleEdit, refresh, saveList, index } = props;
   const [visible, setVisible] = useState<boolean>(false);
-  const [ deleteModalOpen, setDeleteModalOpen ] = useState<boolean>(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const intl = useIntl();
 
   const handleMouseEnter = useCallback(() => {
@@ -41,6 +30,41 @@ const WebHookItem = (props: IProps) => {
   const handleMouseLeave = useCallback(() => {
     setVisible(false);
   }, []);
+
+  const handleDelete = useCallback(() => {
+    (async () => {
+      try {
+        const res = await deleteWebHook('' + webhook.id);
+        if (res.success) {
+          message.success(intl.formatMessage({ id: 'webhook.delete.success' }));
+          refresh();
+        } else {
+          message.error(res.message || intl.formatMessage({ id: 'webhook.delete.failed' }));
+        }
+      } catch (err) {
+        message.error(intl.formatMessage({ id: 'webhook.delete.failed' }));
+      }
+    })();
+  }, [intl, webhook, refresh]);
+
+  const updateStatus = useCallback(
+    async (status: WebHookStatus) => {
+      try {
+        const res = await updateWebHook(webhook.id + '', { ...webhook, status: status });
+        if(res.success) {
+          saveList((list) => {
+            list[index].status = status;
+            return cloneDeep(list);
+          });
+        } else {
+          message.error(intl.formatMessage({id: 'webhook.update.failed'}));
+        }
+      } catch {
+        message.error(intl.formatMessage({id: 'webhook.update.failed'}));
+      }
+    },
+    [webhook, saveList, index, intl]
+  );
 
   return (
     <>
@@ -62,12 +86,30 @@ const WebHookItem = (props: IProps) => {
         </Table.Cell>
         <Table.Cell>
           <div className={styles['webhook-info-status']}>
-            <Checkbox checked={webhook.status} toggle />
+            <Checkbox
+              onChange={(e, data) => {
+                updateStatus(data.checked ? WebHookStatus.ENABLE : WebHookStatus.DISABLE);
+              }}
+              checked={webhook.status === WebHookStatus.ENABLE}
+              toggle
+            />
           </div>
         </Table.Cell>
         <Table.Cell>
-          <div className={styles['webhook-info-application']}>
-            <TextLimit text={webhook.application} />
+          <div className={styles['webhook-info-recent']}>
+            <Popup
+              disabled={!webhook.lastedTime}
+              trigger={
+                !webhook.lastedTime ? (
+                  <span>-</span>
+                ) : webhook.lastedStatus ? (
+                  <span>{intl.formatMessage({ id: 'common.success.text' })}</span>
+                ) : (
+                  <span>{intl.formatMessage({ id: 'common.fail.text' })}</span>
+                )
+              }
+              content={<span>{webhook.lastedStatus + ' ' + webhook.lastedTime}</span>}
+            />
           </div>
         </Table.Cell>
         <Table.Cell>
@@ -77,35 +119,38 @@ const WebHookItem = (props: IProps) => {
         </Table.Cell>
         <Table.Cell>
           <div className={styles['webhook-info-operate']}>
-            <div className={styles['webhook-operation']}>
-              <div
-                className={styles['webhook-operation-item']}
-                onClick={(e) => {
-                  handleEdit(webhook.key);
-                }}
-              >
-                <FormattedMessage id="common.edit.text" />
+            {visible && (
+              <div className={styles['webhook-operation']}>
+                <div
+                  className={styles['webhook-operation-item']}
+                  onClick={() => {
+                    handleEdit(webhook.id);
+                  }}
+                >
+                  <FormattedMessage id="common.edit.text" />
+                </div>
+                <div
+                  className={styles['webhook-operation-item']}
+                  onClick={() => {
+                    setDeleteModalOpen(true);
+                  }}
+                >
+                  <FormattedMessage id="common.delete.text" />
+                </div>
               </div>
-              <div
-                className={styles['webhook-operation-item']}
-                onClick={(e) => {
-                  setDeleteModalOpen(true);
-                }}
-              >
-                <FormattedMessage id="common.delete.text" />
-              </div>
-            </div>
+            )}
           </div>
         </Table.Cell>
       </Table.Row>
       <DeleteTipsModal
         open={deleteModalOpen}
-        content={webhook.key}
-        title={webhook.key}
+        content={intl.formatMessage({ id: 'webhook.delete.tips.content' })}
+        title={intl.formatMessage({ id: 'webhook.delete.tips.title' })}
         onCancel={() => {
           setDeleteModalOpen(false);
         }}
         onConfirm={() => {
+          handleDelete();
           setDeleteModalOpen(false);
         }}
       />
