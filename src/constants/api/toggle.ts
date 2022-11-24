@@ -8,6 +8,8 @@ const ToggleURI = {
   targetingDiffURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/diff`,
   createToggleURI: `${origin}/projects/:projectKey/toggles`,
   editToggleURI: `${origin}/projects/:projectKey/toggles/:toggleKey`,
+  offlineToggleURI: `${origin}/projects/:projectKey/toggles/:toggleKey/offline`,
+  restoreToggleURI: `${origin}/projects/:projectKey/toggles/:toggleKey/restore`,
   tagsURI: `${origin}/projects/:projectKey/tags`,
   merticsURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/metrics`,
   toggleAccessURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/access`,

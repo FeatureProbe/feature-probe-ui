@@ -126,6 +126,7 @@
   "login.email.invalid.text": "无效的邮箱地址",
 
   "members.role": "角色",
+  "members.role.tips": "角色变更后，需要该成员退出并重新登录系统，新角色才能生效。",
   "members.createdby": "创建人",
   "members.lastseen": "最后登录时间",
   "members.total": "个成员",
@@ -189,6 +190,7 @@
   "projects.delete.title": "确认删除项目？",
   "projects.delete.content": "项目和项目中的环境都将被永久删除",
   "projects.delete.error": "删除项目失败",
+  "projects.delete.success": "删除项目成功！",
   "projects.cannot.delete.title": "无法删除",
   "projects.cannot.delete.content": "请先下线项目下的开关",
   "projects.environment.archive.title": "确认下线环境？",
@@ -257,6 +259,7 @@
   "toggles.settings.approval.enable.tips": "该环境存在审批流程未结束的开关，不允许关闭",
   "toggles.settings.approval.enable.writer.tips": "您没有操作权限",
   "toggles.settings.save.success": "保存成功",
+  "toggles.settings.save.error": "保存失败",
 
   "targeting.default.rule": "默认规则",
   "targeting.default.rule.tips": "指定上面所有规则都不命中时的返回分组",

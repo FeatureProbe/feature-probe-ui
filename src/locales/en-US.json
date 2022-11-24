@@ -126,6 +126,7 @@
   "login.email.invalid.text": "Invalid email address",
 
   "members.role": "Role",
+  "members.role.tips": "After the role is changed, the member needs to log out and sign in again to make the new role effective.",
   "members.createdby": "Created by",
   "members.lastseen": "Last seen",
   "members.total": "members in total",
@@ -189,6 +190,7 @@
   "projects.delete.title": "Are you sure to delete this project?",
   "projects.delete.content": "The project and the environments in the project will be permanently deleted.",
   "projects.delete.error": "Error deleting project",
+  "projects.delete.success": "Successfully deleting project!",
   "projects.cannot.delete.title": "Can not delete",
   "projects.cannot.delete.content": "Please archive toggles first.",
   "projects.environment.archive.title": "Are you sure to archive this environment?",
@@ -257,6 +259,7 @@
   "toggles.settings.approval.enable.tips": "The environment has toggles in the approval process that are not allowed to be turned off",
   "toggles.settings.approval.enable.writer.tips": "Permission denied",
   "toggles.settings.save.success": "Saved successfully",
+  "toggles.settings.save.error": "Saved failed",
 
   "targeting.default.rule": "Default Rule",
   "targeting.default.rule.tips": "Define the return value when no rule is matched.",
