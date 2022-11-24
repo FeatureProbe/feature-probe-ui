@@ -127,7 +127,7 @@ const Info = (props: IProps) => {
           initTargeting();
         }
       } else {
-        message.success(intl.formatMessage({id: 'targeting.approval.cancel.error'}));
+        message.error(intl.formatMessage({id: 'targeting.approval.cancel.error'}));
       }
     // Revoke approval
     } else if (status === 'REVOKE') {
@@ -144,7 +144,7 @@ const Info = (props: IProps) => {
           initTargeting();
         }
       } else {
-        message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+        message.error(intl.formatMessage({id: 'targeting.approval.operate.error'}));
       }
     // Other operation
     } else {
@@ -157,7 +157,7 @@ const Info = (props: IProps) => {
         message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
         initTargeting();
       } else {
-        message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+        message.error(intl.formatMessage({id: 'targeting.approval.operate.error'}));
       }
     }
   }, [setValue, status, projectKey, environmentKey, toggleKey, comment, intl, isReEdit, refreshInitialTargeting, initTargeting]);
@@ -167,11 +167,12 @@ const Info = (props: IProps) => {
     const res = await cancelTargetingDraft(projectKey, environmentKey, toggleKey, {
       comment: ''
     });
+
     if (res.success) {
       initTargeting();
       message.success(intl.formatMessage({id: 'targeting.approval.operate.success'}));
     } else {
-      message.success(intl.formatMessage({id: 'targeting.approval.operate.error'}));
+      message.error(intl.formatMessage({id: 'targeting.approval.operate.error'}));
     }
   }, [intl, projectKey, environmentKey, toggleKey, initTargeting]);
 
@@ -194,7 +195,7 @@ const Info = (props: IProps) => {
         message.success(intl.formatMessage({id: 'targeting.publish.success.text'}));
         initTargeting();
       } else {
-        message.success(intl.formatMessage({id: 'targeting.publish.error.text'}));
+        message.error(intl.formatMessage({id: 'targeting.publish.error.text'}));
       }
     });
   }, [intl, projectKey, environmentKey, toggleKey, initTargeting]);
@@ -412,31 +413,37 @@ const Info = (props: IProps) => {
                   }
 
                   {/* Button Abandon */}
-                  {/* Button Publish */}
                   {
                     (
                       enableApproval && 
                       (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && 
                       (approvalInfo?.submitBy === userInfo.account || OWNER.includes(userInfo.role))
                     ) && (
-                      <>
-                        <Button 
-                          secondary 
-                          className={styles['dangerous-btn']}
-                          onClick={() => { 
-                            saveOpen(true);
-                            saveStatus('CANCEL');
-                          }}
-                        >
-                          <FormattedMessage id='targeting.approval.operation.abandon' />
-                        </Button>
-                        <Button loading={approvePublishLoading} disabled={approvePublishLoading} primary className={styles.btn} onClick={handlePublish}>
-                          <FormattedMessage id='targeting.approval.operation.publish' />
-                        </Button>
-                      </>
+                      <Button 
+                        secondary 
+                        className={styles['dangerous-btn']}
+                        onClick={() => { 
+                          saveOpen(true);
+                          saveStatus('CANCEL');
+                        }}
+                      >
+                        <FormattedMessage id='targeting.approval.operation.abandon' />
+                      </Button>
                     )
                   }
 
+                  {/* Button Publish */}
+                  {
+                    (
+                      enableApproval && 
+                      (toggleStatus === 'PASS' || toggleStatus === 'JUMP') && 
+                      (approvalInfo?.submitBy === userInfo.account)
+                    ) && (
+                      <Button loading={approvePublishLoading} disabled={approvePublishLoading} primary className={styles.btn} onClick={handlePublish}>
+                        <FormattedMessage id='targeting.approval.operation.publish' />
+                      </Button>
+                    )
+                  }
                   
                   {/* Button Abandon */}
                   {/* Button Modify */}
