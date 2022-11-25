@@ -495,5 +495,6 @@
   "webhook.delete.success": "Successfully deleted",
   "webhook.delete.failed": "Failed deleted",
   "webhook.delete.tips.title": "Tips",
-  "webhook.delete.tips.content": "Are you sure you want to delete this WebHook?"
+  "webhook.delete.tips.content": "Are you sure you want to delete this WebHook?",
+  "webhook.status.code.text": "Status code"
 }

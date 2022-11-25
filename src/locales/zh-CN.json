@@ -495,5 +495,6 @@
   "webhook.delete.success": "删除成功",
   "webhook.delete.failed": "删除失败",
   "webhook.delete.tips.title": "提示",
-  "webhook.delete.tips.content": "确定要删除该WebHook吗？"
+  "webhook.delete.tips.content": "确定要删除该WebHook吗？",
+  "webhook.status.code.text": "状态码"
 }

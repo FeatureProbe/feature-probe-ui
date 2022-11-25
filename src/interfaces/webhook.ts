@@ -13,6 +13,7 @@ export interface IWebHook {
   application?: string;
   lastedStatus?: string;
   lastedTime?: string;
+  lastedStatusCode?: string;
 }
 
 export interface IWebHookInfo {

@@ -51,16 +51,16 @@ const WebHookItem = (props: IProps) => {
     async (status: WebHookStatus) => {
       try {
         const res = await updateWebHook(webhook.id + '', { ...webhook, status: status });
-        if(res.success) {
+        if (res.success) {
           saveList((list) => {
             list[index].status = status;
             return cloneDeep(list);
           });
         } else {
-          message.error(intl.formatMessage({id: 'webhook.update.failed'}));
+          message.error(intl.formatMessage({ id: 'webhook.update.failed' }));
         }
       } catch {
-        message.error(intl.formatMessage({id: 'webhook.update.failed'}));
+        message.error(intl.formatMessage({ id: 'webhook.update.failed' }));
       }
     },
     [webhook, saveList, index, intl]
@@ -102,13 +102,18 @@ const WebHookItem = (props: IProps) => {
               trigger={
                 !webhook.lastedTime ? (
                   <span>-</span>
-                ) : webhook.lastedStatus ? (
+                ) : webhook.lastedStatus === 'SUCCESS' ? (
                   <span>{intl.formatMessage({ id: 'common.success.text' })}</span>
                 ) : (
                   <span>{intl.formatMessage({ id: 'common.fail.text' })}</span>
                 )
               }
-              content={<span>{webhook.lastedStatus + ' ' + webhook.lastedTime}</span>}
+              content={
+                <span>
+                  {intl.formatMessage({ id: 'webhook.status.code.text' })}:
+                  {webhook.lastedStatusCode + ' ' + webhook.lastedTime}
+                </span>
+              }
             />
           </div>
         </Table.Cell>
