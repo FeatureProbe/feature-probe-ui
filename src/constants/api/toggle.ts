@@ -5,6 +5,7 @@ const ToggleURI = {
   getToggleInfoURI: `${origin}/projects/:projectKey/toggles/:toggleKey`,
   environmentURI: `${origin}/projects/:projectKey/environments`,
   targetingURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting`,
+  approvalTargetingURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/approval`,
   targetingDiffURI: `${origin}/projects/:projectKey/environments/:environmentKey/toggles/:toggleKey/targeting/diff`,
   createToggleURI: `${origin}/projects/:projectKey/toggles`,
   editToggleURI: `${origin}/projects/:projectKey/toggles/:toggleKey`,
