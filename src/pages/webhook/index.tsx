@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Dimmer, Form, InputOnChangeData, Loader, Pagination, PaginationProps, Table } from 'semantic-ui-react';
 
 import Icon from 'components/Icon';
-import WebHookLayout from 'layout/webHookLayout';
+import SettingLayout from 'layout/settingLayout';
 import styles from './index.module.scss';
 import WebHookItem from './components/webHookItem';
 import { cloneDeep, debounce } from 'lodash';
@@ -28,9 +28,12 @@ const WebHook = () => {
   const [search, saveSearch] = useState<string>('');
   const intl = useIntl();
 
-  const handleSearch = debounce(useCallback((e, data: InputOnChangeData) => {
-    saveSearch(data.value);
-  }, []), 500);
+  const handleSearch = debounce(
+    useCallback((e, data: InputOnChangeData) => {
+      saveSearch(data.value);
+    }, []),
+    500
+  );
 
   const handleAddWebHook = useCallback(() => {
     setIsAdd(true);
@@ -50,7 +53,7 @@ const WebHook = () => {
       const res = await getWebHookList<IWebHookListResponse>({
         pageIndex: pagination.pageIndex,
         pageSize: 10,
-        nameLike: search ? search : undefined
+        nameLike: search ? search : undefined,
       });
       if (res.success && res.data) {
         saveList(res.data.content);
@@ -72,7 +75,7 @@ const WebHook = () => {
   }, [fetchWebHookList]);
 
   return (
-    <WebHookLayout>
+    <SettingLayout>
       <Provider>
         <div className={styles.card}>
           <div className={styles.title}>
@@ -108,54 +111,56 @@ const WebHook = () => {
             </div>
           ) : (
             <>
-              <div className={styles['table-box']}>
-                <Table basic="very" unstackable>
-                  <Table.Header className={styles['table-header']}>
-                    <Table.Row>
-                      <Table.HeaderCell className={styles['column-brief']}>
-                        <FormattedMessage id="common.name.text" />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-description']}>
-                        <FormattedMessage id="common.description.text" />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-type']}>
-                        <FormattedMessage id="toggles.filter.status" />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-tags']}>
-                        <FormattedMessage id="webhook.recent.text" />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-url']}>
-                        <FormattedMessage id="webhook.url.text" />
-                      </Table.HeaderCell>
-                      <Table.HeaderCell className={styles['column-operation']}>
-                        <FormattedMessage id="common.operation.text" />
-                      </Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body className={styles['table-body']}>
-                    {list.map((item, index) => {
-                      return (
-                        <WebHookItem
-                          index={index}
-                          saveList={saveList}
-                          refresh={fetchWebHookList}
-                          handleEdit={() => {
-                            saveDrawerValue(item);
-                            setDrawerVisible(true);
-                            setIsAdd(false);
-                          }}
-                          key={item.id}
-                          webhook={item}
-                        />
-                      );
-                    })}
-                  </Table.Body>
-                </Table>
-                {!list.length && (
-                  <div className={styles['nodata-box']}>
-                    <NoData />
-                  </div>
-                )}
+              <div className={styles['table-scroll-box']}>
+                <div className={styles['table-box']}>
+                  <Table basic="very" unstackable>
+                    <Table.Header className={styles['table-header']}>
+                      <Table.Row>
+                        <Table.HeaderCell className={styles['column-brief']}>
+                          <FormattedMessage id="common.name.text" />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell className={styles['column-description']}>
+                          <FormattedMessage id="common.description.text" />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell className={styles['column-type']}>
+                          <FormattedMessage id="toggles.filter.status" />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell className={styles['column-recent']}>
+                          <FormattedMessage id="webhook.recent.text" />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell className={styles['column-url']}>
+                          <FormattedMessage id="webhook.url.text" />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell className={styles['column-operation']}>
+                          <FormattedMessage id="common.operation.text" />
+                        </Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+                    <Table.Body className={styles['table-body']}>
+                      {list.map((item, index) => {
+                        return (
+                          <WebHookItem
+                            index={index}
+                            saveList={saveList}
+                            refresh={fetchWebHookList}
+                            handleEdit={() => {
+                              saveDrawerValue(item);
+                              setDrawerVisible(true);
+                              setIsAdd(false);
+                            }}
+                            key={item.id}
+                            webhook={item}
+                          />
+                        );
+                      })}
+                    </Table.Body>
+                  </Table>
+                  {!list.length && (
+                    <div className={styles['nodata-box']}>
+                      <NoData />
+                    </div>
+                  )}
+                </div>
               </div>
               <div className={styles.pagination}>
                 <div className={styles['total']}>
@@ -192,7 +197,7 @@ const WebHook = () => {
           />
         </div>
       </Provider>
-    </WebHookLayout>
+    </SettingLayout>
   );
 };
 

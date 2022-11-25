@@ -25,9 +25,9 @@ export const TARGETING_PATH = '/:projectKey/:environmentKey/:toggleKey/:navigati
 export const GET_STARTED_PATH = '/:projectKey/:environmentKey/:toggleKey/get-started';
 export const MEMBER_PATH = '/settings/members';
 export const PROFILE_PATH = '/settings/profile';
+export const WEBHOOK_LIST_PATH = '/settings/webhook/list';
 export const APPROVAL_PATH = '/approvals/:navigation';
-export const WEBHOOK_LIST_PATH = '/webHook/list';
-export const WEBHOOK_SEAT_PATH = '/webHook/seat';
+
 
 
 const isDemo = localStorage.getItem('isDemo') === 'true';
