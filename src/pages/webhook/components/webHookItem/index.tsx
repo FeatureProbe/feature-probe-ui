@@ -8,6 +8,7 @@ import { IWebHook, WebHookStatus } from 'interfaces/webhook';
 import DeleteTipsModal from 'components/DeleteTipsModal';
 import { deleteWebHook, updateWebHook } from 'services/webhook';
 import { cloneDeep } from 'lodash';
+import dayjs from 'dayjs';
 
 interface IProps {
   webhook: IWebHook;
@@ -110,8 +111,8 @@ const WebHookItem = (props: IProps) => {
               }
               content={
                 <span>
-                  {intl.formatMessage({ id: 'webhook.status.code.text' })}:
-                  {webhook.lastedStatusCode + ' ' + webhook.lastedTime}
+                  {intl.formatMessage({ id: 'webhook.status.code.text' })}:{webhook.lastedStatusCode}
+                  <div>{dayjs(webhook.lastedTime).format('YYYY-MM-DD HH:mm:ss')}</div>
                 </span>
               }
             />
