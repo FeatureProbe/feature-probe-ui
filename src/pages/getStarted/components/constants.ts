@@ -115,7 +115,8 @@ export const getGoCode = (options: IOption) => {
 `config := featureprobe.FPConfig{
     RemoteUrl:       "${remoteUrl}",
     ServerSdkKey:    "${serverSdkKey}",
-    RefreshInterval: 1000,
+    RefreshInterval: 2 * time.Second,
+    StartWait:       5 * time.Second,
 }
   
 fp, err := featureprobe.NewFeatureProbe(config)
