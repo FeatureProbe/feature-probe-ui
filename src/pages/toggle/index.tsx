@@ -515,7 +515,8 @@ const Toggle = () => {
                                     <span>
                                       <FormattedMessage id='toggles.table.publishing.status' />
                                     </span>
-                                    <Filter 
+                                    <Filter
+                                      selected={releaseStatusList.length > 0}
                                       handleConfirm={() => {
                                         setSearchParams({
                                           ...searchParams,

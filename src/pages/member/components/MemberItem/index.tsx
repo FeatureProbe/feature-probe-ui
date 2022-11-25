@@ -54,7 +54,7 @@ const MemberItem = (props: IProps) => {
       message.success(intl.formatMessage({id: 'members.delete.success.text'}));
       refreshMemberList(0);
     } else {
-      message.success(intl.formatMessage({id: 'members.delete.error.text'}));
+      message.error(intl.formatMessage({id: 'members.delete.error.text'}));
     }
   }, [intl, refreshMemberList]);
 
