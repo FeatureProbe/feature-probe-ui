@@ -1650,7 +1650,7 @@ exports[`RuleContent number input 1`] = `
                 <span
                   class="text"
                 >
-                  !=
+                  ≠
                 </span>
               </div>
               <div
@@ -1676,7 +1676,7 @@ exports[`RuleContent number input 1`] = `
                 <span
                   class="text"
                 >
-                  &lt;=
+                  ≤
                 </span>
               </div>
               <div
@@ -1702,7 +1702,7 @@ exports[`RuleContent number input 1`] = `
                 <span
                   class="text"
                 >
-                  &gt;=
+                  ≥
                 </span>
               </div>
             </div>
@@ -2995,7 +2995,7 @@ exports[`RuleContent semver input 1`] = `
                 <span
                   class="text"
                 >
-                  !=
+                  ≠
                 </span>
               </div>
               <div
@@ -3021,7 +3021,7 @@ exports[`RuleContent semver input 1`] = `
                 <span
                   class="text"
                 >
-                  &lt;=
+                  ≤
                 </span>
               </div>
               <div
@@ -3047,7 +3047,7 @@ exports[`RuleContent semver input 1`] = `
                 <span
                   class="text"
                 >
-                  &gt;=
+                  ≥
                 </span>
               </div>
             </div>
@@ -3177,7 +3177,9 @@ exports[`RuleContent snapshot 1`] = `
             >
               <div
                 class="rule-item-type-text"
-              />
+              >
+                targeting.rule.operator.type.empty
+              </div>
             </div>
             <span
               class="iconfont icon-angle-down angle-down"
@@ -3311,7 +3313,9 @@ exports[`RuleContent snapshot 2 1`] = `
             >
               <div
                 class="rule-item-type-text"
-              />
+              >
+                targeting.rule.operator.type.empty
+              </div>
             </div>
             <span
               class="iconfont icon-angle-down angle-down"

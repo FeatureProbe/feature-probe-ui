@@ -202,8 +202,8 @@ test('RuleContent number input', (done) => {
     await userEvent.keyboard('{Enter}');
 
     await userEvent.click(screen.getAllByText('Select an operator')[0]);
-    await userEvent.click(screen.getByText('>='));
-    expect(screen.getAllByText('>=').length).toBe(1);
+    await userEvent.click(screen.getByText('≥'));
+    expect(screen.getAllByText('≥').length).toBe(1);
 
     await userEvent.click(screen.getByText('Enter some values'));
     await userEvent.keyboard('test number');
@@ -247,8 +247,8 @@ test('RuleContent semver input', (done) => {
     await userEvent.keyboard('{Enter}');
 
     await userEvent.click(screen.getAllByText('Select an operator')[0]);
-    await userEvent.click(screen.getByText('>='));
-    expect(screen.getAllByText('>=').length).toBe(1);
+    await userEvent.click(screen.getByText('≥'));
+    expect(screen.getAllByText('≥').length).toBe(1);
 
     await userEvent.click(screen.getByText('Enter some values'));
     await userEvent.keyboard('test number');
@@ -292,7 +292,7 @@ test('RuleContent datetime input', (done) => {
     );
 
     await userEvent.click(screen.getByPlaceholderText('Please select'));
-    await userEvent.click(screen.getByText(`${((new Date().getDate() + 1) % 28) + 1}`));
+    await userEvent.click(screen.getAllByText(`${((new Date().getDate() + 1) % 28) + 1}`)[0]);
 
     await userEvent.click(screen.getAllByText('UTC +8')[0]);
     await userEvent.click(screen.getByText('UTC +3'));
