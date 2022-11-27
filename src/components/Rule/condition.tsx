@@ -206,7 +206,7 @@ const RuleContent = (props: IProps) => {
               <>
                 <div className={styles['rule-item-type']}>
                   <div className={styles['rule-item-type-text']}>
-                    {condition.type}
+                    {intl.formatMessage({id: `targeting.rule.operator.type.${condition.type}`})}
                   </div>
                 </div>
                 <Icon customclass={styles['angle-down']} type='angle-down' />
