@@ -4,6 +4,7 @@ export enum WebHookStatus {
 }
 
 export interface IWebHook {
+  [key: string]: unknown;
   id: number;
   name: string;
   description: string;
@@ -17,6 +18,7 @@ export interface IWebHook {
 }
 
 export interface IWebHookInfo {
+  [key: string]: unknown;
   name: string;
   description: string;
   status: WebHookStatus;

@@ -122,7 +122,7 @@ const ProjectSetting = () => {
         saveOriginSetting(approvalSetting);
         clearErrors();
       } else {
-        message.success(intl.formatMessage({id: 'toggles.settings.save.error'}));
+        message.error(intl.formatMessage({id: 'toggles.settings.save.error'}));
       }
       setSubmitLoading(false);
     }).catch(() => {

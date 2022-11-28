@@ -19,17 +19,38 @@ export const useWebHookInfo = () => {
   });
 
   const handleChange = (e: SyntheticEvent, detail: InputOnChangeData | TextAreaProps | DropdownProps | CheckboxProps, type: string) => {
-    const value = detail.value;
-    // @ts-ignore detail value
-    webHookInfo[type] = value;
+    webHookInfo[type] = detail.value as string;
 
     saveWebHookInfo({...webHookInfo});
+  };
+
+  const handleChangeStatus = (status?: boolean) => {
+    webHookInfo.status = status ? WebHookStatus.ENABLE : WebHookStatus.DISABLE;
+
+    saveWebHookInfo({...webHookInfo});
+  };
+
+  const init = () => {
+    saveWebHookInfo({
+      name: '',
+      description: '',
+      url: '',
+      status: WebHookStatus.ENABLE,
+    });
+    saveOriginWebHookInfo({
+      name: '',
+      description: '',
+      url: '',
+      status: WebHookStatus.ENABLE,
+    });
   };
 
   return {
     webHookInfo,
     originWebHookInfo,
+    init,
     handleChange,
+    handleChangeStatus,
     saveWebHookInfo,
     saveOriginWebHookInfo,
   };

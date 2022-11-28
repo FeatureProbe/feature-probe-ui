@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from 'react';
 import { FieldErrors } from 'react-hook-form';
 import { Form } from 'semantic-ui-react';
-import styles from './index.module.scss';
+import 'index.scss';
 
 interface FormItemProps {
   label: ReactNode;
@@ -16,11 +16,11 @@ const FormItem: React.FC<FormItemProps> = (props) => {
   return (
     <Form.Field>
       <label>
-        {required && <span className={styles['label-required']}>*</span>}
+        {required && <span className='label-required'>*</span>}
         {label}
       </label>
       {children}
-      {error && <div style={errorCss} className={styles['error-text']}>{error.message}</div>}
+      {error && <div style={errorCss} className='error-text'>{error.message}</div>}
     </Form.Field>
   );
 };

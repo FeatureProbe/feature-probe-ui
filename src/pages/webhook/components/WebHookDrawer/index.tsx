@@ -1,19 +1,16 @@
 import { useEffect, useCallback, useState } from 'react';
-import {
-  Checkbox,
-  Form,
-} from 'semantic-ui-react';
+import { Checkbox, Form } from 'semantic-ui-react';
 import classNames from 'classnames';
 import { FormattedMessage, useIntl } from 'react-intl';
 import message from 'components/MessageBox';
 import Button from 'components/Button';
 import Icon from 'components/Icon';
-
-import styles from './index.module.scss';
 import { hooksFormContainer, webHookInfoContainer } from 'pages/webhook/provider';
 import FormItem from 'components/FormItem';
 import { IWebHook, WebHookStatus } from 'interfaces/webhook';
 import { createWebHook, updateWebHook } from 'services/webhook';
+import styles from './index.module.scss';
+import 'index.scss';
 
 interface IProps {
   defaultValue?: IWebHook;
@@ -34,10 +31,17 @@ const WebHookDrawer = (props: IProps) => {
     handleSubmit,
     setValue,
     trigger,
-    clearErrors
+    clearErrors,
   } = hooksFormContainer.useContainer();
 
-  const { webHookInfo, handleChange, saveWebHookInfo, saveOriginWebHookInfo } = webHookInfoContainer.useContainer();
+  const { 
+    init, 
+    webHookInfo, 
+    handleChange, 
+    saveWebHookInfo, 
+    saveOriginWebHookInfo,
+    handleChangeStatus,
+  } = webHookInfoContainer.useContainer();
 
   useEffect(() => {
     register('url', {
@@ -71,28 +75,42 @@ const WebHookDrawer = (props: IProps) => {
       try {
         let res;
         setSubmitLoading(true);
-        if(isAdd) {
+        if (isAdd) {
           res = await createWebHook(webHookInfo);
         } else {
           res = await updateWebHook('' + defaultValue?.id, webHookInfo);
         }
-        if(res.success) {
-          message.success(intl.formatMessage({id: 'webhook.create.success'}));
+        if (res.success) {
+          message.success(
+            isAdd
+              ? intl.formatMessage({ id: 'webhook.create.success' })
+              : intl.formatMessage({ id: 'webhook.update.success' })
+          );
           refresh();
           onClose();
+          init();
         } else {
-          message.error(res.message || intl.formatMessage({id: 'webhook.create.failed'}));
+          message.error(
+            res.message ||
+              (isAdd
+                ? intl.formatMessage({ id: 'webhook.create.failed' })
+                : intl.formatMessage({ id: 'webhook.update.failed' }))
+          );
         }
-      } catch(err) {
-        message.error(intl.formatMessage({id: 'webhook.create.failed'}));
+      } catch (err) {
+        message.error(
+          isAdd
+            ? intl.formatMessage({ id: 'webhook.create.failed' })
+            : intl.formatMessage({ id: 'webhook.update.failed' })
+        );
       } finally {
         setSubmitLoading(false);
       }
     })();
-  }, [isAdd, webHookInfo, defaultValue?.id, intl, refresh, onClose]);
+  }, [isAdd, webHookInfo, defaultValue?.id, intl, refresh, onClose, init]);
 
   useEffect(() => {
-    if(visible && defaultValue) {
+    if (visible && defaultValue) {
       saveOriginWebHookInfo(defaultValue);
       saveWebHookInfo(defaultValue);
       setValue('name', defaultValue.name);
@@ -108,10 +126,16 @@ const WebHookDrawer = (props: IProps) => {
         <div className={styles.title}>
           <div className={styles['title-left']}>
             {isAdd
-              ? intl.formatMessage({ id: 'projects.create.project' })
-              : intl.formatMessage({ id: 'projects.edit.project' })}
+              ? intl.formatMessage({ id: 'webhook.create.text' })
+              : intl.formatMessage({ id: 'webhook.edit.text' })}
           </div>
-          <Button disabled={Object.keys(errors).length !== 0 || submitLoading} loading={submitLoading} size="mini" primary type="submit">
+          <Button
+            disabled={Object.keys(errors).length !== 0 || submitLoading}
+            loading={submitLoading}
+            size="mini"
+            primary
+            type="submit"
+          >
             {isAdd ? intl.formatMessage({ id: 'common.create.text' }) : intl.formatMessage({ id: 'common.save.text' })}
           </Button>
           <div className={styles.divider}></div>
@@ -121,20 +145,21 @@ const WebHookDrawer = (props: IProps) => {
             onClick={() => {
               clearErrors();
               onClose();
+              init();
             }}
           />
         </div>
         <div className={styles['webhook-drawer-form-content']}>
           <Form.Field>
             <label>
-              <span className={styles['label-required']}>*</span>
+              <span className="label-required">*</span>
               <FormattedMessage id="toggles.filter.status" />
             </label>
             <div className={styles['webhook-info-status']}>
               <Checkbox
                 checked={webHookInfo.status === WebHookStatus.ENABLE}
                 toggle
-                onChange={(e, detail) => handleChange(e, detail, 'status')}
+                onChange={(e, detail) => handleChangeStatus(detail.checked)}
               />
             </div>
           </Form.Field>
@@ -169,7 +194,7 @@ const WebHookDrawer = (props: IProps) => {
               name="url"
               className={styles.input}
               value={webHookInfo.url}
-              placeholder={intl.formatMessage({ id: 'common.description.required' })}
+              placeholder={intl.formatMessage({ id: 'webhook.url.required' })}
               error={errors.url ? true : false}
               onChange={(e, detail) => {
                 setValue('url', detail.value);
@@ -179,8 +204,8 @@ const WebHookDrawer = (props: IProps) => {
             />
           </FormItem>
           <div className={styles['url-normal-tips']}>
-              <FormattedMessage id='webhook.url.normal.text' />
-            </div>
+            <FormattedMessage id="webhook.url.normal.text" />
+          </div>
         </div>
       </Form>
     </div>

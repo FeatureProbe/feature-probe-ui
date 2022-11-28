@@ -23,7 +23,7 @@ import Variations from 'components/Variations';
 import SectionTitle from 'components/SectionTitle';
 import EventTracker from 'components/EventTracker';
 import Diff from 'components/Diff';
-import { approvalToggle, saveToggle } from 'services/toggle';
+import { approveToggle, saveToggle } from 'services/toggle';
 import { replaceSpace } from 'utils/tools';
 import { 
   variationContainer,
@@ -385,7 +385,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
     if (publishTargeting) {
       let res;
       if(approvalInfo && approvalInfo.enableApproval) {
-        res = await approvalToggle(projectKey, environmentKey, toggleKey, {
+        res = await approveToggle(projectKey, environmentKey, toggleKey, {
           comment,
           ...publishTargeting,
           reviewers: approvalInfo.reviewers

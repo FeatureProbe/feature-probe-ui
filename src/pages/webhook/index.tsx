@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Dimmer, Form, InputOnChangeData, Loader, Pagination, PaginationProps, Table } from 'semantic-ui-react';
+import { Button, Dimmer, Form, InputOnChangeData, Loader, PaginationProps, Table } from 'semantic-ui-react';
 
 import Icon from 'components/Icon';
 import SettingLayout from 'layout/settingLayout';
@@ -13,6 +13,7 @@ import { Provider } from './provider';
 import { getWebHookList } from 'services/webhook';
 import message from 'components/MessageBox';
 import NoData from 'components/NoData';
+import CustomPagination from 'components/Pagination';
 
 const WebHook = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -155,34 +156,23 @@ const WebHook = () => {
                       })}
                     </Table.Body>
                   </Table>
-                  {!list.length && (
-                    <div className={styles['nodata-box']}>
-                      <NoData />
-                    </div>
-                  )}
                 </div>
               </div>
-              <div className={styles.pagination}>
-                <div className={styles['total']}>
-                  <span className={styles['total-count']}>{pagination.totalItems} </span>
-                  <FormattedMessage id="toggles.total" />
+              {!list.length ? (
+                <div className={styles['nodata-box']}>
+                  <NoData />
                 </div>
-                {
-                  <Pagination
-                    activePage={pagination.pageIndex + 1}
-                    totalPages={pagination.totalPages}
-                    onPageChange={handlePageChange}
-                    firstItem={null}
-                    lastItem={null}
-                    prevItem={{
-                      content: <Icon type="angle-left" />,
-                    }}
-                    nextItem={{
-                      content: <Icon type="angle-right" />,
-                    }}
-                  />
-                }
-              </div>
+              ) : (
+                <CustomPagination
+                  pagination={{
+                    totalPages: pagination.totalPages,
+                    pageIndex: pagination.pageIndex + 1,
+                  }}
+                  handlePageChange={handlePageChange}
+                  total={pagination.totalItems}
+                  text={intl.formatMessage({ id: 'webhook.total' })}
+                />
+              )}
             </>
           )}
           <WebHookDrawer

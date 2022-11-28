@@ -69,7 +69,7 @@ export const saveToggle = async (projectKey: string, environmentKey: string, tog
   });
 };
 
-export const approvalToggle = async (projectKey: string, environmentKey: string, toggleKey: string, data: ITargetingParams) => {
+export const approveToggle = async (projectKey: string, environmentKey: string, toggleKey: string, data: ITargetingParams) => {
   const url = `${
     API.approvalTargetingURI
       .replace(':projectKey', projectKey)

@@ -97,11 +97,11 @@
   "common.lock.time": "Locked at",
   "common.next.text": "Next",
   "common.previous.text": "Previous",
-  "common.webhook.text": "WebHook",
+  "common.webhook.text": "WebHooks",
   "common.event.text": "event",
   "common.total": " in total",
-  "common.success.text": "success",
-  "common.fail.text": "fail",
+  "common.success.text": "Success",
+  "common.fail.text": "Fail",
 
   "header.getuser.error.text": "Error getting user profile",
 
@@ -259,7 +259,7 @@
   "toggles.settings.approval.enable.tips": "The environment has toggles in the approval process that are not allowed to be turned off",
   "toggles.settings.approval.enable.writer.tips": "Permission denied",
   "toggles.settings.save.success": "Saved successfully",
-  "toggles.settings.save.error": "Saved failed",
+  "toggles.settings.save.error": "Error saving",
 
   "targeting.default.rule": "Default Rule",
   "targeting.default.rule.tips": "Define the return value when no rule is matched.",
@@ -488,13 +488,16 @@
   "webhook.url.normal.text": "Enter the URL from one of your application incoming webhooks.",
   "webhook.application.required": "Please select application",
   "webhook.recent.text": "Recently pushed",
-  "webhook.create.success": "Successfully created",
+  "webhook.create.success": "WebHook created successfully",
   "webhook.create.failed": "Failed created",
-  "webhook.update.success": "Successfully updated",
+  "webhook.update.success": "WebHook updated successfully",
   "webhook.update.failed": "Failed updated",
-  "webhook.delete.success": "Successfully deleted",
+  "webhook.delete.success": "Successfully deleting WebHook",
   "webhook.delete.failed": "Failed deleted",
   "webhook.delete.tips.title": "Tips",
-  "webhook.delete.tips.content": "Are you sure you want to delete this WebHook?",
-  "webhook.status.code.text": "Status code"
+  "webhook.delete.tips.content": "Are you sure to delete this WebHook?",
+  "webhook.status.code.text": "Status code",
+  "webhook.create.text": "Create a WebHook",
+  "webhook.edit.text": "Edit WebHook",
+  "webhook.total": "WebHooks in total"
 }

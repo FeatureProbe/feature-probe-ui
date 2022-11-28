@@ -4,12 +4,12 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { Table } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
 import TextLimit from 'components/TextLimit';
+import DeleteTipsModal from 'components/DeleteTipsModal';
 import { ISegment, IToggleList } from 'interfaces/segment';
 import { deleteSegment, getSegmentUsingToggles } from 'services/segment';
 import message from 'components/MessageBox';
 import { segmentContainer } from '../../provider';
 import styles from './index.module.scss';
-import DeleteTipsModal from 'components/DeleteTipsModal';
 
 interface ILocationParams {
   projectKey: string;

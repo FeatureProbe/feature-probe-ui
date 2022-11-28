@@ -50,10 +50,11 @@
 }
 
 .table-scroll-box {
-  overflow: auto;
-  flex: 1 1;
+  overflow-x: auto;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  padding-bottom: 2px;
 }
 
 .table-box {
@@ -61,7 +62,6 @@
   padding: 0 20px 0;
   margin-top: 12px;
   min-width: 1200px;
-  overflow: auto;
   flex: 1 1;
 }
 
