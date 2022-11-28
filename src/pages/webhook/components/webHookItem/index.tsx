@@ -82,7 +82,7 @@ const WebHookItem = (props: IProps) => {
         </Table.Cell>
         <Table.Cell>
           <div className={styles['webhook-info-description']}>
-            <TextLimit text={webhook.description ? webhook.description : '-'} />
+            <TextLimit text={webhook.description ? webhook.description : '-'} maxWidth={187} />
           </div>
         </Table.Cell>
         <Table.Cell>
