@@ -7,6 +7,7 @@ import RuleContent from '.';
 import { IntlWrapper } from 'components/utils/wrapper';
 import { hooksFormContainer, ruleContainer, segmentContainer, variationContainer } from 'pages/targeting/provider';
 import sleep from 'utils/sleep';
+import { act } from 'react-test-renderer';
 
 const RuleData = {
   id: 'testId1',
@@ -127,18 +128,18 @@ test('RuleContent opt', (done) => {
       }
     );
 
-    await userEvent.click(screen.getByText('Add'));
-    await sleep(500);
-    expect(baseElement).toMatchSnapshot();
-    await userEvent.click(screen.getByText('number'));
-    await userEvent.click(screen.getByText('datetime'));
-    await userEvent.click(screen.getByText('semver'));
-    await userEvent.click(screen.getByText('segment'));
-
-    const serve = screen.getAllByText('Please select').pop();
-    serve && (await userEvent.click(serve));
-    userEvent.click(screen.getByText('a percentage rollout'));
-
+    await act(async () => {
+      await userEvent.click(screen.getByText('Add'));
+      expect(baseElement).toMatchSnapshot();
+      await userEvent.click(screen.getByText('number'));
+      await userEvent.click(screen.getByText('semver'));
+      await userEvent.click(screen.getByText('segment'));
+  
+      const serve = screen.getAllByText('Please select').pop();
+      serve && (await userEvent.click(serve));
+      userEvent.click(screen.getByText('a percentage rollout'));
+    });
+    
     const ele = document.createElement('div');
     ele.innerHTML = baseElement.innerHTML
       .replaceAll(/(\d\d\/\d\d\/\d\d\d\d )*\d\d:\d\d:\d\d/g, 'test_value')
@@ -146,7 +147,6 @@ test('RuleContent opt', (done) => {
         return ` name="test-name-${i}"`;
       })
       .replaceAll(' rdtActive rdtToday', '');
-
     expect(ele).toMatchSnapshot();
 
     done();

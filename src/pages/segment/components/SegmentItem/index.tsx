@@ -65,7 +65,7 @@ const ToggleItem = (props: IProps) => {
         message.success(intl.formatMessage({id: 'segments.delete.success'}));
         fetchSegmentLists();
       } else {
-        message.success(intl.formatMessage({id: 'segments.delete.error'}));
+        message.error(intl.formatMessage({id: 'segments.delete.error'}));
       }
       setOpen(false);
     });
