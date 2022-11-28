@@ -97,7 +97,7 @@
   "common.lock.time": "Locked at",
   "common.next.text": "Next",
   "common.previous.text": "Previous",
-  "common.webhook.text": "WebHooks",
+  "common.webhooks.text": "WebHooks",
   "common.event.text": "event",
   "common.total": " in total",
   "common.success.text": "Success",

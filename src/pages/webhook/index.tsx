@@ -80,7 +80,7 @@ const WebHook = () => {
       <Provider>
         <div className={styles.card}>
           <div className={styles.title}>
-            <FormattedMessage id="common.webhook.text" />
+            <FormattedMessage id="common.webhooks.text" />
           </div>
           <div className={styles['action-line']}>
             <Form>
@@ -95,7 +95,7 @@ const WebHook = () => {
             <div className={styles.buttons}>
               <Button primary className={styles['add-button']} onClick={handleAddWebHook}>
                 <Icon customclass={styles['iconfont']} type="add" />
-                <FormattedMessage id="common.webhook.text" />
+                WebHook
               </Button>
             </div>
           </div>

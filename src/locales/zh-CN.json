@@ -97,7 +97,7 @@
   "common.lock.time": "锁定时间",
   "common.next.text": "下一步",
   "common.previous.text": "上一步",
-  "common.webhook.text": "WebHook",
+  "common.webhooks.text": "WebHooks",
   "common.event.text": "事件",
   "common.total": "总数",
   "common.success.text": "成功",
