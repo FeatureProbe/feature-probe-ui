@@ -14,7 +14,6 @@ interface IProps {
 
 const Filter = (props: IProps) => {
   const { selected, children, handleConfirm, handleClear } = props;
-
   const [ popupOpen, savePopupOpen ] = useState<boolean>(false);
 
   return (
