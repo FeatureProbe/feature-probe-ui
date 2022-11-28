@@ -6,7 +6,7 @@ import { IntlWrapper } from 'components/utils/wrapper';
 
 it('DeleteTipsModal snapshot', (done) => {
   (async () => {
-    const { asFragment, rerender } = render(
+    const { baseElement, rerender } = render(
       <DeleteTipsModal
         open={true}
         onCancel={jest.fn()}
@@ -18,7 +18,7 @@ it('DeleteTipsModal snapshot', (done) => {
         wrapper: IntlWrapper,
       }
     );
-    expect(asFragment()).toMatchSnapshot();
+    expect(baseElement).toMatchSnapshot();
 
     rerender(
       <DeleteTipsModal
@@ -30,6 +30,7 @@ it('DeleteTipsModal snapshot', (done) => {
         renderFooter={(nodes) => nodes}
       />
     );
+    expect(baseElement).toMatchSnapshot();
 
     done();
   })();

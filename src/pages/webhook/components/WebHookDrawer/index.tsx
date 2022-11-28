@@ -51,7 +51,7 @@ const WebHookDrawer = (props: IProps) => {
       },
       pattern: {
         message: intl.formatMessage({ id: 'webhook.url.error.text' }),
-        value: /^((ht|f)tps?):\/\/[\w-]+(.[\w-]+)+([\w\-.,@?^=%&:/~+#]*[\w\-@?^=%&/~+#])?$/,
+        value: /^http:\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/,
       },
     });
     register('name', {
