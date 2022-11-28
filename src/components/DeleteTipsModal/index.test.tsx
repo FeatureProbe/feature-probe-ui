@@ -6,7 +6,7 @@ import { IntlWrapper } from 'components/utils/wrapper';
 
 it('DeleteTipsModal snapshot', (done) => {
   (async () => {
-    const { asFragment } = render(
+    const { asFragment, rerender } = render(
       <DeleteTipsModal
         open={true}
         onCancel={jest.fn()}
@@ -19,6 +19,18 @@ it('DeleteTipsModal snapshot', (done) => {
       }
     );
     expect(asFragment()).toMatchSnapshot();
+
+    rerender(
+      <DeleteTipsModal
+        open={true}
+        onCancel={jest.fn()}
+        onConfirm={jest.fn()}
+        content={'test content'}
+        title={'test title'}
+        renderFooter={(nodes) => nodes}
+      />
+    );
+
     done();
   })();
 });
@@ -27,7 +39,7 @@ it('DeleteTipsModal clcik', (done) => {
   (async () => {
     const mockOnCancel = jest.fn();
     const mockOnConfirm = jest.fn();
-    const { asFragment } = render(
+    render(
       <DeleteTipsModal
         open={true}
         onCancel={mockOnCancel}

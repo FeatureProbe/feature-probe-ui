@@ -22,14 +22,6 @@ const DeleteTipsModal: React.FC<DeleteTipsModalProps> = (props) => {
     <Modal
       open={open}
       width={400}
-      handleCancel={(e: SyntheticEvent) => {
-        e.stopPropagation();
-        onCancel();
-      }}
-      handleConfirm={(e: SyntheticEvent) => {
-        e.stopPropagation();
-        onConfirm();
-      }}
       footer={null}
     >
       <div>
