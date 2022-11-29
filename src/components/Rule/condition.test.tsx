@@ -292,7 +292,7 @@ test('RuleContent datetime input', (done) => {
     );
 
     await userEvent.click(screen.getByPlaceholderText('Please select'));
-    await userEvent.click(screen.getByText(`${((new Date().getDate() + 1) % 28) + 1}`));
+    await userEvent.click(screen.getAllByText(`${((new Date().getDate() + 1) % 28) + 1}`)[0]);
 
     await userEvent.click(screen.getAllByText('UTC +8')[0]);
     await userEvent.click(screen.getByText('UTC +3'));
