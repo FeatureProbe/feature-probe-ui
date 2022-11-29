@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Dimmer, Form, InputOnChangeData, Loader, PaginationProps, Table } from 'semantic-ui-react';
-
 import Icon from 'components/Icon';
 import SettingLayout from 'layout/settingLayout';
-import styles from './index.module.scss';
 import WebHookItem from './components/webHookItem';
 import { cloneDeep, debounce } from 'lodash';
 import { IWebHook, IWebHookListResponse } from 'interfaces/webhook';
@@ -14,6 +12,7 @@ import { getWebHookList } from 'services/webhook';
 import message from 'components/MessageBox';
 import NoData from 'components/NoData';
 import CustomPagination from 'components/Pagination';
+import styles from './index.module.scss';
 
 const WebHook = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -50,7 +49,6 @@ const WebHook = () => {
 
   const fetchWebHookList = useCallback(async () => {
     try {
-      setIsLoading(true);
       const res = await getWebHookList<IWebHookListResponse>({
         pageIndex: pagination.pageIndex,
         pageSize: 10,
@@ -66,14 +64,23 @@ const WebHook = () => {
       }
     } catch {
       message.error(intl.formatMessage({ id: 'webhook.create.failed' }));
-    } finally {
-      setIsLoading(false);
     }
   }, [intl, pagination.pageIndex, search]);
 
-  useEffect(() => {
-    fetchWebHookList();
+  const loadingList = useCallback(async () => {
+    setIsLoading(true);
+    await fetchWebHookList();
+    setIsLoading(false);
   }, [fetchWebHookList]);
+
+  useEffect(() => {
+    const timer = setInterval(fetchWebHookList, 5000);
+    loadingList();
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [fetchWebHookList, loadingList]);
 
   return (
     <SettingLayout>
@@ -143,7 +150,7 @@ const WebHook = () => {
                           <WebHookItem
                             index={index}
                             saveList={saveList}
-                            refresh={fetchWebHookList}
+                            refresh={loadingList}
                             handleEdit={() => {
                               saveDrawerValue(item);
                               setDrawerVisible(true);
@@ -176,7 +183,7 @@ const WebHook = () => {
             </>
           )}
           <WebHookDrawer
-            refresh={fetchWebHookList}
+            refresh={loadingList}
             onClose={() => {
               setDrawerVisible(false);
               saveDrawerValue(undefined);

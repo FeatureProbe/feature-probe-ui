@@ -10,7 +10,6 @@ import FormItem from 'components/FormItem';
 import { IWebHook, WebHookStatus } from 'interfaces/webhook';
 import { createWebHook, updateWebHook } from 'services/webhook';
 import styles from './index.module.scss';
-import 'index.scss';
 
 interface IProps {
   defaultValue?: IWebHook;

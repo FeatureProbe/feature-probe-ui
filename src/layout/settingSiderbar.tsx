@@ -75,7 +75,7 @@ const Sidebar = () => {
         <PutAwayMemu
           type='WebHooks'
           isPutAway={isPutAway}
-          title={intl.formatMessage({id: 'common.webhook.text'})}
+          title={intl.formatMessage({id: 'common.webhooks.text'})}
         />
       </div>
     </div>
