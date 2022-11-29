@@ -415,6 +415,10 @@
   "getstarted.miniprogram.third.step.title": "Step 3: Use the instance to get your setting value",
   "getstarted.miniprogram.third.step.name.one": "You can get variation value from globalData object, SDK will update globalData.toggles object automatically",
   "getstarted.miniprogram.third.step.name.second": "You can also use the SDK API to check which value this user will receive for a given feature toggle",
+  "getstarted.react.first.step.title": "Step1: Use create-react-app to create a new React application",
+  "getstarted.react.second.step.title": "Step2: Install SDK",
+  "getstarted.react.third.step.title": "Step3: Import FPProvider in App.js",
+  "getstarted.react.fourth.step.title": "Step4：Create a new file home.js in the same directory as App.js, import withFPConsumer in home.js",
 
   "platform.warning.text": "According to the Cybersecurity Law, it is prohibited to use FeatureProbe for illegal financial lending, cryptocurrency, gambling and any applications containing Telemarketing Scams functions, once discovered, you will be immediately stopped from using FeatureProbe and reported to the Cyber Security Department.",
 

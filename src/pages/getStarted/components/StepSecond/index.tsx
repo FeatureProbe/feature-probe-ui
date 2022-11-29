@@ -21,11 +21,12 @@ import {
   getRustCode,
   getSwiftCode,
   getMiniProgramCode,
+  getReactCode,
 } from '../constants';
 import styles from '../Steps/index.module.scss';
 
-export type SdkLanguage = 'Java'
-    // | 'Java'
+export type SdkLanguage = 
+    'Java'
     | 'Python'
     | 'Rust'
     | 'Go'
@@ -34,7 +35,8 @@ export type SdkLanguage = 'Java'
     | 'Swift'
     | 'Objective-C'
     | 'JavaScript'
-    | 'Mini Program';
+    | 'Mini Program'
+    | 'React';
 
 interface IProps {
   rules: IRule[]
@@ -258,6 +260,20 @@ const StepSecond = (props: IProps) => {
             remoteUrl,
           }));
           break;
+        case 'React':
+            saveLanguage('javascript');
+            result.forEach(item => {
+              userWithCode += `user.with("${item}", /* ${item} */);\n  `;
+            });
+            saveOptions(getReactCode({
+              clientSdkKey,
+              toggleKey,
+              returnType,
+              intl,
+              userWithCode,
+              remoteUrl,
+            }));
+            break;
       }
     }
   }, [rules, sdkVersion, currentSDK, clientSdkKey, serverSdkKey, toggleKey, returnType, intl, remoteUrl]);
