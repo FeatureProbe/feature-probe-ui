@@ -1,0 +1,34 @@
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-header-text {
+  font-family: PingFangSC-Medium;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.header-tips-container {
+  margin-top: 10px;
+  height: 34px;
+}
+
+.header-tips {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 34px;
+  background: #fffae0;
+}
+
+.modal-content {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 8px;
+  margin-left: 40px;
+}
+
+.modal-close-icon {
+  cursor: pointer;
+}

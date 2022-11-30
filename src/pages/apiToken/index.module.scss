@@ -1,0 +1,69 @@
+.action-line {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.add {
+  text-align: right;
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 24px;
+}
+
+.add-button, .iconfont {
+  font-size: 13px !important;
+}
+
+.keywords-field {
+  position: relative;
+  margin-bottom: 0 !important;
+  width: 280px !important;
+}
+
+.icon-search {
+  position: absolute;
+  right: 10px;
+  color: #74788d;
+  top: 8px;
+  -webkit-appearance: unset !important;
+}
+
+.table-box {
+  margin-top: 16px;
+}
+
+.table-header {
+  position: sticky;
+  top: 0;
+  background: #f8f9fa;
+  height: 42px;
+  line-height: 42px;
+  font-size: 13px;
+  z-index: 1;
+
+  :global {
+    th {
+      padding-bottom: 0 !important
+    }
+  }
+}
+
+.column-brief {
+  width: 228px;
+  padding-left: 32px !important;
+}
+
+.column-role {
+  width: 228px;
+}
+
+.column-creator {
+  width: 300px;
+}
+
+.column-last-time {
+  width: 220px;
+}

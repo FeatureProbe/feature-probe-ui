@@ -2,7 +2,7 @@ import { useCallback, SyntheticEvent, useEffect, useMemo } from 'react';
 import { Form, InputOnChangeData } from 'semantic-ui-react';
 import { useForm } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import SettingLayout from 'layout/settingLayout';
+import UserSettingLayout from 'layout/userSettingLayout';
 import SectionTitle from 'components/SectionTitle';
 import Button from 'components/Button';
 import message from 'components/MessageBox';
@@ -81,7 +81,7 @@ const Member = () => {
   const isDemo = localStorage.getItem('isDemo') === 'true';
 
 	return (
-    <SettingLayout>
+    <UserSettingLayout>
       <div className={styles.profile}>
         <div className={styles.heading}>
           <FormattedMessage id='common.profile.text' />
@@ -200,7 +200,7 @@ const Member = () => {
           </Form>
         </div>
       </div>
-    </SettingLayout>
+    </UserSettingLayout>
   );
 };
 

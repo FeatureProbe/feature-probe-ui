@@ -13,6 +13,7 @@ const SegmentEdit = lazy(() => import('../pages/segmentEdit'));
 const GetStarted = lazy(() => import('../pages/getStarted'));
 const Approvals = lazy(() => import('../pages/approval'));
 const ProjectSetting = lazy(() => import('../pages/projectSetting'));
+const ApiToken = lazy(() => import('../pages/apiToken'));
 
 export const PROJECT_PATH = '/projects';
 export const TOGGLE_PATH = '/:projectKey/:environmentKey/toggles';
@@ -23,8 +24,9 @@ export const SEGMENT_EDIT_PATH = '/:projectKey/:environmentKey/segments/:segment
 export const TARGETING_PATH = '/:projectKey/:environmentKey/:toggleKey/:navigation';
 export const GET_STARTED_PATH = '/:projectKey/:environmentKey/:toggleKey/get-started';
 export const MEMBER_PATH = '/settings/members';
-export const PROFILE_PATH = '/settings/profile';
+export const PROFILE_PATH = '/user/profile';
 export const APPROVAL_PATH = '/approvals/:navigation';
+export const APITOKEN_PATH = '/settings/apitoken';
 
 const isDemo = localStorage.getItem('isDemo') === 'true';
 
@@ -83,6 +85,11 @@ export const headerRoutes = [
     path: PROFILE_PATH,
     exact: true,
     component: Profile
+  },
+  {
+    path: APITOKEN_PATH,
+    exact: true,
+    component: ApiToken
   }
 ];
 
