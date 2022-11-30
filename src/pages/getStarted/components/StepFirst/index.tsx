@@ -14,6 +14,7 @@ import android from 'images/android.svg';
 import swift from 'images/swift.svg';
 import apple from 'images/apple.svg';
 import miniprogram from 'images/wechat-miniprogram.png';
+import reactLogo from 'images/react.svg';
 import styles from '../Steps/index.module.scss';
 import { SdkLanguage } from '../StepSecond';
 
@@ -29,6 +30,7 @@ const SDK_LOGOS: {[key in SdkLanguage]: string} = {
   'Swift': swift,
   'Objective-C': apple,
   'Mini Program': miniprogram,
+  'React': reactLogo,
 };
 
 const SERVER_SIDE_SDKS = [
@@ -74,6 +76,10 @@ const CLIENT_SIDE_SDKS = [
   {
     name: 'Mini Program',
     logo: miniprogram,
+  },
+  {
+    name: 'React',
+    logo: reactLogo,
   }
 ];
 
