@@ -455,10 +455,8 @@ const Home = ({ toggles, client }) => {
   ${returnType === 'boolean' ? `const value = client?.boolValue("${toggleKey}", false);` : ''}${returnType === 'number' ? `const value = client?.numberValue("${toggleKey}", 1.0);` : ''}${returnType === 'string' ? `const value = client?.stringValue("${toggleKey}", "s");` : ''}${returnType === 'json' ? `const value = client.jsonValue("${toggleKey}", {});` : ''}
   return (
     <div>
-      <div>You can use toggle value like this:</div>
-      <div>\${value}</div>
-      <div>You can also get toggle detail from toggles object like this:</div>
-      <div>\${toggles?.['${toggleKey}']}</div>
+      <div>You can use toggle value like this: \${value}</div>
+      <div>You can also get toggle detail from toggles object like this: \${toggles?.["${toggleKey}"]}</div>
     </div>
   )
 };
