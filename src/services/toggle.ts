@@ -69,6 +69,23 @@ export const saveToggle = async (projectKey: string, environmentKey: string, tog
   });
 };
 
+export const approveToggle = async (projectKey: string, environmentKey: string, toggleKey: string, data: ITargetingParams) => {
+  const url = `${
+    API.approvalTargetingURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+      .replace(':toggleKey', toggleKey)
+  }`;
+
+  return request(url, {
+    method: 'POST',
+    headers: {
+      ...ApplicationJson()
+    },
+    body: JSON.stringify(data)
+  });
+};
+
 export const createToggle = async (projectKey: string, data: IToggle) => {
   const url = `${
     API.createToggleURI
@@ -97,6 +114,36 @@ export const editToggle = async (projectKey: string, toggleKey: string, data: IE
       ...ApplicationJson()
     },
     body: JSON.stringify(data),
+  });
+};
+
+export const offlineToggle = async (projectKey: string, toggleKey: string) => {
+  const url = `${
+    API.offlineToggleURI
+      .replace(':projectKey', projectKey)
+      .replace(':toggleKey', toggleKey)
+  }`;
+
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
+export const restoreToggle = async (projectKey: string, toggleKey: string) => {
+  const url = `${
+    API.restoreToggleURI
+      .replace(':projectKey', projectKey)
+      .replace(':toggleKey', toggleKey)
+  }`;
+
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
   });
 };
 

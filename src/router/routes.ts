@@ -14,6 +14,7 @@ const GetStarted = lazy(() => import('../pages/getStarted'));
 const Approvals = lazy(() => import('../pages/approval'));
 const ProjectSetting = lazy(() => import('../pages/projectSetting'));
 const ApiToken = lazy(() => import('../pages/apiToken'));
+const WebHook = lazy(() => import('../pages/webhook'));
 
 export const PROJECT_PATH = '/projects';
 export const TOGGLE_PATH = '/:projectKey/:environmentKey/toggles';
@@ -25,8 +26,11 @@ export const TARGETING_PATH = '/:projectKey/:environmentKey/:toggleKey/:navigati
 export const GET_STARTED_PATH = '/:projectKey/:environmentKey/:toggleKey/get-started';
 export const MEMBER_PATH = '/settings/members';
 export const PROFILE_PATH = '/user/profile';
+export const WEBHOOK_LIST_PATH = '/settings/webhooks/list';
 export const APPROVAL_PATH = '/approvals/:navigation';
 export const APITOKEN_PATH = '/settings/apitoken';
+
+
 
 const isDemo = localStorage.getItem('isDemo') === 'true';
 
@@ -90,6 +94,11 @@ export const headerRoutes = [
     path: APITOKEN_PATH,
     exact: true,
     component: ApiToken
+  },
+  {
+    path: WEBHOOK_LIST_PATH,
+    exact: true,
+    component: WebHook
   }
 ];
 

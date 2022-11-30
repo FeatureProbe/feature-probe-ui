@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import classNames from 'classnames';
 import { useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { MEMBER_PATH } from 'router/routes';
+import { MEMBER_PATH, WEBHOOK_LIST_PATH } from 'router/routes';
 import PutAwayMemu from 'components/PutAwayMenu';
-import { MEMBERS } from 'constants/sidebar';
+import { WEBHOOKLIST, MEMBERS } from 'constants/sidebar';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
@@ -31,6 +31,16 @@ const Sidebar = () => {
     }
   );
 
+  const webhookCls = classNames(
+    styles['project-menu-item'],
+    {
+      [styles['project-menu-item-close']]: isPutAway,
+    },
+    {
+      [styles.selected]: match.path === WEBHOOK_LIST_PATH,
+    }
+  );
+
   const gotoPage = useCallback((path: string) => {
     history.push(`/settings/${path}`);
   }, [history]);
@@ -42,6 +52,13 @@ const Sidebar = () => {
           type='member'
           isPutAway={isPutAway}
           title={intl.formatMessage({id: 'common.members.text'})}
+        />
+      </div>
+      <div className={webhookCls} onClick={() => gotoPage(WEBHOOKLIST)}>
+        <PutAwayMemu
+          type='WebHooks'
+          isPutAway={isPutAway}
+          title={intl.formatMessage({id: 'common.webhooks.text'})}
         />
       </div>
     </div>
