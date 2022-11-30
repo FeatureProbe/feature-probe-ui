@@ -115,12 +115,16 @@ const ProjectSetting = () => {
     setSubmitLoading(true);
     saveSettings(projectKey, {
       approvalSettings: approvalSetting,
-    }).then(() => {
+    }).then((res) => {
+      if(res.success) {
+        message.success(intl.formatMessage({id: 'toggles.settings.save.success'}));
+        saveIsSame(true);
+        saveOriginSetting(approvalSetting);
+        clearErrors();
+      } else {
+        message.error(intl.formatMessage({id: 'toggles.settings.save.error'}));
+      }
       setSubmitLoading(false);
-      message.success(intl.formatMessage({id: 'toggles.settings.save.success'}));
-      saveIsSame(true);
-      saveOriginSetting(approvalSetting);
-      clearErrors();
     }).catch(() => {
       setSubmitLoading(false);
     });
