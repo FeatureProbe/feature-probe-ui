@@ -13,7 +13,7 @@ import EnvironmentModal from '../EnvironmentModal';
 import { projectContainer } from '../../provider';
 import { IArchivedParams, IEnvironment, IProject } from 'interfaces/project';
 import { IToggleList } from 'interfaces/toggle';
-import { getEnvironmentList, editProject } from 'services/project';
+import { getEnvironmentList, deleteProject } from 'services/project';
 import { getToggleList } from 'services/toggle';
 import { OWNER } from 'constants/auth';
 import styles from './index.module.scss';
@@ -110,9 +110,10 @@ const ProjectCard = (props: IProps) => {
   }, [project.key]);
 
   const confirmDeleteProject = useCallback(async () => {
-    const res = await editProject(project.key, {archived: true});
+    const res = await deleteProject(project.key);
 
     if (res.success) {
+      message.success(intl.formatMessage({id: 'projects.delete.success'}));
       refreshProjectsList();
     } else {
       message.error(intl.formatMessage({id: 'projects.delete.error'}));

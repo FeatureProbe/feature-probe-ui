@@ -17,7 +17,6 @@ export interface IEnvironment {
 
 export interface IEnvironmentParams {
   name?: string;
-  archived?: boolean;
 }
 
 export interface IProject {
@@ -30,7 +29,6 @@ export interface IProject {
 export interface IProjectParams {
   name?: string;
   description?: string;
-  archived?: boolean;
 }
 
 export interface ITag {

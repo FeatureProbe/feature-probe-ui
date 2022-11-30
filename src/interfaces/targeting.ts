@@ -184,6 +184,7 @@ export interface ITargetingParams {
   disabled: boolean;
   comment?: string;
   content: ITarget;
+  reviewers?: string[];
 }
 
 export interface ITargetingDiff {

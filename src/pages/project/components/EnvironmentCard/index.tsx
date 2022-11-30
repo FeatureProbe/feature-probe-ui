@@ -8,7 +8,7 @@ import message from 'components/MessageBox';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import { I18NContainer } from 'hooks';
-import { editEnvironment } from 'services/project';
+import { offlineEnvironment, restoreEnvironment } from 'services/project';
 import { IEnvironment } from 'interfaces/project';
 import { OWNER } from 'constants/auth';
 import { HeaderContainer } from 'layout/hooks';
@@ -60,9 +60,7 @@ const EnvironmentCard = (props: IProps) => {
   }, [isArchived, history, projectKey]);
 
   const confirmArchiveEnv = useCallback(async () => {
-    const res = await editEnvironment(projectKey, item.key, {
-      archived: true,
-    });
+    const res = await offlineEnvironment(projectKey, item.key);
 
     if (res.success) {
       message.success(intl.formatMessage({id: 'projects.environment.archive.success'}));
@@ -73,9 +71,7 @@ const EnvironmentCard = (props: IProps) => {
   }, [item.key, projectKey, intl, refreshEnvironmentList]);
 
   const confirmRestoreEnv = useCallback(async () => {
-    const res = await editEnvironment(projectKey, item.key, {
-      archived: false,
-    });
+    const res = await restoreEnvironment(projectKey, item.key);
 
     if (res.success) {
       message.success(intl.formatMessage({id: 'projects.environment.restore.success'}));
