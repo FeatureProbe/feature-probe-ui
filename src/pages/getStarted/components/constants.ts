@@ -409,3 +409,60 @@ const value = app.globalData.toggles[${toggleKey}].value;
     }
   ];
 };
+
+export const getReactCode = (options: IOption) => {
+  const { intl, clientSdkKey, userWithCode, returnType, toggleKey, remoteUrl } = options;
+  return [
+    {
+      title: intl.formatMessage({id: 'getstarted.react.first.step.title'}),
+      code: 'npx create-react-app react-demo && cd react-demo'
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.react.second.step.title'}),
+      code: 'npm install featureprobe-client-sdk-react --save'
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.react.third.step.title'}),
+      code:
+`import { FPProvider } from 'featureprobe-client-sdk-react';
+import Home from './home';
+
+function App() {
+  const user = new FPUser();
+  ${userWithCode}
+  return (
+    <FPProvider 
+      config={{
+        remoteUrl: "${remoteUrl}",
+        clientSdkKey: "${clientSdkKey}",
+        user,
+      }}
+    >
+      <Home />
+    </FPProvider>
+  );
+}
+
+export default App;
+`
+    },
+    {
+      title: intl.formatMessage({id: 'getstarted.react.fourth.step.title'}),
+      code:
+`import { withFPConsumer } from 'featureprobe-client-sdk-client';
+
+const Home = ({ toggles, client }) => {
+  ${returnType === 'boolean' ? `const value = client?.boolValue("${toggleKey}", false);` : ''}${returnType === 'number' ? `const value = client?.numberValue("${toggleKey}", 1.0);` : ''}${returnType === 'string' ? `const value = client?.stringValue("${toggleKey}", "s");` : ''}${returnType === 'json' ? `const value = client.jsonValue("${toggleKey}", {});` : ''}
+  return (
+    <div>
+      <div>You can use toggle value like this: \${value}</div>
+      <div>You can also get toggle detail from toggles object like this: \${toggles?.["${toggleKey}"]}</div>
+    </div>
+  )
+};
+
+export default withFPConsumer(Home);
+`
+    },
+  ];
+};
