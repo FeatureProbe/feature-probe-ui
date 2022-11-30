@@ -6,6 +6,7 @@ import misc from './misc';
 import segment from './segment';
 import dictionary from './dictionary';
 import approvals from './approval';
+import webhook from './webhook';
 
 const APIS = {
   ...project,
@@ -15,7 +16,8 @@ const APIS = {
   ...segment,
   ...dictionary,
   ...misc,
-  ...approvals
+  ...approvals,
+  ...webhook,
 };
 
 export default APIS;

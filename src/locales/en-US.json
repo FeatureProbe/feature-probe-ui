@@ -1,7 +1,7 @@
 {
   "common.projects.text": "Projects",
   "common.project.text": "Project",
-  "common.settings.text": "Account settings",
+  "common.settings.text": "Hirer Settings",
   "common.logout.text": "logout",
   "common.name.text": "Name",
   "common.name.lowercase.text": "name",
@@ -97,7 +97,11 @@
   "common.lock.time": "Locked at",
   "common.next.text": "Next",
   "common.previous.text": "Previous",
+  "common.webhooks.text": "WebHooks",
+  "common.event.text": "event",
   "common.total": " in total",
+  "common.success.text": "Success",
+  "common.fail.text": "Fail",
 
   "header.getuser.error.text": "Error getting user profile",
 
@@ -186,6 +190,7 @@
   "projects.delete.title": "Are you sure to delete this project?",
   "projects.delete.content": "The project and the environments in the project will be permanently deleted.",
   "projects.delete.error": "Error deleting project",
+  "projects.delete.success": "Project deleted successfully",
   "projects.cannot.delete.title": "Can not delete",
   "projects.cannot.delete.content": "Please archive toggles first.",
   "projects.environment.archive.title": "Are you sure to archive this environment?",
@@ -254,6 +259,7 @@
   "toggles.settings.approval.enable.tips": "The environment has toggles in the approval process that are not allowed to be turned off",
   "toggles.settings.approval.enable.writer.tips": "Permission denied",
   "toggles.settings.save.success": "Saved successfully",
+  "toggles.settings.save.error": "Error saving",
 
   "targeting.default.rule": "Default Rule",
   "targeting.default.rule.tips": "Define the return value when no rule is matched.",
@@ -473,5 +479,29 @@
 
   "guide.next": "Next",
   "guide.last": "Previous",
-  "guide.done": "Done"
+  "guide.done": "Done",
+
+  "webhook.seat.text": "seat",
+  "webhook.application.text": "application",
+  "webhook.url.text": "URL",
+  "webhook.name.text": "WebHook Name",
+  "webhook.all.text": "All",
+  "webhook.custom.text": "Custom",
+  "webhook.url.required": "Please input url",
+  "webhook.url.error.text": "Please enter the correct url",
+  "webhook.url.normal.text": "Enter the URL from one of your application incoming webhooks.",
+  "webhook.application.required": "Please select application",
+  "webhook.recent.text": "Recently pushed",
+  "webhook.create.success": "WebHook created successfully",
+  "webhook.create.failed": "WebHook created failed",
+  "webhook.update.success": "WebHook updated successfully",
+  "webhook.update.failed": "WebHook updated failed",
+  "webhook.delete.success": "WebHook deleted Successfully",
+  "webhook.delete.failed": "WebHook deleted failed",
+  "webhook.delete.tips.title": "Tips",
+  "webhook.delete.tips.content": "Are you sure to delete this WebHook?",
+  "webhook.status.code.text": "Status code",
+  "webhook.create.text": "Create a WebHook",
+  "webhook.edit.text": "Edit WebHook",
+  "webhook.total": "WebHooks in total"
 }
