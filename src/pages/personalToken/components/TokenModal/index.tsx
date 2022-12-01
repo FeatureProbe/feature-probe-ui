@@ -9,8 +9,8 @@ import Modal from 'components/Modal';
 import { TOKENTYPE } from 'interfaces/token';
 import { hooksFormContainer, tokenInfoContainer } from '../../provider';
 import { createToken } from 'services/tokens';
-import styles from './index.module.scss';
 import TextLimit from 'components/TextLimit';
+import styles from './index.module.scss';
 
 interface IProps {
   open: boolean;

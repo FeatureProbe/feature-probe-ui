@@ -12,8 +12,8 @@ import { getTokenList } from 'services/tokens';
 import message from 'components/MessageBox';
 import TokenItem from './components/TokenItem';
 import TokenModal from './components/TokenModal';
-import styles from './index.module.scss';
 import UserSettingLayout from 'layout/userSettingLayout';
+import styles from './index.module.scss';
 
 const ApiToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
