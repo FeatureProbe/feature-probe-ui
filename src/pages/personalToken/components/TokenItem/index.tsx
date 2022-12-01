@@ -39,14 +39,8 @@ const TokenItem = (props: IProps) => {
       <Table.Row className={styles['list-item']}>
         <Table.Cell>
           <div className={styles['list-item-name']}>
-            <TextLimit maxWidth={200} text={token.name} />
+            <TextLimit maxWidth={400} text={token.name} />
           </div>
-        </Table.Cell>
-        <Table.Cell>
-          <div className={styles['list-item-role']}><TextLimit text={token.role ?? '-'} /></div>
-        </Table.Cell>
-        <Table.Cell>
-          <div className={styles['list-item-creator']}><TextLimit text={token.createdBy ?? '-'} /></div>
         </Table.Cell>
         <Table.Cell>
           <div className={styles['list-item-last-time']}><TextLimit text={token.visitedTime ?? '-'} /></div>

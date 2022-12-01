@@ -102,6 +102,8 @@
   "common.total": "总数",
   "common.success.text": "成功",
   "common.fail.text": "失败",
+  "common.tokens.text": "Access Tokens",
+  "common.token.text": "Access Token",
   
   "header.getuser.error.text": "无法获取用户信息!",
 
@@ -503,5 +505,24 @@
   "webhook.status.code.text": "状态码",
   "webhook.create.text": "创建WebHook",
   "webhook.edit.text": "编辑WebHook",
-  "webhook.total": "WebHook总数"
+  "webhook.total": "WebHook总数",
+
+  "token.application.title": "第三方应用 API Tokens",
+  "token.personal.title": "个人 API Tokens",
+  "token.visitied.time": "最后使用时间",
+  "token.delete.tips.title": "确定删除该Token？",
+  "token.delete.tips.content": "删除后，该Token将失效",
+  "token.application.add.tips": "应用Token一旦创建，不可更改",
+  "token.personal.add.tips": "个人Token一旦创建，不可更改",
+  "token.role.tips": "不支持授予比您权限更多的角色",
+  "token.application.create.text": "创建应用Token",
+  "token.personal.create.text": "创建个人Token",
+  "token.form.name.text": "Token名称",
+  "token.copy.text": "复制Token",
+  "token.created.modal.title": "{name}已创建",
+  "token.copy.tips": "请复制并且保存该Token，离开该页面后，Token将会被隐藏",
+  "token.create.success": "创建Token成功",
+  "token.create.error": "创建Token失败",
+  "token.delete.success": "删除Token成功",
+  "token.delete.error": "删除Token失败"
 }

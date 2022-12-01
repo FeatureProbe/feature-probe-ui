@@ -53,6 +53,7 @@ const WebHookItem = (props: IProps) => {
       try {
         const res = await updateWebHook(webhook.id + '', { ...webhook, status: status });
         if (res.success) {
+          message.error(intl.formatMessage({ id: 'webhook.update.success' }));
           saveList((list) => {
             list[index].status = status;
             return cloneDeep(list);

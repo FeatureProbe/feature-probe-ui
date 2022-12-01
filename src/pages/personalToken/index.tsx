@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Table } from 'semantic-ui-react';
-import SettingLayout from 'layout/settingLayout';
 import SettingCard from 'layout/settingCard';
 import Icon from 'components/Icon';
 import Loading from 'components/Loading';
@@ -14,6 +13,7 @@ import message from 'components/MessageBox';
 import TokenItem from './components/TokenItem';
 import TokenModal from './components/TokenModal';
 import styles from './index.module.scss';
+import UserSettingLayout from 'layout/userSettingLayout';
 
 const ApiToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,7 +36,7 @@ const ApiToken = () => {
   const load = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await getTokenList<ITokenListItem[]>(TOKENTYPE.APPLICATION);
+      const res = await getTokenList<ITokenListItem[]>(TOKENTYPE.PERSON);
       if (res.success && res.data) {
         saveTokenList(res.data);
       } else {
@@ -54,9 +54,9 @@ const ApiToken = () => {
   }, [load]);
 
   return (
-    <SettingLayout>
+    <UserSettingLayout>
       <Provider>
-        <SettingCard title={<FormattedMessage id="token.application.title" />}>
+        <SettingCard title={<FormattedMessage id="token.personal.title" />}>
           <div className={styles['action-line']}>
             <div className={styles.buttons}>
               <Button primary className={styles['add-button']} onClick={handleAddToken}>
@@ -71,12 +71,6 @@ const ApiToken = () => {
                 <Table.Row>
                   <Table.HeaderCell className={styles['column-brief']}>
                     <FormattedMessage id="common.name.text" />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-role']}>
-                    <FormattedMessage id="members.role" />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-creator']}>
-                    <FormattedMessage id="members.createdby" />
                   </Table.HeaderCell>
                   <Table.HeaderCell className={styles['column-last-time']}>
                     <FormattedMessage id="token.visitied.time" />
@@ -116,7 +110,7 @@ const ApiToken = () => {
           </div>
         </SettingCard>
       </Provider>
-    </SettingLayout>
+    </UserSettingLayout>
   );
 };
 

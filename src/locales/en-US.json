@@ -102,6 +102,8 @@
   "common.total": " in total",
   "common.success.text": "Success",
   "common.fail.text": "Fail",
+  "common.tokens.text": "Access Tokens", 
+  "common.token.text": "Access Token", 
 
   "header.getuser.error.text": "Error getting user profile",
 
@@ -503,5 +505,25 @@
   "webhook.status.code.text": "Status code",
   "webhook.create.text": "Create a WebHook",
   "webhook.edit.text": "Edit WebHook",
-  "webhook.total": "WebHooks in total"
+  "webhook.total": "WebHooks in total",
+
+  "token.application.title": "Third-party applications API Tokens",
+  "token.personal.title": "Personal applications API Tokens",
+  "token.visitied.time": "Visitied time",
+  "token.delete.tips.title": "Sure to delete this Token?",
+  "token.delete.tips.content": "After deletion, the Token will be invalidated",
+  "token.application.add.tips": "Once the application Token is created, it cannot be changed",
+  "token.personal.add.tips": "Once the personal Token is created, it cannot be changed",
+  "token.role.tips": "Does not support granting more roles than you have access to",
+  "token.application.create.text": "Create application Token",
+  "token.personal.create.text": "Create personal Token",
+  "token.form.name.text": "Token name",
+  "token.copy.text": "Copy Token",
+  "token.application.created.modal.title": "Application Token created",
+  "token.personal.created.modal.title": "Personal Token created",
+  "token.copy.tips": "Copy and save this token now.The token value will be obscured after you leave this page.",
+  "token.create.success": "Token created successfully",
+  "token.create.error": "Token created failed",
+  "token.delete.success": "Token deleted successfully",
+  "token.delete.error": "Token deleted failed"
 }

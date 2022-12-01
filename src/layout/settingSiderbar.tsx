@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import classNames from 'classnames';
 import { useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { MEMBER_PATH, WEBHOOK_LIST_PATH } from 'router/routes';
+import { APITOKEN_PATH, MEMBER_PATH, WEBHOOK_LIST_PATH } from 'router/routes';
 import PutAwayMemu from 'components/PutAwayMenu';
-import { WEBHOOKLIST, MEMBERS } from 'constants/sidebar';
+import { WEBHOOKLIST, MEMBERS, TOKENS } from 'constants/sidebar';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
@@ -41,6 +41,16 @@ const Sidebar = () => {
     }
   );
 
+  const tokenCls = classNames(
+    styles['project-menu-item'],
+    {
+      [styles['project-menu-item-close']]: isPutAway,
+    },
+    {
+      [styles.selected]: match.path === APITOKEN_PATH,
+    }
+  );
+
   const gotoPage = useCallback((path: string) => {
     history.push(`/settings/${path}`);
   }, [history]);
@@ -60,6 +70,12 @@ const Sidebar = () => {
           isPutAway={isPutAway}
           title={intl.formatMessage({id: 'common.webhooks.text'})}
         />
+      </div>
+      <div className={tokenCls} onClick={() => gotoPage(TOKENS)}>
+        <PutAwayMemu 
+          type="attribute" 
+          isPutAway={isPutAway} 
+          title={intl.formatMessage({ id: 'common.tokens.text' })} />
       </div>
     </div>
 	);

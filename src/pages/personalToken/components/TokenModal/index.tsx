@@ -1,6 +1,6 @@
-import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Dropdown, DropdownProps, Form } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 import CopyToClipboardPopup from 'components/CopyToClipboard';
 import FormItem from 'components/FormItem';
 import Icon from 'components/Icon';
@@ -10,8 +10,6 @@ import { TOKENTYPE } from 'interfaces/token';
 import { hooksFormContainer, tokenInfoContainer } from '../../provider';
 import { createToken } from 'services/tokens';
 import styles from './index.module.scss';
-import { HeaderContainer } from 'layout/hooks';
-import { OWNER } from 'constants/auth';
 import TextLimit from 'components/TextLimit';
 
 interface IProps {
@@ -27,7 +25,6 @@ const TokenModal: React.FC<IProps> = (props) => {
   const [token, setToken] = useState<string>('');
 
   const intl = useIntl();
-  const { userInfo } = HeaderContainer.useContainer();
 
   const {
     register,
@@ -47,45 +44,7 @@ const TokenModal: React.FC<IProps> = (props) => {
         message: intl.formatMessage({ id: 'common.name.required' }),
       },
     });
-    register('role', {
-      required: {
-        value: true,
-        message: intl.formatMessage({ id: 'members.select.role.placeholder' }),
-      },
-    });
   }, [register, intl]);
-
-  const options = useMemo(() => {
-    const ops = [
-      {
-        key: 'WRITER',
-        value: 'WRITER',
-        text: 'Writer',
-        content: (
-          <div>
-            <div className={styles['role-title']}>Writer</div>
-            <div className={styles['role-desc']}>
-              <FormattedMessage id="members.writer.auth.text" />
-            </div>
-          </div>
-        ),
-      },
-      {
-        key: 'OWNER',
-        value: 'OWNER',
-        text: 'Owner',
-        content: (
-          <div className={styles['role-item']}>
-            <div className={styles['role-title']}>Owner</div>
-            <div className={styles['role-desc']}>
-              <FormattedMessage id="members.owner.auth.text" />
-            </div>
-          </div>
-        ),
-      },
-    ];
-    return ops.slice(0, OWNER.includes(userInfo.role) ? 2 : 1);
-  }, [userInfo]);
 
   const onCopy = useCallback(() => {
     const clipboardObj = navigator.clipboard;
@@ -100,9 +59,8 @@ const TokenModal: React.FC<IProps> = (props) => {
     setIsLoading(true);
     try {
       const res = await createToken<{ token: string }>({
-        type: TOKENTYPE.APPLICATION,
+        type: TOKENTYPE.PERSON,
         name: tokenInfo.name,
-        role: tokenInfo.role,
       });
 
       if (res.success && res.data) {
@@ -141,7 +99,7 @@ const TokenModal: React.FC<IProps> = (props) => {
             {status ? (
               <TextLimit maxWidth={300} text={intl.formatMessage({ id: 'token.created.modal.title' }, { name: tokenInfo.name })} />
             ) : (
-              <FormattedMessage id="token.application.create.text" />
+              <FormattedMessage id="token.personal.create.text" />
             )}
           </span>
           <Icon customclass={styles['modal-close-icon']} type="close" onClick={onClose} />
@@ -151,7 +109,7 @@ const TokenModal: React.FC<IProps> = (props) => {
             <span className={styles['warning-circle']}>
               <Icon type="warning-circle" />
             </span>
-            {status ? <FormattedMessage id="token.copy.tips" /> : <FormattedMessage id="token.application.add.tips" />}
+            {status ? <FormattedMessage id="token.copy.tips" /> : <FormattedMessage id="token.personal.add.tips" />}
           </div>
         </div>
         {status ? (
@@ -193,33 +151,6 @@ const TokenModal: React.FC<IProps> = (props) => {
                 error={errors.name ? true : false}
                 name="name"
                 placeholder={intl.formatMessage({ id: 'common.name.required' })}
-              />
-            </FormItem>
-            <FormItem
-              className={styles['form-item-role']}
-              error={errors.role}
-              required
-              label={<FormattedMessage id="members.role" />}
-              errorCss={{
-                marginTop: 0,
-              }}
-            >
-              <Dropdown
-                fluid
-                floating
-                selection
-                clearable
-                value={tokenInfo.role}
-                name="role"
-                error={errors.role ? true : false}
-                options={options}
-                placeholder={intl.formatMessage({ id: 'toggles.returntype.placeholder' })}
-                icon={<Icon customclass={styles['angle-down']} type="angle-down" />}
-                onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
-                  handleChange(detail, 'role');
-                  setValue(detail.name, detail.value);
-                  await trigger('role');
-                }}
               />
             </FormItem>
             <div className={styles['role-tips']}>
