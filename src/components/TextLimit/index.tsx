@@ -36,7 +36,6 @@ const TextLimit: React.FC<IProps> = (props) => {
   return hidePopup ? (
     <span
       className={`${maxLength ? styles['limit-str-container-n'] : styles['limit-str-container-w']}`}
-      ref={ref}
       style={{
         maxWidth: maxWidth ?? '100%',
       }}
