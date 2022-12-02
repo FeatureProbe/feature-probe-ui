@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Table } from 'semantic-ui-react';
+import dayjs from 'dayjs';
 import TextLimit from 'components/TextLimit';
 import { ITokenListItem } from 'interfaces/token';
 import DeleteTipsModal from 'components/DeleteTipsModal';
 import { deleteToken } from 'services/tokens';
 import message from 'components/MessageBox';
 import styles from './index.module.scss';
-
 interface IProps {
   token: ITokenListItem;
   refresh?: () => unknown;
@@ -43,7 +43,7 @@ const TokenItem = (props: IProps) => {
           </div>
         </Table.Cell>
         <Table.Cell>
-          <div className={styles['list-item-last-time']}><TextLimit text={token.visitedTime ?? '-'} /></div>
+          <div className={styles['list-item-last-time']}><TextLimit text={dayjs(token.visitedTime).format('YYYY-MM-DD HH:mm:ss') ?? '-'} /></div>
         </Table.Cell>
         <Table.Cell>
           <div className={styles['list-item-opt']}>
