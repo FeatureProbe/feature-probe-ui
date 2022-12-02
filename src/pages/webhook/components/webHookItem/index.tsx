@@ -7,10 +7,9 @@ import message from 'components/MessageBox';
 import TextLimit from 'components/TextLimit';
 import { IWebHook, WebHookStatus } from 'interfaces/webhook';
 import DeleteTipsModal from 'components/DeleteTipsModal';
+import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { deleteWebHook, updateWebHook } from 'services/webhook';
 import styles from './index.module.scss';
-import CopyToClipboardPopup from 'components/CopyToClipboard';
-
 interface IProps {
   webhook: IWebHook;
   handleEdit: (key: number) => void;
