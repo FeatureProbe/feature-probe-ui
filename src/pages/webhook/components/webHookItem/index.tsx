@@ -99,7 +99,7 @@ const WebHookItem = (props: IProps) => {
         <Table.Cell>
           <div className={styles['webhook-info-secretKey']}>
             <CopyToClipboardPopup text={webhook.secretKey ?? ''}>
-              <TextLimit text={webhook.secretKey ?? '-'} />
+              <TextLimit hidePopup text={webhook.secretKey ?? '-'} />
             </CopyToClipboardPopup>
           </div>
         </Table.Cell>
