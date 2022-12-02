@@ -114,7 +114,7 @@ const TokenModal: React.FC<IProps> = (props) => {
     [setError, clearErrors]
   );
 
-  const checkNameExist = useMemo(() => debounce(checkNameExistCallback, 300), [checkNameExistCallback]);
+  const checkNameExist = useMemo(() => debounce(checkNameExistCallback, 200), [checkNameExistCallback]);
 
   return (
     <Modal
@@ -186,9 +186,6 @@ const TokenModal: React.FC<IProps> = (props) => {
                 placeholder={intl.formatMessage({ id: 'common.name.required' })}
               />
             </FormItem>
-            <div className={styles['role-tips']}>
-              <FormattedMessage id="token.role.tips" />
-            </div>
             <div
               className={styles['footer']}
               onClick={(e: SyntheticEvent) => {
@@ -198,7 +195,7 @@ const TokenModal: React.FC<IProps> = (props) => {
               <Button size="mini" className={styles['btn']} basic type="reset" onClick={onClose}>
                 <FormattedMessage id="common.cancel.text" />
               </Button>
-              <Button size="mini" loading={loading} disabled={loading} type="submit" primary>
+              <Button size="mini" loading={loading} disabled={loading || Object.keys(errors).length > 0} type="submit" primary>
                 <FormattedMessage id="common.confirm.text" />
               </Button>
             </div>
