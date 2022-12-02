@@ -43,7 +43,7 @@ const TokenItem = (props: IProps) => {
           </div>
         </Table.Cell>
         <Table.Cell>
-          <div className={styles['list-item-last-time']}><TextLimit text={dayjs(token.visitedTime).format('YYYY-MM-DD HH:mm:ss') ?? '-'} /></div>
+          <div className={styles['list-item-last-time']}><TextLimit text={token.visitedTime ? dayjs(token.visitedTime).format('YYYY-MM-DD HH:mm:ss') : '-'} /></div>
         </Table.Cell>
         <Table.Cell>
           <div className={styles['list-item-opt']}>
