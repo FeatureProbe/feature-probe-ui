@@ -15,6 +15,11 @@ it('TextLimit snapshot', () => {
       <TextLimit text='These are test words.' maxWidth={40} />,
     );
     expect(asFragment()).toMatchSnapshot();
+
+    rerender(
+      <TextLimit hidePopup text='These are test words.' maxWidth={40} />,
+    );
+    expect(asFragment()).toMatchSnapshot();
   })();
 });
 
