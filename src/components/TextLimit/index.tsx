@@ -18,10 +18,10 @@ const TextLimit: React.FC<IProps> = (props) => {
   const [isLong, setIsLong] = useState<boolean>(false);
 
   const judgeLength: () => boolean = useCallback(() => {
-    if(maxLength) {
+    if (maxLength) {
       return text.length > maxLength;
     } else {
-      if(ref.current) {
+      if (ref.current) {
         return ref.current.scrollWidth > ref.current.clientWidth;
       } else {
         return false;
@@ -33,24 +33,34 @@ const TextLimit: React.FC<IProps> = (props) => {
     setIsLong(judgeLength());
   }, [judgeLength, text]);
 
-  return (
+  return hidePopup ? (
+    <span
+      className={`${maxLength ? styles['limit-str-container-n'] : styles['limit-str-container-w']}`}
+      ref={ref}
+      style={{
+        maxWidth: maxWidth ?? '100%',
+      }}
+    >
+      {stringLimit(text, maxLength ?? 0)}
+    </span>
+  ) : (
     <Popup
       inverted
-      disabled={!(!hidePopup && isLong)}
+      disabled={!isLong}
       trigger={
-        <span 
+        <span
           className={`${maxLength ? styles['limit-str-container-n'] : styles['limit-str-container-w']}`}
           ref={ref}
           style={{
             maxWidth: maxWidth ?? '100%',
           }}
         >
-          { stringLimit(text, maxLength ?? 0) }
+          {stringLimit(text, maxLength ?? 0)}
         </span>
       }
-      content={popupRender ??  text }
-      className='popup-override'
-      wide='very'
+      content={popupRender ?? text}
+      className="popup-override"
+      wide="very"
       {...popupProps}
     />
   );
