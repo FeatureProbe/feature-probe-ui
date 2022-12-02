@@ -108,8 +108,9 @@ const TokenModal: React.FC<IProps> = (props) => {
       }
       onClose();
       message.success(intl.formatMessage({ id: 'common.copy.success.text' }));
-    } catch {
-      message.success(intl.formatMessage({ id: 'common.copy.error.text' }));
+    } catch (err) {
+      console.error(err);
+      message.error(intl.formatMessage({ id: 'common.copy.error.text' }));
     }
   }, [onClose, intl, token]);
 
@@ -140,7 +141,7 @@ const TokenModal: React.FC<IProps> = (props) => {
 
   const checkNameExistCallback = useCallback(
     async (name: string) => {
-      if(!name) {
+      if (!name) {
         return;
       }
       const res = await checkTokenNameExist(name, TOKENTYPE.APPLICATION);
@@ -194,9 +195,7 @@ const TokenModal: React.FC<IProps> = (props) => {
             <div className={styles['copy-token']}>
               <TextLimit text={tokenInfo.name} maxWidth={80} />
               <div>:</div>
-              <div id="token" className={styles['token']}>
-                {token}
-              </div>
+              <input id="token" className={styles['token']} value={token} />
             </div>
             <div
               className={styles['footer']}

@@ -34,7 +34,7 @@ const TokenModal: React.FC<IProps> = (props) => {
     setValue,
     handleSubmit,
     clearErrors,
-    setError
+    setError,
   } = hooksFormContainer.useContainer();
 
   const { tokenInfo, init, handleChange } = tokenInfoContainer.useContainer();
@@ -57,7 +57,7 @@ const TokenModal: React.FC<IProps> = (props) => {
 
   const onCopy = useCallback(async () => {
     try {
-      if(navigator.clipboard) {
+      if (navigator.clipboard) {
         const clipboardObj = navigator.clipboard;
         await clipboardObj.writeText(token);
       } else {
@@ -67,8 +67,9 @@ const TokenModal: React.FC<IProps> = (props) => {
       }
       onClose();
       message.success(intl.formatMessage({ id: 'common.copy.success.text' }));
-    } catch {
-      message.success(intl.formatMessage({ id: 'common.copy.error.text' }));
+    } catch (err) {
+      console.error(err);
+      message.error(intl.formatMessage({ id: 'common.copy.error.text' }));
     }
   }, [token, intl, onClose]);
 
@@ -98,7 +99,7 @@ const TokenModal: React.FC<IProps> = (props) => {
 
   const checkNameExistCallback = useCallback(
     async (name: string) => {
-      if(!name) {
+      if (!name) {
         return;
       }
       const res = await checkTokenNameExist(name, TOKENTYPE.PERSON);
@@ -152,9 +153,7 @@ const TokenModal: React.FC<IProps> = (props) => {
             <div className={styles['copy-token']}>
               <TextLimit text={tokenInfo.name} maxWidth={80} />
               <div>:</div>
-              <div id="token" className={styles['token']}>
-                {token}
-              </div>
+              <input id="token" className={styles['token']} value={token} />
             </div>
             <div
               className={styles['footer']}

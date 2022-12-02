@@ -97,6 +97,11 @@
   border-radius: 8px;
 
   & > .token {
+    width: 320px;
+    display: block;
+    outline: none;
+    border: none;
+    background-color: inherit;
     font-family: HelveticaNeue-Medium;
     font-size: 13px;
     color: #495057;
