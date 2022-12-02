@@ -102,6 +102,7 @@
   "common.total": " in total",
   "common.success.text": "Success",
   "common.fail.text": "Fail",
+  "common.secret.key.text": "Secret key",
 
   "header.getuser.error.text": "Error getting user profile",
 

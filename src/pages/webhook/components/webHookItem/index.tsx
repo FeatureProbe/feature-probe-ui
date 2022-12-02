@@ -9,6 +9,7 @@ import { IWebHook, WebHookStatus } from 'interfaces/webhook';
 import DeleteTipsModal from 'components/DeleteTipsModal';
 import { deleteWebHook, updateWebHook } from 'services/webhook';
 import styles from './index.module.scss';
+import CopyToClipboardPopup from 'components/CopyToClipboard';
 
 interface IProps {
   webhook: IWebHook;
@@ -94,6 +95,13 @@ const WebHookItem = (props: IProps) => {
               checked={webhook.status === WebHookStatus.ENABLE}
               toggle
             />
+          </div>
+        </Table.Cell>
+        <Table.Cell>
+          <div className={styles['webhook-info-secretKey']}>
+            <CopyToClipboardPopup text={webhook.secretKey ?? ''}>
+              <span>{webhook.secretKey ?? '-'}</span>
+            </CopyToClipboardPopup>
           </div>
         </Table.Cell>
         <Table.Cell>
