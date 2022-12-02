@@ -1,11 +1,10 @@
 import { SyntheticEvent, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Table, Button } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { cloneDeep } from 'lodash';
-import Modal from 'components/Modal';
-import Icon from 'components/Icon';
 import TextLimit from 'components/TextLimit';
+import DeleteTipsModal from 'components/DeleteTipsModal';
 import { ISegment, IToggleList } from 'interfaces/segment';
 import { deleteSegment, getSegmentUsingToggles } from 'services/segment';
 import message from 'components/MessageBox';
@@ -116,58 +115,24 @@ const ToggleItem = (props: IProps) => {
           </div>
         </div>
       </Table.Cell>
-
-      <Modal 
+      <DeleteTipsModal 
         open={open}
-        width={400}
-        handleCancel={(e: SyntheticEvent) => {
-          e.stopPropagation();
+        onCancel={() => {
           setOpen(false);
         }}
-        handleConfirm={(e: SyntheticEvent) => {
-          e.stopPropagation();
-          setOpen(false);
+        onConfirm={() => {
+          canDelete ? confirmDeleteSegment(segment.key) : setOpen(false);
         }}
-        footer={null}
-      >
-        <div>
-          <div className={styles['modal-header']}>
-            <Icon customclass={styles['warning-circle']} type='warning-circle' />
-            <span className={styles['modal-header-text']}>
-              {
-                canDelete ? <FormattedMessage id='segments.modal.delete.title' /> : <FormattedMessage id='segments.modal.cannot.delete.title' />
-              }
-            </span>
-          </div>
-          <div className={styles['modal-content']}>
-            { !canDelete && <FormattedMessage id='segments.modal.cannot.delete.text' /> }
-          </div>
-          <div className={styles['footer']}>
-            {
-              canDelete ? <>
-                <Button size='mini' className={styles['btn']} type='reset' basic onClick={(e: SyntheticEvent) => {
-                  e.stopPropagation();
-                  setOpen(false);
-                }}>
-                  <FormattedMessage id='common.cancel.text' />
-                </Button>
-                <Button size='mini' type='submit' primary onClick={(e: SyntheticEvent) => {
-                  e.stopPropagation();
-                  confirmDeleteSegment(segment.key);
-                }}>
-                  <FormattedMessage id='common.confirm.text' />
-                </Button>
-              </> : 
-              <Button size='mini' type='submit' primary onClick={(e: SyntheticEvent) => {
-                e.stopPropagation();
-                setOpen(false);
-              }}>
-                <FormattedMessage id='common.confirm.text' />
-              </Button>
-            }
-          </div>
-        </div>
-      </Modal>
+        content={
+          !canDelete && <FormattedMessage id='segments.modal.cannot.delete.text' />
+        }
+        title={
+          canDelete ? <FormattedMessage id='segments.modal.delete.title' /> : <FormattedMessage id='segments.modal.cannot.delete.title' />
+        }
+        renderFooter={(buttons) => {
+          return canDelete ? buttons : [buttons[1]];
+        }}
+      />
     </Table.Row>
 	);
 };

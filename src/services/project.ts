@@ -68,6 +68,20 @@ export const editProject = async(projectKey: string, data: IProjectParams) => {
   });
 };
 
+export const deleteProject = async(projectKey: string) => {
+  const url = `${
+    API.deleteProjectURI
+      .replace(':projectKey', projectKey)
+  }`;
+
+  return request(url, {
+    method: 'DELETE',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
 export const addEnvironment = async(projectKey: string, data: IEnvironmentParams) => {
   const url = `${
     API.addEnvironmentURI
@@ -96,6 +110,36 @@ export const editEnvironment = async(projectKey: string, environmentKey: string,
       ...ApplicationJson()
     },
     body: JSON.stringify(data),
+  });
+};
+
+export const offlineEnvironment = async(projectKey: string, environmentKey: string) => {
+  const url = `${
+    API.offlineEnvironmentURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+  }`;
+
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
+  });
+};
+
+export const restoreEnvironment = async(projectKey: string, environmentKey: string) => {
+  const url = `${
+    API.restoreEnvironmentURI
+      .replace(':projectKey', projectKey)
+      .replace(':environmentKey', environmentKey)
+  }`;
+
+  return request(url, {
+    method: 'PATCH',
+    headers: {
+      ...ApplicationJson()
+    },
   });
 };
 
@@ -146,7 +190,7 @@ export const saveSettings = async<T> (projectKey: string, data: ISettings) => {
   }`;
   
   return request<T>(url, {
-    method: 'POST',
+    method: 'PATCH',
     headers: {
       ...ApplicationJson()
     },
