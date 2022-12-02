@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Table } from 'semantic-ui-react';
+import { Button, PaginationProps, Table } from 'semantic-ui-react';
 import SettingCard from 'layout/settingCard';
 import Icon from 'components/Icon';
 import Loading from 'components/Loading';
 import Pagination from 'components/Pagination';
 import NoData from 'components/NoData';
-import { ITokenListItem, TOKENTYPE } from 'interfaces/token';
+import { ITokenListItem, ITokenListResponse, TOKENTYPE } from 'interfaces/token';
 import { Provider } from './provider';
 import { getTokenList } from 'services/tokens';
 import message from 'components/MessageBox';
@@ -19,14 +19,19 @@ const ApiToken = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tokenList, saveTokenList] = useState<ITokenListItem[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [total, setTotal] = useState({
+    totalPages: 0,
+    total: 0,
+  });
+  const [page, setPage] = useState(0);
   const intl = useIntl();
 
   const handleAddToken = useCallback(() => {
     setModalOpen(true);
   }, []);
 
-  const handlePageChange = useCallback(() => {
-    //
+  const handlePageChange = useCallback((e, data: PaginationProps) => {
+    setPage((data.activePage as number) - 1);
   }, []);
 
   const handleCancelAdd = useCallback(() => {
@@ -36,9 +41,17 @@ const ApiToken = () => {
   const load = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await getTokenList<ITokenListItem[]>(TOKENTYPE.PERSON);
+      const res = await getTokenList<ITokenListResponse>({
+        type: TOKENTYPE.PERSON,
+        pageIndex: page,
+        pageSize: 10,
+      });
       if (res.success && res.data) {
-        saveTokenList(res.data);
+        saveTokenList(res.data.content);
+        setTotal({
+          total: res.data.totalElements,
+          totalPages: res.data.totalPages,
+        });
       } else {
         message.error(intl.formatMessage({ id: 'token.list.error' }));
       }
@@ -47,16 +60,19 @@ const ApiToken = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [intl]);
+  }, [intl, page]);
 
   useEffect(() => {
     load();
-  }, [load]);
+  }, [load, page]);
 
   return (
     <UserSettingLayout>
       <Provider>
         <SettingCard title={<FormattedMessage id="token.personal.title" />}>
+          <div className={styles['description']}>
+            <FormattedMessage id="token.card.personal.description" />
+          </div>
           <div className={styles['action-line']}>
             <div className={styles.buttons}>
               <Button primary className={styles['add-button']} onClick={handleAddToken}>
@@ -96,10 +112,10 @@ const ApiToken = () => {
             </Table>
             {tokenList.length !== 0 ? (
               <Pagination
-                total={10}
+                total={total.total}
                 pagination={{
-                  pageIndex: 1,
-                  totalPages: 10,
+                  pageIndex: page,
+                  totalPages: total.totalPages,
                 }}
                 handlePageChange={handlePageChange}
               />

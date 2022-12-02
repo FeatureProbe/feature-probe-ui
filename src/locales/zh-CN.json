@@ -50,6 +50,7 @@
   "common.publish.text": "发布",
   "common.copy.text": "点击复制到剪贴板",
   "common.copy.success.text": "复制成功",
+  "common.copy.error.text": "复制失败",
   "common.minimum.two": "最少2个字符",
   "common.maximum.thirty": "最多30个字符",
   "common.type.text": "类型",
@@ -524,5 +525,8 @@
   "token.create.success": "创建Token成功",
   "token.create.error": "创建Token失败",
   "token.delete.success": "删除Token成功",
-  "token.delete.error": "删除Token失败"
+  "token.delete.error": "删除Token失败",
+  "token.list.error": "查询Token列表失败",
+  "token.card.application.description": "用于访问 OpenAPI。应用token不与个人绑定，一经创建不可变更，且永久生效。",
+  "token.card.personal.description": "用于访问OpenAPI。个人Token具有与创建人相同的权限，且会随着创建人的权限同步变化，如果创建人被删除，他们的Token也被删除"
 }

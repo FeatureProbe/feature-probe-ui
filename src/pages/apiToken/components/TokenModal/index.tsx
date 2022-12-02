@@ -1,14 +1,15 @@
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Button, Dropdown, DropdownProps, Form } from 'semantic-ui-react';
-import CopyToClipboardPopup from 'components/CopyToClipboard';
+import { debounce } from 'lodash';
+import { CONFLICT } from 'constants/httpCode';
 import FormItem from 'components/FormItem';
 import Icon from 'components/Icon';
 import message from 'components/MessageBox';
 import Modal from 'components/Modal';
 import { TOKENTYPE } from 'interfaces/token';
 import { hooksFormContainer, tokenInfoContainer } from '../../provider';
-import { createToken } from 'services/tokens';
+import { checkTokenNameExist, createToken } from 'services/tokens';
 import { HeaderContainer } from 'layout/hooks';
 import { OWNER } from 'constants/auth';
 import TextLimit from 'components/TextLimit';
@@ -36,6 +37,7 @@ const TokenModal: React.FC<IProps> = (props) => {
     setValue,
     handleSubmit,
     clearErrors,
+    setError,
   } = hooksFormContainer.useContainer();
 
   const { tokenInfo, init, handleChange } = tokenInfoContainer.useContainer();
@@ -87,11 +89,29 @@ const TokenModal: React.FC<IProps> = (props) => {
     return ops.slice(0, OWNER.includes(userInfo.role) ? 2 : 1);
   }, [userInfo]);
 
-  const onCopy = useCallback(() => {
-    const clipboardObj = navigator.clipboard;
-    clipboardObj.writeText(token);
-    message.success(intl.formatMessage({ id: 'common.copy.success.text' }));
-  }, [token, intl]);
+  const onClose = useCallback(() => {
+    setStatus(false);
+    init();
+    clearErrors();
+    handleCancel && handleCancel();
+  }, [init, clearErrors, handleCancel]);
+
+  const onCopy = useCallback(async () => {
+    try {
+      if (navigator.clipboard) {
+        const clipboardObj = navigator.clipboard;
+        await clipboardObj.writeText(token);
+      } else {
+        const tokenEle = document.getElementById('token');
+        (tokenEle as HTMLInputElement).select();
+        document.execCommand('copy');
+      }
+      onClose();
+      message.success(intl.formatMessage({ id: 'common.copy.success.text' }));
+    } catch {
+      message.success(intl.formatMessage({ id: 'common.copy.error.text' }));
+    }
+  }, [onClose, intl, token]);
 
   const onSubmit = useCallback(async () => {
     if (Object.keys(errors).length > 0) {
@@ -118,12 +138,24 @@ const TokenModal: React.FC<IProps> = (props) => {
     }
   }, [errors, tokenInfo, intl, refresh]);
 
-  const onClose = useCallback(() => {
-    setStatus(false);
-    init();
-    clearErrors();
-    handleCancel && handleCancel();
-  }, [init, clearErrors, handleCancel]);
+  const checkNameExistCallback = useCallback(
+    async (name: string) => {
+      if(!name) {
+        return;
+      }
+      const res = await checkTokenNameExist(name, TOKENTYPE.APPLICATION);
+      if (res.code === CONFLICT) {
+        setError('name', {
+          message: res.message,
+        });
+      } else {
+        clearErrors('name');
+      }
+    },
+    [setError, clearErrors]
+  );
+
+  const checkNameExist = useMemo(() => debounce(checkNameExistCallback, 300), [checkNameExistCallback]);
 
   return (
     <Modal
@@ -139,7 +171,10 @@ const TokenModal: React.FC<IProps> = (props) => {
         <div className={styles['modal-header']}>
           <span className={styles['modal-header-text']}>
             {status ? (
-              <TextLimit maxWidth={300} text={intl.formatMessage({ id: 'token.created.modal.title' }, { name: tokenInfo.name })} />
+              <TextLimit
+                maxWidth={300}
+                text={intl.formatMessage({ id: 'token.created.modal.title' }, { name: tokenInfo.name })}
+              />
             ) : (
               <FormattedMessage id="token.application.create.text" />
             )}
@@ -159,10 +194,8 @@ const TokenModal: React.FC<IProps> = (props) => {
             <div className={styles['copy-token']}>
               <TextLimit text={tokenInfo.name} maxWidth={80} />
               <div>:</div>
-              <div className={styles['token']}>
-                <CopyToClipboardPopup text={token}>
-                  <span>{token}</span>
-                </CopyToClipboardPopup>
+              <div id="token" className={styles['token']}>
+                {token}
               </div>
             </div>
             <div
@@ -185,10 +218,11 @@ const TokenModal: React.FC<IProps> = (props) => {
               label={<FormattedMessage id="token.form.name.text" />}
             >
               <Form.Input
-                onChange={(e, detail) => {
+                onChange={async (e, detail) => {
                   handleChange(detail, 'name');
                   setValue('name', detail.value);
-                  trigger('name');
+                  await checkNameExist(detail.value);
+                  await trigger('name');
                 }}
                 error={errors.name ? true : false}
                 name="name"
@@ -234,7 +268,13 @@ const TokenModal: React.FC<IProps> = (props) => {
               <Button size="mini" className={styles['btn']} basic type="reset" onClick={onClose}>
                 <FormattedMessage id="common.cancel.text" />
               </Button>
-              <Button size="mini" loading={loading} disabled={loading} type="submit" primary>
+              <Button
+                size="mini"
+                loading={loading}
+                disabled={loading || Object.keys(errors).length > 0}
+                type="submit"
+                primary
+              >
                 <FormattedMessage id="common.confirm.text" />
               </Button>
             </div>

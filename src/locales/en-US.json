@@ -50,6 +50,7 @@
   "common.publish.text": "Publish",
   "common.copy.text": "Click me to copy",
   "common.copy.success.text": "Copied successfully",
+  "common.copy.error.text": "Copied Failed",
   "common.minimum.two": "at least 2 characters",
   "common.maximum.thirty": "at most 30 characters",
   "common.type.text": "Type",
@@ -519,11 +520,13 @@
   "token.personal.create.text": "Create personal Token",
   "token.form.name.text": "Token name",
   "token.copy.text": "Copy Token",
-  "token.application.created.modal.title": "Application Token created",
-  "token.personal.created.modal.title": "Personal Token created",
+  "token.created.modal.title": "{name} Token created",
   "token.copy.tips": "Copy and save this token now.The token value will be obscured after you leave this page.",
   "token.create.success": "Token created successfully",
   "token.create.error": "Token created failed",
   "token.delete.success": "Token deleted successfully",
-  "token.delete.error": "Token deleted failed"
+  "token.delete.error": "Token deleted failed",
+  "token.list.error": "Failed to get Token list",
+  "token.card.application.description": "The application token is not tied to an individual, cannot be changed once it is created, and is permanently valid.",
+  "token.card.personal.description": "Individual Tokens have the same permissions as the creator and change in tandem with the creator's permissions; if the creator is deleted, their Token is also deleted"
 }

@@ -2,7 +2,7 @@ import request from '../utils/request';
 import API from '../constants/api';
 import { ApplicationJson } from 'constants/api/contentType';
 import qs from 'qs';
-import { CreateTokenParam, TOKENTYPE } from 'interfaces/token';
+import { CreateTokenParam, ListParam, TOKENTYPE } from 'interfaces/token';
 
 export const createToken = async <T>(param: CreateTokenParam) => {
   const url = API.createTokenURI;
@@ -16,8 +16,8 @@ export const createToken = async <T>(param: CreateTokenParam) => {
   });
 };
 
-export const getTokenList = async <T>(type: TOKENTYPE) => {
-  const url = API.getTokenListURI + `?${qs.stringify({type})}`;
+export const getTokenList = async <T>(type: ListParam) => {
+  const url = API.getTokenListURI + `?${qs.stringify(type)}`;
 
   return request<T>(url, {
     method: 'GET',
@@ -38,3 +38,13 @@ export const deleteToken = async <T>(id: number) => {
   });
 };
 
+export const checkTokenNameExist = async<T>(name: string, type: TOKENTYPE) => {
+  const url = API.checkExistURI  + `?${qs.stringify({name, type})}`;
+
+  return request<T>(url, {
+    method: 'GET',
+    headers: {
+      ...ApplicationJson(),
+    },
+  });
+};

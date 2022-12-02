@@ -26,12 +26,19 @@ export interface CreateTokenParam {
   role?: ROLE
 }
 
+export interface ListParam {
+  pageIndex?: number;
+  pageSize?: number;
+  type: TOKENTYPE;
+  sortBy?: string;
+}
+
 export interface PageableObject {
   pageNumber: number
 }
 
 export interface ITokenListResponse {
-  content: IToken[];
+  content: ITokenListItem[];
   pageable: PageableObject;
   totalPages: number;
   totalElements: number;
