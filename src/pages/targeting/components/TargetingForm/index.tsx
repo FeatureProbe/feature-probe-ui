@@ -217,7 +217,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       saveDefaultServe(targeting.defaultServe);
       saveDisabledServe(targeting.disabledServe);
     }
-  }, [targeting, saveVariations, saveRules, saveDefaultServe, saveDisabledServe]);
+  }, [targeting, saveVariations, saveRules, saveDefaultServe, saveDisabledServe, intl]);
 
   useEffect(() => {
     saveSegmentList(segmentList);

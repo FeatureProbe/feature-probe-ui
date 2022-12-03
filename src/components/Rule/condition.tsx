@@ -91,7 +91,7 @@ const RuleContent = (props: IProps) => {
     } else {
       window.open('https://semver.org/');
     }
-  }, []);
+  }, [intl.locale]);
 
   const renderLabel = useCallback((label: DropdownItemProps) => {
     return ({
