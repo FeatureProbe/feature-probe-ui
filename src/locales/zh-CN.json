@@ -102,7 +102,8 @@
   "common.total": "总数",
   "common.success.text": "成功",
   "common.fail.text": "失败",
-  
+  "common.user.text": "用户",
+
   "header.getuser.error.text": "无法获取用户信息!",
 
   "sidebar.modal.title": "离开当前页面?",
@@ -287,7 +288,7 @@
   "targeting.rule.operator.type.empty": "",
   "targeting.rule.operator.type.string": "字符串",
   "targeting.rule.operator.type.number": "数值",
-  "targeting.rule.operator.type.datetime": "日期时间",
+  "targeting.rule.operator.type.datetime": "时间",
   "targeting.rule.operator.type.semver": "语义版本",
   "targeting.rule.operator.type.segment": "人群组",
   "targeting.rule.operator.placeholder": "选择匹配规则",
@@ -306,8 +307,8 @@
   "targeting.rule.condition.notmatch": "不匹配正则表达式",
   "targeting.rule.subject.segment.in": "属于人群组",
   "targeting.rule.subject.segment.notin": "不属于人群组",
-  "targeting.rule.subject.datetime.before": "此时刻前",
-  "targeting.rule.subject.datetime.after": "此时刻后",
+  "targeting.rule.subject.datetime.before": "早于",
+  "targeting.rule.subject.datetime.after": "晚于",
   "targeting.rule.condition.anyof": "{type} 任何一个",
   "targeting.serve.required": "选择返回分组",
   "targeting.serve.percentage.error.text": "{value}% 的流量需要指定分组",

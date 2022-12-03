@@ -89,14 +89,9 @@
 }
 
 .rule-item-operator {
-  max-width: 188px;
+  max-width: 180px;
   position: relative;
-
-  :global {
-    .ui.selection.dropdown {
-      padding-left: 68px !important;
-    }
-  }
+  font-size: small;
 }
 
 .rule-item-datetime {
@@ -111,16 +106,25 @@
 }
 
 .rule-item-type {
+  width: 70px;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  align-self: center;
+}
+
+.rule-item-type-box {
   width: 50px;
   height: 20px;
   background: rgba(33, 37, 41, 0.08);
   border-radius: 4px;
   color: #495057;
   line-height: 20px;
-  position: absolute;
-  top: 6px;
-  left: 12px;
   padding: 0 4px;
+  align-self: center;
+  display: inline;
 }
 
 .rule-item-type-text {
@@ -133,10 +137,11 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   line-height: 20px;
+  text-align: center;
 }
 
 .rule-item-operator-dropdown {
-  min-width: 180px !important;
+  min-width: 95% !important;
 }
 
 .rule-add {
@@ -233,6 +238,17 @@
   color: #495057;
 }
 
+.icon-info {
+  opacity: 0.4;
+  vertical-align: middle;
+  margin: 0 3px;
+  scale: 0.75;
+}
+
+.icon-info:hover {
+  color: #0a70f5;
+}
+
 .error-text {
   color: #f46a6a;
   font-size: 12px;
@@ -269,4 +285,9 @@
 
 .menu-item:hover {
   background-color: #f8f9fa;
+}
+
+.menu-item-centering {
+  @extend .menu-item;
+  text-align: center;
 }

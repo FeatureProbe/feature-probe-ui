@@ -39,12 +39,12 @@ export const getAttrOptions = (intl: IntlShape, type?:string) => {
     ];
   } else if (type === 'number' || type === 'semver') {
     return [
-      { key: '1', text: '\u{003D}', value: '=' },
-      { key: '2', text: '\u{2260}', value: '!=' },
-      { key: '3', text: '\u{003C}', value: '<' },
-      { key: '4', text: '\u{2264}', value: '<=' },
-      { key: '5', text: '\u{003E}', value: '>' },
-      { key: '6', text: '\u{2265}', value: '>=' },
+      { key: '1', text: '=', value: '=' },
+      { key: '2', text: '!=', value: '!=' },
+      { key: '3', text: '<', value: '<' },
+      { key: '4', text: '<=', value: '<=' },
+      { key: '5', text: '>', value: '>' },
+      { key: '6', text: '>=', value: '>=' },
     ];
   } else if (type === 'datetime') {
     return [

@@ -19,6 +19,19 @@ exports[`RuleContent datetime input 1`] = `
           </span>
         </span>
         <div
+          class="rule-item-type"
+        >
+          <div
+            class="rule-item-type-box"
+          >
+            <div
+              class="rule-item-type-text"
+            >
+              datetime
+            </div>
+          </div>
+        </div>
+        <div
           class="equal width fields rule-item-left"
         >
           <div
@@ -69,15 +82,6 @@ exports[`RuleContent datetime input 1`] = `
                 role="alert"
               >
                 Select an operator
-              </div>
-              <div
-                class="rule-item-type"
-              >
-                <div
-                  class="rule-item-type-text"
-                >
-                  datetime
-                </div>
               </div>
               <span
                 class="iconfont icon-angle-down angle-down"
@@ -148,9 +152,9 @@ exports[`RuleContent datetime input 1`] = `
                         <th
                           class="rdtSwitch"
                           colspan="5"
-                          data-value="10"
+                          data-value="11"
                         >
-                          November 2022
+                          December 2022
                         </th>
                         <th
                           class="rdtNext"
@@ -202,238 +206,6 @@ exports[`RuleContent datetime input 1`] = `
                       <tr>
                         <td
                           class="rdtDay rdtOld"
-                          data-month="9"
-                          data-value="30"
-                          data-year="2022"
-                        >
-                          30
-                        </td>
-                        <td
-                          class="rdtDay rdtOld"
-                          data-month="9"
-                          data-value="31"
-                          data-year="2022"
-                        >
-                          31
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="1"
-                          data-year="2022"
-                        >
-                          1
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="2"
-                          data-year="2022"
-                        >
-                          2
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="3"
-                          data-year="2022"
-                        >
-                          3
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="4"
-                          data-year="2022"
-                        >
-                          4
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="5"
-                          data-year="2022"
-                        >
-                          5
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="6"
-                          data-year="2022"
-                        >
-                          6
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="7"
-                          data-year="2022"
-                        >
-                          7
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="8"
-                          data-year="2022"
-                        >
-                          8
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="9"
-                          data-year="2022"
-                        >
-                          9
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="10"
-                          data-year="2022"
-                        >
-                          10
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="11"
-                          data-year="2022"
-                        >
-                          11
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="12"
-                          data-year="2022"
-                        >
-                          12
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="13"
-                          data-year="2022"
-                        >
-                          13
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="14"
-                          data-year="2022"
-                        >
-                          14
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="15"
-                          data-year="2022"
-                        >
-                          15
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="16"
-                          data-year="2022"
-                        >
-                          16
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="17"
-                          data-year="2022"
-                        >
-                          17
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="18"
-                          data-year="2022"
-                        >
-                          18
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="19"
-                          data-year="2022"
-                        >
-                          19
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="20"
-                          data-year="2022"
-                        >
-                          20
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="21"
-                          data-year="2022"
-                        >
-                          21
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="22"
-                          data-year="2022"
-                        >
-                          22
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="23"
-                          data-year="2022"
-                        >
-                          23
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="24"
-                          data-year="2022"
-                        >
-                          24
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="25"
-                          data-year="2022"
-                        >
-                          25
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="26"
-                          data-year="2022"
-                        >
-                          26
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
                           data-month="10"
                           data-value="27"
                           data-year="2022"
@@ -441,7 +213,7 @@ exports[`RuleContent datetime input 1`] = `
                           27
                         </td>
                         <td
-                          class="rdtDay"
+                          class="rdtDay rdtOld"
                           data-month="10"
                           data-value="28"
                           data-year="2022"
@@ -449,7 +221,7 @@ exports[`RuleContent datetime input 1`] = `
                           28
                         </td>
                         <td
-                          class="rdtDay"
+                          class="rdtDay rdtOld"
                           data-month="10"
                           data-value="29"
                           data-year="2022"
@@ -457,7 +229,7 @@ exports[`RuleContent datetime input 1`] = `
                           29
                         </td>
                         <td
-                          class="rdtDay"
+                          class="rdtDay rdtOld"
                           data-month="10"
                           data-value="30"
                           data-year="2022"
@@ -465,7 +237,7 @@ exports[`RuleContent datetime input 1`] = `
                           30
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="1"
                           data-year="2022"
@@ -473,7 +245,7 @@ exports[`RuleContent datetime input 1`] = `
                           1
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="2"
                           data-year="2022"
@@ -481,7 +253,7 @@ exports[`RuleContent datetime input 1`] = `
                           2
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="3"
                           data-year="2022"
@@ -491,7 +263,7 @@ exports[`RuleContent datetime input 1`] = `
                       </tr>
                       <tr>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="4"
                           data-year="2022"
@@ -499,7 +271,7 @@ exports[`RuleContent datetime input 1`] = `
                           4
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="5"
                           data-year="2022"
@@ -507,7 +279,7 @@ exports[`RuleContent datetime input 1`] = `
                           5
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="6"
                           data-year="2022"
@@ -515,7 +287,7 @@ exports[`RuleContent datetime input 1`] = `
                           6
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="7"
                           data-year="2022"
@@ -523,7 +295,7 @@ exports[`RuleContent datetime input 1`] = `
                           7
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="8"
                           data-year="2022"
@@ -531,7 +303,7 @@ exports[`RuleContent datetime input 1`] = `
                           8
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="9"
                           data-year="2022"
@@ -539,12 +311,244 @@ exports[`RuleContent datetime input 1`] = `
                           9
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="10"
                           data-year="2022"
                         >
                           10
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="11"
+                          data-year="2022"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="12"
+                          data-year="2022"
+                        >
+                          12
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="13"
+                          data-year="2022"
+                        >
+                          13
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="14"
+                          data-year="2022"
+                        >
+                          14
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="15"
+                          data-year="2022"
+                        >
+                          15
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="16"
+                          data-year="2022"
+                        >
+                          16
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="17"
+                          data-year="2022"
+                        >
+                          17
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="18"
+                          data-year="2022"
+                        >
+                          18
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="19"
+                          data-year="2022"
+                        >
+                          19
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="20"
+                          data-year="2022"
+                        >
+                          20
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="21"
+                          data-year="2022"
+                        >
+                          21
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="22"
+                          data-year="2022"
+                        >
+                          22
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="23"
+                          data-year="2022"
+                        >
+                          23
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="24"
+                          data-year="2022"
+                        >
+                          24
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="25"
+                          data-year="2022"
+                        >
+                          25
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="26"
+                          data-year="2022"
+                        >
+                          26
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="27"
+                          data-year="2022"
+                        >
+                          27
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="28"
+                          data-year="2022"
+                        >
+                          28
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="29"
+                          data-year="2022"
+                        >
+                          29
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="30"
+                          data-year="2022"
+                        >
+                          30
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="31"
+                          data-year="2022"
+                        >
+                          31
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="1"
+                          data-year="2023"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="2"
+                          data-year="2023"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="3"
+                          data-year="2023"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="4"
+                          data-year="2023"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="5"
+                          data-year="2023"
+                        >
+                          5
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="6"
+                          data-year="2023"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="7"
+                          data-year="2023"
+                        >
+                          7
                         </td>
                       </tr>
                     </tbody>
@@ -960,6 +964,19 @@ exports[`RuleContent normal input 1`] = `
         </span>
       </span>
       <div
+        class="rule-item-type"
+      >
+        <div
+          class="rule-item-type-box"
+        >
+          <div
+            class="rule-item-type-text"
+          >
+            string
+          </div>
+        </div>
+      </div>
+      <div
         class="equal width fields rule-item-left"
       >
         <div
@@ -1031,15 +1048,6 @@ exports[`RuleContent normal input 1`] = `
               role="alert"
             >
               is one of
-            </div>
-            <div
-              class="rule-item-type"
-            >
-              <div
-                class="rule-item-type-text"
-              >
-                string
-              </div>
             </div>
             <span
               class="iconfont icon-angle-down angle-down"
@@ -1257,6 +1265,19 @@ exports[`RuleContent normal input 2`] = `
         </span>
       </span>
       <div
+        class="rule-item-type"
+      >
+        <div
+          class="rule-item-type-box"
+        >
+          <div
+            class="rule-item-type-text"
+          >
+            string
+          </div>
+        </div>
+      </div>
+      <div
         class="equal width fields rule-item-left"
       >
         <div
@@ -1307,15 +1328,6 @@ exports[`RuleContent normal input 2`] = `
               role="alert"
             >
               is not any of
-            </div>
-            <div
-              class="rule-item-type"
-            >
-              <div
-                class="rule-item-type-text"
-              >
-                string
-              </div>
             </div>
             <span
               class="iconfont icon-angle-down angle-down"
@@ -1559,6 +1571,19 @@ exports[`RuleContent number input 1`] = `
         </span>
       </span>
       <div
+        class="rule-item-type"
+      >
+        <div
+          class="rule-item-type-box"
+        >
+          <div
+            class="rule-item-type-text"
+          >
+            number
+          </div>
+        </div>
+      </div>
+      <div
         class="equal width fields rule-item-left"
       >
         <div
@@ -1610,15 +1635,6 @@ exports[`RuleContent number input 1`] = `
             >
               Select an operator
             </div>
-            <div
-              class="rule-item-type"
-            >
-              <div
-                class="rule-item-type-text"
-              >
-                number
-              </div>
-            </div>
             <span
               class="iconfont icon-angle-down angle-down"
               customclass="angle-down"
@@ -1650,7 +1666,7 @@ exports[`RuleContent number input 1`] = `
                 <span
                   class="text"
                 >
-                  ≠
+                  !=
                 </span>
               </div>
               <div
@@ -1676,7 +1692,7 @@ exports[`RuleContent number input 1`] = `
                 <span
                   class="text"
                 >
-                  ≤
+                  &lt;=
                 </span>
               </div>
               <div
@@ -1702,7 +1718,7 @@ exports[`RuleContent number input 1`] = `
                 <span
                   class="text"
                 >
-                  ≥
+                  &gt;=
                 </span>
               </div>
             </div>
@@ -1785,6 +1801,19 @@ exports[`RuleContent segment render 1`] = `
           </span>
         </span>
         <div
+          class="rule-item-type"
+        >
+          <div
+            class="rule-item-type-box"
+          >
+            <div
+              class="rule-item-type-text"
+            >
+              datetime
+            </div>
+          </div>
+        </div>
+        <div
           class="equal width fields rule-item-left"
         >
           <div
@@ -1835,15 +1864,6 @@ exports[`RuleContent segment render 1`] = `
                 role="alert"
               >
                 Select an operator
-              </div>
-              <div
-                class="rule-item-type"
-              >
-                <div
-                  class="rule-item-type-text"
-                >
-                  datetime
-                </div>
               </div>
               <span
                 class="iconfont icon-angle-down angle-down"
@@ -1914,9 +1934,9 @@ exports[`RuleContent segment render 1`] = `
                         <th
                           class="rdtSwitch"
                           colspan="5"
-                          data-value="10"
+                          data-value="11"
                         >
-                          November 2022
+                          December 2022
                         </th>
                         <th
                           class="rdtNext"
@@ -1968,238 +1988,6 @@ exports[`RuleContent segment render 1`] = `
                       <tr>
                         <td
                           class="rdtDay rdtOld"
-                          data-month="9"
-                          data-value="30"
-                          data-year="2022"
-                        >
-                          30
-                        </td>
-                        <td
-                          class="rdtDay rdtOld"
-                          data-month="9"
-                          data-value="31"
-                          data-year="2022"
-                        >
-                          31
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="1"
-                          data-year="2022"
-                        >
-                          1
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="2"
-                          data-year="2022"
-                        >
-                          2
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="3"
-                          data-year="2022"
-                        >
-                          3
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="4"
-                          data-year="2022"
-                        >
-                          4
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="5"
-                          data-year="2022"
-                        >
-                          5
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="6"
-                          data-year="2022"
-                        >
-                          6
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="7"
-                          data-year="2022"
-                        >
-                          7
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="8"
-                          data-year="2022"
-                        >
-                          8
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="9"
-                          data-year="2022"
-                        >
-                          9
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="10"
-                          data-year="2022"
-                        >
-                          10
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="11"
-                          data-year="2022"
-                        >
-                          11
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="12"
-                          data-year="2022"
-                        >
-                          12
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="13"
-                          data-year="2022"
-                        >
-                          13
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="14"
-                          data-year="2022"
-                        >
-                          14
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="15"
-                          data-year="2022"
-                        >
-                          15
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="16"
-                          data-year="2022"
-                        >
-                          16
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="17"
-                          data-year="2022"
-                        >
-                          17
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="18"
-                          data-year="2022"
-                        >
-                          18
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="19"
-                          data-year="2022"
-                        >
-                          19
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="20"
-                          data-year="2022"
-                        >
-                          20
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="21"
-                          data-year="2022"
-                        >
-                          21
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="22"
-                          data-year="2022"
-                        >
-                          22
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="23"
-                          data-year="2022"
-                        >
-                          23
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="24"
-                          data-year="2022"
-                        >
-                          24
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="25"
-                          data-year="2022"
-                        >
-                          25
-                        </td>
-                        <td
-                          class="rdtDay"
-                          data-month="10"
-                          data-value="26"
-                          data-year="2022"
-                        >
-                          26
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          class="rdtDay"
                           data-month="10"
                           data-value="27"
                           data-year="2022"
@@ -2207,7 +1995,7 @@ exports[`RuleContent segment render 1`] = `
                           27
                         </td>
                         <td
-                          class="rdtDay"
+                          class="rdtDay rdtOld"
                           data-month="10"
                           data-value="28"
                           data-year="2022"
@@ -2215,7 +2003,7 @@ exports[`RuleContent segment render 1`] = `
                           28
                         </td>
                         <td
-                          class="rdtDay"
+                          class="rdtDay rdtOld"
                           data-month="10"
                           data-value="29"
                           data-year="2022"
@@ -2223,7 +2011,7 @@ exports[`RuleContent segment render 1`] = `
                           29
                         </td>
                         <td
-                          class="rdtDay"
+                          class="rdtDay rdtOld"
                           data-month="10"
                           data-value="30"
                           data-year="2022"
@@ -2231,7 +2019,7 @@ exports[`RuleContent segment render 1`] = `
                           30
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="1"
                           data-year="2022"
@@ -2239,7 +2027,7 @@ exports[`RuleContent segment render 1`] = `
                           1
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="2"
                           data-year="2022"
@@ -2247,7 +2035,7 @@ exports[`RuleContent segment render 1`] = `
                           2
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="3"
                           data-year="2022"
@@ -2257,7 +2045,7 @@ exports[`RuleContent segment render 1`] = `
                       </tr>
                       <tr>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="4"
                           data-year="2022"
@@ -2265,7 +2053,7 @@ exports[`RuleContent segment render 1`] = `
                           4
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="5"
                           data-year="2022"
@@ -2273,7 +2061,7 @@ exports[`RuleContent segment render 1`] = `
                           5
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="6"
                           data-year="2022"
@@ -2281,7 +2069,7 @@ exports[`RuleContent segment render 1`] = `
                           6
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="7"
                           data-year="2022"
@@ -2289,7 +2077,7 @@ exports[`RuleContent segment render 1`] = `
                           7
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="8"
                           data-year="2022"
@@ -2297,7 +2085,7 @@ exports[`RuleContent segment render 1`] = `
                           8
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="9"
                           data-year="2022"
@@ -2305,12 +2093,244 @@ exports[`RuleContent segment render 1`] = `
                           9
                         </td>
                         <td
-                          class="rdtDay rdtNew"
+                          class="rdtDay"
                           data-month="11"
                           data-value="10"
                           data-year="2022"
                         >
                           10
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="11"
+                          data-year="2022"
+                        >
+                          11
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="12"
+                          data-year="2022"
+                        >
+                          12
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="13"
+                          data-year="2022"
+                        >
+                          13
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="14"
+                          data-year="2022"
+                        >
+                          14
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="15"
+                          data-year="2022"
+                        >
+                          15
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="16"
+                          data-year="2022"
+                        >
+                          16
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="17"
+                          data-year="2022"
+                        >
+                          17
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="18"
+                          data-year="2022"
+                        >
+                          18
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="19"
+                          data-year="2022"
+                        >
+                          19
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="20"
+                          data-year="2022"
+                        >
+                          20
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="21"
+                          data-year="2022"
+                        >
+                          21
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="22"
+                          data-year="2022"
+                        >
+                          22
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="23"
+                          data-year="2022"
+                        >
+                          23
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="24"
+                          data-year="2022"
+                        >
+                          24
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="25"
+                          data-year="2022"
+                        >
+                          25
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="26"
+                          data-year="2022"
+                        >
+                          26
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="27"
+                          data-year="2022"
+                        >
+                          27
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="28"
+                          data-year="2022"
+                        >
+                          28
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="29"
+                          data-year="2022"
+                        >
+                          29
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="30"
+                          data-year="2022"
+                        >
+                          30
+                        </td>
+                        <td
+                          class="rdtDay"
+                          data-month="11"
+                          data-value="31"
+                          data-year="2022"
+                        >
+                          31
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="1"
+                          data-year="2023"
+                        >
+                          1
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="2"
+                          data-year="2023"
+                        >
+                          2
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="3"
+                          data-year="2023"
+                        >
+                          3
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="4"
+                          data-year="2023"
+                        >
+                          4
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="5"
+                          data-year="2023"
+                        >
+                          5
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="6"
+                          data-year="2023"
+                        >
+                          6
+                        </td>
+                        <td
+                          class="rdtDay rdtNew"
+                          data-month="0"
+                          data-value="7"
+                          data-year="2023"
+                        >
+                          7
                         </td>
                       </tr>
                     </tbody>
@@ -2722,6 +2742,19 @@ exports[`RuleContent segment render 1`] = `
           </span>
         </span>
         <div
+          class="rule-item-type"
+        >
+          <div
+            class="rule-item-type-box"
+          >
+            <div
+              class="rule-item-type-text"
+            >
+              segment
+            </div>
+          </div>
+        </div>
+        <div
           class="equal width fields rule-item-left"
         >
           <div
@@ -2773,15 +2806,6 @@ exports[`RuleContent segment render 1`] = `
                 role="alert"
               >
                 Select an operator
-              </div>
-              <div
-                class="rule-item-type"
-              >
-                <div
-                  class="rule-item-type-text"
-                >
-                  segment
-                </div>
               </div>
               <span
                 class="iconfont icon-angle-down angle-down"
@@ -2904,6 +2928,24 @@ exports[`RuleContent semver input 1`] = `
         </span>
       </span>
       <div
+        class="rule-item-type"
+      >
+        <div
+          class="rule-item-type-box"
+        >
+          <div
+            class="rule-item-type-text"
+          >
+            semver
+          </div>
+        </div>
+        <span
+          class="iconfont icon-info icon-info"
+          customclass="icon-info"
+          type="info"
+        />
+      </div>
+      <div
         class="equal width fields rule-item-left"
       >
         <div
@@ -2955,15 +2997,6 @@ exports[`RuleContent semver input 1`] = `
             >
               Select an operator
             </div>
-            <div
-              class="rule-item-type"
-            >
-              <div
-                class="rule-item-type-text"
-              >
-                semver
-              </div>
-            </div>
             <span
               class="iconfont icon-angle-down angle-down"
               customclass="angle-down"
@@ -2995,7 +3028,7 @@ exports[`RuleContent semver input 1`] = `
                 <span
                   class="text"
                 >
-                  ≠
+                  !=
                 </span>
               </div>
               <div
@@ -3021,7 +3054,7 @@ exports[`RuleContent semver input 1`] = `
                 <span
                   class="text"
                 >
-                  ≤
+                  &lt;=
                 </span>
               </div>
               <div
@@ -3047,7 +3080,7 @@ exports[`RuleContent semver input 1`] = `
                 <span
                   class="text"
                 >
-                  ≥
+                  &gt;=
                 </span>
               </div>
             </div>
@@ -3121,6 +3154,19 @@ exports[`RuleContent snapshot 1`] = `
         </span>
       </span>
       <div
+        class="rule-item-type"
+      >
+        <div
+          class="rule-item-type-box"
+        >
+          <div
+            class="rule-item-type-text"
+          >
+            targeting.rule.operator.type.empty
+          </div>
+        </div>
+      </div>
+      <div
         class="equal width fields rule-item-left"
       >
         <div
@@ -3171,15 +3217,6 @@ exports[`RuleContent snapshot 1`] = `
               role="alert"
             >
               Select an operator
-            </div>
-            <div
-              class="rule-item-type"
-            >
-              <div
-                class="rule-item-type-text"
-              >
-                targeting.rule.operator.type.empty
-              </div>
             </div>
             <span
               class="iconfont icon-angle-down angle-down"
@@ -3255,6 +3292,19 @@ exports[`RuleContent snapshot 2 1`] = `
         </span>
       </span>
       <div
+        class="rule-item-type"
+      >
+        <div
+          class="rule-item-type-box"
+        >
+          <div
+            class="rule-item-type-text"
+          >
+            targeting.rule.operator.type.empty
+          </div>
+        </div>
+      </div>
+      <div
         class="equal width fields rule-item-left"
       >
         <div
@@ -3307,15 +3357,6 @@ exports[`RuleContent snapshot 2 1`] = `
               role="alert"
             >
               Select an operator
-            </div>
-            <div
-              class="rule-item-type"
-            >
-              <div
-                class="rule-item-type-text"
-              >
-                targeting.rule.operator.type.empty
-              </div>
             </div>
             <span
               class="iconfont icon-angle-down angle-down"

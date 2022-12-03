@@ -202,8 +202,8 @@ test('RuleContent number input', (done) => {
     await userEvent.keyboard('{Enter}');
 
     await userEvent.click(screen.getAllByText('Select an operator')[0]);
-    await userEvent.click(screen.getByText('≥'));
-    expect(screen.getAllByText('≥').length).toBe(1);
+    await userEvent.click(screen.getByText('>='));
+    expect(screen.getAllByText('>=').length).toBe(1);
 
     await userEvent.click(screen.getByText('Enter some values'));
     await userEvent.keyboard('test number');
@@ -247,8 +247,8 @@ test('RuleContent semver input', (done) => {
     await userEvent.keyboard('{Enter}');
 
     await userEvent.click(screen.getAllByText('Select an operator')[0]);
-    await userEvent.click(screen.getByText('≥'));
-    expect(screen.getAllByText('≥').length).toBe(1);
+    await userEvent.click(screen.getByText('>='));
+    expect(screen.getAllByText('>=').length).toBe(1);
 
     await userEvent.click(screen.getByText('Enter some values'));
     await userEvent.keyboard('test number');

@@ -1,5 +1,5 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Form, Select, Dropdown, DropdownProps, DropdownItemProps } from 'semantic-ui-react';
+import { Form, Select, Dropdown, DropdownProps, DropdownItemProps, Popup } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Datetime from 'react-datetime';
 import moment from 'moment';
@@ -9,7 +9,7 @@ import canlendar from 'images/calendar.svg';
 import { IRule, ICondition, IOption } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import { ISegment, ISegmentList } from 'interfaces/segment';
-import { 
+import {
   getAttrOptions,
   timezoneOptions,
   DATETIME_TYPE,
@@ -39,7 +39,7 @@ const SEMVER_REG = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|
 const SPECIAL_PREDICATE = ['<', '<=', '>', '>='];
 
 const RuleContent = (props: IProps) => {
-  const { 
+  const {
     rule,
     disabled,
     ruleIndex,
@@ -47,9 +47,9 @@ const RuleContent = (props: IProps) => {
     subjectOptions,
     conditionIndex,
     condition,
-    ruleContainer, 
+    ruleContainer,
     segmentContainer,
-    hooksFormContainer, 
+    hooksFormContainer,
   } = props;
 
   const intl = useIntl();
@@ -85,6 +85,14 @@ const RuleContent = (props: IProps) => {
     await handleDeleteCondition(ruleIndex, conditionIndex);
   }, [unregister, clearErrors, getValues, handleDeleteCondition]);
 
+  const handleGotoSemver = useCallback(() => {
+    if (intl.locale === 'zh-CN') {
+      window.open('https://semver.org/lang/zh-CN/');
+    } else {
+      window.open('https://semver.org/');
+    }
+  }, []);
+
   const renderLabel = useCallback((label: DropdownItemProps) => {
     return ({
       content: label.text,
@@ -94,28 +102,28 @@ const RuleContent = (props: IProps) => {
 
   useEffect(() => {
     if (condition.type !== SEGMENT_TYPE) {
-      register(`rule_${rule.id}_condition_${condition.id}_subject`, { 
+      register(`rule_${rule.id}_condition_${condition.id}_subject`, {
         required: {
           value: true,
           message: intl.formatMessage({id: 'targeting.rule.subject.required'})
-        }, 
+        },
       });
     }
 
-    register(`rule_${rule.id}_condition_${condition.id}_predicate`, { 
-      required: true, 
+    register(`rule_${rule.id}_condition_${condition.id}_predicate`, {
+      required: true,
     });
 
     if (condition.type === DATETIME_TYPE) {
-      register(`rule_${rule.id}_condition_${condition.id}_datetime`, { 
-        required: true, 
+      register(`rule_${rule.id}_condition_${condition.id}_datetime`, {
+        required: true,
       });
-      register(`rule_${rule.id}_condition_${condition.id}_timezone`, { 
-        required: true, 
+      register(`rule_${rule.id}_condition_${condition.id}_timezone`, {
+        required: true,
       });
     } else {
-      register(`rule_${rule.id}_condition_${condition.id}_objects`, { 
-        required: true, 
+      register(`rule_${rule.id}_condition_${condition.id}_objects`, {
+        required: true,
       });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,7 +167,25 @@ const RuleContent = (props: IProps) => {
           <span className={styles['rule-item-prefix']}>
             <span className={styles['rule-item-text']}>and</span>
           </span>
-        ) 
+        )
+      }
+      {
+        <div className={styles['rule-item-type']}>
+          <div className={styles['rule-item-type-box']}>
+            <div className={styles['rule-item-type-text']}>
+              {intl.formatMessage({id: `targeting.rule.operator.type.${condition.type ?? 'empty'}`})}
+            </div>
+          </div>
+          {
+            condition.type === SEMVER_TYPE && (
+              <Icon
+                type='info'
+                customclass={styles['icon-info']}
+                onClick={handleGotoSemver}
+              />
+            )
+          }
+        </div>
       }
       <Form.Group className={styles['rule-item-left']} widths='equal'>
         <Form.Field className={styles['rule-item-subject']}>
@@ -178,14 +204,14 @@ const RuleContent = (props: IProps) => {
             disabled={condition.type === SEGMENT_TYPE || disabled}
             icon={null}
             name={`rule_${rule.id}_condition_${condition.id}_subject`}
-            error={errors[`rule_${rule.id}_condition_${condition.id}_subject`] ? true : false}
+            error={!!errors[`rule_${rule.id}_condition_${condition.id}_subject`]}
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
               handleChangeAttr(ruleIndex, conditionIndex, detail.value);
               setValue(detail.name, detail.value);
               await trigger(`rule_${rule.id}_condition_${condition.id}_subject`);
             }}
           />
-          { 
+          {
             errors[`rule_${rule.id}_condition_${condition.id}_subject`] &&
               <div className={styles['error-text']}>
                 { intl.formatMessage({id: 'targeting.rule.subject.required'}) }
@@ -194,7 +220,7 @@ const RuleContent = (props: IProps) => {
         </Form.Field>
 
         <Form.Field className={styles['rule-item-operator']}>
-          <Select 
+          <Select
             floating
             className={styles['rule-item-operator-dropdown']}
             value={condition.predicate}
@@ -203,39 +229,32 @@ const RuleContent = (props: IProps) => {
             openOnFocus={false}
             disabled={disabled}
             icon={
-              <>
-                <div className={styles['rule-item-type']}>
-                  <div className={styles['rule-item-type-text']}>
-                    {intl.formatMessage({id: `targeting.rule.operator.type.${condition.type ?? 'empty'}`})}
-                  </div>
-                </div>
                 <Icon customclass={styles['angle-down']} type='angle-down' />
-              </>
             }
             name={`rule_${rule.id}_condition_${condition.id}_predicate`}
-            error={ errors[`rule_${rule.id}_condition_${condition.id}_predicate`] ? true : false }
+            error={ !!errors[`rule_${rule.id}_condition_${condition.id}_predicate`] }
             onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
               if ((condition.type === NUMBER_TYPE || condition.type === SEMVER_TYPE) && SPECIAL_PREDICATE.includes(detail.value as string)) {
                 handleChangeValue(ruleIndex, conditionIndex, []);
-              } 
+              }
 
               handleChangeOperator(ruleIndex, conditionIndex, detail.value);
               setValue(detail.name, detail.value);
               await trigger(`rule_${rule.id}_condition_${condition.id}_predicate`);
             }}
           />
-          { 
-            errors[`rule_${rule.id}_condition_${condition.id}_predicate`] && 
+          {
+            errors[`rule_${rule.id}_condition_${condition.id}_predicate`] &&
               <div className={styles['error-text']}>
                 { intl.formatMessage({id: 'targeting.rule.operator.required'}) }
-              </div> 
+              </div>
           }
         </Form.Field>
 
         {
           condition.type === DATETIME_TYPE ? (
             <>
-              <Form.Field 
+              <Form.Field
                 width={6}
                 disabled={disabled}
                 className={styles['rule-item-datetime']}
@@ -253,11 +272,11 @@ const RuleContent = (props: IProps) => {
                     await trigger(`rule_${rule.id}_condition_${condition.id}_datetime`);
                   }}
                 />
-                { 
-                  errors[`rule_${rule.id}_condition_${condition.id}_datetime`] && 
+                {
+                  errors[`rule_${rule.id}_condition_${condition.id}_datetime`] &&
                     <div className={styles['error-text']}>
                       { intl.formatMessage({id: 'common.dropdown.placeholder'}) }
-                    </div> 
+                    </div>
                 }
                 <img src={canlendar} alt='canlendar' className={styles['rule-item-datetime-canlendar']} />
               </Form.Field>
@@ -283,11 +302,11 @@ const RuleContent = (props: IProps) => {
                     await trigger(`rule_${rule.id}_condition_${condition.id}_timezone`);
                   }}
                 />
-                { 
-                  errors[`rule_${rule.id}_condition_${condition.id}_timezone`] && 
+                {
+                  errors[`rule_${rule.id}_condition_${condition.id}_timezone`] &&
                     <div className={styles['error-text']}>
                       <FormattedMessage id='common.dropdown.placeholder' />
-                    </div> 
+                    </div>
                 }
               </Form.Field>
             </>
@@ -295,7 +314,7 @@ const RuleContent = (props: IProps) => {
             <Form.Field width={6}>
               <Dropdown
                 placeholder={
-                  condition.type !== SEGMENT_TYPE 
+                  condition.type !== SEGMENT_TYPE
                   ? intl.formatMessage({id: 'targeting.rule.values.placeholder'})
                   : intl.formatMessage({id: 'common.dropdown.placeholder'})
                 }
@@ -310,7 +329,7 @@ const RuleContent = (props: IProps) => {
                 openOnFocus={false}
                 renderLabel={renderLabel}
                 icon={condition.type === SEGMENT_TYPE  && <Icon customclass={styles['angle-down']} type='angle-down' />}
-                error={ errors[`rule_${rule.id}_condition_${condition.id}_objects`] ? true : false }
+                error={ !!errors[`rule_${rule.id}_condition_${condition.id}_objects`] }
                 noResultsMessage={null}
                 name={`rule_${rule.id}_condition_${condition.id}_objects`}
                 onChange={async (e: SyntheticEvent, detail: DropdownProps) => {
@@ -322,8 +341,8 @@ const RuleContent = (props: IProps) => {
 
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && (detail.value as string[]).length > 1) {
                       return;
-                    } 
-                  } 
+                    }
+                  }
                   else if (condition.type === SEMVER_TYPE) {
                     result = (detail.value as string[]).every((item) => {
                       return SEMVER_REG.test(item);
@@ -331,7 +350,7 @@ const RuleContent = (props: IProps) => {
 
                     if (condition.predicate && SPECIAL_PREDICATE.includes(condition.predicate) && (detail.value as string[]).length > 1) {
                       return;
-                    } 
+                    }
                   }
                   else if (condition.type === STRING_TYPE && condition.predicate.includes('regex')) {
                     // @ts-ignore detail value
@@ -360,22 +379,22 @@ const RuleContent = (props: IProps) => {
                   await trigger(`rule_${rule.id}_condition_${condition.id}_objects`);
                 }}
               />
-              { 
-                errors[`rule_${rule.id}_condition_${condition.id}_objects`] && 
+              {
+                errors[`rule_${rule.id}_condition_${condition.id}_objects`] &&
                   <div className={styles['error-text']}>
-                    { 
+                    {
                       condition.type !== SEGMENT_TYPE
                       ? intl.formatMessage({id: 'targeting.rule.values.required'})
                       : intl.formatMessage({id: 'common.dropdown.placeholder'})
                     }
-                  </div> 
+                  </div>
               }
             </Form.Field>
           )
         }
       </Form.Group>
       {
-        !disabled && <Icon 
+        !disabled && <Icon
           customclass={styles['icon-minus']} type='minus'
           onClick={() => handleDelete(ruleIndex, conditionIndex, rule.id)}
         />
