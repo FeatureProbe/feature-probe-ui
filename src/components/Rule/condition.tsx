@@ -1,5 +1,5 @@
 import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Form, Select, Dropdown, DropdownProps, DropdownItemProps, Popup } from 'semantic-ui-react';
+import { Form, Select, Dropdown, DropdownProps, DropdownItemProps } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Datetime from 'react-datetime';
 import moment from 'moment';
