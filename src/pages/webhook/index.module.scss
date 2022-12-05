@@ -61,7 +61,7 @@
   position: relative;
   padding: 0 20px;
   margin-top: 12px;
-  min-width: 1200px;
+  padding-bottom: 2px;
   flex: 1 1;
 }
 
@@ -87,24 +87,7 @@
 }
 
 .column-brief {
-  width: 180px;
   padding-left: 32px !important;
-}
-
-.column-description {
-  width: 200px;
-}
-
-.column-url {
-  width: 250px;
-}
-
-.column-recent {
-  width: 140px;
-}
-
-.column-secret-key {
-  width: 100px;
 }
 
 .lists {
@@ -134,9 +117,4 @@
 .load {
   position: relative;
   flex: 1 1;
-}
-
-.nodata-box {
-  display: block;
-  height: 200px;
 }

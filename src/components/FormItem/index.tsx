@@ -8,13 +8,14 @@ interface FormItemProps {
   required?: boolean;
   error?: FieldErrors[string];
   errorCss?: CSSProperties
+  className?: string;
 }
 
 const FormItem: React.FC<FormItemProps> = (props) => {
-  const { label, children, required, error, errorCss } = props;
+  const { label, children, required, error, errorCss, className } = props;
 
   return (
-    <Form.Field>
+    <Form.Field className={className}>
       <label>
         {required && <span className='label-required'>*</span>}
         {label}
