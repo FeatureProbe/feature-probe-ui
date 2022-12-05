@@ -514,7 +514,6 @@
   "token.visited.time": "Last used",
   "token.delete.tips.title": "Sure to delete this token?",
   "token.delete.tips.content": "Token will be invalid after deleted.",
-  "token.role.tips": "Do not support granting more roles than you have access to",
   "token.application.create.text": "Create application token",
   "token.personal.create.text": "Create personal token",
   "token.form.name.text": "Token name",

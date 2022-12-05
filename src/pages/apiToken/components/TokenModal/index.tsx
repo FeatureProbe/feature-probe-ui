@@ -249,9 +249,6 @@ const TokenModal: React.FC<IProps> = (props) => {
                 }}
               />
             </FormItem>
-            <div className={styles['role-tips']}>
-              <FormattedMessage id="token.role.tips" />
-            </div>
             <div
               className={styles['footer']}
               onClick={(e: SyntheticEvent) => {
