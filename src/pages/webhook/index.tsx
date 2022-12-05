@@ -133,6 +133,9 @@ const WebHook = () => {
                         <Table.HeaderCell className={styles['column-type']}>
                           <FormattedMessage id="toggles.filter.status" />
                         </Table.HeaderCell>
+                        <Table.HeaderCell className={styles['column-secret-key']}>
+                          <FormattedMessage id="common.secret.key.text" />
+                        </Table.HeaderCell>
                         <Table.HeaderCell className={styles['column-recent']}>
                           <FormattedMessage id="webhook.recent.text" />
                         </Table.HeaderCell>

@@ -87,20 +87,24 @@
 }
 
 .column-brief {
-  width: 240px;
+  width: 180px;
   padding-left: 32px !important;
 }
 
 .column-description {
-  width: 187px;
+  width: 200px;
 }
 
 .column-url {
-  width: 380px;
+  width: 250px;
 }
 
 .column-recent {
-  width: 160px;
+  width: 140px;
+}
+
+.column-secret-key {
+  width: 100px;
 }
 
 .lists {
