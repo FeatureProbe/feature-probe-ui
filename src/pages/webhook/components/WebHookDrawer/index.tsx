@@ -142,6 +142,9 @@ const WebHookDrawer = (props: IProps) => {
             customclass={styles['title-close']}
             type="close"
             onClick={() => {
+              setValue('url', '');
+              setValue('name', '');
+              setValue('description', '');
               clearErrors();
               onClose();
               init();

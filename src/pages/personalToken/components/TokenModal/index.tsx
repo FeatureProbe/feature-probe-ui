@@ -49,11 +49,13 @@ const TokenModal: React.FC<IProps> = (props) => {
   }, [register, intl]);
 
   const onClose = useCallback(() => {
+    setValue('name', '');
+    setValue('role', '');
     setStatus(false);
     init();
     clearErrors();
     handleCancel && handleCancel();
-  }, [init, clearErrors, handleCancel]);
+  }, [init, clearErrors, handleCancel, setValue]);
 
   const onCopy = useCallback(async () => {
     try {
@@ -90,7 +92,7 @@ const TokenModal: React.FC<IProps> = (props) => {
         setToken(res.data?.token);
         refresh && refresh();
       } else {
-        message.error(intl.formatMessage({ id: 'token.create.error' }));
+        message.error(res.message || intl.formatMessage({ id: 'token.create.error' }));
       }
     } finally {
       setIsLoading(false);
