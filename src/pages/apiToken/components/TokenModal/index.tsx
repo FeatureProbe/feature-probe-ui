@@ -90,11 +90,13 @@ const TokenModal: React.FC<IProps> = (props) => {
   }, [userInfo]);
 
   const onClose = useCallback(() => {
+    setValue('name', '');
+    setValue('role', '');
     setStatus(false);
     init();
     clearErrors();
     handleCancel && handleCancel();
-  }, [init, clearErrors, handleCancel]);
+  }, [init, clearErrors, handleCancel, setValue]);
 
   const onCopy = useCallback(async () => {
     try {
