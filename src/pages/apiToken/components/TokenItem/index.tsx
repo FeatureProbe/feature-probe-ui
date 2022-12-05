@@ -14,6 +14,11 @@ interface IProps {
   refresh?: () => unknown;
 }
 
+const RoleText = {
+  'OWNER': 'Owner',
+  'WRITER': 'Writer'
+};
+
 const TokenItem = (props: IProps) => {
   const { token, refresh } = props;
   const [open, setOpen] = useState<boolean>(false);
@@ -44,7 +49,7 @@ const TokenItem = (props: IProps) => {
           </div>
         </Table.Cell>
         <Table.Cell>
-          <div className={styles['list-item-role']}><TextLimit text={token.role ?? '-'} /></div>
+          <div className={styles['list-item-role']}><TextLimit text={token.role ? RoleText[token.role] : '-'} /></div>
         </Table.Cell>
         <Table.Cell>
           <div className={styles['list-item-creator']}><TextLimit text={token.createdBy ?? '-'} /></div>

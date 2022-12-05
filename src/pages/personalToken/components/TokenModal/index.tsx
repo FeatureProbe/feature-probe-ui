@@ -140,14 +140,16 @@ const TokenModal: React.FC<IProps> = (props) => {
           </span>
           <Icon customclass={styles['modal-close-icon']} type="close" onClick={onClose} />
         </div>
-        <div className={styles['header-tips-container']}>
-          <div className={styles['header-tips']}>
-            <span className={styles['warning-circle']}>
-              <Icon type="warning-circle" />
-            </span>
-            {status ? <FormattedMessage id="token.copy.tips" /> : <FormattedMessage id="token.personal.add.tips" />}
+        {status && (
+          <div className={styles['header-tips-container']}>
+            <div className={styles['header-tips']}>
+              <span className={styles['warning-circle']}>
+                <Icon type="warning-circle" />
+              </span>
+              <FormattedMessage id="token.copy.tips" />
+            </div>
           </div>
-        </div>
+        )}
         {status ? (
           <div>
             <div className={styles['copy-token']}>
@@ -195,7 +197,13 @@ const TokenModal: React.FC<IProps> = (props) => {
               <Button size="mini" className={styles['btn']} basic type="reset" onClick={onClose}>
                 <FormattedMessage id="common.cancel.text" />
               </Button>
-              <Button size="mini" loading={loading} disabled={loading || Object.keys(errors).length > 0} type="submit" primary>
+              <Button
+                size="mini"
+                loading={loading}
+                disabled={loading || Object.keys(errors).length > 0}
+                type="submit"
+                primary
+              >
                 <FormattedMessage id="common.confirm.text" />
               </Button>
             </div>

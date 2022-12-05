@@ -21,7 +21,7 @@ const ApiToken = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [total, setTotal] = useState({
     totalPages: 0,
-    total: 0
+    total: 0,
   });
   const [page, setPage] = useState(0);
   const intl = useIntl();
@@ -44,7 +44,7 @@ const ApiToken = () => {
       const res = await getTokenList<ITokenListResponse>({
         type: TOKENTYPE.APPLICATION,
         pageIndex: page,
-        pageSize: 10
+        pageSize: 10,
       });
       if (res.success && res.data) {
         saveTokenList(res.data.content);
@@ -71,7 +71,7 @@ const ApiToken = () => {
       <Provider>
         <SettingCard title={<FormattedMessage id="token.application.title" />}>
           <div className={styles['description']}>
-            <FormattedMessage id='token.card.application.description' />
+            <FormattedMessage id="token.card.application.description" />
           </div>
           <div className={styles['action-line']}>
             <div className={styles.buttons}>
@@ -81,55 +81,56 @@ const ApiToken = () => {
               </Button>
             </div>
           </div>
-          <div className={styles['table-box']}>
-            <Table basic="very" unstackable>
-              <Table.Header className={styles['table-header']}>
-                <Table.Row>
-                  <Table.HeaderCell className={styles['column-brief']}>
-                    <FormattedMessage id="common.name.text" />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-role']}>
-                    <FormattedMessage id="members.role" />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-creator']}>
-                    <FormattedMessage id="members.createdby" />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-last-time']}>
-                    <FormattedMessage id="token.visitied.time" />
-                  </Table.HeaderCell>
-                  <Table.HeaderCell className={styles['column-opt']}>
-                    <FormattedMessage id="common.operation.text" />
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-              {isLoading ? (
-                <div className={styles.lists}>{isLoading && <Loading />}</div>
-              ) : (
-                <>
-                  {tokenList.length !== 0 && (
-                    <Table.Body className={styles['table-body']}>
-                      {tokenList.map((item) => {
-                        return <TokenItem key={item.id} token={item} refresh={load} />;
-                      })}
-                    </Table.Body>
-                  )}
-                </>
-              )}
-            </Table>
-            {tokenList.length !== 0 ? (
-              <Pagination
-                total={total.total}
-                pagination={{
-                  pageIndex: page + 1,
-                  totalPages: total.totalPages,
-                }}
-                handlePageChange={handlePageChange}
-              />
-            ) : (
-              <NoData />
-            )}
-            <TokenModal refresh={load} handleCancel={handleCancelAdd} open={modalOpen} />
+          <div className={styles['table-scroll-box']}>
+            <div className={styles['table-box']}>
+              <Table basic="very" unstackable>
+                <Table.Header className={styles['table-header']}>
+                  <Table.Row>
+                    <Table.HeaderCell className={styles['column-brief']}>
+                      <FormattedMessage id="common.name.text" />
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className={styles['column-role']}>
+                      <FormattedMessage id="members.role" />
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className={styles['column-creator']}>
+                      <FormattedMessage id="members.createdby" />
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className={styles['column-last-time']}>
+                      <FormattedMessage id="token.visited.time" />
+                    </Table.HeaderCell>
+                    <Table.HeaderCell className={styles['column-opt']}>
+                      <FormattedMessage id="common.operation.text" />
+                    </Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                {isLoading ? (
+                  <div className={styles.lists}>{isLoading && <Loading />}</div>
+                ) : (
+                  <>
+                    {tokenList.length !== 0 && (
+                      <Table.Body className={styles['table-body']}>
+                        {tokenList.map((item) => {
+                          return <TokenItem key={item.id} token={item} refresh={load} />;
+                        })}
+                      </Table.Body>
+                    )}
+                  </>
+                )}
+              </Table>
+              {tokenList.length === 0 && <NoData />}
+              <TokenModal refresh={load} handleCancel={handleCancelAdd} open={modalOpen} />
+            </div>
           </div>
+          {tokenList.length !== 0 && (
+            <Pagination
+              total={total.total}
+              pagination={{
+                pageIndex: page + 1,
+                totalPages: total.totalPages,
+              }}
+              handlePageChange={handlePageChange}
+            />
+          )}
         </SettingCard>
       </Provider>
     </SettingLayout>

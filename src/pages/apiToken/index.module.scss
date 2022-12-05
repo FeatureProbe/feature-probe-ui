@@ -32,8 +32,19 @@
   -webkit-appearance: unset !important;
 }
 
+.table-scroll-box {
+  overflow-x: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2px;
+}
+
 .table-box {
-  margin-top: 16px;
+  position: relative;
+  padding: 2px 0;
+  margin-top: 12px;
+  flex: 1 1;
 }
 
 .table-header {
@@ -58,20 +69,7 @@
 }
 
 .column-brief {
-  width: 228px;
   padding-left: 32px !important;
-}
-
-.column-role {
-  width: 228px;
-}
-
-.column-creator {
-  width: 300px;
-}
-
-.column-last-time {
-  width: 220px;
 }
 
 .description {
