@@ -105,6 +105,7 @@
   "common.fail.text": "Fail",
   "common.tokens.text": "Access tokens", 
   "common.token.text": "Access token", 
+  "common.secret.key.text": "Secret key",
 
   "header.getuser.error.text": "Error getting user profile",
 

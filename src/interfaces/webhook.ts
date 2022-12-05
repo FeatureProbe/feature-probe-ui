@@ -15,6 +15,7 @@ export interface IWebHook {
   lastedStatus?: string;
   lastedTime?: string;
   lastedStatusCode?: string;
+  secretKey?: string;
 }
 
 export interface IWebHookInfo {

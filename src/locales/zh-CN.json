@@ -105,6 +105,7 @@
   "common.fail.text": "失败",
   "common.tokens.text": "Access Tokens",
   "common.token.text": "Access Token",
+  "common.secret.key.text": "密钥",
   
   "header.getuser.error.text": "无法获取用户信息!",
 
