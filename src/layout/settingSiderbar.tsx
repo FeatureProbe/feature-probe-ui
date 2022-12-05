@@ -73,7 +73,7 @@ const Sidebar = () => {
       </div>
       <div className={tokenCls} onClick={() => gotoPage(TOKENS)}>
         <PutAwayMemu 
-          type="attribute" 
+          type="yingyongTokens" 
           isPutAway={isPutAway} 
           title={intl.formatMessage({ id: 'common.tokens.text' })} />
       </div>

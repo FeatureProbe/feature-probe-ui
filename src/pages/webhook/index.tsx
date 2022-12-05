@@ -102,7 +102,7 @@ const WebHook = () => {
             <div className={styles.buttons}>
               <Button primary className={styles['add-button']} onClick={handleAddWebHook}>
                 <Icon customclass={styles['iconfont']} type="add" />
-                WebHook
+                Webhook
               </Button>
             </div>
           </div>

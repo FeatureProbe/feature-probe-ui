@@ -495,7 +495,7 @@
   "webhook.url.error.text": "Please enter the correct url",
   "webhook.url.normal.text": "We’ll send a POST request to the URL with details of events.",
   "webhook.application.required": "Please select application",
-  "webhook.recent.text": "Recently pushed",
+  "webhook.recent.text": "Last Delivery",
   "webhook.create.success": "Webhook created successfully",
   "webhook.create.failed": "failed to create webhook",
   "webhook.update.success": "Webhook updated successfully",
@@ -511,7 +511,7 @@
 
   "token.application.title": "Shared access tokens",
   "token.personal.title": "Personal access tokens",
-  "token.visited.time": "Last Delivery",
+  "token.visited.time": "Last used",
   "token.delete.tips.title": "Sure to delete this token?",
   "token.delete.tips.content": "Token will be invalid after deleted.",
   "token.application.add.tips": "Once the application token is created, it cannot be changed",
