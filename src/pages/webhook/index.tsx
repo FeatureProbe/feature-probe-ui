@@ -166,13 +166,10 @@ const WebHook = () => {
                       })}
                     </Table.Body>
                   </Table>
+                  {!list.length && <NoData />}
                 </div>
               </div>
-              {!list.length ? (
-                <div className={styles['nodata-box']}>
-                  <NoData />
-                </div>
-              ) : (
+              {list.length !== 0 && (
                 <CustomPagination
                   pagination={{
                     totalPages: pagination.totalPages,

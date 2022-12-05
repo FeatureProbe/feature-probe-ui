@@ -493,7 +493,7 @@
   "webhook.custom.text": "自定义",
   "webhook.url.required": "请输入url",
   "webhook.url.error.text": "请输入正确的url",
-  "webhook.url.normal.text": "输入应用程序传入webhook中的URL。",
+  "webhook.url.normal.text": "当特定事件发生时，我们将发送一个POST消息到这个URL",
   "webhook.application.required": "请选择应用",
   "webhook.recent.text": "最近推送",
   "webhook.create.success": "创建成功",
