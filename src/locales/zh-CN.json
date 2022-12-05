@@ -514,8 +514,6 @@
   "token.visited.time": "最后使用时间",
   "token.delete.tips.title": "确定删除该Token？",
   "token.delete.tips.content": "删除后，该Token将失效",
-  "token.application.add.tips": "应用Token一旦创建，不可更改",
-  "token.personal.add.tips": "个人Token一旦创建，不可更改",
   "token.role.tips": "不支持授予比您权限更多的角色",
   "token.application.create.text": "创建应用Token",
   "token.personal.create.text": "创建个人Token",

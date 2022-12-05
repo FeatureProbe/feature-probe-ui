@@ -184,14 +184,6 @@ const TokenModal: React.FC<IProps> = (props) => {
           </span>
           <Icon customclass={styles['modal-close-icon']} type="close" onClick={onClose} />
         </div>
-        <div className={styles['header-tips-container']}>
-          <div className={styles['header-tips']}>
-            <span className={styles['warning-circle']}>
-              <Icon type="warning-circle" />
-            </span>
-            {status ? <FormattedMessage id="token.copy.tips" /> : <FormattedMessage id="token.application.add.tips" />}
-          </div>
-        </div>
         {status ? (
           <div>
             <div className={styles['copy-token']}>
