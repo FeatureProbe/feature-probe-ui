@@ -7,6 +7,7 @@ import { ICondition, IRule, IServe, IVariation } from 'interfaces/targeting';
 import { ISegmentList } from 'interfaces/segment';
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
 import { getVariationName } from 'utils/tools';
+import { useIntl } from 'react-intl';
 
 export const useVarition = () => {
   const [variations, saveVariations] = useState<IVariation[]>([]);
@@ -55,6 +56,8 @@ export const useVarition = () => {
 };
 
 export const useRule = () => {
+  const intl = useIntl();
+
   const [rules, saveRules] = useState<IRule[]>([]);
 
   const handleAddRule = () => {
@@ -83,7 +86,7 @@ export const useRule = () => {
     const condition: ICondition = {
       id: uuidv4(),
       type: type,
-      subject:  type === SEGMENT_TYPE ? 'user' : '',
+      subject:  type === SEGMENT_TYPE ? intl.formatMessage({id: 'common.user.text'}) : '',
       predicate: '',
     };
 

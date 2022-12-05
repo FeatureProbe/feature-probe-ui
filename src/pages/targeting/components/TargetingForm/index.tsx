@@ -204,7 +204,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
         rule.conditions.forEach((condition: ICondition) => {
           condition.id = uuidv4();
           if (condition.type === SEGMENT_TYPE) {
-            condition.subject = 'user';
+            condition.subject = intl.formatMessage({id: 'common.user.text'});
           } else if (condition.type === DATETIME_TYPE && condition.objects) {
             condition.datetime = condition.objects[0].slice(0, 19);
             condition.timezone = condition.objects[0].slice(19);
@@ -217,7 +217,7 @@ const Targeting = forwardRef((props: IProps, ref: any) => {
       saveDefaultServe(targeting.defaultServe);
       saveDisabledServe(targeting.disabledServe);
     }
-  }, [targeting, saveVariations, saveRules, saveDefaultServe, saveDisabledServe]);
+  }, [targeting, saveVariations, saveRules, saveDefaultServe, saveDisabledServe, intl]);
 
   useEffect(() => {
     saveSegmentList(segmentList);

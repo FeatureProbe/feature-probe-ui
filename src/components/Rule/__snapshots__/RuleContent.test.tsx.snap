@@ -212,27 +212,27 @@ exports[`RuleContent opt 1`] = `
         class="menu"
       >
         <div
-          class="menu-item"
+          class="menu-item-centering"
         >
           string
         </div>
         <div
-          class="menu-item"
+          class="menu-item-centering"
         >
           number
         </div>
         <div
-          class="menu-item"
+          class="menu-item-centering"
         >
           datetime
         </div>
         <div
-          class="menu-item"
+          class="menu-item-centering"
         >
           semver
         </div>
         <div
-          class="menu-item"
+          class="menu-item-centering"
         >
           segment
         </div>
@@ -333,6 +333,19 @@ exports[`RuleContent opt 2`] = `
                       </span>
                     </span>
                     <div
+                      class="rule-item-type"
+                    >
+                      <div
+                        class="rule-item-type-box"
+                      >
+                        <div
+                          class="rule-item-type-text"
+                        >
+                          number
+                        </div>
+                      </div>
+                    </div>
+                    <div
                       class="equal width fields rule-item-left"
                     >
                       <div
@@ -341,7 +354,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating search selection dropdown rule-item-subject-dropdown"
-                          name="test-name-1251"
+                          name="test-name-1368"
                           role="combobox"
                         >
                           <input
@@ -372,7 +385,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-1748"
+                          name="test-name-1865"
                           role="listbox"
                           tabindex="0"
                         >
@@ -383,15 +396,6 @@ exports[`RuleContent opt 2`] = `
                             role="alert"
                           >
                             Select an operator
-                          </div>
-                          <div
-                            class="rule-item-type"
-                          >
-                            <div
-                              class="rule-item-type-text"
-                            >
-                              number
-                            </div>
                           </div>
                           <span
                             class="iconfont icon-angle-down angle-down"
@@ -488,7 +492,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating multiple search selection dropdown"
-                          name="test-name-3155"
+                          name="test-name-3193"
                           role="combobox"
                         >
                           <input
@@ -537,6 +541,24 @@ exports[`RuleContent opt 2`] = `
                       </span>
                     </span>
                     <div
+                      class="rule-item-type"
+                    >
+                      <div
+                        class="rule-item-type-box"
+                      >
+                        <div
+                          class="rule-item-type-text"
+                        >
+                          semver
+                          <span
+                            class="iconfont icon-question icon-info"
+                            customclass="icon-info"
+                            type="question"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div
                       class="equal width fields rule-item-left"
                     >
                       <div
@@ -545,7 +567,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating search selection dropdown rule-item-subject-dropdown"
-                          name="test-name-3939"
+                          name="test-name-4188"
                           role="combobox"
                         >
                           <input
@@ -576,7 +598,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-4436"
+                          name="test-name-4685"
                           role="listbox"
                           tabindex="0"
                         >
@@ -587,15 +609,6 @@ exports[`RuleContent opt 2`] = `
                             role="alert"
                           >
                             Select an operator
-                          </div>
-                          <div
-                            class="rule-item-type"
-                          >
-                            <div
-                              class="rule-item-type-text"
-                            >
-                              semver
-                            </div>
                           </div>
                           <span
                             class="iconfont icon-angle-down angle-down"
@@ -692,7 +705,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating multiple search selection dropdown"
-                          name="test-name-5843"
+                          name="test-name-6013"
                           role="combobox"
                         >
                           <input
@@ -740,6 +753,19 @@ exports[`RuleContent opt 2`] = `
                         and
                       </span>
                     </span>
+                    <div
+                      class="rule-item-type"
+                    >
+                      <div
+                        class="rule-item-type-box"
+                      >
+                        <div
+                          class="rule-item-type-text"
+                        >
+                          segment
+                        </div>
+                      </div>
+                    </div>
                     <div
                       class="equal width fields rule-item-left"
                     >
@@ -750,7 +776,7 @@ exports[`RuleContent opt 2`] = `
                           aria-disabled="true"
                           aria-expanded="false"
                           class="ui disabled floating search selection dropdown rule-item-subject-dropdown"
-                          name="test-name-6627"
+                          name="test-name-6915"
                           role="combobox"
                         >
                           <input
@@ -767,12 +793,26 @@ exports[`RuleContent opt 2`] = `
                             class="divider text"
                             role="alert"
                           >
-                            Enter a subject
+                            user
                           </div>
                           <div
                             class="menu transition"
                             role="listbox"
-                          />
+                          >
+                            <div
+                              aria-checked="true"
+                              aria-selected="true"
+                              class="active selected item"
+                              role="option"
+                              style="pointer-events: all;"
+                            >
+                              <span
+                                class="text"
+                              >
+                                user
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div
@@ -781,7 +821,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-7147"
+                          name="test-name-7578"
                           role="listbox"
                           tabindex="0"
                         >
@@ -792,15 +832,6 @@ exports[`RuleContent opt 2`] = `
                             role="alert"
                           >
                             Select an operator
-                          </div>
-                          <div
-                            class="rule-item-type"
-                          >
-                            <div
-                              class="rule-item-type-text"
-                            >
-                              segment
-                            </div>
                           </div>
                           <span
                             class="iconfont icon-angle-down angle-down"
@@ -845,7 +876,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="true"
                           class="ui active visible floating multiple search selection dropdown"
-                          name="test-name-8022"
+                          name="test-name-8373"
                           role="combobox"
                         >
                           <input
@@ -924,7 +955,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown serve-dropdown"
-                          name="test-name-9124"
+                          name="test-name-9475"
                           role="listbox"
                           style="width: 308px;"
                           tabindex="0"

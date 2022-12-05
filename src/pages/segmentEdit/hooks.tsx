@@ -5,12 +5,15 @@ import { useForm } from 'react-hook-form';
 import { InputOnChangeData, TextAreaProps } from 'semantic-ui-react';
 import { ICondition, IRule, IServe } from 'interfaces/targeting';
 import { DATETIME_TYPE, SEGMENT_TYPE } from 'components/Rule/constants';
+import { useIntl } from 'react-intl';
 
 interface IInfo {
   [key: string]: string;
 }
 
 export const useRule = () => {
+  const intl = useIntl();
+
   const [rules, saveRules] = useState<IRule[]>([]);
 
   const handleAddRule = () => {
@@ -38,7 +41,7 @@ export const useRule = () => {
     const condition: ICondition = {
       id: uuidv4(),
       type: type,
-      subject:  type === SEGMENT_TYPE ? 'user' : '',
+      subject:  type === SEGMENT_TYPE ? intl.formatMessage({id: 'common.user.text'}) : '',
       predicate: '',
     };
     if (type === DATETIME_TYPE) {
