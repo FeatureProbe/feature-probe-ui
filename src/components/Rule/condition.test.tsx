@@ -262,6 +262,11 @@ test('RuleContent semver input', (done) => {
     expect(screen.queryByText('100')?.getAttribute('value')).not.toBeNull();
     expect(screen.queryByText('200')?.getAttribute('value')).toBeNull();
 
+    const ele = document.getElementsByClassName('icon-question')[0];
+    await userEvent.click(ele);
+
+    await userEvent.click(screen.getByText('Learn more'));
+
     expect(asFragment()).toMatchSnapshot();
     done();
   })();
@@ -292,7 +297,7 @@ test('RuleContent datetime input', (done) => {
     );
 
     await userEvent.click(screen.getByPlaceholderText('Please select'));
-    await userEvent.click(screen.getAllByText(`${((new Date().getDate() + 1) % 28) + 1}`)[0]);
+    await userEvent.click(screen.getByText('20'));
 
     await userEvent.click(screen.getAllByText('UTC +8')[0]);
     await userEvent.click(screen.getByText('UTC +3'));

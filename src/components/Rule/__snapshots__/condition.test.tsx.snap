@@ -3102,8 +3102,8 @@ exports[`RuleContent semver input 1`] = `
           class="six wide field"
         >
           <div
-            aria-expanded="true"
-            class="ui active visible floating multiple search selection dropdown"
+            aria-expanded="false"
+            class="ui floating multiple search selection dropdown"
             name="rule_test-id_condition_c-test-id_objects"
             role="combobox"
           >
@@ -3132,7 +3132,7 @@ exports[`RuleContent semver input 1`] = `
             </div>
             <div
               aria-multiselectable="true"
-              class="visible menu transition"
+              class="menu transition"
               role="listbox"
             />
           </div>
