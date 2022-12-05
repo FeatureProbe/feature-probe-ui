@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Popup } from 'semantic-ui-react';
 import classNames from 'classnames';
 import Button from 'components/Button';
@@ -23,17 +23,19 @@ interface IProps {
 }
 
 const RuleContent = (props: IProps) => {
-  const { 
+  const {
     rule,
     disabled,
     ruleIndex,
     useSegment,
-    ruleContainer, 
+    ruleContainer,
     subjectOptions,
     segmentContainer,
-    variationContainer, 
-    hooksFormContainer, 
+    variationContainer,
+    hooksFormContainer,
   } = props;
+
+  const intl = useIntl();
 
   let variations;
 
@@ -93,29 +95,29 @@ const RuleContent = (props: IProps) => {
           }
         >
           <div className={styles['menu']}>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, STRING_TYPE);}}>
-              {STRING_TYPE}
+            <div className={styles['menu-item-centering']} onClick={()=> {handleAddCondition(ruleIndex, STRING_TYPE);}}>
+              {intl.formatMessage({id: `targeting.rule.operator.type.${STRING_TYPE}`})}
             </div>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, NUMBER_TYPE);}}>
-              {NUMBER_TYPE}
+            <div className={styles['menu-item-centering']} onClick={()=> {handleAddCondition(ruleIndex, NUMBER_TYPE);}}>
+              {intl.formatMessage({id: `targeting.rule.operator.type.${NUMBER_TYPE}`})}
             </div>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, DATETIME_TYPE);}}>
-              {DATETIME_TYPE}
+            <div className={styles['menu-item-centering']} onClick={()=> {handleAddCondition(ruleIndex, DATETIME_TYPE);}}>
+              {intl.formatMessage({id: `targeting.rule.operator.type.${DATETIME_TYPE}`})}
             </div>
-            <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEMVER_TYPE);}}>
-              {SEMVER_TYPE}
+            <div className={styles['menu-item-centering']} onClick={()=> {handleAddCondition(ruleIndex, SEMVER_TYPE);}}>
+              {intl.formatMessage({id: `targeting.rule.operator.type.${SEMVER_TYPE}`})}
             </div>
             {
               useSegment && (
-                <div className={styles['menu-item']} onClick={()=> {handleAddCondition(ruleIndex, SEGMENT_TYPE);}}>
-                  {SEGMENT_TYPE}
+                <div className={styles['menu-item-centering']} onClick={()=> {handleAddCondition(ruleIndex, SEGMENT_TYPE);}}>
+                  {intl.formatMessage({id: `targeting.rule.operator.type.${SEGMENT_TYPE}`})}
                 </div>
               )
             }
           </div>
         </Popup>
       </div>
-     
+
       {
         variations && (
           <Serve
