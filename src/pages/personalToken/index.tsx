@@ -114,7 +114,6 @@ const ApiToken = () => {
                     </>
                   </Table>
                   {tokenList.length === 0 && <NoData />}
-                  <TokenModal refresh={load} handleCancel={handleCancelAdd} open={modalOpen} />
                 </div>
               </div>
               {tokenList.length !== 0 && (
@@ -129,6 +128,7 @@ const ApiToken = () => {
               )}
             </>
           )}
+          <TokenModal refresh={load} handleCancel={handleCancelAdd} open={modalOpen} />
         </SettingCard>
       </Provider>
     </UserSettingLayout>
