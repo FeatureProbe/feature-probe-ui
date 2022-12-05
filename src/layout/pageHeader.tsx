@@ -179,6 +179,10 @@ const PageHeader = () => {
     history.push('/approvals/list');
   }, [history]);
 
+  const handleGotoProfile = useCallback(() => {
+    history.push('/user/profile');
+  }, [history]);
+
   return (
     <div className={headerCls}>
       <div className={styles.logo} onClick={handleGotoProject}>
@@ -291,6 +295,9 @@ const PageHeader = () => {
           }
         >
           <div className={styles['menu']} onClick={() => {setMenuOpen(false);}}>
+            <div className={styles['menu-item']} onClick={handleGotoProfile}>
+              <FormattedMessage id='common.profile.text' />
+            </div>
             <div className={styles['menu-item']} onClick={handleLogout}>
               <FormattedMessage id='common.logout.text' />
             </div>

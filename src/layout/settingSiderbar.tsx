@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import classNames from 'classnames';
 import { useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { MEMBER_PATH, PROFILE_PATH, WEBHOOK_LIST_PATH } from 'router/routes';
+import { APITOKEN_PATH, MEMBER_PATH, WEBHOOK_LIST_PATH } from 'router/routes';
 import PutAwayMemu from 'components/PutAwayMenu';
-import { WEBHOOKLIST, MEMBERS, PROFILE } from 'constants/sidebar';
+import { WEBHOOKLIST, MEMBERS, TOKENS } from 'constants/sidebar';
 import { SidebarContainer } from './hooks';
 import styles from './sidebar.module.scss';
 
@@ -31,16 +31,6 @@ const Sidebar = () => {
     }
   );
 
-  const profileCls = classNames(
-    styles['project-menu-item'],
-    {
-      [styles['project-menu-item-close']]: isPutAway
-    },
-    {
-      [styles.selected]: match.path === PROFILE_PATH,
-    }
-  );
-
   const webhookCls = classNames(
     styles['project-menu-item'],
     {
@@ -48,6 +38,16 @@ const Sidebar = () => {
     },
     {
       [styles.selected]: match.path === WEBHOOK_LIST_PATH,
+    }
+  );
+
+  const tokenCls = classNames(
+    styles['project-menu-item'],
+    {
+      [styles['project-menu-item-close']]: isPutAway,
+    },
+    {
+      [styles.selected]: match.path === APITOKEN_PATH,
     }
   );
 
@@ -64,19 +64,18 @@ const Sidebar = () => {
           title={intl.formatMessage({id: 'common.members.text'})}
         />
       </div>
-      <div className={profileCls} onClick={() => gotoPage(PROFILE)}>
-        <PutAwayMemu
-          type='attribute'
-          isPutAway={isPutAway}
-          title={intl.formatMessage({id: 'common.profile.text'})}
-        />
-      </div>
       <div className={webhookCls} onClick={() => gotoPage(WEBHOOKLIST)}>
         <PutAwayMemu
           type='WebHooks'
           isPutAway={isPutAway}
           title={intl.formatMessage({id: 'common.webhooks.text'})}
         />
+      </div>
+      <div className={tokenCls} onClick={() => gotoPage(TOKENS)}>
+        <PutAwayMemu 
+          type="yingyongTokens" 
+          isPutAway={isPutAway} 
+          title={intl.formatMessage({ id: 'common.tokens.text' })} />
       </div>
     </div>
 	);

@@ -22,6 +22,28 @@ exports[`TextLimit snapshot 2`] = `
 </DocumentFragment>
 `;
 
+exports[`TextLimit snapshot 3`] = `
+<DocumentFragment>
+  <span
+    class="limit-str-container-n"
+    style="max-width: 100%;"
+  >
+    These are test words.
+  </span>
+</DocumentFragment>
+`;
+
+exports[`TextLimit snapshot 4`] = `
+<DocumentFragment>
+  <span
+    class="limit-str-container-w"
+    style="max-width: 1000px;"
+  >
+    These are test words.
+  </span>
+</DocumentFragment>
+`;
+
 exports[`TextLimit text maxLenth test 1`] = `
 <body>
   <div>

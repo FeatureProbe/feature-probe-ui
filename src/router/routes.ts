@@ -13,6 +13,8 @@ const SegmentEdit = lazy(() => import('../pages/segmentEdit'));
 const GetStarted = lazy(() => import('../pages/getStarted'));
 const Approvals = lazy(() => import('../pages/approval'));
 const ProjectSetting = lazy(() => import('../pages/projectSetting'));
+const ApiToken = lazy(() => import('../pages/apiToken'));
+const PersonalAPIToken = lazy(() => import('pages/personalToken'));
 const WebHook = lazy(() => import('../pages/webhook'));
 
 export const PROJECT_PATH = '/projects';
@@ -24,9 +26,11 @@ export const SEGMENT_EDIT_PATH = '/:projectKey/:environmentKey/segments/:segment
 export const TARGETING_PATH = '/:projectKey/:environmentKey/:toggleKey/:navigation';
 export const GET_STARTED_PATH = '/:projectKey/:environmentKey/:toggleKey/get-started';
 export const MEMBER_PATH = '/settings/members';
-export const PROFILE_PATH = '/settings/profile';
+export const PROFILE_PATH = '/user/profile';
+export const PERSONAL_APITOKEN_PATH = '/user/tokens';
 export const WEBHOOK_LIST_PATH = '/settings/webhooks/list';
 export const APPROVAL_PATH = '/approvals/:navigation';
+export const APITOKEN_PATH = '/settings/tokens';
 
 
 
@@ -87,6 +91,21 @@ export const headerRoutes = [
     path: PROFILE_PATH,
     exact: true,
     component: Profile
+  },
+  {
+    path: APITOKEN_PATH,
+    exact: true,
+    component: ApiToken
+  },
+  {
+    path: APITOKEN_PATH,
+    exact: true,
+    component: ApiToken
+  },
+  {
+    path: PERSONAL_APITOKEN_PATH,
+    exact: true,
+    component: PersonalAPIToken
   },
   {
     path: WEBHOOK_LIST_PATH,

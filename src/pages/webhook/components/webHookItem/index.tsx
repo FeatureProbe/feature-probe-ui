@@ -7,9 +7,9 @@ import message from 'components/MessageBox';
 import TextLimit from 'components/TextLimit';
 import { IWebHook, WebHookStatus } from 'interfaces/webhook';
 import DeleteTipsModal from 'components/DeleteTipsModal';
+import CopyToClipboardPopup from 'components/CopyToClipboard';
 import { deleteWebHook, updateWebHook } from 'services/webhook';
 import styles from './index.module.scss';
-
 interface IProps {
   webhook: IWebHook;
   handleEdit: (key: number) => void;
@@ -53,6 +53,7 @@ const WebHookItem = (props: IProps) => {
       try {
         const res = await updateWebHook(webhook.id + '', { ...webhook, status: status });
         if (res.success) {
+          message.success(intl.formatMessage({ id: 'webhook.update.success' }));
           saveList((list) => {
             list[index].status = status;
             return cloneDeep(list);
@@ -77,7 +78,7 @@ const WebHookItem = (props: IProps) => {
       >
         <Table.Cell>
           <div className={styles['webhook-info-name']}>
-            <TextLimit text={webhook.name} maxWidth={226} />
+            <TextLimit text={webhook.name} maxWidth={180} />
           </div>
         </Table.Cell>
         <Table.Cell>
@@ -94,6 +95,13 @@ const WebHookItem = (props: IProps) => {
               checked={webhook.status === WebHookStatus.ENABLE}
               toggle
             />
+          </div>
+        </Table.Cell>
+        <Table.Cell>
+          <div className={styles['webhook-info-secretKey']}>
+            <CopyToClipboardPopup text={webhook.secretKey ?? ''}>
+              <span><TextLimit hidePopup text={webhook.secretKey ?? '-'} /></span>
+            </CopyToClipboardPopup>
           </div>
         </Table.Cell>
         <Table.Cell>
