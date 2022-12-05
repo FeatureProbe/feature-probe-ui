@@ -48,8 +48,8 @@ export const getAttrOptions = (intl: IntlShape, type?:string) => {
     ];
   } else if (type === 'datetime') {
     return [
-      { key: '1', text: 'before', value: 'before' },
-      { key: '2', text: 'after', value: 'after' },
+      { key: '1', text: intl.formatMessage({id: 'targeting.rule.subject.datetime.before'}), value: 'before' },
+      { key: '2', text: intl.formatMessage({id: 'targeting.rule.subject.datetime.after'}), value: 'after' },
     ];
   }
 };

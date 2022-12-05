@@ -262,6 +262,11 @@ test('RuleContent semver input', (done) => {
     expect(screen.queryByText('100')?.getAttribute('value')).not.toBeNull();
     expect(screen.queryByText('200')?.getAttribute('value')).toBeNull();
 
+    const ele = document.getElementsByClassName('icon-question')[0];
+    await userEvent.click(ele);
+
+    await userEvent.click(screen.getByText('Learn more'));
+
     expect(asFragment()).toMatchSnapshot();
     done();
   })();
