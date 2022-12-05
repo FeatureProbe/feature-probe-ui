@@ -89,7 +89,6 @@ const PageHeader = () => {
     return () => window.removeEventListener('click', handler);
   }, [menuOpen, helpMenuOpen, i18nMenuOpen]);
 
-
   useEffect(() => {
     getUserInfo<IUser>().then(res => {
       const { success } = res;

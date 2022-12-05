@@ -317,6 +317,8 @@
   "targeting.get.versions.error": "获取历史版本失败!",
   "targeting.view.versions": "正在查看",
   "targeting.view.more": "查看更多",
+  "targeting.semver.explain": "什么是语义版本？",
+  "targeting.semver.more": "查看详情",
 
   "targeting.approval.tips": "支持为该项目统一设置审批人",
   "targeting.approval.operation.skip.approval": "跳过审批并发布",

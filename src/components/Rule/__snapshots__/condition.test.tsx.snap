@@ -2786,7 +2786,19 @@ exports[`RuleContent segment render 1`] = `
               <div
                 class="menu transition"
                 role="listbox"
-              />
+              >
+                <div
+                  aria-checked="true"
+                  aria-selected="true"
+                  class="active selected item"
+                  role="option"
+                  style="pointer-events: all;"
+                >
+                  <span
+                    class="text"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -2937,13 +2949,13 @@ exports[`RuleContent semver input 1`] = `
             class="rule-item-type-text"
           >
             semver
+            <span
+              class="iconfont icon-question icon-info"
+              customclass="icon-info"
+              type="question"
+            />
           </div>
         </div>
-        <span
-          class="iconfont icon-info icon-info"
-          customclass="icon-info"
-          type="info"
-        />
       </div>
       <div
         class="equal width fields rule-item-left"

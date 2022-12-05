@@ -550,13 +550,13 @@ exports[`RuleContent opt 2`] = `
                           class="rule-item-type-text"
                         >
                           semver
+                          <span
+                            class="iconfont icon-question icon-info"
+                            customclass="icon-info"
+                            type="question"
+                          />
                         </div>
                       </div>
-                      <span
-                        class="iconfont icon-info icon-info"
-                        customclass="icon-info"
-                        type="info"
-                      />
                     </div>
                     <div
                       class="equal width fields rule-item-left"
@@ -567,7 +567,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating search selection dropdown rule-item-subject-dropdown"
-                          name="test-name-4180"
+                          name="test-name-4188"
                           role="combobox"
                         >
                           <input
@@ -598,7 +598,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-4677"
+                          name="test-name-4685"
                           role="listbox"
                           tabindex="0"
                         >
@@ -705,7 +705,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating multiple search selection dropdown"
-                          name="test-name-6005"
+                          name="test-name-6013"
                           role="combobox"
                         >
                           <input
@@ -776,7 +776,7 @@ exports[`RuleContent opt 2`] = `
                           aria-disabled="true"
                           aria-expanded="false"
                           class="ui disabled floating search selection dropdown rule-item-subject-dropdown"
-                          name="test-name-6907"
+                          name="test-name-6915"
                           role="combobox"
                         >
                           <input
@@ -793,12 +793,26 @@ exports[`RuleContent opt 2`] = `
                             class="divider text"
                             role="alert"
                           >
-                            Enter a subject
+                            user
                           </div>
                           <div
                             class="menu transition"
                             role="listbox"
-                          />
+                          >
+                            <div
+                              aria-checked="true"
+                              aria-selected="true"
+                              class="active selected item"
+                              role="option"
+                              style="pointer-events: all;"
+                            >
+                              <span
+                                class="text"
+                              >
+                                user
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div
@@ -807,7 +821,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown rule-item-operator-dropdown"
-                          name="test-name-7427"
+                          name="test-name-7578"
                           role="listbox"
                           tabindex="0"
                         >
@@ -862,7 +876,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="true"
                           class="ui active visible floating multiple search selection dropdown"
-                          name="test-name-8222"
+                          name="test-name-8373"
                           role="combobox"
                         >
                           <input
@@ -941,7 +955,7 @@ exports[`RuleContent opt 2`] = `
                         <div
                           aria-expanded="false"
                           class="ui floating selection dropdown serve-dropdown"
-                          name="test-name-9324"
+                          name="test-name-9475"
                           role="listbox"
                           style="width: 308px;"
                           tabindex="0"

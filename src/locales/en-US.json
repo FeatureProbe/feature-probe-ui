@@ -317,6 +317,8 @@
   "targeting.get.versions.error": "Error getting toggle versions",
   "targeting.view.versions": "Reviewing ",
   "targeting.view.more": "Load more",
+  "targeting.semver.explain": "What is semver?",
+  "targeting.semver.more": "Learn more",
 
   "targeting.approval.tips": "Owner can set approval reviewers for this environment.",
   "targeting.approval.operation.skip.approval": "Skip Approval and Publish",

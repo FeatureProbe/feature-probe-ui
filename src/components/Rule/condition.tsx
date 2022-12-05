@@ -1,5 +1,5 @@
-import { SyntheticEvent, useCallback, useEffect, useState } from 'react';
-import { Form, Select, Dropdown, DropdownProps, DropdownItemProps } from 'semantic-ui-react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { Form, Select, Dropdown, DropdownProps, DropdownItemProps, Popup } from 'semantic-ui-react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Datetime from 'react-datetime';
 import moment from 'moment';
@@ -54,7 +54,19 @@ const RuleContent = (props: IProps) => {
 
   const intl = useIntl();
   const [ options, setOption ] = useState<IOption[]>([]);
+  const [ popupOpen, setPopupOpen ] = useState<boolean>(false);
   const segmentList: ISegmentList = segmentContainer?.useContainer().segmentList;
+
+  useEffect(() => {
+    const handler = () => {
+      if (popupOpen) {
+        setPopupOpen(false);
+      }
+    };
+    window.addEventListener('click', handler);
+
+    return () => window.removeEventListener('click', handler);
+  }, [popupOpen]);
 
   const {
     handleChangeAttr,
@@ -129,6 +141,14 @@ const RuleContent = (props: IProps) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rule.id, condition.id, condition.type, register]);
 
+  const segmentOptions = useMemo(() => {
+    return [{
+      key: condition.subject,
+      value: condition.subject,
+      text: condition.subject
+    }];
+  }, [condition.subject]);
+
   useEffect(() => {
     if (segmentList) {
       const { content } = segmentList;
@@ -174,17 +194,37 @@ const RuleContent = (props: IProps) => {
           <div className={styles['rule-item-type-box']}>
             <div className={styles['rule-item-type-text']}>
               {intl.formatMessage({id: `targeting.rule.operator.type.${condition.type ?? 'empty'}`})}
+              {
+                condition.type === SEMVER_TYPE && (
+                  <Popup
+                    basic
+                    open={popupOpen}
+                    on='click'
+                    position='top center'
+                    className={styles['rule-popup']}
+                    trigger={
+                      <Icon
+                        type='question'
+                        customclass={styles['icon-info']}
+                        onClick={(e: SyntheticEvent) => {
+                          document.body.click();
+                          e.stopPropagation();
+                          setPopupOpen(true);
+                        }}
+                      />
+                    }
+                  >
+                    <div className={styles['rule-popup-content']}>
+                      <FormattedMessage id='targeting.semver.explain' />
+                      <span className={styles['rule-popup-link']} onClick={handleGotoSemver}>
+                        <FormattedMessage id='targeting.semver.more' />
+                      </span>
+                    </div>
+                  </Popup>
+                )
+              }
             </div>
           </div>
-          {
-            condition.type === SEMVER_TYPE && (
-              <Icon
-                type='info'
-                customclass={styles['icon-info']}
-                onClick={handleGotoSemver}
-              />
-            )
-          }
         </div>
       }
       <Form.Group className={styles['rule-item-left']} widths='equal'>
@@ -196,7 +236,7 @@ const RuleContent = (props: IProps) => {
             floating
             selection
             allowAdditions
-            options={subjectOptions}
+            options={condition.type !==  SEGMENT_TYPE ? subjectOptions : segmentOptions}
             value={condition.subject}
             openOnFocus={true}
             closeOnChange={true}

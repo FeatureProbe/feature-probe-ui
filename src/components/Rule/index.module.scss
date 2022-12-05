@@ -51,6 +51,7 @@
 .rule-item {
   display: flex;
   margin-bottom: 12px;
+  align-items: center;
 }
 
 .rule-item-prefix {
@@ -62,8 +63,8 @@
   text-align: center;
   line-height: 26px;
   color: #ffffff;
-  position: relative;
-  top: 4px;
+  // position: relative;
+  // top: 4px;
   margin: 0 14px 0 10px;
   background-color: #26a4ba;
 }
@@ -116,15 +117,13 @@
 }
 
 .rule-item-type-box {
-  width: 50px;
   height: 20px;
-  background: rgba(33, 37, 41, 0.08);
   border-radius: 4px;
   color: #495057;
   line-height: 20px;
-  padding: 0 4px;
   align-self: center;
   display: inline;
+  width: 100%;
 }
 
 .rule-item-type-text {
@@ -138,6 +137,9 @@
   text-overflow: ellipsis;
   line-height: 20px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .rule-item-operator-dropdown {
@@ -147,18 +149,19 @@
 .rule-add {
   cursor: pointer;
   margin: 12px 0 24px 52px;
-  width: 120px;
+  width: 68px;
 }
 
 .rule-add-one {
   margin-bottom: 24px;
   cursor: pointer;
-  width: 120px;
+  width: 68px;
 }
 
 .rule-add-btn {
   font-size: 12px;
   width: 100%;
+  padding: 0 12px !important;
 }
 
 .icon-archive {
@@ -239,10 +242,9 @@
 }
 
 .icon-info {
-  opacity: 0.4;
   vertical-align: middle;
   margin: 0 3px;
-  scale: 0.75;
+  cursor: pointer;
 }
 
 .icon-info:hover {
@@ -271,7 +273,7 @@
 }
 
 .menu {
-  min-width: 120px;
+  min-width: 68px;
   color: #212529;
 }
 
@@ -291,4 +293,22 @@
   @extend .menu-item;
 
   text-align: center;
+}
+
+.rule-popup {
+  padding: 4px 0 !important;
+}
+
+.rule-popup-content {
+  min-width: 68px;
+  color: #495057;
+  padding: 0 20px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.rule-popup-link {
+  margin-left: 8px;
+  color: #556ee6;
+  cursor: pointer;
 }

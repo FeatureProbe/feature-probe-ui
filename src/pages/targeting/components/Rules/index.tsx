@@ -9,6 +9,7 @@ import Rule from 'components/Rule';
 import { ICondition, IOption, IRule } from 'interfaces/targeting';
 import { IContainer } from 'interfaces/provider';
 import styles from './index.module.scss';
+import { SEGMENT_TYPE } from 'components/Rule/constants';
 
 interface IProps {
   disabled?: boolean;
@@ -67,7 +68,7 @@ const Rules = (props: IProps) => {
             return item.key === condition.subject;
           });
 
-          if (index === -1 && condition.subject) {
+          if (index === -1 && condition.subject && condition.type !== SEGMENT_TYPE) {
             subjectOptions.push({
               key: condition.subject,
               text: condition.subject,
