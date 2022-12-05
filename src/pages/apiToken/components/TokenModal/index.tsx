@@ -134,7 +134,7 @@ const TokenModal: React.FC<IProps> = (props) => {
         setToken(res.data?.token);
         refresh && refresh();
       } else {
-        message.error(intl.formatMessage({ id: 'token.create.error' }));
+        message.error(res.message || intl.formatMessage({ id: 'token.create.error' }));
       }
     } finally {
       setIsLoading(false);
