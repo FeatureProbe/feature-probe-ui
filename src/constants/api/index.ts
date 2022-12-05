@@ -7,6 +7,7 @@ import segment from './segment';
 import dictionary from './dictionary';
 import approvals from './approval';
 import webhook from './webhook';
+import tokens from './tokens';
 
 const APIS = {
   ...project,
@@ -18,6 +19,7 @@ const APIS = {
   ...misc,
   ...approvals,
   ...webhook,
+  ...tokens,
 };
 
 export default APIS;

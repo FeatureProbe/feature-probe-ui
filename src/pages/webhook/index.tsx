@@ -102,7 +102,7 @@ const WebHook = () => {
             <div className={styles.buttons}>
               <Button primary className={styles['add-button']} onClick={handleAddWebHook}>
                 <Icon customclass={styles['iconfont']} type="add" />
-                WebHook
+                Webhook
               </Button>
             </div>
           </div>
@@ -132,6 +132,9 @@ const WebHook = () => {
                         </Table.HeaderCell>
                         <Table.HeaderCell className={styles['column-type']}>
                           <FormattedMessage id="toggles.filter.status" />
+                        </Table.HeaderCell>
+                        <Table.HeaderCell className={styles['column-secret-key']}>
+                          <FormattedMessage id="common.secret.key.text" />
                         </Table.HeaderCell>
                         <Table.HeaderCell className={styles['column-recent']}>
                           <FormattedMessage id="webhook.recent.text" />
@@ -163,13 +166,10 @@ const WebHook = () => {
                       })}
                     </Table.Body>
                   </Table>
+                  {!list.length && <NoData />}
                 </div>
               </div>
-              {!list.length ? (
-                <div className={styles['nodata-box']}>
-                  <NoData />
-                </div>
-              ) : (
+              {list.length !== 0 && (
                 <CustomPagination
                   pagination={{
                     totalPages: pagination.totalPages,
