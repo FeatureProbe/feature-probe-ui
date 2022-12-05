@@ -98,7 +98,7 @@
   "common.lock.time": "锁定时间",
   "common.next.text": "下一步",
   "common.previous.text": "上一步",
-  "common.webhooks.text": "WebHooks",
+  "common.webhooks.text": "Webhooks",
   "common.event.text": "事件",
   "common.total": "总数",
   "common.success.text": "成功",
@@ -488,7 +488,7 @@
   "webhook.seat.text": "占位",
   "webhook.application.text": "应用",
   "webhook.url.text": "URL",
-  "webhook.name.text": "WebHook名称",
+  "webhook.name.text": "Webhook名称",
   "webhook.all.text": "全部",
   "webhook.custom.text": "自定义",
   "webhook.url.required": "请输入url",
@@ -503,11 +503,11 @@
   "webhook.delete.success": "删除成功",
   "webhook.delete.failed": "删除失败",
   "webhook.delete.tips.title": "提示",
-  "webhook.delete.tips.content": "确定要删除该WebHook吗？",
+  "webhook.delete.tips.content": "确定要删除该Webhook吗？",
   "webhook.status.code.text": "状态码",
-  "webhook.create.text": "创建WebHook",
-  "webhook.edit.text": "编辑WebHook",
-  "webhook.total": "WebHook总数",
+  "webhook.create.text": "创建Webhook",
+  "webhook.edit.text": "编辑Webhook",
+  "webhook.total": "Webhook总数",
 
   "token.application.title": "第三方应用 API Tokens",
   "token.personal.title": "个人 API Tokens",
@@ -529,5 +529,5 @@
   "token.delete.error": "删除Token失败",
   "token.list.error": "查询Token列表失败",
   "token.card.application.description": "用于访问 OpenAPI。应用token不与个人绑定，一经创建不可变更，且永久生效。",
-  "token.card.personal.description": "用于访问 OpenAPI。个人Token具有与创建人相同的权限，且会随着创建人的权限同步变化，如果创建人被删除，他的Token也将失效"
+  "token.card.personal.description": "用于访问 OpenAPI。个人Token具有与创建人相同的权限，且会随着创建人的权限同步变化，如果创建人被删除，他的Token也将失效。"
 }
