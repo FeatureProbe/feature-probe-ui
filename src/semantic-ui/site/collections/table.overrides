@@ -1,8 +1,0 @@
-/*******************************
-         Site Overrides
-*******************************/
-
-.ui.table tr td {
-  border-bottom: @rowBorder;
-  border-top: none;
-}

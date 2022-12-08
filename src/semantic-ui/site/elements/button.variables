@@ -1,6 +1,0 @@
-/*******************************
-    User Variable Overrides
-*******************************/
-
-@basicBorderRadius: 6px;
-@primaryColorFocus: #556ee6;
